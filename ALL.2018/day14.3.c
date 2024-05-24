@@ -1,0 +1,187 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+#include <math.h>
+
+//int END = 2028;	//plus ten
+//int END = 59414;
+int END = 330121;
+int tot = 0;
+#define SIZE 299
+char line1[SIZE];
+int leny = 0;
+void printit(char ar1[], int len, int poses[], int posesPos);
+int rshift(int x, int n);
+int rshift2(int n);
+
+char ar[4000000];
+int main(int argc, char **argv)
+{
+        printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
+        FILE * a = fopen(argv[1], "r"); printf("2017 Day9.1\n"); fflush(stdout);
+
+while (1) 
+{
+        fgets(line1, SIZE -1, a);
+	if (feof(a)) break;
+ 	line1[(int)strlen(line1)-1] = '\0';
+ 	printf("line1 %s\n", line1);
+
+	strcpy(ar, line1);
+	leny++;
+}
+fclose(a);
+	int poses[20];
+	int posesPos = (int)strlen(ar);
+	for (int i = 0; i < posesPos; i++) {
+		poses[i] = i;
+	}
+	//printit(ar, (int)strlen(ar), poses, posesPos); getchar();
+	char end[10];
+	sprintf(end, "%d", END);
+	int ans = 0;
+	unsigned long long count = 0;
+	do {
+		count ++;
+		if (count %5000 == 0) {printf("count %llu\n", count);}
+		int sum = 0; 
+		for (int j = 0; j < posesPos; j++) {
+			sum += ar[poses[j]] - 48;
+		}
+
+		char dig1 = (sum % 10) +48;
+		char dig2 = (sum / 10) +48;
+		//printf(" %c %c\n", dig1, dig2);
+
+		int len = (int)strlen(ar);
+		if (dig2 != '0') {
+			ar[len] = dig2;
+			ar[len+1] = dig1;
+			ar[len+2] = '\0';
+		} else {
+			ar[len] = dig1;
+			ar[len+1] = '\0';
+		}
+		for (int j = 0; j < posesPos; j++) {
+			poses[j] = (poses[j] + (ar[poses[j]]-48+1)) % (int)strlen(ar);
+		}
+
+		//printit(ar, (int)strlen(ar), poses, posesPos); getchar();
+		int found = 0;
+		int ENDTMP = END;
+		if (END != 330121 && count > 10/*&& (int)strlen(ar) > strlen(end)*/) {
+			found = 0;
+			ENDTMP = END;
+			for (int i = (int)strlen(end)-1; i >= 0; i--) {
+				//printf("comparing %d with %d\n", rshift(ENDTMP, i), ar[strlen(ar)-i-1] -48); getchar();
+				if (rshift(ENDTMP, i) == ar[strlen(ar) -i-1]-48) {
+					if (i != 0) {ENDTMP -= rshift(ENDTMP, i) * pow(10, i);}
+					//printf("ENDTMP now %d\n", ENDTMP);
+					found++;
+				}  else {
+					break;
+				}
+			}
+			if (found == (int)strlen(end)) {
+				ans = 1;
+				break;
+			}
+			//////////////////////////////
+			//////////////////////////////
+			//////////////////////////////
+			found = 0;
+			ENDTMP = END;
+			for (int i = (int)strlen(end)-1; i >= 0; i--) {
+				//printf("comparing %d with %d\n", rshift(ENDTMP, i), ar[strlen(ar)-i-1-1] -48); getchar();
+				if (rshift(ENDTMP, i) == ar[strlen(ar) -i-1-1]-48) {
+					if (i != 0) {ENDTMP -= rshift(ENDTMP, i) * pow(10, i);}
+					//printf("ENDTMP now %d\n", ENDTMP);
+					found++;
+				}  else {
+					break;
+				}
+			}
+			if (found == (int)strlen(end)) {
+				ans = 2;
+				break;
+			}
+		} else if (END == 330121 && count > 10) {
+			found = 0;
+			ENDTMP = END;
+			for (int i = (int)strlen(end)-1; i >= 0; i--) {
+				if (rshift2(i) == ar[strlen(ar) -i-1]) {
+					found++;
+				}  else {
+					break;
+				}
+			}
+			if (found == (int)strlen(end)) {
+				ans = 1;
+				break;
+			}
+			found = 0;
+			ENDTMP = END;
+			for (int i = (int)strlen(end)-1; i >= 0; i--) {
+				if (rshift2(i) == ar[strlen(ar) -i-1-1]) {
+					found++;
+				}  else {
+					break;
+				}
+			}
+			if (found == (int)strlen(end)) {
+				ans = 2;
+				break;
+			}
+		}
+			
+	} while (1);
+
+	if (ans == 1) {
+		printf("ANS1: ");
+		printf("%d\n", (int)strlen(ar)-(int)strlen(end));
+		printf("\n");
+	} else if (ans == 2) {
+		printf("ANS2: ");
+		printf("%d\n", (int)strlen(ar)-(int)strlen(end)-1);
+		printf("\n");
+	}
+}
+void printit(char ar1[], int len, int poses[], int posesPos) {
+	printf("AR: ");
+	for (int i = 0; i < len; i++) {
+		printf("%c,", ar1[i]);
+	}
+	printf("\n");
+	printf("Poses: ");
+	for (int i = 0; i < posesPos; i++) {
+		printf(" %d, ", poses[i]);
+	} 
+	printf("\n");
+}
+	
+int rshift2(int n) {
+	switch(n){
+		case 0: return('1');
+		case 1: return('2');
+		case 2: return('1');
+		case 3: return('0');
+		case 4: return('3');
+		case 5: return('3');
+	}
+}
+int rshift(int x, int n) {
+	switch(n){
+		case 0: return(x);
+		case 1: return(x/10);
+		case 2: return(x/100);
+		case 3: return(x/1000);
+		case 4: return(x/10000);
+		case 5: return(x/100000);
+		case 6: return(x/1000000);
+		case 19: return(x/10000000000000000000ULL);
+		default: if (x<10000000000000000000ULL) return(0);
+				 printf("Sorry, not yet implemented\n");
+			 return(0);
+	}
+}
