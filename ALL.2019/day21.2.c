@@ -4,19 +4,27 @@
 #include <ctype.h>
 #include <math.h>
 #include <algorithm>
+#include <deque>
+#include <cassert>
+
 using namespace std;
 
 int lenx, leny;
-#define DAY "2019 day7 part1\n"
-#define _DEBUG_
-#define MAX 2000
+#define DAY "2019 day 19 part1\n"
+//#define _DEBUG_
+#undef DEBUG
+#define getchar()
+int numSteps = 0;
+#define MAX 7500
+#define MAXI 3000
 int instTOT = 0;
-long long inst[MAX];
-long long instOrig[MAX];
-char instruction    [MAX][40];
+long long inst[MAXI];
+long long instOrig[MAXI];
+char instruction    [MAXI][40];
+char instructionOrig    [MAXI][40];
 
 long long output[6] = {0};
-long long saveInst[6][1000] = {0};
+long long saveInst[6][MAXI] = {0};
 long long nextInst[6] = {0};
 long long relativeBase[6] = {0};
 int times[6] = {0};
@@ -24,18 +32,68 @@ int finished[6] = {0};
 int inputCounters[6] = {0};
 int phase[] = {1,1,1,1,1,-1};
 int machine(int machineNumber, int one);
+char myInput;
+char reverseInput(char in);
+int OXX = 0;
+int OXY = 0;
+int MINPATH;
+//char tmpIn[] = {'3','3','3','1','2'};
+long long  tmpIn[] = {0, 0, 1,  0, 2, 0, 3, 2, 2, 2, -1};
 
-long long myIns[] = {1, 1, 3, 1};
-int myInsPos = 0;
+//char code[] = "NOT B T\nOR T J\nWALK\n";
+///char code[] = "NOT T J\nNOT A J\nWALK\n";
+//char code[] = "NOT A J\nNOT B T\nAND T J\nNOT C T\nAND T J\nAND D J\n WALK\n";
+//char code[] = "NOT A J\nNOT C J\nWALK\n";
+//pART 1char code[] = "NOT D T\nNOT T T\nNOT C J\nAND T J\nNOT A T\nOR T J\nWALK\n";
+///char code[] = "NOT D T\nNOT T T\nNOT C J\nAND T J\nNOT A T\nOR T J\nRUN\n";
+/// WORKING TO #.#.#..##.# -> #.#...#.#.# char code[] = "NOT G J\nNOT J J\nNOT D T\nNOT T T\nAND J T\nNOT C J\nAND T J\nNOT A T\nOR T J\nRUN\n";
+//char code[] = "NOT G J\nNOT J J\nAND J T\nNOT D T\nNOT T T\nAND J T\nNOT C J\nAND T J\nNOT A T\nOR T J\nRUN\n";
+//char code[] = "NOT G J\nNOT J J\nAND J T\nNOT D T\nNOT T T\nAND J T\nNOT C J\nAND T J\nNOT A T\nOR T J\nNOT B T\nNOT T T\nNOT C\nNOT D\nNOT \nNOT E\NOT F\nNOT G\nRUN\n";
+//char code[] = "NOT H J\nNOT J J\nAND J T\nNOT D T\nNOT T T\nAND J T\nNOT C J\nAND T J\nNOT A T\nOR T J\nRUN\n";
+//#####.##.#.##.###
+//char code[] = "NOT H J\nNOT J J\nNOT D T\nNOT T T\nAND J T\nNOT C J\nAND T J\nNOT A T\nOR T J\nRUN\n";
+//char code[] = "NOT F J\nNOT D T\nNOT T T\nAND J T\nNOT C J\nAND T J\nNOT A T\nOR T J\nRUN\n";
+//if no f then no b
+//if no f then no e
+//char code[] = "NOT F J\nNOT E T\nOR T J\nNOT D T\nNOT T T\nAND J T\nNOT C J\nAND T J\nNOT A T\nOR T J\nRUN\n";
+//char code[] = "NOT I T\nNOT T T\nNOT F J\nAND T J\nNOT E T\nOR T J\nNOT D T\nNOT T T\nAND J T\nNOT C J\nAND T J\nNOT A T\nOR T J\nRUN\n";
+//if no i must have a a
+//char code[] = "NOT H J\nNOT J J\nNOT I T\nNOT T T\nOR J T\nNOT F J\nAND T J\nNOT E T\nOR T J\nNOT D T\nNOT T T\nAND J T\nNOT C J\nAND T J\nNOT A T\nOR T J\nRUN\n";
+//char code[] = "NOT F J\nNOT J J\nNOT I T\nNOT T T\nOR J T\nNOT E T\nOR T J\nNOT D T\nNOT T T\nAND J T\nNOT C J\nAND T J\nNOT A T\nOR T J\nRUN\n";
+//char code[] = "NOT E J\nNOT D T\nNOT T T\nAND T J\nNOT A T\nOR T J\nRUN\n";
+//char code[] = "NOT A J\nRUN\n";
+
+//char code[] = "NOT I T\nNOT T T\nNOT F J\nAND T J\nNOT E T\nOR T J\nNOT D T\nNOT T T\nAND J T\nNOT C J\nAND T J\nNOT A T\nOR T J\nRUN\n";
+//char code[] = "NOT F J\nNOT E T\nOR T J\nNOT D T\nNOT T T\nAND J T\nNOT C J\nAND T J\nNOT I T\nNOT T T\nOR T J\nNOT B T\nOR T J\nNOT A T\nOR T J\nRUN\n";
+//char code[] = "NOT H T\nNOT T T\nNOT F J\nAND T J\nNOT E T\nOR T J\nNOT D T\nNOT T T\nAND J T\nNOT C J\nAND T J\nNOT A T\nOR T J\nRUN\n";
+//// nEARLY char code[] = "NOT F J\nNOT E T\nOR J T\nNOT G J\nOR T J\nNOT D T\nNOT T T\nAND J T\nNOT C J\nAND T J\nNOT A T\nOR T J\nRUN\n";
+//char code[] = "NOT A J\nNOT B T\nNOT T T\nAND T J\nNOT D T\nNOT T T\nAND J T\nNOT C J\nAND T J\nNOT E T\nAND T J\nNOT F T\nAND T J\nNOT B T\nOR T J\nRUN\n";
+//char code[] = "NOT A T\nNOT D J\nNOT J J\nAND T J\nNOT E T\nAND T J\nNOT F T\nAND T J\nNOT H T\nNOT T T\nOR J T\nNOT C J\nOR T J\nRUN\n";
+//char code[] = "NOT E T\nNOT F J\nAND T J\nNOT H T\nNOT T T\nOR T J\nNOT C T\nAND T J\nNOT A T\nAND T J\nNOT D T\nNOT T T\nAND T J\nRUN\n";
+//char code[] = "NOT E T\nNOT F J\nAND T J\nNOT H T\nNOT T T\nOR T J\nNOT J T\nOR B T\nNOT A J\nNOT J J\nAND T J\nNOT C T\nAND T J\nNOT A T\nOR T J\nRUN\n";
+//char code[] = "NOT E T\nNOT F J\nAND T J\nNOT H T\nNOT T T\nAND T J\nNOT J T\nNOT A J\nNOT J J\nAND T J\nNOT D T\nNOT T T\nAND T J\nNOT A T\nOR T J\nRUN\n";
+//char code[] = "NOT E T\nNOT F J\nAND T J\nNOT H T\nNOT T T\nAND T J\nNOT A T\nAND T J\nNOT C T\nAND J T\nNOT C J\nAND T J\nNOT C T\nOR T J\nAND D J\nRUN\n";
+char code[] = "NOT B T\nNOT C J\nOR T J\nNOT H T\nNOT T T\nAND J T\nNOT A J\nNOT J J\nAND T J\nNOT D T\nNOT T T\nAND T J\nNOT A T\nOR T J\nRUN\n";
+//#####...#########
+//char code[] = "AND A J\nRUN\n";
+int codePos = 0;
+char out1[300];
+char out2[300];
+char out3[300];
+char out4[300];
+int OUTPos = 0;
+int OUTStart = 0;
+
+
+
 int main(int argc, char **argv)
 {
-
 	lenx = 0; leny = 0;
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
-        char line1[3000];
+        char line1[MAX];
 	for (int i = 0 ; i < MAX; i++) {
 		inst[i] = 0;
 	}
@@ -43,7 +101,7 @@ int main(int argc, char **argv)
 	int newStart = 0;
 	int pos = 0;
 while(1) {
-        fgets(line1, 2990, a);
+        fgets(line1, MAX-1, a);
         if (feof(a)) break;
 	line1[strlen(line1) -1]='\0';
 	lenx = strlen(line1);
@@ -53,6 +111,7 @@ while(1) {
 	for (int i = 0; i < (int)strlen(line1); i++) {
 		if (line1[i] == ',') {
 			instruction[newStart][pos] = '\0';
+			instructionOrig[newStart][pos] = '\0';
 #ifdef _DEBUG_
 			printf("instruction[newStart]: %s (newStart:%d)\n", instruction[newStart], newStart); 
 #endif
@@ -64,14 +123,34 @@ while(1) {
 #endif
 		} else {
 			instruction[newStart][pos] = line1[i];
+			instructionOrig[newStart][pos] = line1[i];
 			pos++;
 		}
 	}
 	leny++;
 }
 	fclose(a);
-	instruction[newStart][pos] = '\0';
 	newStart++;
+	instruction[newStart][pos] = '\0';
+	instructionOrig[newStart][pos] = '\0';
+RErestart:
+	for (int i = 0; i < 6; i++) {
+		output[i] = 0;
+		nextInst[i] = 0;
+		relativeBase[i] = 0;
+		times[i] = 0;
+		finished[i] = 0;
+		inputCounters[i] = 0;
+	}
+	for (int i = 0; i < 6; i++) {
+		for (int j = 0; j < MAXI; j++) {
+			saveInst[i][j] = 0;
+		}
+	}
+	
+	for (int i = 0; i < newStart; i++) {
+		strcpy(instruction[i], instructionOrig[i]);
+	}
 	char *stop;
 	for (int i = 0; i < newStart; i++) {
 		inst[i] = strtoul(instruction[i], &stop, 10);
@@ -84,7 +163,7 @@ while(1) {
 #endif
 	}
 	instTOT = newStart;
-	printf("START-------------\n");
+	printf("START-------%d------\n", instTOT); getchar();
 
 	for (int i = 0; i < instTOT; i++) {
 		instOrig[i] = inst[i];
@@ -118,6 +197,7 @@ restart:
 		i = 0; /////////////////////////////////	
 		int one = 1;
 		int ret = machine(i, one);
+		if (ret == 100) {printf("RErestart\n"); getchar(); goto RErestart;}
 		if (ret == 34) {goto restart;} else if (ret == 33 && i == 4) {goto end;} else if (ret == 33 && one == 1) {goto end;}  else if (ret == 22) {goto restart;}
 end:
 	printf("output CONOR %lld\n", output[0]);  getchar();
@@ -132,6 +212,15 @@ printf("***OUTPUTMAX: %lld\n", outputMAX);
 
 }
 
+char reverseInput(char in) {
+	switch (in) {
+		case '1': return '2';
+		case '2': return '1';
+		case '3': return '4';
+		case '4': return '3';
+	}
+	return 0;
+}
 
 int machine(int machineNumber, int one) {
 		if (finished[machineNumber] == 1) { return 22;}
@@ -150,34 +239,56 @@ int machine(int machineNumber, int one) {
 			input[1] = output[machineNumber];
 			input[0] = phase[machineNumber];
 		}
+ 
 	for (int i = nextInst[machineNumber]; i < instTOT; i++) {
 #ifdef _DEBUG_
                 printf("\nNEW NEW NEW:::"); fflush(stdout);
                 printf("POS InstNUM: (%d) ", i); fflush(stdout);
-                printf(" is [%lld] ", inst[i]); fflush(stdout); getchar();
+                printf(" is [%lld] ", inst[i]); fflush(stdout); //getchar();
 #endif
 
 		int myINST = inst[i] % 100;
 		if (myINST == 3) {
+			//{printf("got a 3 (using %lld) -> [pos:%lld]\n", input[inputCounter], inst[i+1]);}
+			{printf("got a 3 (using %d) \n", (int)code[codePos]);}
 #ifdef _DEBUG_
-			{printf("got a 3 (using %lld) -> [pos:%lld]\n", input[inputCounter], inst[i+1]);}
 #endif
-			input[inputCounter] = myIns[myInsPos++];
                         if (inst[i] > 200) {
-				inst[relativeBase[machineNumber]+inst[i+1]] = input[inputCounter];
-				printf("rel input...");
+				int in;
+				if (code[codePos] == ' ') {
+					in = 34;
+				} else if (code[codePos] == 'Z') {
+					in = 10;
+				} else {
+					in = code[codePos];
+				}
+				in = code[codePos];
+				printf("3333333: [%c]\n", (char)in);
+				
+				inst[relativeBase[machineNumber]+inst[i+1]] = in;
 			} else {
-				inst[inst[i+1]] = input[inputCounter];
+				int in;
+				if (code[codePos] == ' ') {
+					in = 34;
+				} else if (code[codePos] == 'Z') {
+					in = 10;
+				} else {
+					in = code[codePos];
+				}
+				in = code[codePos];
+				printf("33333: [%c]\n", (char)in);
+				inst[inst[i+1]] = in;
 			}
 			if (inputCounter != 1) {
 				inputCounter++;
 			}
-			i++;
+			i++; printf("leaving 3 (input)...\n"); fflush(stdout); getchar();
+			codePos++;
 		} else if (myINST == 4) {
-                        {printf("got a 4 look@ %lld contains %lld\n", inst[i+1], inst[inst[i+1]]); fflush(stdout);}
-			getchar();
 #ifdef _DEBUG_
+                        {printf("got a 4 look@ %lld contains %lld\n", inst[i+1], inst[inst[i+1]]); fflush(stdout);}
 #endif
+			long long OUT;
                         if (inst[i] > 200) {
 				input[1] = inst[relativeBase[machineNumber]+inst[i+1]];
 				if (one == 0) {
@@ -185,13 +296,15 @@ int machine(int machineNumber, int one) {
 				} else if (one == 1) {
 	                                output[(machineNumber)%5] = inst[relativeBase[machineNumber]+inst[i+1]]; 
 				}
+				OUT =  inst[relativeBase[machineNumber]+inst[i+1]];
+
+#ifdef _DEBUG_
                                 printf("REL OUT: %lld (base: %lld+%lld)\n", inst[relativeBase[machineNumber]+inst[i+1]],
 					relativeBase[machineNumber], inst[i+1]);
-#ifdef _DEBUG_
 #endif
                         } else if (inst[i] > 100) {
-                                printf("or is it OUT: %lld\n", inst[i+1]);
 #ifdef _DEBUG_
+                                printf("or is it OUT: %lld\n", inst[i+1]);
                                 printf("or is it OUTS: %s\n", instruction[i+1]);
 #endif
 				input[1] = inst[i+1];
@@ -200,9 +313,10 @@ int machine(int machineNumber, int one) {
 				} else if (one == 1) {
 	                                output[(machineNumber)%5] = inst[i+1]; 
 				}
+				OUT = inst[i+1];
                         } else {
-                                printf("OUT: %lld\n", inst[inst[i+1]]); 
 #ifdef _DEBUG_
+                                printf("OUT: %lld\n", inst[inst[i+1]]); 
                                 printf("OUTS: %s\n", instruction[inst[i+1]]);
 #endif
 				input[1] = inst[inst[i+1]];
@@ -211,12 +325,30 @@ int machine(int machineNumber, int one) {
 				} else if (one == 1) {
 	                                output[(machineNumber)%5] = inst[inst[i+1]]; 
 				}
+				OUT = inst[inst[i+1]];
                         }
-			if (one == 0) {
-				printf("conor OUT: %lld\n", output[(machineNumber+1) % 5]);
+
+			if (OUT >= 0 && OUT <= 256) {
+				//printf("OUT is [%c]", (char)OUT);
+				printf("%c", (char)OUT);
 			} else {
-				printf("conor OUT: %lld\n", output[(machineNumber) % 5]);
+				printf("OUT outside range... %lld\n", OUT);
 			}
+
+			if (OUT == ';') {
+				printf("\n");
+				OUTPos = 0;
+				OUTStart = 1;
+			}
+			if (OUTStart == 1) {
+				OUTPos++;
+			}
+			if (OUTPos == 18) {
+				printf("\n");
+				OUTPos = 0;
+			}
+			
+			
 			for (int i = 0; i < instTOT; i++) {
 				saveInst[machineNumber][i] = inst[i];
 			}
@@ -239,7 +371,9 @@ int machine(int machineNumber, int one) {
 #endif
 			finished[machineNumber] = 1;
 			
-			if (one == 1) {exit(0);}
+
+			exit(0);
+
 			if (machineNumber == 4) {return 33;} else if (machineNumber == 0 && one == 1) {return 33;} else {return 22;}
 		} else { 
 			int err = 0;
@@ -254,25 +388,33 @@ int machine(int machineNumber, int one) {
 			} else {
 				mypos = inst[i+3];
 			}
+			if (tmp2[2] != '0') {
+				printf("tmp2... not zero... [[ %s ]]\n", tmp2); getchar(); getchar(); exit(0);
+			}
 			tmp2[4] = '\0';
-			if (tmp2[3] == '7') {printf("got a seven...\n"); fflush(stdout);}
 #ifdef _DEBUG_
 			printf("NOW: %s\n", tmp2); 
 #endif
 			long long val1, val2, ans;
-			if (tmp2[1] == '0') {printf("val1 issue again\n"); fflush(stdout); val1 = inst[inst[i+1]]; printf("after\n"); fflush(stdout);
+			
+			if (tmp2[1] == '0') {
+
+val1 = inst[inst[i+1]]; 
 #ifdef _DEBUG_
 			printf("(pos0) val1 %lld\n", inst[inst[i+1]]);
 #endif
 }
-			else if (tmp2[1] == '1') {val1 = inst[i+1];
+			else if (tmp2[1] == '1') {
+
+
+val1 = inst[i+1];
 #ifdef _DEBUG_
 			printf("(Npos1) val1 %lld\n", val1);
 #endif
 } 
 			else if (tmp2[1] == '2') {val1 = inst[relativeBase[machineNumber]+inst[i+1]];
-				printf("(Rpos1) val1 %lld\n", val1);
 #ifdef _DEBUG_
+				printf("(Rpos1) val1 %lld\n", val1);
 #endif
 } 
 			else { printf("HERE"); getchar(); val1 = inst[i+1]; /*val2 = inst[i+2]; goto clear;*/}
@@ -291,7 +433,12 @@ int machine(int machineNumber, int one) {
 					printf("(Rpos2) val2 %lld\n", val2);
 #endif
 				} else { printf("HERE2"); getchar(); val2 = inst[i+2];}
-	                }
+	                } else {
+#ifdef _DEBUG_
+
+				printf("GOT A NINE\n");
+#endif
+			}
 	
 			if (myINST == 2) {
 #ifdef _DEBUG_
@@ -332,7 +479,6 @@ int machine(int machineNumber, int one) {
 #endif
 					 err = 1;}
 			} else if (myINST == 7) {
-				printf("			got a 7...\n");
 				if (val1 < val2) {ans = 1;} else {ans = 0;}
 #ifdef _DEBUG_
 				printf("%lld <<<<< %lld\n", val1, val2); 
@@ -343,14 +489,12 @@ int machine(int machineNumber, int one) {
 				printf("%lld ===== %lld\n", val1, val2); 
 #endif
 			} else if (myINST == 9) {
-				printf("you got a 9...\n"); getchar();
 				relativeBase[machineNumber] += val1;
 #ifdef _DEBUG_
 				printf("relativeBase Change (+%lld) -> %lld\n", val1, relativeBase[machineNumber]); 
 #endif
 				err = 11;
 			} else {
-				printf("UNK: myINST: %d\n", myINST);
 				printf("UNK: **ERROR: instruction[i][3] (%d) [%c%c]\n", i, instruction[i][2], instruction[i][3]); exit(0);
 				err = 10;
 				getchar();

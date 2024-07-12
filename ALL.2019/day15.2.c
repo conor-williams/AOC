@@ -4,19 +4,24 @@
 #include <ctype.h>
 #include <math.h>
 #include <algorithm>
+#include <deque>
+#include <cassert>
+
 using namespace std;
 
 int lenx, leny;
-#define DAY "2019 day7 part1\n"
-#define _DEBUG_
-#define MAX 2000
+#define DAY "2019 day 15 part1\n"
+//#define _DEBUG_
+#undef DEBUG
+#define getchar()
+#define MAX 5000
 int instTOT = 0;
 long long inst[MAX];
 long long instOrig[MAX];
 char instruction    [MAX][40];
 
 long long output[6] = {0};
-long long saveInst[6][1000] = {0};
+long long saveInst[6][MAX] = {0};
 long long nextInst[6] = {0};
 long long relativeBase[6] = {0};
 int times[6] = {0};
@@ -24,18 +29,61 @@ int finished[6] = {0};
 int inputCounters[6] = {0};
 int phase[] = {1,1,1,1,1,-1};
 int machine(int machineNumber, int one);
+char myInput;
+char reverseInput(char in);
+int OXX = 0;
+int OXY = 0;
+int MINPATH;
+//char tmpIn[] = {'3','3','3','1','2'};
+long long  tmpIn[] = {1, 2, 2,  2, 2, 2, 2, 2, 2, 2, -1};
+int tmpInPos = 0;
+void printit();
+void next(int x, int y, int path);
+int mytimes = 1;
+#define SZ 44
+char grid[SZ+5][SZ+5];
+int yPrev; int yCur = SZ/2;
+int xPrev; int xCur = SZ/2;
+int already[SZ][SZ];
+int MAXPATH = 0;
 
-long long myIns[] = {1, 1, 3, 1};
-int myInsPos = 0;
+struct pos_s {
+	//char dir;
+	int x;
+	int y;
+	deque <char> path;
+};
+deque <pos_s> myInputQ;
+deque <char> myBack;
+struct pos_s pos2;
+int MOVE = 0;
+deque <char> PATH;
+int pathPOS = 0;
 int main(int argc, char **argv)
 {
 
+	struct pos_s st = {xCur, yCur, PATH};
+	
+	//myInputQ.push_back(st);
+	for (int y = 0; y < SZ; y++) {
+		for (int x = 0; x < SZ; x++) {
+			grid[y][x] = '_';
+		}
+		grid[y][SZ] = ' ';
+		grid[y][SZ+1] = (y%10) + 48;
+	}
+	for (int x = 0; x < SZ; x++) {
+		grid[SZ][x] = ' ';
+		grid[SZ+1][x] = (x%10)+48;
+	}
+
+	grid[SZ/2][SZ/2] = 'X';
 	lenx = 0; leny = 0;
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
-        char line1[3000];
+        char line1[MAX];
 	for (int i = 0 ; i < MAX; i++) {
 		inst[i] = 0;
 	}
@@ -43,7 +91,7 @@ int main(int argc, char **argv)
 	int newStart = 0;
 	int pos = 0;
 while(1) {
-        fgets(line1, 2990, a);
+        fgets(line1, MAX-1, a);
         if (feof(a)) break;
 	line1[strlen(line1) -1]='\0';
 	lenx = strlen(line1);
@@ -132,6 +180,34 @@ printf("***OUTPUTMAX: %lld\n", outputMAX);
 
 }
 
+char reverseInput(char in) {
+	switch (in) {
+		case '1': return '2';
+		case '2': return '1';
+		case '3': return '4';
+		case '4': return '3';
+	}
+	return 0;
+}
+void next(int x, int y, int path) {
+	if (x == OXX && y == OXY) {
+		printf("end reached path is %d\n", path);
+		if (mytimes == 1) { mytimes++; if (path < MINPATH) {MINPATH = path;}} else {MINPATH = 0;}
+	}
+
+	if (already[y][x] == -1 || path < already[y][x]) {
+		already[y][x] = path;
+		switch (grid[y][x]) {
+			case '#':
+				return;
+			case '.':
+				next(x+1, y, path+1);
+				next(x-1, y, path+1);
+				next(x, y+1, path+1);
+				next(x, y-1, path+1);
+		}
+	}
+}
 
 int machine(int machineNumber, int one) {
 		if (finished[machineNumber] == 1) { return 22;}
@@ -150,34 +226,107 @@ int machine(int machineNumber, int one) {
 			input[1] = output[machineNumber];
 			input[0] = phase[machineNumber];
 		}
+ 
 	for (int i = nextInst[machineNumber]; i < instTOT; i++) {
 #ifdef _DEBUG_
                 printf("\nNEW NEW NEW:::"); fflush(stdout);
                 printf("POS InstNUM: (%d) ", i); fflush(stdout);
-                printf(" is [%lld] ", inst[i]); fflush(stdout); getchar();
+                printf(" is [%lld] ", inst[i]); fflush(stdout); //getchar();
 #endif
 
 		int myINST = inst[i] % 100;
 		if (myINST == 3) {
-#ifdef _DEBUG_
 			{printf("got a 3 (using %lld) -> [pos:%lld]\n", input[inputCounter], inst[i+1]);}
+#ifdef _DEBUG_
 #endif
-			input[inputCounter] = myIns[myInsPos++];
-                        if (inst[i] > 200) {
-				inst[relativeBase[machineNumber]+inst[i+1]] = input[inputCounter];
-				printf("rel input...");
+			// N==1 S==2 W==3 E==4 
+			yPrev = yCur; xPrev = xCur;
+			if (myInputQ.empty()) {printf("EMPTY Q\n"); fflush(stdout); /*printit();*/ /*getchar();*/}
+again:
+			int pushes = 0;
+			if (MOVE == 0) { // moving as normal...
+				printf("MOVE IS ZERO -- looking four ways\n");
+				struct pos_s pos1;
+				pos1.x = xCur; pos1.y = yCur+1;	pos1.path.clear(); pos1.path.push_front('2');
+				if (grid[pos1.y][pos1.x] == '_' && pos1.x >= 0 && pos1.x < SZ && pos1.y >= 0 && pos1.y <= SZ) { pushes |= (1<<1); myInputQ.push_front(pos1); myBack.push_front('1'); printf("here1\n"); goto after;}
+				pos1.x = xCur+1; pos1.y = yCur;	pos1.path.clear(); pos1.path.push_front('4');
+				if (grid[pos1.y][pos1.x] == '_' && pos1.x >= 0 && pos1.x < SZ && pos1.y >= 0 && pos1.y <= SZ) { pushes |= (1<<2); printf("here2.2 %d\n", (int)myInputQ.size()); myInputQ.push_front(pos1); printf("here2.3 %d\n", (int)myInputQ.size()); myBack.push_front('3'); printf("here2 %d\n", (int) myInputQ.size()); goto after;}
+				pos1.x = xCur-1; pos1.y = yCur;	pos1.path.clear(); pos1.path.push_front('3');
+				if (grid[pos1.y][pos1.x] == '_' && pos1.x >= 0 && pos1.x < SZ && pos1.y >= 0 && pos1.y <= SZ) { pushes |= (1<<3); myInputQ.push_front(pos1); myBack.push_front('4'); printf("here3\n"); goto after;}
+				pos1.x = xCur; pos1.y = yCur-1;	pos1.path.clear(); pos1.path.push_front('1');
+				if (grid[pos1.y][pos1.x] == '_' && pos1.x >= 0 && pos1.x < SZ && pos1.y >= 0 && pos1.y <= SZ) { pushes |= (1<<4); myInputQ.push_front(pos1); myBack.push_front('2'); printf("here4\n"); goto after;}
+				printf("pushes: %d\n", pushes);
+			} else if (MOVE == 1) {//hit a wall
+				printf("MOVE is ONE\n");
+			}
+after:
+			printf("pushes is %d\n", pushes);
+			if (pushes == 0) {
+				if (myBack.empty()) {printf("myBack is empty... myQ: %d OXX,OXY %d,%d\n", (int)myInputQ.size(), OXX, OXY); 
+
+
+				
+				for (int y = 0; y<SZ; y++) {
+					for (int x = 0; x<SZ; x++) {
+						if (grid[y][x] == '.') {
+							MINPATH = 9999;
+							mytimes = 1;
+							for (int y = 0; y<SZ; y++) { for (int x = 0; x < SZ; x++) { already[y][x] = -1; } }
+							next(x, y, 0);
+							if (MINPATH > MAXPATH) {MAXPATH = MINPATH;}
+						}
+					}
+				}
+				printf("**MAXPATH is %d conor\n", MAXPATH);
+				//next(SZ/2, SZ/2, 0);
+
+exit(0);}
+				myInput = myBack.front(); myBack.pop_front();
+				//printf("pushes was zero... backtracking...myInput [%c]\n", myInput);
+				
 			} else {
+				if (myInputQ.empty()) {printf("myInputQ.size is ZERO ZERO\n");exit(0);}
+				pos2 = myInputQ.front();
+				myInputQ.pop_front();
+				printf("***pos2.path: [");
+				for (auto it = pos2.path.begin();  it != pos2.path.end(); it++) {
+					printf("%c", *it);
+				} printf("]\n");
+				//if (pos2.path.size() == 0) { printf("po2.path.size() is ZERO -- loop again\n"); MOVE = 0; //goto again; }
+				myInput = pos2.path.front();
+				//pos2.path.pop_front();
+				//if ((int)pos2.path.size() > 0) { myInputQ.push_front(pos2); }
+
+				//printf("pos2.path.size() now %d\n", (int)pos2.path.size());
+				//myInput = reverseInput(myInput);
+			}
+			switch (myInput) {
+				case('1'): yCur--; break;
+				case('2'): yCur++; break;
+				case('3'): xCur--; break;
+				case('4'): xCur++; break;
+			}
+
+			printf("myInput is [%c]\n", myInput); printf("%d,%d \n", xCur, yCur);// getchar();
+                        if (inst[i] > 200) {
+				input[inputCounter] = (long long)(myInput - 48);	
+				inst[relativeBase[machineNumber]+inst[i+1]] = input[inputCounter];
+			} else {
+				input[inputCounter] = (long long)(myInput - 48);
 				inst[inst[i+1]] = input[inputCounter];
 			}
 			if (inputCounter != 1) {
 				inputCounter++;
 			}
-			i++;
+			i++; printf("leaving 3 (input)...\n"); fflush(stdout);
+			printit(); getchar();
 		} else if (myINST == 4) {
+			printf("here5...\n"); fflush(stdout);
                         {printf("got a 4 look@ %lld contains %lld\n", inst[i+1], inst[inst[i+1]]); fflush(stdout);}
-			getchar();
 #ifdef _DEBUG_
 #endif
+			//OUT 0 == Wall 1 == OK 2==OX
+			long long OUT;
                         if (inst[i] > 200) {
 				input[1] = inst[relativeBase[machineNumber]+inst[i+1]];
 				if (one == 0) {
@@ -185,6 +334,8 @@ int machine(int machineNumber, int one) {
 				} else if (one == 1) {
 	                                output[(machineNumber)%5] = inst[relativeBase[machineNumber]+inst[i+1]]; 
 				}
+				OUT =  inst[relativeBase[machineNumber]+inst[i+1]];
+
                                 printf("REL OUT: %lld (base: %lld+%lld)\n", inst[relativeBase[machineNumber]+inst[i+1]],
 					relativeBase[machineNumber], inst[i+1]);
 #ifdef _DEBUG_
@@ -200,6 +351,7 @@ int machine(int machineNumber, int one) {
 				} else if (one == 1) {
 	                                output[(machineNumber)%5] = inst[i+1]; 
 				}
+				OUT = inst[i+1];
                         } else {
                                 printf("OUT: %lld\n", inst[inst[i+1]]); 
 #ifdef _DEBUG_
@@ -211,12 +363,35 @@ int machine(int machineNumber, int one) {
 				} else if (one == 1) {
 	                                output[(machineNumber)%5] = inst[inst[i+1]]; 
 				}
+				OUT = inst[inst[i+1]];
                         }
-			if (one == 0) {
-				printf("conor OUT: %lld\n", output[(machineNumber+1) % 5]);
-			} else {
-				printf("conor OUT: %lld\n", output[(machineNumber) % 5]);
+			struct pos_s pos1;
+
+			switch(OUT) {
+				case (0): {
+						printf("got a 0: ZERO (wall)\n");
+						grid[yCur][xCur] = '#';
+						yCur = yPrev; xCur = xPrev;
+						myBack.pop_front();
+						MOVE = 0;
+						break;
+					}
+				case (1): {
+						grid[yCur][xCur] = '.';
+						MOVE = 0;
+						break;
+					}
+				case (2):
+					{
+						grid[yCur][xCur] = '.';
+						MOVE = 0;
+						OXX = xCur;
+						OXY = yCur;
+						printf("found OXEGEN at %d,%d\n", xCur, yCur); getchar(); getchar();// exit(0);
+						break;
+					}
 			}
+
 			for (int i = 0; i < instTOT; i++) {
 				saveInst[machineNumber][i] = inst[i];
 			}
@@ -239,6 +414,7 @@ int machine(int machineNumber, int one) {
 #endif
 			finished[machineNumber] = 1;
 			
+			printit();
 			if (one == 1) {exit(0);}
 			if (machineNumber == 4) {return 33;} else if (machineNumber == 0 && one == 1) {return 33;} else {return 22;}
 		} else { 
@@ -254,18 +430,26 @@ int machine(int machineNumber, int one) {
 			} else {
 				mypos = inst[i+3];
 			}
+			if (tmp2[2] != '0') {
+				printf("tmp2... not zero... [[ %s ]]\n", tmp2); getchar(); getchar(); exit(0);
+			}
 			tmp2[4] = '\0';
-			if (tmp2[3] == '7') {printf("got a seven...\n"); fflush(stdout);}
 #ifdef _DEBUG_
 			printf("NOW: %s\n", tmp2); 
 #endif
 			long long val1, val2, ans;
-			if (tmp2[1] == '0') {printf("val1 issue again\n"); fflush(stdout); val1 = inst[inst[i+1]]; printf("after\n"); fflush(stdout);
+			
+			if (tmp2[1] == '0') {
+
+val1 = inst[inst[i+1]]; 
 #ifdef _DEBUG_
 			printf("(pos0) val1 %lld\n", inst[inst[i+1]]);
 #endif
 }
-			else if (tmp2[1] == '1') {val1 = inst[i+1];
+			else if (tmp2[1] == '1') {
+
+
+val1 = inst[i+1];
 #ifdef _DEBUG_
 			printf("(Npos1) val1 %lld\n", val1);
 #endif
@@ -291,7 +475,9 @@ int machine(int machineNumber, int one) {
 					printf("(Rpos2) val2 %lld\n", val2);
 #endif
 				} else { printf("HERE2"); getchar(); val2 = inst[i+2];}
-	                }
+	                } else {
+				printf("GOT A NINE\n"); getchar();
+			}
 	
 			if (myINST == 2) {
 #ifdef _DEBUG_
@@ -332,7 +518,6 @@ int machine(int machineNumber, int one) {
 #endif
 					 err = 1;}
 			} else if (myINST == 7) {
-				printf("			got a 7...\n");
 				if (val1 < val2) {ans = 1;} else {ans = 0;}
 #ifdef _DEBUG_
 				printf("%lld <<<<< %lld\n", val1, val2); 
@@ -343,14 +528,12 @@ int machine(int machineNumber, int one) {
 				printf("%lld ===== %lld\n", val1, val2); 
 #endif
 			} else if (myINST == 9) {
-				printf("you got a 9...\n"); getchar();
 				relativeBase[machineNumber] += val1;
 #ifdef _DEBUG_
 				printf("relativeBase Change (+%lld) -> %lld\n", val1, relativeBase[machineNumber]); 
 #endif
 				err = 11;
 			} else {
-				printf("UNK: myINST: %d\n", myINST);
 				printf("UNK: **ERROR: instruction[i][3] (%d) [%c%c]\n", i, instruction[i][2], instruction[i][3]); exit(0);
 				err = 10;
 				getchar();
@@ -376,4 +559,16 @@ int machine(int machineNumber, int one) {
 	//if (output > outputMAX) {outputMAX = output; phaseMAX[0] = phase[0]; phaseMAX[1] = phase[1]; phaseMAX[2] = phase[2]; phaseMAX[3] = phase[3]; phaseMAX[4] = phase[4];}
 	//printf("output: %lld\n", output);
 	return 10;
+}
+void printit() {
+			for (int y = 0; y < SZ+2; y++) { 
+				for (int x = 0; x<SZ+2; x++) {
+					if (x == xCur && y == yCur) {
+						printf("D");
+					} else {
+						printf("%c", grid[y][x]);
+					}
+				} 
+				printf("\n");
+			} printf("\n");
 }

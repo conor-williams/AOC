@@ -8,13 +8,14 @@ using namespace std;
 
 int lenx, leny;
 #define DAY "2019 day7 part1\n"
-#define _DEBUG_
+#undef _DEBUG_
 #define MAX 2000
 int instTOT = 0;
 long long inst[MAX];
 long long instOrig[MAX];
 char instruction    [MAX][40];
 
+//map <int,<pair<int, int> mp;
 long long output[6] = {0};
 long long saveInst[6][1000] = {0};
 long long nextInst[6] = {0};
@@ -24,9 +25,20 @@ int finished[6] = {0};
 int inputCounters[6] = {0};
 int phase[] = {1,1,1,1,1,-1};
 int machine(int machineNumber, int one);
-
-long long myIns[] = {1, 1, 3, 1};
-int myInsPos = 0;
+#define SZ 10000
+struct sq_s {
+	int color;
+	int times;
+};
+int x11 = SZ/2;	
+int y11 = SZ/2;
+int miny11 = 99999;
+int maxy11 = 0;
+int minx11 = 99999;
+int maxx11 = 0;
+struct sq_s grid[SZ][SZ];
+int outForS = 0;
+int dir = 0;
 int main(int argc, char **argv)
 {
 
@@ -96,6 +108,7 @@ while(1) {
 		}
 	}
 
+	grid[y11][x11].color = 1;
 	sort(phase, phase+5);
 	long long outputMAX = 0; int phaseMAX[5] = {0};
 	do {	
@@ -130,6 +143,7 @@ printf("***OUTPUTMAX: %lld\n", outputMAX);
 	printf("PHASEMAX:\n"); for (int i = 0; i < 5; i++) { printf("%d ", phaseMAX[i]); } printf("\n"); //getchar();
 
 
+	unsigned long long tot = 0; for (int y = 0; y < SZ; y++) { for (int x = 0; x < SZ; x++) { if (grid[y][x].times >= 1) { tot++; } } } printf("***tot is %llu\n", tot);
 }
 
 
@@ -162,22 +176,23 @@ int machine(int machineNumber, int one) {
 #ifdef _DEBUG_
 			{printf("got a 3 (using %lld) -> [pos:%lld]\n", input[inputCounter], inst[i+1]);}
 #endif
-			input[inputCounter] = myIns[myInsPos++];
                         if (inst[i] > 200) {
-				inst[relativeBase[machineNumber]+inst[i+1]] = input[inputCounter];
+				///inst[relativeBase[machineNumber]+inst[i+1]] = input[inputCounter];
+				inst[relativeBase[machineNumber]+inst[i+1]] = grid[y11][x11].color;
 				printf("rel input...");
 			} else {
-				inst[inst[i+1]] = input[inputCounter];
+				///inst[inst[i+1]] = input[inputCounter];
+				inst[inst[i+1]] = grid[y11][x11].color;
 			}
 			if (inputCounter != 1) {
 				inputCounter++;
 			}
 			i++;
 		} else if (myINST == 4) {
-                        {printf("got a 4 look@ %lld contains %lld\n", inst[i+1], inst[inst[i+1]]); fflush(stdout);}
-			getchar();
 #ifdef _DEBUG_
+                        {printf("got a 4 look@ %lld contains %lld\n", inst[i+1], inst[inst[i+1]]); fflush(stdout);}
 #endif
+			int myOut;
                         if (inst[i] > 200) {
 				input[1] = inst[relativeBase[machineNumber]+inst[i+1]];
 				if (one == 0) {
@@ -187,8 +202,7 @@ int machine(int machineNumber, int one) {
 				}
                                 printf("REL OUT: %lld (base: %lld+%lld)\n", inst[relativeBase[machineNumber]+inst[i+1]],
 					relativeBase[machineNumber], inst[i+1]);
-#ifdef _DEBUG_
-#endif
+				myOut =  inst[relativeBase[machineNumber]+inst[i+1]];
                         } else if (inst[i] > 100) {
                                 printf("or is it OUT: %lld\n", inst[i+1]);
 #ifdef _DEBUG_
@@ -200,6 +214,7 @@ int machine(int machineNumber, int one) {
 				} else if (one == 1) {
 	                                output[(machineNumber)%5] = inst[i+1]; 
 				}
+				myOut = inst[i+1];
                         } else {
                                 printf("OUT: %lld\n", inst[inst[i+1]]); 
 #ifdef _DEBUG_
@@ -211,18 +226,49 @@ int machine(int machineNumber, int one) {
 				} else if (one == 1) {
 	                                output[(machineNumber)%5] = inst[inst[i+1]]; 
 				}
+				myOut = inst[inst[i+1]];
                         }
-			if (one == 0) {
-				printf("conor OUT: %lld\n", output[(machineNumber+1) % 5]);
-			} else {
-				printf("conor OUT: %lld\n", output[(machineNumber) % 5]);
-			}
 			for (int i = 0; i < instTOT; i++) {
 				saveInst[machineNumber][i] = inst[i];
 			}
 			nextInst[machineNumber] = i+2;
 			times[machineNumber]++;
 			inputCounters[machineNumber] = inputCounter;
+			if (outForS % 2 == 0) {
+				grid[y11][x11].color = myOut;
+				grid[y11][x11].times++;
+			} else if (outForS %2 == 1) {
+				int olddir;
+				if (myOut == 0) {
+					olddir = dir;
+					dir = (dir -1 + 4) %4;
+				} else if (myOut == 1) {
+					olddir = dir;
+					dir = (dir +1 + 4) %4;
+				}
+				if (olddir == 0 && dir == 1) {
+					x11++;
+				} else if (olddir == 0 && dir == 3) {
+					x11--;
+				} else if (olddir == 1 && dir == 2) {
+					y11++;
+				} else if (olddir == 1 && dir == 0) {
+					y11--;
+				} else if (olddir == 2 && dir == 3) {
+					x11--;
+				} else if (olddir == 2 && dir == 1) {
+					x11++;
+				} else if (olddir == 3 && dir == 0) {
+					y11--;
+				} else if (olddir == 3 && dir == 2) {
+					y11++;
+				}
+				if (x11 < minx11) {minx11 = x11;} 
+				if (x11 > maxx11) {maxx11 = x11;}
+				if (y11 < miny11) {miny11 = y11;}
+				if (y11 > maxy11) {maxy11 = y11;}
+			}
+			outForS++;
 			return 34;
                         //i++;
 		} else if (myINST == 99) {
@@ -239,7 +285,23 @@ int machine(int machineNumber, int one) {
 #endif
 			finished[machineNumber] = 1;
 			
-			if (one == 1) {exit(0);}
+			if (one == 1) {printf("here2..outForS: %d.\n", outForS);
+				unsigned long long tot = 0; for (int y = 0; y < SZ; y++) { for (int x = 0; x < SZ; x++) { if (grid[y][x].times >= 1) { tot++; } } } printf("***tot is %llu\n", tot);
+				printf("minx11, maxx11 %d %d, miny11,maxy11 %d,%d\n", minx11, maxx11, miny11, maxy11);
+			
+				for (int y = miny11-1; y <= maxy11+1; y++) {
+					for (int x = minx11-1; x<=maxx11+1; x++) {
+						if (grid[y][x].color == 1) {
+							printf("%d", grid[y][x].color); 
+						} else {
+							printf(" ");
+						}
+					}
+					printf("\n");
+				}
+				printf("\n");
+				exit(0);
+			}
 			if (machineNumber == 4) {return 33;} else if (machineNumber == 0 && one == 1) {return 33;} else {return 22;}
 		} else { 
 			int err = 0;
@@ -255,12 +317,11 @@ int machine(int machineNumber, int one) {
 				mypos = inst[i+3];
 			}
 			tmp2[4] = '\0';
-			if (tmp2[3] == '7') {printf("got a seven...\n"); fflush(stdout);}
 #ifdef _DEBUG_
 			printf("NOW: %s\n", tmp2); 
 #endif
 			long long val1, val2, ans;
-			if (tmp2[1] == '0') {printf("val1 issue again\n"); fflush(stdout); val1 = inst[inst[i+1]]; printf("after\n"); fflush(stdout);
+			if (tmp2[1] == '0') {val1 = inst[inst[i+1]]; 
 #ifdef _DEBUG_
 			printf("(pos0) val1 %lld\n", inst[inst[i+1]]);
 #endif
@@ -332,7 +393,6 @@ int machine(int machineNumber, int one) {
 #endif
 					 err = 1;}
 			} else if (myINST == 7) {
-				printf("			got a 7...\n");
 				if (val1 < val2) {ans = 1;} else {ans = 0;}
 #ifdef _DEBUG_
 				printf("%lld <<<<< %lld\n", val1, val2); 
@@ -343,14 +403,12 @@ int machine(int machineNumber, int one) {
 				printf("%lld ===== %lld\n", val1, val2); 
 #endif
 			} else if (myINST == 9) {
-				printf("you got a 9...\n"); getchar();
 				relativeBase[machineNumber] += val1;
 #ifdef _DEBUG_
 				printf("relativeBase Change (+%lld) -> %lld\n", val1, relativeBase[machineNumber]); 
 #endif
 				err = 11;
 			} else {
-				printf("UNK: myINST: %d\n", myINST);
 				printf("UNK: **ERROR: instruction[i][3] (%d) [%c%c]\n", i, instruction[i][2], instruction[i][3]); exit(0);
 				err = 10;
 				getchar();

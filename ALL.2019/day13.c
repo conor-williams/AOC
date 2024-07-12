@@ -6,17 +6,19 @@
 #include <algorithm>
 using namespace std;
 
+#define SIZE 9000
 int lenx, leny;
-#define DAY "2019 day7 part1\n"
-#define _DEBUG_
-#define MAX 2000
+#define DAY "2019 day13 part1\n"
+#undef _DEBUG_
+#define MAX 4000
 int instTOT = 0;
 long long inst[MAX];
 long long instOrig[MAX];
 char instruction    [MAX][40];
-
+int day13outs[MAX];
+int day13outsPos = 0;
 long long output[6] = {0};
-long long saveInst[6][1000] = {0};
+long long saveInst[6][MAX] = {0};
 long long nextInst[6] = {0};
 long long relativeBase[6] = {0};
 int times[6] = {0};
@@ -25,8 +27,10 @@ int inputCounters[6] = {0};
 int phase[] = {1,1,1,1,1,-1};
 int machine(int machineNumber, int one);
 
-long long myIns[] = {1, 1, 3, 1};
-int myInsPos = 0;
+#define GR 2000
+int grid[GR][GR];
+int myx = GR/2;
+int myy = GR/2;
 int main(int argc, char **argv)
 {
 
@@ -35,15 +39,20 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
-        char line1[3000];
+        char line1[SIZE];
 	for (int i = 0 ; i < MAX; i++) {
 		inst[i] = 0;
 	}
 
+	for (int y = 0; y < GR; y++) {
+		for (int x = 0; x < GR; x++) {
+			grid[y][x] = -1;
+		}
+	}
 	int newStart = 0;
 	int pos = 0;
 while(1) {
-        fgets(line1, 2990, a);
+        fgets(line1, SIZE-1, a);
         if (feof(a)) break;
 	line1[strlen(line1) -1]='\0';
 	lenx = strlen(line1);
@@ -95,7 +104,6 @@ while(1) {
 			saveInst[j][i] = inst[i];
 		}
 	}
-
 	sort(phase, phase+5);
 	long long outputMAX = 0; int phaseMAX[5] = {0};
 	do {	
@@ -162,7 +170,6 @@ int machine(int machineNumber, int one) {
 #ifdef _DEBUG_
 			{printf("got a 3 (using %lld) -> [pos:%lld]\n", input[inputCounter], inst[i+1]);}
 #endif
-			input[inputCounter] = myIns[myInsPos++];
                         if (inst[i] > 200) {
 				inst[relativeBase[machineNumber]+inst[i+1]] = input[inputCounter];
 				printf("rel input...");
@@ -174,10 +181,10 @@ int machine(int machineNumber, int one) {
 			}
 			i++;
 		} else if (myINST == 4) {
-                        {printf("got a 4 look@ %lld contains %lld\n", inst[i+1], inst[inst[i+1]]); fflush(stdout);}
-			getchar();
 #ifdef _DEBUG_
+                        {printf("got a 4 look@ %lld contains %lld\n", inst[i+1], inst[inst[i+1]]); fflush(stdout);}
 #endif
+			
                         if (inst[i] > 200) {
 				input[1] = inst[relativeBase[machineNumber]+inst[i+1]];
 				if (one == 0) {
@@ -187,6 +194,7 @@ int machine(int machineNumber, int one) {
 				}
                                 printf("REL OUT: %lld (base: %lld+%lld)\n", inst[relativeBase[machineNumber]+inst[i+1]],
 					relativeBase[machineNumber], inst[i+1]);
+					day13outs[day13outsPos++] = inst[relativeBase[machineNumber]+inst[i+1]];
 #ifdef _DEBUG_
 #endif
                         } else if (inst[i] > 100) {
@@ -200,6 +208,7 @@ int machine(int machineNumber, int one) {
 				} else if (one == 1) {
 	                                output[(machineNumber)%5] = inst[i+1]; 
 				}
+				day13outs[day13outsPos++] = inst[i+1];
                         } else {
                                 printf("OUT: %lld\n", inst[inst[i+1]]); 
 #ifdef _DEBUG_
@@ -211,12 +220,8 @@ int machine(int machineNumber, int one) {
 				} else if (one == 1) {
 	                                output[(machineNumber)%5] = inst[inst[i+1]]; 
 				}
+				day13outs[day13outsPos++] = inst[inst[i+1]];
                         }
-			if (one == 0) {
-				printf("conor OUT: %lld\n", output[(machineNumber+1) % 5]);
-			} else {
-				printf("conor OUT: %lld\n", output[(machineNumber) % 5]);
-			}
 			for (int i = 0; i < instTOT; i++) {
 				saveInst[machineNumber][i] = inst[i];
 			}
@@ -239,7 +244,23 @@ int machine(int machineNumber, int one) {
 #endif
 			finished[machineNumber] = 1;
 			
-			if (one == 1) {exit(0);}
+			if (one == 1) {
+				printf("day13outsPos is %d\n", day13outsPos);
+
+				for (int i = 0; i < day13outsPos; i+=3) {
+					grid[GR/2+day13outs[i+1]][GR/2+day13outs[i]] = day13outs[i+2];
+				}
+				int tot = 0;
+				for (int y = 0; y < GR; y++) {
+					for (int x = 0; x < GR; x++) {
+						if (grid[y][x] == 2) {
+							tot++;
+						}
+					}
+				}
+				printf("**ans %d\n", tot);
+
+exit(0);}
 			if (machineNumber == 4) {return 33;} else if (machineNumber == 0 && one == 1) {return 33;} else {return 22;}
 		} else { 
 			int err = 0;
@@ -255,12 +276,11 @@ int machine(int machineNumber, int one) {
 				mypos = inst[i+3];
 			}
 			tmp2[4] = '\0';
-			if (tmp2[3] == '7') {printf("got a seven...\n"); fflush(stdout);}
 #ifdef _DEBUG_
 			printf("NOW: %s\n", tmp2); 
 #endif
 			long long val1, val2, ans;
-			if (tmp2[1] == '0') {printf("val1 issue again\n"); fflush(stdout); val1 = inst[inst[i+1]]; printf("after\n"); fflush(stdout);
+			if (tmp2[1] == '0') {val1 = inst[inst[i+1]]; 
 #ifdef _DEBUG_
 			printf("(pos0) val1 %lld\n", inst[inst[i+1]]);
 #endif
@@ -332,7 +352,6 @@ int machine(int machineNumber, int one) {
 #endif
 					 err = 1;}
 			} else if (myINST == 7) {
-				printf("			got a 7...\n");
 				if (val1 < val2) {ans = 1;} else {ans = 0;}
 #ifdef _DEBUG_
 				printf("%lld <<<<< %lld\n", val1, val2); 
@@ -343,14 +362,12 @@ int machine(int machineNumber, int one) {
 				printf("%lld ===== %lld\n", val1, val2); 
 #endif
 			} else if (myINST == 9) {
-				printf("you got a 9...\n"); getchar();
 				relativeBase[machineNumber] += val1;
 #ifdef _DEBUG_
 				printf("relativeBase Change (+%lld) -> %lld\n", val1, relativeBase[machineNumber]); 
 #endif
 				err = 11;
 			} else {
-				printf("UNK: myINST: %d\n", myINST);
 				printf("UNK: **ERROR: instruction[i][3] (%d) [%c%c]\n", i, instruction[i][2], instruction[i][3]); exit(0);
 				err = 10;
 				getchar();
