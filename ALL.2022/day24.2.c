@@ -26,7 +26,7 @@ FILE *a;
 #define getchar()
 int minPath = 99999;
 int minminPath = 99999;
-int dep = 90;
+int dep = 750;
 int hide = 0;
 int fd;
 //void sigfunc(int a) { if (count123 % 2 == 0) {dup2(fd,1);}if (hide==1) {dup2(fd, 1);} printf("[[ %s %d]]\n", "signal hand..\n", minPath); if (hide==1) {fd=dup(1); close(1);} }
@@ -40,7 +40,7 @@ struct al_s already[120][120];
 
 #define SX 105
 char grid[SX][SX];
-int gridNum[100][SX][SX];
+int gridNum[1000][SX][SX];
 int gridNumInter[SX][SX];
 //int already[SX][SX] = {0};
 int leny = 0;
