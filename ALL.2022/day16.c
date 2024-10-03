@@ -40,8 +40,8 @@ map <string, deque<string>> mpPrv;
 map <deque<string>, int> QMap;
 void doit(deque <string> Q1, map <string, int> mp123, map <string, tuple <int, deque<string>>> mp);
 void next(string abcd, string just);
-//#define getchar()
-void fourfour(vector <string>valvsElse2, int totMinute, int path, vector<string>valvs123);
+#define getchar()
+void fourfour(vector <string>valvsElse2, int totMinute, int path, string v);
 
 void TimerStop(int signum);
 void TimerSet(int interval);
@@ -141,7 +141,7 @@ fclose(a);
 	cout << endl << "Building Matrix-----------" << endl;
 	for (auto it1 = mp.begin(); it1 != mp.end(); it1++) {
 		for (auto it2 = mp.begin(); it2 != mp.end(); it2++) {
-			if (it1 == it2) {continue;}
+			if (it1->first == it2->first) {continue;}
 			minPath = 99999;
 			//cout << it1->first << " -> " << it2->first << " " << "Trying" << endl;
 			tried.clear();
@@ -173,8 +173,15 @@ fclose(a);
 	
 	//int end1 = vecSize;
 	//int end1 = vecSize <10 ? vecSize: ;
-	int end1 = 7;
-	int start = 7;
+	printf("vecSize %d\n", vecSize);
+	int end1; int start;
+	if (ex1 == 1) {
+		start = 2;
+		end1 = 2;
+	} else {
+		start = 7;
+		end1 = 7;
+	}
 	
 	printf("start:%d\nn", start);
 //	maxPath = 0;
@@ -195,22 +202,38 @@ fclose(a);
 					valvsElse.push_back(valvs[i]);
 				}
 			}
-			//assert((int)valvsElse.size() == 4);
+			if (ex1 == 1) {
+				assert((int)valvsTmp.size() == 2);
+				assert((int)valvsElse.size() == 4);
+			} else if (ex1 == 0) {
+				assert((int)valvsTmp.size() == 7);
+				assert((int)valvsElse.size() == 8);
+			}
+				
 			sort(valvsTmp.begin(), valvsTmp.end());
+			string lastvt;
+			int path;
+			int totMinute;
 			do {
-				int totMinute = matrix["AA"][valvsTmp[0]];
-				int path = (30-totMinute)*mpRate[valvsTmp[0]];
+				totMinute = matrix["AA"][valvsTmp[0]];
+				if (totMinute > 30) {goto ag5;}
+				path = (30-totMinute)*mpRate[valvsTmp[0]];
+				if (path > maxPath) {maxPath = path;}
 				for (int i = 1; i < (int)valvsTmp.size(); i++) {
+					int tm = totMinute;
 					totMinute += matrix[valvsTmp[i-1]][valvsTmp[i]];
-					if (totMinute > 30) { goto ag5; }
+					//if (totMinute > 30) {printf("here1");totMinute = tm; lastvt = valvsTmp[i-1];goto ag5; }
+					if (totMinute > 30) {totMinute = tm; lastvt = valvsTmp[i-1]; goto ag5; }
 					path += (30-totMinute)*mpRate[valvsTmp[i]];
+					lastvt = valvsTmp[i];
 					//if (i == 1) { //cout << valvsTmp[0] << " " << valvsTmp[1] << " path: " << path << " totMinute: " << totMinute << endl; }
+					if (path > maxPath) {maxPath = path;}
 				}
 				count1++;
 				//for (auto elem: valvsTmp) {cout << elem << " ";} cout << "--- ";
 				sort(valvsElse.begin(), valvsElse.end());
-				//fourfour(valvsElse, totMinute, path, valvsTmp);
-				if (path > maxPath) {maxPath = path;}
+				fourfour(valvsElse, totMinute, path, lastvt);
+				//if (path > maxPath) {maxPath = path;}
 ag5:
 				continue;
 			} while (next_permutation(valvsTmp.begin(), valvsTmp.end()));
@@ -224,22 +247,26 @@ ag5:
 	cout << "maxPath: " << maxPath << endl;
 }
 
-void fourfour(vector <string>valvsElse2, int totMinutePrv, int pathPrv, vector<string> valvs123) {
+void fourfour(vector <string>valvsElse2, int totMinutePrv, int pathPrv, string valvsLast) {
 	//for (auto elem: valvsElse2) {cout << elem << " ";} cout << endl;
 	//cout << "in four four" << endl;
 	vector <string> valvsTmp222;
 	vector <string> valvsElse222;
 	vector <string> valvsWin;
 	int X = (int)valvsElse2.size();
-	int maxthisrun = 0;
-	//assert((int)X == 4);
-	X = 8;
-	//for (int N = X/2; N <= X/2; N++) 
-	sort(valvsElse2.begin(), valvsElse2.end());
+	if (ex1 == 1) {
+		assert(X == 4);
+	} else {	
+		assert(X == 8);
+	}
+	//sort(valvsElse2.begin(), valvsElse2.end());
 	for (int N = X/2; N <= X/2; N++) {
-		string bitmask(X-N, 0);
-		bitmask.resize(X, 1);
-		//assert(bitmask.size() == 4);
+		string bitmask(X-N, 0); bitmask.resize(X, 1);
+		if (ex1 == 1) {
+			assert(N==2);
+		} else {
+			assert(N==4);
+		}
 		do {
 			valvsTmp222.clear();
 			valvsElse222.clear();
@@ -251,45 +278,57 @@ void fourfour(vector <string>valvsElse2, int totMinutePrv, int pathPrv, vector<s
 					valvsElse222.push_back(valvsElse2[i]);
 				}
 			}
-			//assert((int)valvsTmp222.size() == 2);
-			//printf("valvsElse222: %d\n", (int)valvsElse222.size());
-			//assert((int)valvsElse222.size() == 2);
+			if (ex1 == 1) {
+				assert((int)valvsTmp222.size() == 2);
+				assert((int)valvsElse222.size() == 2);
+				assert((int)bitmask.size() == 4);
+			} else {
+				assert((int)valvsTmp222.size() == 4);
+				assert((int)valvsElse222.size() == 4);
+				assert((int)bitmask.length() == 8);
+			}
 
-			sort(valvsTmp222.begin(), valvsTmp222.end());
-			//assert(valvsTmp222 == valvsElse2);
+			//sort(valvsTmp222.begin(), valvsTmp222.end());
 
 			int path2;
 			int totMinute2;
+			int totMinute; int path;
+			string lastElse222;
 			do {
-				//for (auto elem: valvsTmp222) {cout << elem << " ";}cout << endl;
-				int totMinute = totMinutePrv + matrix[valvs123.back()][valvsTmp222[0]];
-				int path = pathPrv + (30-totMinute)*mpRate[valvsTmp222[0]];
-
+				totMinute = totMinutePrv + matrix[valvsLast][valvsTmp222[0]];
+				if (totMinute > 30) {goto ag6;}
+				path = pathPrv + (30-totMinute)*mpRate[valvsTmp222[0]];
+				if (path > maxPath) {maxPath = path;}
 				for (int i = 1; i < (int)valvsTmp222.size(); i++) {
+					int tm = totMinute;
 					totMinute += matrix[valvsTmp222[i-1]][valvsTmp222[i]];
 					if (totMinute > 30) {
+						totMinute = tm;
+						lastElse222 = valvsTmp222[i-1];
 						goto ag6;
+					} else {
+						lastElse222 = valvsTmp222[i];
 					}
 					path += (30-totMinute)*mpRate[valvsTmp222[i]];
+					if (path > maxPath) {maxPath = path;}
 				}
-				//if (path == 1651) {printf("1651 found\n"); getchar();}
-				//if (path > maxPath) {/*valvsWin = valvsTmp222; */maxPath = path;}
-				//if (path > maxthisrun) {valvsWin = valvsTmp222; maxthisrun = path;}
 
 				sort(valvsElse222.begin(), valvsElse222.end());
-				path2 = path;
-				totMinute2 = totMinute;
+				path2 = path; totMinute2 = totMinute;
 				do {
-					path = path2; totMinute = totMinute2;
-					totMinute = totMinute + matrix[valvsTmp222.back()][valvsElse222[0]];
+					//path = path2; totMinute = totMinute2;
+					//totMinute = totMinute2 + matrix[valvsTmp222.back()][valvsElse222[0]];
+					//path = path2 + (30-totMinute)*mpRate[valvsElse222[0]];
+					totMinute = totMinute2 + matrix[lastElse222][valvsElse222[0]];
+					if (totMinute > 30) {goto ag7;}
 					path = path2 + (30-totMinute)*mpRate[valvsElse222[0]];
+					if (path > maxPath) {maxPath = path;}
 					
 					for (int i = 1; i < (int)valvsElse222.size(); i++) {
 						totMinute += matrix[valvsElse222[i-1]][valvsElse222[i]];
-						if (totMinute > 30) {
-							goto ag7;
-						}
+						if (totMinute > 30) {goto ag7;}
 						path += (30-totMinute)*mpRate[valvsElse222[i]];
+						if (path > maxPath) {maxPath = path;}
 					}
 					if (path > maxPath) {maxPath = path;}
 ag7:
@@ -300,9 +339,6 @@ ag6:
 			} while (next_permutation(valvsTmp222.begin(), valvsTmp222.end()));
 		} while (next_permutation(bitmask.begin(), bitmask.end()));
 	}
-	//cout << "maxthisrun" << maxthisrun << endl;
-	//cout << "ValvsWin: "; for (auto elem: valvsWin) {cout << elem << " ";}cout << endl;
-	//cout << valvs123[0] << " " << valvs123[1] << " path: " << pathPrv << " totMinute: " << totMinutePrv << endl; 
 }
 void threadittask(int thnum) {
 	printf("kicking off %d\n", thnum);
