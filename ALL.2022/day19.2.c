@@ -38,10 +38,10 @@ void sigfunc(int a) { printf("CUR[%s] CUR1[%s] maxGeode: [%d] currentN: %d (%d)m
 //int have[5] = {0};
 	int have[5] = {0};
 	int produce[5] = {0};
-	deque<string> COM[24];
-	int minuteOrig[24] = {0};
-	int haveOrig[24][5];
-	int produceOrig[24][5];
+	deque<string> COM[32];
+	int minuteOrig[32] = {0};
+	int haveOrig[32][5];
+	int produceOrig[32][5];
 int minute;
 int havePOT[5] = {0};
 //int produce[5] = {0};
@@ -49,8 +49,8 @@ void doit(int mO, char * stritIn, int n, int *, int *);
 
 //#define TWELVELEN 11
 
-set <string> refset[24];
-deque<string> combos[24];
+set <string> refset[32];
+deque<string> combos[32];
 
 struct blue_s {
 	int num;
@@ -69,7 +69,7 @@ void recur(int pos, int n);
 
 char line1[LINE];
 char line2[LINE];
-//Blueprint 1: Each ore robot costs 2 ore. Each clay robot costs 2 ore. Each obsidian robot costs 2 ore and 24 clay. Each geode robot costs 2 ore and 14 obsidian.
+//Blueprint 1: Each ore robot costs 2 ore. Each clay robot costs 2 ore. Each obsidian robot costs 2 ore and 32 clay. Each geode robot costs 2 ore and 14 obsidian.
 int main(int argc, char **argv)
 {
 
@@ -78,7 +78,7 @@ int main(int argc, char **argv)
 	memset(blue, '0', sizeof(blue));
 	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-	a = fopen(argv[1], "r"); printf("2421 Day 18 - part 1\n"); fflush(stdout);
+	a = fopen(argv[1], "r"); printf("3221 Day 18 - part 1\n"); fflush(stdout);
 	int leny = 0;
 	while (1) {
 		fgets(line1, LINE-1, a);
@@ -122,12 +122,12 @@ int main(int argc, char **argv)
 	}
 
 	printf("Using initial MAINSTR (length)(%d)\n", MAINSTR);
-	//int E = leny >= 3 ? 3 : leny;
+	int E = leny >= 3 ? 3 : leny;
 	long long mul = 1;
-	for (int i = 0; i < 24; i++) {
+	for (int i = 0; i < 32; i++) {
 		COM[i] = combos[COMBOSLEN];
 	}
-	for (int n = 0; n < /*E*/leny; n++) {
+	for (int n = 0; n < E; n++) {
 		currentN = n; maxGeode = 0; strcpy(maxCombo, "");
 
 
@@ -136,10 +136,10 @@ int main(int argc, char **argv)
 		}
 		qualTot += (n+1)*maxGeode;
 		printf("maxes (n:%d): (%d) maxCombo [%s] qualTot: %lld\n", n, maxGeode, maxCombo, qualTot);
-		//mul *= maxGeode;
+		mul *= maxGeode;
 	}
 	//printf("**ans is[[[qualTot:[[ %lld ]]]]] (maxmaxGeode:%d) maxPosition:: %d\n", qualTot, maxmaxGeode, maxPosition);
-	//printf("**ans (mulof3) is %lld\n", mul);
+	printf("**ans (mulof3) is %lld\n", mul);
 
 }
 
@@ -227,17 +227,17 @@ inline void botit(char str[], int n, int END) {
 }
 
 void recur(int pos, int n) {
-	if (pos > 24) {perror("too deep\n"); exit(0);}
+	if (pos > 32) {perror("too deep\n"); exit(0);}
 	for (auto dd1 = COM[pos].begin(); dd1 != COM[pos].end(); dd1++) {
 		doit(minuteOrig[pos-1]+1, (char *) (*dd1).c_str(), n, haveOrig[pos-1], produceOrig[pos-1]);
-		if (minute >= 24) {continue;}
+		if (minute >= 32) {continue;}
 		haveOrig[pos][ORE] = have[ORE]; haveOrig[pos][CLAY] = have[CLAY];
 		haveOrig[pos][OBSIDIAN] = have[OBSIDIAN]; haveOrig[pos][GEODE] = have[GEODE];
 		produceOrig[pos][ORE] = produce[ORE]; produceOrig[pos][CLAY] = produce[CLAY];
 		produceOrig[pos][OBSIDIAN] = produce[OBSIDIAN]; produceOrig[pos][GEODE] = produce[GEODE];
 		minuteOrig[pos] = minute;
 		recur(pos+1, n);
-		//if (minute >= 24) {perror("out"); exit(0);}
+		//if (minute >= 32) {perror("out"); exit(0);}
 	}
 }
 
@@ -250,39 +250,44 @@ void doit(int minuteOrig, char * stritIn, int n, int haveSav[5], int produceSav[
 
 	produce[ORE] = produceSav[ORE]; produce[CLAY] = produceSav[CLAY];
 	produce[OBSIDIAN] = produceSav[OBSIDIAN]; produce[GEODE] = produceSav[GEODE];
+
 	int position = 0;
 	char toBe = strit[position];
 	int END = COMBOSLEN;
 
-	{
-		int haveCheck[5] = {0}, produceCheck[5] = {0}, havePOTCheck[5] = {0};
-		haveCheck[ORE] = haveSav[ORE]; haveCheck[CLAY] = haveSav[CLAY];
-		haveCheck[OBSIDIAN] = haveSav[OBSIDIAN]; haveCheck[GEODE] = haveSav[GEODE];
+	
+	int haveCheck[5] = {0}, produceCheck[5] = {0}, havePOTCheck[5] = {0};
+	haveCheck[ORE] = haveSav[ORE]; haveCheck[CLAY] = haveSav[CLAY];
+	haveCheck[OBSIDIAN] = haveSav[OBSIDIAN]; haveCheck[GEODE] = haveSav[GEODE];
 
-		produceCheck[ORE] = produceSav[ORE]; produceCheck[CLAY] = produceSav[CLAY];
-		produceCheck[OBSIDIAN] = produceSav[OBSIDIAN]; produceCheck[GEODE] = produceSav[GEODE];
+	produceCheck[ORE] = produceSav[ORE]; produceCheck[CLAY] = produceSav[CLAY];
+	produceCheck[OBSIDIAN] = produceSav[OBSIDIAN]; produceCheck[GEODE] = produceSav[GEODE];
 
-		int positionCheck = position;
-		int ENDCheck = 24;
-
-		for (int minuCheck=minuteOrig; minuCheck <= 24; minuCheck++) {
-			if (positionCheck < ENDCheck && minuCheck < 24) {
-				havePOTCheck[GEODE]++;
-				positionCheck++;
-			}
-			for (int i = 0; i < 4; i++) {//harvest
-				produceCheck[i] += haveCheck[i];
-			}
-			for (int i = 0; i < 4; i++) {//move the POT over to have
-				haveCheck[i] += havePOTCheck[i];
-				havePOTCheck[i] = 0;
-			}
+	int positionCheck = position;
+	int ENDCheck = 32;
+/**
+inline int calc_theoretical_max (const State& s) {
+  return s.resources.geodes + (s.time + 2 * s.geode_bots) * s.time / 2;
+}
+if (calc_theoretical_max(state) <= max_geodes) return;
+*/
+	for (int minuCheck=minuteOrig; minuCheck <= 32; minuCheck++) {
+		if (positionCheck < ENDCheck && minuCheck < 32) {
+			havePOTCheck[GEODE]++;
+			positionCheck++;
 		}
-		if (produceCheck[GEODE] <= maxGeode) {minute=25; return;}
+		for (int i = 0; i < 4; i++) {//harvest
+			produceCheck[i] += haveCheck[i]; 
+		}
+		for (int i = 0; i < 4; i++) {//move the POT over to have
+			haveCheck[i] += havePOTCheck[i];
+			havePOTCheck[i] = 0;
+		}
 	}
+	if (produceCheck[GEODE] <= maxGeode) {minute=33; return;}
 
-	for (minute=minuteOrig; minute <= 24; minute++) {
-		if (position < END && minute < 24) {
+	for (minute=minuteOrig; minute <= 32; minute++) {
+		if (position < END && minute < 32) {
 			switch(toBe) {
 				case '0': //ORE
 					if (produce[ORE] >= blue[n].costOreRobot[ORE]) {
@@ -345,7 +350,7 @@ void doit(int minuteOrig, char * stritIn, int n, int haveSav[5], int produceSav[
 		if (position == COMBOSLEN) {break;}
 	}
 	//if (produce[GEODE] == 9) {printf("%s\n", stritIn);}
-	if (produce[GEODE] > maxGeode) {maxGeode = produce[GEODE]; /*char m2[240]; maxPosition = position; sprintf(m2, "%s %s", stritOrig, strit); strcpy(maxCombo, m2);*/}
+	if (produce[GEODE] > maxGeode) {maxGeode = produce[GEODE]; /*char m2[320]; maxPosition = position; sprintf(m2, "%s %s", stritOrig, strit); strcpy(maxCombo, m2);*/}
 }
 
 
@@ -387,40 +392,40 @@ void doit(int minuteOrig, char * stritIn, int n, int haveSav[5], int produceSav[
 
 /*
 		for (auto dd2 = COM[2].begin(); dd2 != COM[2].end(); dd2++) {
-			doit(minuteOrig[1], (char *) ( *dd2).c_str(), n, haveOrig[1], produceOrig[1]); if (minute >= 24) {return;}
+			doit(minuteOrig[1], (char *) ( *dd2).c_str(), n, haveOrig[1], produceOrig[1]); if (minute >= 32) {return;}
 			haveOrig[2][ORE] = have[ORE]; haveOrig[2][CLAY] = have[CLAY]; haveOrig[2][OBSIDIAN] = have[OBSIDIAN]; haveOrig[2][GEODE] = have[GEODE];
 			produceOrig[2][ORE] = produce[ORE]; produceOrig[2][CLAY] = produce[CLAY]; produceOrig[2][OBSIDIAN] = produce[OBSIDIAN]; produceOrig[2][GEODE] = produce[GEODE];
 			minuteOrig[2] = minute;
 			for (auto dd3 = COM[3].begin(); dd3 != COM[3].end(); dd3++) {
-				doit(minuteOrig[2], (char *) ( *dd3).c_str(), n, haveOrig[2], produceOrig[2]); if (minute >= 24) {return;}
+				doit(minuteOrig[2], (char *) ( *dd3).c_str(), n, haveOrig[2], produceOrig[2]); if (minute >= 32) {return;}
 				haveOrig[3][ORE] = have[ORE]; haveOrig[3][CLAY] = have[CLAY]; haveOrig[3][OBSIDIAN] = have[OBSIDIAN]; haveOrig[3][GEODE] = have[GEODE];
 				produceOrig[3][ORE] = produce[ORE]; produceOrig[3][CLAY] = produce[CLAY]; produceOrig[3][OBSIDIAN] = produce[OBSIDIAN]; produceOrig[3][GEODE] = produce[GEODE];
 				minuteOrig[3] = minute;
 				for (auto dd4 = COM[4].begin(); dd4 != COM[4].end(); dd4++) {
-					doit(minuteOrig[3], (char *) ( *dd4).c_str(), n, haveOrig[3], produceOrig[3]); if (minute >= 24) {return;}
+					doit(minuteOrig[3], (char *) ( *dd4).c_str(), n, haveOrig[3], produceOrig[3]); if (minute >= 32) {return;}
 					haveOrig[4][ORE] = have[ORE]; haveOrig[4][CLAY] = have[CLAY]; haveOrig[4][OBSIDIAN] = have[OBSIDIAN]; haveOrig[4][GEODE] = have[GEODE];
 					produceOrig[4][ORE] = produce[ORE]; produceOrig[4][CLAY] = produce[CLAY]; produceOrig[4][OBSIDIAN] = produce[OBSIDIAN]; produceOrig[4][GEODE] = produce[GEODE];
 					minuteOrig[4] = minute;
 					for (auto dd5 = COM[5].begin(); dd5 != COM[5].end(); dd5++) {
-						doit(minuteOrig[4], (char *) ( *dd5).c_str(), n, haveOrig[4], produceOrig[4]); if (minute >= 24) {return;}
+						doit(minuteOrig[4], (char *) ( *dd5).c_str(), n, haveOrig[4], produceOrig[4]); if (minute >= 32) {return;}
 						haveOrig[5][ORE] = have[ORE]; haveOrig[5][CLAY] = have[CLAY]; haveOrig[5][OBSIDIAN] = have[OBSIDIAN]; haveOrig[5][GEODE] = have[GEODE]; 
 						produceOrig[5][ORE] = produce[ORE]; produceOrig[5][CLAY] = produce[CLAY]; produceOrig[5][OBSIDIAN] = produce[OBSIDIAN]; produceOrig[5][GEODE] = produce[GEODE];
 						minuteOrig[5] = minute;
 						for (auto dd6 = COM[6].begin(); dd6 != COM[6].end(); dd6++) {
-							doit(minuteOrig[5], (char *) ( *dd6).c_str(), n, haveOrig[5], produceOrig[5]); if (minute >= 24) {return;}
+							doit(minuteOrig[5], (char *) ( *dd6).c_str(), n, haveOrig[5], produceOrig[5]); if (minute >= 32) {return;}
 							haveOrig[6][ORE] = have[ORE]; haveOrig[6][CLAY] = have[CLAY]; haveOrig[6][OBSIDIAN] = have[OBSIDIAN]; haveOrig[6][GEODE] = have[GEODE];
 							produceOrig[6][ORE] = produce[ORE]; produceOrig[6][CLAY] = produce[CLAY]; produceOrig[6][OBSIDIAN] = produce[OBSIDIAN]; produceOrig[6][GEODE] = produce[GEODE];
 							minuteOrig[6] = minute;
 							for (auto dd7 = COM[7].begin(); dd7 != COM[7].end(); dd7++) {
-								doit(minuteOrig[6], (char *) ( *dd7).c_str(), n, haveOrig[6], produceOrig[6]); if (minute >= 24) {return;}
+								doit(minuteOrig[6], (char *) ( *dd7).c_str(), n, haveOrig[6], produceOrig[6]); if (minute >= 32) {return;}
 								haveOrig[7][ORE] = have[ORE]; haveOrig[7][CLAY] = have[CLAY]; haveOrig[7][OBSIDIAN] = have[OBSIDIAN]; haveOrig[7][GEODE] = have[GEODE];
 								produceOrig[7][ORE] = produce[ORE]; produceOrig[7][CLAY] = produce[CLAY]; produceOrig[7][OBSIDIAN] = produce[OBSIDIAN]; produceOrig[7][GEODE] = produce[GEODE];
 								minuteOrig[7] = minute;
 								for (auto dd8 = COM[8].begin(); dd8 != COM[8].end(); dd8++) {
 
-									doit(minuteOrig[7], (char *) ( *dd8).c_str(), n, haveOrig[7], produceOrig[7]); if (minute >= 24) {return;}
-									if (minute < 24) {perror("SMALL"); exit(0);}
-									if (minute >= 24) {perror("out"); exit(0);}
+									doit(minuteOrig[7], (char *) ( *dd8).c_str(), n, haveOrig[7], produceOrig[7]); if (minute >= 32) {return;}
+									if (minute < 32) {perror("SMALL"); exit(0);}
+									if (minute >= 32) {perror("out"); exit(0);}
 								}
 							}
 						}
