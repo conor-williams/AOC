@@ -24,8 +24,8 @@ int lenx;
 int leny;
 deque <string> de;
 //set <string> se;
-int TIMES = 25;
-int INCR = 25;
+int TIMES = 75;
+int INCR = 75;
 
 struct ans_s {
 	//unsigned long long length;
