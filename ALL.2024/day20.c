@@ -16,7 +16,7 @@ using namespace std;
 
 FILE *a;
 #define LINE 1000
-//#define getchar()
+#define getchar()
 void sigfunc(int a) { printf("[[ %s ]]\n", "signal hand..\n"); }
 int lenx;
 int leny;
@@ -138,14 +138,15 @@ int next(int x, int y, int ex, int ey, int path, vector <pair<int, int>> ve) {
 	
 	if (already[y][x] == 0 || path < already[y][x]) {
 		already[y][x] = path;
-		vector <pair<int, int>> ve1 = ve; vector <pair<int, int>> ve2 = ve;
-		vector <pair<int, int>> ve3 = ve; vector <pair<int, int>> ve4 = ve;
-		ve1.push_back({x, y}); ve2.push_back({x, y});
-		ve3.push_back({x, y}); ve4.push_back({x, y});
-		if (22 == next(x, y-1, ex, ey, path+1, ve1)) {return 22;}
-		if (22 == next(x+1, y, ex, ey, path+1, ve2)) {return 22;}
-		if (22 == next(x, y+1, ex, ey, path+1, ve3)) {return 22;}
-		if (22 == next(x-1, y, ex, ey, path+1, ve4)) {return 22;}
+		ve.push_back({x,y});
+		//vector <pair<int, int>> ve1 = ve; vector <pair<int, int>> ve2 = ve;
+		//vector <pair<int, int>> ve3 = ve; vector <pair<int, int>> ve4 = ve;
+//		ve1.push_back({x, y}); ve2.push_back({x, y});
+//		ve3.push_back({x, y}); ve4.push_back({x, y});
+		if (22 == next(x, y-1, ex, ey, path+1, ve)) {return 22;}
+		if (22 == next(x+1, y, ex, ey, path+1, ve)) {return 22;}
+		if (22 == next(x, y+1, ex, ey, path+1, ve)) {return 22;}
+		if (22 == next(x-1, y, ex, ey, path+1, ve)) {return 22;}
 	}
 	return 56;
 }
