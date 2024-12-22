@@ -28,7 +28,7 @@ int already[142][142];
 
 int minPath;
 int minPathOrig = 9999999;
-int next(int x, int y, int ex, int ey, int path, vector <pair<int, int>>ve);
+int next(int x, int y, int ex, int ey, int path, vector <tuple<int, int, int>>ve);
 void nextNoVec(int x, int y, int ex, int ey, int path);
 void calcLen(tuple <int, int, int, int> bla);
 
@@ -39,6 +39,8 @@ int sx, sy, ex, ey;
 
 int noCheatMinPath = 0;
 map <tuple<int, int, int, int>, int> preComputedLens;
+map <pair<int, int>, int> distToStart;
+map <pair<int, int>, int> disttoend;
 set <tuple<int, int, int, int>> se4;
 set <tuple<int, int, int, int, int, int, int, int>> fourPoints;
 
@@ -159,7 +161,7 @@ int main(int argc, char **argv)
 after:
 	memset(already, 0, sizeof(already));
 	minPath = minPathOrig;
-	vector <pair<int, int>> ve;
+	vector <tuple<int, int, int>> ve;
 	next(sx, sy, ex, ey, 0, ve);
 	noCheatMinPath = minPath;	
 
@@ -179,7 +181,9 @@ after:
 
 		int abs_var = abs(fx1-tx1) + abs(fy1-ty1);
 
-		int pathLen2 = getPathLength({sx, sy, fx1, fy1}) + getPathLength({tx1, ty1, ex, ey}) + abs_var;
+		///int pathLen2 = getPathLength({sx, sy, fx1, fy1}) + getPathLength({tx1, ty1, ex, ey}) + abs_var;
+		int pathLen3 = distToStart[{fx1, fy1}] + abs_var + noCheatMinPath - distToStart[{tx1, ty1}];
+		//assert (pathLen2 == pathLen3);
 
 /*
 		if (fourPoints.find({sx, sy, fx1, fy1, tx1, ty1, ex, ey}) != fourPoints.end()) {
@@ -188,7 +192,7 @@ after:
 			fourPoints.insert({sx, sy, fx1, fy1, tx1, ty1, ex, ey});
 		}
 */
-		saveinsave(pathLen2);
+		saveinsave(pathLen3);
 	}
 	//printf("fourPoints.size() is %d\n", (int)fourPoints.size());
 
@@ -203,19 +207,20 @@ after:
 }
 
 
-int next(int x, int y, int ex, int ey, int path, vector <pair<int, int>> ve) {
+int next(int x, int y, int ex, int ey, int path, vector <tuple<int, int, int>> ve) {
 
 	if (x < 0 || y < 0 || x > lenx-1 || y > leny -1 || grid[y][x] == '#') {return 55;}
 
 	if (x == ex && y == ey) {
 		printf("path found %d\n", path);
-		if (path < minPath) {minPath = path; ve.push_back({x,y}); for (auto pa: ve) {se.insert(pa);} return 22;}
+		if (path < minPath) {minPath = path; ve.push_back({x,y, path}); for (auto pa: ve) {int x2 = get<0>(pa); int y2 = get<1>(pa);
+			int d1=get<2>(pa); pair <int, int> pa2; pa2.first = x2; pa2.second=y2; distToStart[{x2, y2}] = d1; se.insert(pa2);} return 22;}
 		return 22;
 	}
 
 	if (already[y][x] == 0 || path < already[y][x]) {
 		already[y][x] = path;
-		ve.push_back({x,y});
+		ve.push_back({x,y, path});
 		if (22 == next(x, y-1, ex, ey, path+1, ve)) {return 22;}
 		if (22 == next(x+1, y, ex, ey, path+1, ve)) {return 22;}
 		if (22 == next(x, y+1, ex, ey, path+1, ve)) {return 22;}
