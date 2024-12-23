@@ -10,14 +10,18 @@
 #include <set>
 #include <map>
 #include <algorithm>
+#include <deque>
+#include <unordered_set>
+#include <string>
+#include <iostream>
+#include <time.h>
 
-
-/* slow -- need some optims... */
+/* slowish (sort takes a while) -- need some optims... */
 /* compile with -Wl,--stack,999777666 */
 using namespace std;
 FILE *a;
 #define LINE 1000
-//#define getchar()
+#define getchar()
 void sigfunc(int a) { printf("[[ %s ]]\n", "signal hand..\n"); }
 int lenx;
 int leny;
@@ -28,38 +32,54 @@ int already[142][142];
 
 int minPath;
 int minPathOrig = 9999999;
-int next(int x, int y, int ex, int ey, int path, vector <tuple<int, int, int>>ve);
+int next(int x, int y, int ex, int ey, int path, deque <tuple<int, int, int>> de);
 void nextNoVec(int x, int y, int ex, int ey, int path);
 void calcLen(tuple <int, int, int, int> bla);
 
 void printit();
-set <pair<int, int>> se;
+deque <tuple<int, int, int>> deAns;
+//set <pair<int, int>> se;
 map <int, int> mp;
 int sx, sy, ex, ey;
-
+struct hash_function
+{
+	size_t operator()(const tuple<int , int , int, int>&x) const
+	{
+		return get<0>(x) ^ get<1>(x) ^ get<2>(x) ^ get<3>(x);
+	}
+	size_t operator-(const tuple<int , int , int, int>&x) const
+	{
+		return 1;
+	}
+};
 int noCheatMinPath = 0;
 map <tuple<int, int, int, int>, int> preComputedLens;
 map <pair<int, int>, int> distToStart;
 map <pair<int, int>, int> disttoend;
-set <tuple<int, int, int, int>> se4;
-set <tuple<int, int, int, int, int, int, int, int>> fourPoints;
+deque <tuple<int, int, int, int>> de4;
+set <tuple<int, int, int, int>, hash_function> de4_check;
+//map <tuple<int, int, int, int>, int> dupMap;
+//set <tuple<int, int, int, int>> se4;
+//set <tuple<int, int, int, int, int, int, int, int>> fourPoints;
 
 int gcount = 0;
 
 void generateAllCheatPaths();
 void generateAllCheatPaths() {
+	printf("Generating all Cheat Paths...\n");
 	int ii = 0;
-	for (auto se1: se) {
+	for (auto se1: deAns) {
 		ii++;
-		int x2 = se1.first; int y2 = se1.second;
-		if (ii % 1000 == 0) {
-			printf("(%d of %d) checking circle around: %d,%d\n", ii, noCheatMinPath, x2, y2);
-		}
+		int x2 = get<0>(se1);
+		int y2 = get<1>(se1); 
+#ifdef _DEBUG_
+		if (ii % 1000 == 0) { printf("(%d of %d) checking circle around: %d,%d\n", ii, noCheatMinPath, x2, y2); }
+#endif
 		for (int end = 20; end >= 0; end--) {
 			for (int radiusY = end; radiusY >= 0; radiusY--) {
 				int radiusX = end - abs(radiusY);
 				{
-				//for (int radiusX = end; radiusX >= 0; radiusX--)  
+					//for (int radiusX = end; radiusX >= 0; radiusX--)  
 					if (abs(radiusX) + abs(radiusY) != end) {continue;}
 					int x1p = x2 + radiusX;
 					int x1n = x2 - radiusX;
@@ -67,17 +87,45 @@ void generateAllCheatPaths() {
 					int y1n = y2 - radiusY;
 					//top right quad
 					if (x1p >= 0 && x1p <= lenx-1 && y1n >= 0 && y1n <= leny-1 && grid[y1n][x1p] == '.') {
-						if (se4.find({x2, y2, x1p, y1n}) == se4.end()) {se4.insert({x2, y2, x1p, y1n});}
+						//tuple <int, int, int, int> tu11 = make_tuple(x2, y2, x1p, y1n);
+						/*
+						   if (se4.find({x2, y2, x1p, y1n}) == se4.end()) {
+						   se4.insert({x2, y2, x1p, y1n});
+						   {de4.push_back({x2, y2, x1p, y1n});}
+						   }
+						 */
+						{de4.push_back({x2, y2, x1p, y1n});}
 					}
 					if (x1p >= 0 && x1p <= lenx-1 && y1p >= 0 && y1p <= leny-1 && grid[y1p][x1p] == '.') {
-                                                if (se4.find({x2, y2, x1p, y1p}) == se4.end()) {se4.insert({x2, y2, x1p, y1p});}
+						//tuple <int, int, int, int> tu11 = make_tuple(x2, y2, x1p, y1p);
+						/*
+						   if (se4.find({x2, y2, x1p, y1p}) == se4.end()) {
+						   se4.insert({x2, y2, x1p, y1p});
+						   {de4.push_back({x2, y2, x1p, y1p});}
+						   }
+						 */
+						{de4.push_back({x2, y2, x1p, y1p});}
 					}
 					if (x1n >= 0 && x1n <= lenx-1 && y1p >= 0 && y1p <= leny-1 && grid[y1p][x1n] == '.') {
-                                                if (se4.find({x2, y2, x1n, y1p}) == se4.end()) {se4.insert({x2, y2, x1n, y1p});}
+						//tuple <int, int, int, int> tu11 = make_tuple(x2, y2, x1n, y1p);
+						/*
+						   if (se4.find({x2, y2, x1n, y1p}) == se4.end()) {
+						   se4.insert({x2, y2, x1n, y1p});
+						   {de4.push_back({x2, y2, x1n, y1p});}
+						   }
+						 */
+						{de4.push_back({x2, y2, x1n, y1p});}
+
 					}
 					if (x1n >= 0 && x1n <= lenx-1 && y1n >= 0 && y1n <= leny-1 && grid[y1n][x1n] == '.') {
-						//if (se.find({x1n, y1n}) == se.end()) {continue;}
-						if (se4.find({x2, y2, x1n, y1n}) == se4.end()) {se4.insert({x2, y2, x1n, y1n});}
+						//tuple <int, int, int, int> tu11 = make_tuple(x2, y2, x1n, y1n);
+						/*
+						   if (se4.find({x2, y2, x1n, y1n}) == se4.end()) {
+						   se4.insert({x2, y2, x1n, y1n});
+						   {de4.push_back({x2, y2, x1n, y1n});}
+						   }
+						 */
+						{de4.push_back({x2, y2, x1n, y1n});}
 					}
 				}
 			}
@@ -88,18 +136,23 @@ void generateAllCheatPaths() {
 void saveinsave(int pathLen) {
 	if (pathLen <= noCheatMinPath) {
 		int save = noCheatMinPath - pathLen;
-		if (save < 0) {	
-			printf("ERR(save)\n");
-		} else {
-			//if (mp[76] > 3) {printf("oh no...\n");getchar();}
-			mp[save]++;
-			if (save >= 100) {gcount++;}
+		mp[save]++;
+		if (save >= 100) {gcount++;}
+		/*
+		   if (save < 0) {	
+		   printf("ERR(save)\n");
+		   } else {
+		//if (mp[76] > 3) {printf("oh no...\n");getchar();}
+		mp[save]++;
+		if (save >= 100) {gcount++;}
 		}
+		 */
 	}
 }
 
 int getPathLength(tuple <int, int, int, int> bla);
 int getPathLength(tuple <int, int, int, int> bla) {
+	//dEPRECATED
 	int x1 = get<0>(bla);
 	int y1 = get<1>(bla);
 	int x2 = get<2>(bla);
@@ -108,6 +161,7 @@ int getPathLength(tuple <int, int, int, int> bla) {
 		int ans = preComputedLens[{x1, y1, x2, y2}];
 		return ans;
 	} else {
+		printf("never here...\n");
 		memset(already, 0, sizeof(already));
 		minPath = minPathOrig;
 		nextNoVec(x1, y1, x2, y2, 0);
@@ -138,8 +192,12 @@ int main(int argc, char **argv)
 		leny++;
 	}
 	fclose(a);
+	clock_t start, end;
+	double cpu_time_used;
 
 	lenx = strlen(grid[0]);
+{
+	start = clock();
 	int foundS = 0, foundE = 0;
 	for (int y = 0; y < leny; y++) {
 		for (int x = 0; x < lenx; x++) {
@@ -156,46 +214,81 @@ int main(int argc, char **argv)
 			}
 		}
 	}
-	assert(foundS == 1 && foundE == 1);
-
 after:
-	memset(already, 0, sizeof(already));
-	minPath = minPathOrig;
-	vector <tuple<int, int, int>> ve;
-	next(sx, sy, ex, ey, 0, ve);
-	noCheatMinPath = minPath;	
+	end = clock();
+	cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+	printf("	time finding start and end took: %f seconds\n", cpu_time_used);
+	//assert(foundS == 1 && foundE == 1);
+}
 
-	printf("se.size() %d\n", (int) se.size()); fflush(stdout);
+	{
+		start = clock();
+		memset(already, 0, sizeof(already));
+		minPath = minPathOrig;
+		deque <tuple<int, int, int>> de;
+		next(sx, sy, ex, ey, 0, de);
+		end = clock();
+		cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+		printf("	time finding minpath: %f seconds\n", cpu_time_used);
+		noCheatMinPath = minPath;	
+	}
+
+	printf("deAns.size() %d\n", (int) deAns.size()); fflush(stdout);
 	printf("noCheatMinPath %d\n", noCheatMinPath); fflush(stdout); 
 
-	generateAllCheatPaths();
+	{
+		start = clock();
+		generateAllCheatPaths();
+		end = clock();
+		cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+		printf("	time generating: %f seconds\n", cpu_time_used);
+	}
 
-	printf("se4.size is %d\n", (int) se4.size()); fflush(stdout); 
+	{//sort (quicker than using a set for no dups)
+		printf("calling sort (slow)(%d):\n", (int)de4.size());
+		start = clock();
+		sort(de4.begin(), de4.end());
+		end = clock();
+		cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+		printf("	time sorting: %f seconds\n", cpu_time_used);
+	}
+	{//unique (quicker than set)
+		printf("calling unique (%d):\n", (int)de4.size());
+		start = clock();
+		auto it = unique(de4.begin(), de4.end());
+		de4.resize(distance(de4.begin(), it));
+		end = clock();
+		cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+		printf("	time unique: %f seconds\n", cpu_time_used);
+	}
+
+	//printf("se4.size is %d\n", (int) se4.size()); fflush(stdout); 
+	printf("de4.size is %d\n", (int) de4.size()); fflush(stdout); 
 
 	int bb = 0;
-	int szse4 = (int)se4.size();
-	for (auto se5: se4) {
+#ifdef _DEBUG_
+	int szde4 = (int)de4.size();
+#endif
+	printf("Looping tru all cheats...\n");
+	start = clock();
+	for (auto tu5: de4) {
 		bb++;
-		int fx1 = get<0>(se5); int fy1 = get<1>(se5); int tx1 = get<2>(se5); int ty1 = get<3>(se5);
-		if (bb % 10000 == 0) {printf("(%d of %d) cheats checks (%d,%d -> %d,%d -> %d,%d -> %d,%d)\n", bb, szse4, sx, sy, fx1, fy1, tx1, ty1, ex, ey);}
+		int fx1 = get<0>(tu5); int fy1 = get<1>(tu5); int tx1 = get<2>(tu5); int ty1 = get<3>(tu5);
+#ifdef _DEBUG_
+		if (bb % 100000 == 0) {printf("(%d of %d) cheats checks (%d,%d -> %d,%d -> %d,%d -> %d,%d)\n", bb, szde4, sx, sy, fx1, fy1, tx1, ty1, ex, ey);}
+#endif
 
 		int abs_var = abs(fx1-tx1) + abs(fy1-ty1);
 
-		///int pathLen2 = getPathLength({sx, sy, fx1, fy1}) + getPathLength({tx1, ty1, ex, ey}) + abs_var;
 		int pathLen3 = distToStart[{fx1, fy1}] + abs_var + noCheatMinPath - distToStart[{tx1, ty1}];
-		//assert (pathLen2 == pathLen3);
 
-/*
-		if (fourPoints.find({sx, sy, fx1, fy1, tx1, ty1, ex, ey}) != fourPoints.end()) {
-			printf("ERR already\n"); exit(0);
-		} else {
-			fourPoints.insert({sx, sy, fx1, fy1, tx1, ty1, ex, ey});
-		}
-*/
 		saveinsave(pathLen3);
 	}
-	//printf("fourPoints.size() is %d\n", (int)fourPoints.size());
+	end = clock();
+	cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+	printf("	time Looping: %f seconds\n", cpu_time_used);
 
+#ifdef _DEBUG_
 	for (auto it = mp.begin(); it != mp.end(); it++) {
 		if ((*it).first >= 50) {
 			printf("There are %d cheats that save %d picoseconds.\n", (*it).second, (*it).first);
@@ -203,28 +296,40 @@ after:
 			//printf("There are %d cheats that save %d picoseconds.\n", (*it).second, (*it).first);
 		}
 	}
+#endif
 	printf("**ans %d\n", gcount);
 }
 
 
-int next(int x, int y, int ex, int ey, int path, vector <tuple<int, int, int>> ve) {
+int next(int x, int y, int ex, int ey, int path, deque <tuple<int, int, int>> de) {
+
 
 	if (x < 0 || y < 0 || x > lenx-1 || y > leny -1 || grid[y][x] == '#') {return 55;}
 
 	if (x == ex && y == ey) {
-		printf("path found %d\n", path);
-		if (path < minPath) {minPath = path; ve.push_back({x,y, path}); for (auto pa: ve) {int x2 = get<0>(pa); int y2 = get<1>(pa);
-			int d1=get<2>(pa); pair <int, int> pa2; pa2.first = x2; pa2.second=y2; distToStart[{x2, y2}] = d1; se.insert(pa2);} return 22;}
+		printf("min (of 1) path found %d\n", path);
+		if (path < minPath) {
+			minPath = path;
+			deAns = de; 
+			de.push_back({x,y, path});
+			for (auto pa: de) {
+				int x2 = get<0>(pa);
+				int y2 = get<1>(pa);
+				int d1 = get<2>(pa);
+				distToStart[{x2, y2}] = d1;
+			}
+		}
+
 		return 22;
 	}
 
 	if (already[y][x] == 0 || path < already[y][x]) {
 		already[y][x] = path;
-		ve.push_back({x,y, path});
-		if (22 == next(x, y-1, ex, ey, path+1, ve)) {return 22;}
-		if (22 == next(x+1, y, ex, ey, path+1, ve)) {return 22;}
-		if (22 == next(x, y+1, ex, ey, path+1, ve)) {return 22;}
-		if (22 == next(x-1, y, ex, ey, path+1, ve)) {return 22;}
+		de.push_back({x,y, path});
+		if (22 == next(x, y-1, ex, ey, path+1, de)) {return 22;}
+		if (22 == next(x+1, y, ex, ey, path+1, de)) {return 22;}
+		if (22 == next(x, y+1, ex, ey, path+1, de)) {return 22;}
+		if (22 == next(x-1, y, ex, ey, path+1, de)) {return 22;}
 	}
 	return 56;
 }
