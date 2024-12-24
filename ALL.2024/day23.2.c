@@ -68,6 +68,7 @@ while (1) {
 }
 fclose(a);
 
+	//printf("cc:(%d)\n", mpOne["cc"]);
 /*
 	for (auto it = mpOne.begin(); it != mpOne.end(); it++) {
 		printf("grep %s i1.txt\n", (*it1).first);
@@ -80,20 +81,24 @@ fclose(a);
 	vector <string> old;
 	int numConnected = 2;
 	for (auto it1 = mpOne.begin(); it1 != mpOne.end(); it1++) {
+		if ((*it1).second <= maxNumConnected) {continue;}
 		if (distance(it1, mpOne.end()) <= maxNumConnected) {break;}
 		string st1 = (*it1).first;
 		auto it3 = it1; it3++;
 		for (auto it2 = it3; it2 != mpOne.end(); it2++) {
+			if ((*it2).second <= maxNumConnected) {continue;}
+			if (distance(it2, mpOne.end()) <= maxNumConnected-1) {break;}
 			string st2 = (*it2).first;
 			old.clear();
-			if (distance(it2, mpOne.end()) <= maxNumConnected-1) {break;}
 			if (mp.find({st1, st2}) != mp.end()) {
 				old.push_back(st1); old.push_back(st2);
 				auto it55 = it2; it55++;
 				for (auto it10 = it55; it10 != mpOne.end(); it10++) {
+					if ((*it10).second <= maxNumConnected) {continue;}
+					string st10 = (*it10).first;
 					numConnected = 2;
 					if ((distance(it10, mpOne.end())) <= maxNumConnected-2) {break;}
-					if (recSearch((*it10).first, old, numConnected, it10) != -1) {}
+					if (recSearch(st10, old, numConnected, it10) != -1) {}
 				}
 			}
 		}
@@ -127,6 +132,7 @@ int recSearch(string justadded, vector <string> oldList, int numConnected, map <
 
 	incomingIt++;
 	for (auto it4 = incomingIt; it4 != mpOne.end(); it4++) {
+		if ((*it4).second <= numConnected) {continue;}
 		string nextOne = (*it4).first;
 		recSearch(nextOne, oldList, numConnected, it4);
 	}
