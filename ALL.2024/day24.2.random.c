@@ -46,12 +46,12 @@ unsigned long long runSumAgainDifferentArrangement(int &stuck);
 void resetAllComplete();
 void swapRule(string a, string b);
 int numZREGS = 0;
-deque <tuple <string, int, int>>::iterator itG1;
+deque <tuple <string, int>>::iterator itG1;
 void sigfunc(int a) { fflush(stdout); printf("book (%s)\n", (get<0>(*itG1)).c_str()); fflush(stdout); }
 unsigned long long moditVal = 0;
-deque <tuple <string, int, int>> mpBookQ;
+deque <tuple <string, int>> mpBookQ;
 void eraseMPExceptXY();
-void swapRule(deque <tuple<string, int, int>>::iterator a, deque<tuple<string, int, int>>::iterator b);
+void swapRule(deque <tuple<string, int>>::iterator a, deque<tuple<string, int>>::iterator b);
 int main(int argc, char **argv)
 {
 	srand(time(NULL));   // Initialization, should only be called once.
@@ -95,9 +95,9 @@ int main(int argc, char **argv)
 			mpBook[sums[leny].r1].push_back({leny, 1});
 			mpBook[sums[leny].r2].push_back({leny, 2});
 			mpBook[sums[leny].r3].push_back({leny, 3});
-			mpBookQ.push_back({sums[leny].r1, leny, 1});
-			mpBookQ.push_back({sums[leny].r2, leny, 2});
-			mpBookQ.push_back({sums[leny].r3, leny, 3});
+			//mpBookQ.push_back({sums[leny].r1, leny, 1});
+			//mpBookQ.push_back({sums[leny].r2, leny, 2});
+			mpBookQ.push_back({sums[leny].r3, leny});
 		} else if (go == 0) {
 			char regName[10]; int regval;
 			sscanf(line1, "%[^:]: %d\n", regName, &regval);
@@ -139,7 +139,7 @@ randomagain:
 	advance(it2, rand2);
 	auto it3 = mpBookQ.begin();
 	advance(it3, rand3);
-	deque <tuple <string, int, int>>::iterator it4 = mpBookQ.begin();
+	deque <tuple <string, int>>::iterator it4 = mpBookQ.begin();
 	advance(it4, rand4);
 	auto it5 = mpBookQ.begin();
 	advance(it5, rand5);
@@ -295,69 +295,23 @@ void printit() {
 	}
 }
 //void swapRule(string a, string b) 
-void swapRule(deque <tuple<string, int, int>>::iterator a, deque<tuple<string, int, int>>::iterator b) {
+void swapRule(deque <tuple<string, int>>::iterator a, deque<tuple<string, int>>::iterator b) {
 	//printf("in swap %s %s\n", a.c_str(), b.c_str());
 
 	if (a == b){return;}
-	tuple <string, int, int> atup = (*a);
+	tuple <string, int> atup = (*a);
 	string astr = get<0>(atup);
-	tuple <string, int, int> btup = (*b);
+	tuple <string, int> btup = (*b);
 	string bstr = get<0>(btup);
 
 	{
 		int ipos = get<1>(atup);
-		int which = get<2>(atup);
-
-		switch (which) {
-			case 1:
-#ifdef _DEBUG_
-				printf("changing (left)r1 %s to %s\n", sums[ipos].r1.c_str(), bstr.c_str());
-#endif
-				sums[ipos].r1 = bstr;
-				break;
-			case 2:
-#ifdef _DEBUG_
-				printf("changing (left)r2 %s to %s\n", sums[ipos].r2.c_str(), bstr.c_str());
-#endif
-				sums[ipos].r2 = bstr;
-				break;
-			case 3:
-#ifdef _DEBUG_
-				printf("changing (left)r3 %s to %s\n", sums[ipos].r3.c_str(), bstr.c_str());
-#endif
-				sums[ipos].r3 = bstr;
-				break;
-			default:
-				perror("ERR1\n"); exit(0);
-		}
+		sums[ipos].r3 = bstr;
 	}
 
 	{
 		int ipos = get<1>(btup);
-		int which = get<2>(btup);
-
-		switch (which) {
-			case 1:
-#ifdef _DEBUG_
-				printf("changing (right) r1 %s to %s\n", sums[ipos].r1.c_str(), astr.c_str());
-#endif
-				sums[ipos].r1 = astr;
-				break;
-			case 2:
-#ifdef _DEBUG_
-				printf("changing (right) r2 %s to %s\n", sums[ipos].r2.c_str(), astr.c_str());
-#endif
-				sums[ipos].r2 = astr;
-				break;
-			case 3:
-#ifdef _DEBUG_
-				printf("changing (right)r3 %s to %s\n", sums[ipos].r3.c_str(), astr.c_str());
-#endif
-				sums[ipos].r3 = astr;
-				break;
-			default:
-				perror("ERR2\n"); exit(0);
-		}
+		sums[ipos].r3 = astr;
 	}
 }
 
