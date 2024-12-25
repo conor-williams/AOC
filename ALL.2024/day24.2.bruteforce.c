@@ -381,7 +381,7 @@ unsigned long long runSumAgainDifferentArrangement(int &stuck) {
 	stuck = 0;
 restart:
 	restartCount++;
-	if (restartCount > 100) { stuck = 1;}
+	if (restartCount > 500) { stuck = 1;}
 	if (stuck == 0) {
 		for (int i = 0; i < leny; i++) {
 			if (sums[i].complete != 1) { 
