@@ -116,70 +116,16 @@ int main(int argc, char **argv)
 	itG1 = mpBookQ.begin();
 	map <string, int> mpOrig = mp;
 	auto mpBookOrig = mpBookQ;
-	int stuck234 = 0;
-	//unsigned long long Z1 = runSumAgainDifferentArrangement(stuck234);
-/*
-	printf("starting search for bad bits:\n");
-	unsigned long long X11 =  grabTheX();
-	unsigned long long Y11 =  grabTheY();
-	{
-		for (unsigned long long inX = moditVal-1000; inX >= 0; inX--) {
-			for (unsigned long long inY = 0; inY < 1000; inY++) {
-				if (inX + inY > moditVal) {continue;}
-				if ((inX % 50) == 0) {if (bad.size() > 0) {printf("curbad: "); for (auto iii: bad) {printf("%d ", iii);} printf("\n");}}
-				setTheX(inX);
-				setTheY(inY);
-				resetAllComplete();
-
-				unsigned long long preAddans22 = (inX + inY) % moditVal;
-				unsigned long long ans22 = preAddans22 + moditVal; //make sure it has zeroes
-				
-				stuck234 = 0;
-				unsigned long long Z1 = runSumAgainDifferentArrangement(stuck234);
-				if (stuck234 == 0) {
-					for (int ii = 0; ii < (int)numZREGS; ii++) {
-						unsigned long long res1 = ans22 & (1ull <<ii);
-						int bit1 = res1 == 0?0:1;
-						unsigned long long res2 = Z1 & (1ull <<ii);
-						int bit2 = res2 == 0?0:1;
-						if (bit1 == bit2) {printf(" Y "); } else {printf(" N ");}
-						if (bit1 != bit2) {bad.insert(ii);}
-					}
-					printf("\n");
-				}
-			}
-		}
-	}
-	printf("Bad bits (starting at zero): all other bits seem good: \n");
-	for (auto iii: bad) {
-		printf("%d ", iii);
-	}
-	printf("exit...\n");
-	exit(0);
-*/
-	
-	printf("stuck is %d\n", stuck234);
-	getchar();
-
-/*
-	for (int ii = 0; ii < (int)numZREGS; ii++) {
-		unsigned long long res1 = ans22 & (1ull <<ii);
-		int bit1 = res1 == 0?0:1;
-		unsigned long long res2 = Z1_1 & (1ull <<ii);
-		int bit2 = res2 == 0?0:1;
-		if (bit1 == bit2) {printf(" Y"); } else {printf("N ");}
-	}
-*/
 
 	printf("here33...\n");
 	getchar();
-	//cout << Z1_1 << endl;
+
 	vector <string> ansVec;
 	long long count = 0;
 	start = clock();
+	int size = (int)mpBookQ.size();
 randomagain:
 
-	int size = (int)mpBookQ.size();
 	int rand1 = rand() % size;  
 	int rand2 = rand() % size;  
 	int rand3 = rand() % size;  
@@ -188,6 +134,7 @@ randomagain:
 	int rand6 = rand() % size;  
 	int rand7 = rand() % size;  
 	int rand8 = rand() % size;  
+
 	itG1 = mpBookQ.begin();
 	advance(itG1, rand1);
 	//advance(itG1, 77);
@@ -211,10 +158,12 @@ randomagain:
 	advance(it7, rand7);
 
 	auto it8 = mpBookQ.begin();
-	advance(it8, rand8); ////
-	//printf("%s\n", get<0>(*it8).c_str());
-	getchar(); //174
-	//tuple <string, int, int> tu = (*it4); printf("%s %d %d\n", (get<0>(tu)).c_str(), get<1>(tu), get<2>(tu)); fflush(stdout);
+	advance(it8, rand8); 
+
+	{{{{
+	}}}}
+
+        //tuple <string, int, int> tu = (*it4); printf("%s %d %d\n", (get<0>(tu)).c_str(), get<1>(tu), get<2>(tu)); fflush(stdout);
 	if (count++ % 3000 == 0) {
 		end = clock();
 		cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
@@ -223,158 +172,95 @@ randomagain:
 		if (count > 10000000000) {count = 0;}
 		printf("RANDOM: %d %d %d %d %d %d %d %d (%d)\n", rand1, rand2, rand3, rand4, rand5, rand6, rand7, rand8, size);
 	}
-	/*
-	   auto itG1end = itG1;
-	   itG1end++;
-	   auto it2end = it2;
-	   it2end++;
-	   auto it3end = it3;
-	   it3end++;
-	   auto it4end = it3;
-	   it4end++;
-	   auto it5end = it5;
-	   it5end++;
-	   auto it6end = it6;
-	   it6end++;
-	   auto it7end = it7;
-	   it7end++;
-	   auto it8end = it8;
-	   it8end++;
-	 */
-	//printf("Starting main search size:(%d) 4 levels):\n", (int)mpBookQ.size());
 	{
-		//int sz = (int)mpBookQ.size();
-		{
-			//auto it1 = itG1;
-			{
-				//if (it2 == it1) {goto randomagain;}
-				{
-					//if (it3 == it2 || it3 == it1) {goto randomagain;}
-					{
-						//if (it4 == it3 || it4 == it2 || it4 == it1) {goto randomagain;}
-						{
-							///if (it5 == it4 ||  it5 == it3 || it5 == it2 || it5 == it1) {goto randomagain;}
-							{
-								//if (it6 == it5 || it6 == it4 || it6 == it3 || it6 == it2 || it6 == it1) {goto randomagain;}
-								{
-									//if (it7 == it6 || it7 == it5 || it7 == it4 || it7 == it3 || it7 == it2 || it7 == it1) {goto randomagain;}
-									{
-										//if (it8 == it7 || it8 == it6 || it8 == it5 || it8 == it4 || it8 == it3 || it8 == it2 || it8 == it1) {goto randomagain;}
 
-										{
-											{
+		for (int i = 0; i < leny; i++) { sums[i] = sumsOrig[i]; }
+		swapRule(itG1, it2);
+		swapRule(it3, it4);
+		swapRule(it5, it6);
+		swapRule(it7,  it8);
 
-	                                                                                        for (int i = 0; i < leny; i++) { sums[i] = sumsOrig[i]; }
-												swapRule(itG1, it2);
-												swapRule(it3, it4);
-												swapRule(it5, it6);
-												swapRule(it7,  it8);
+		eraseMPExceptXY();
 
-												eraseMPExceptXY();
+		int found = 0;
+		for (int iii = 0; iii < 7; iii++ ) {
+			unsigned long long inX = rand() % moditVal;
+			unsigned long long inY = rand() % (moditVal - inX);
+#ifdef _DEBUG_
+			assert ((inY+inY) < moditVal);	
+			printf("%llu && %llu\n", inX, inY);
+#endif
+			eraseMPExceptXY();
+			setTheX(inX); setTheY(inY);
 
-												int found = 0;
-												for (unsigned long long inX = 7; inX < 10 /* moditVal*/; inX++) {
-													for (unsigned long long inY = 7; inY < 10/*moditVal*/; inY++) {
-														//printf("%llu && %llu\n", inX, inY);
-														eraseMPExceptXY();
-														setTheX(inX); setTheY(inY);
-
-														//unsigned long long ans = (inX & inY) % moditVal; //example simple AND: (ex4.txt)
-														unsigned long long ans = (inX + inY) % moditVal;
+			unsigned long long ans = (inX + inY) % moditVal;
 
 #ifdef _DEBUG_
-														unsigned long long X = grabTheX();
-														assert(X==inX);
-														unsigned long long Y = grabTheY();
-														assert(Y==inY);
-														assert(X == inX);
-														assert(Y == inY);
+			unsigned long long X = grabTheX();
+			assert(X==inX);
+			unsigned long long Y = grabTheY();
+			assert(Y==inY);
+			assert(X == inX);
+			assert(Y == inY);
 
 #endif
-														resetAllComplete();
-														int stuck123 = 0;
-														unsigned long long Z1 = runSumAgainDifferentArrangement(stuck123);
-														if (stuck123 == 0) {
+			resetAllComplete();
+			int stuck123 = 0;
+			unsigned long long Z1 = runSumAgainDifferentArrangement(stuck123);
+			if (stuck123 == 0) {
 #ifdef _DEBUG_
-															printf("not stuck.."); fflush(stdout);
-															unsigned long long Z = grabTheZ();
-															printf("grab:%llu V %llu:runSum\n", Z, Z1);
-															assert(Z == Z1);
+				printf("not stuck.."); fflush(stdout);
+				unsigned long long Z = grabTheZ();
+				printf("grab:%llu V %llu:runSum\n", Z, Z1);
+				assert(Z == Z1);
 #endif
-															if (ans == Z1) {
-																continue;
-															} else {
-																//printf("not stuck but bad\n"); fflush(stdout);
-/*
-																for (int ii = 0; ii < (int)numZREGS; ii++) {
-																	unsigned long long res1 = ans & (1ull <<ii);
-																	int bit1 = res1 == 0?0:1;
-																	unsigned long long res2 = Z1 & (1ull <<ii);
-																	int bit2 = res2 == 0?0:1;
-																	if (bit1 == bit2) {printf(" Y "); } else {printf(" N ");}
-																}
-																printf("\n");
-																//cout << "BAD: " << Z << endl;
-*/
-																found = 1; goto randomagain;
+				if (ans == Z1) {
+					continue;
+				} else {
+#ifdef _DEBUG_
+					printf("not stuck but bad\n"); fflush(stdout);
+#endif
+					found = 1; goto randomagain;
 
-															}
-														} else {
-															//printf("stuck...\n"); fflush(stdout);
-															found = 1; goto randomagain;
-														}
-													}
-												}
-//next:
 
-												if (found == 0) {
-													vector <string> BB;
-													BB.push_back(get<0>(*itG1)); BB.push_back(get<0>(*it2));
-													BB.push_back(get<0>(*it3)); BB.push_back(get<0>(*it4));
-													BB.push_back(get<0>(*it5)); BB.push_back(get<0>(*it6));
-													BB.push_back(get<0>(*it7)); BB.push_back(get<0>(*it8));
-													sort(BB.begin(), BB.end());
-													string an = "";
-													for (auto bbone: BB) {
-														an+= bbone + ",";
-													}
-													an.pop_back(); 
-													printf("good:(expand sum to reduce) %s\n", an.c_str());
-													ansVec.push_back(an);
-
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
 				}
+			} else {
+#ifdef _DEBUG_
+				printf("stuck...\n"); fflush(stdout);
+#endif
+				found = 1; goto randomagain;
 			}
 		}
-/*
-		if (count % 5000 == 0) {
-			end = clock();
-			cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
-			printf("        time(%20lld): %f seconds\n", count, cpu_time_used);
-			start = clock();
-		}
-		if (count > 10000000000) {count = 0;}
-*/
 
-		goto randomagain;
-		// never here
-		printf("ansVec size before unique: %d\n", (int)ansVec.size());
-		sort(ansVec.begin(), ansVec.end());
-		auto it77 = unique(ansVec.begin(), ansVec.end());
-		ansVec.resize(distance(ansVec.begin(), it77));
-		cout << "**Answers: " << endl;
-		for (auto st99: ansVec) {
-			cout << st99 << endl;
+		if (found == 0) {
+			vector <string> BB;
+			BB.push_back(get<0>(*itG1)); BB.push_back(get<0>(*it2));
+			BB.push_back(get<0>(*it3)); BB.push_back(get<0>(*it4));
+			BB.push_back(get<0>(*it5)); BB.push_back(get<0>(*it6));
+			BB.push_back(get<0>(*it7)); BB.push_back(get<0>(*it8));
+			sort(BB.begin(), BB.end());
+			string an = "";
+			for (auto bbone: BB) {
+				an+= bbone + ",";
+			}
+			an.pop_back(); 
+			printf("good:(expand sum to reduce) %s\n", an.c_str());
+			//ansVec.push_back(an);
+
 		}
-		cout << endl;
 	}
+
+	goto randomagain;
+	// never here
+	printf("ansVec size before unique: %d\n", (int)ansVec.size());
+	sort(ansVec.begin(), ansVec.end());
+	auto it77 = unique(ansVec.begin(), ansVec.end());
+	ansVec.resize(distance(ansVec.begin(), it77));
+	cout << "**Answers: " << endl;
+	for (auto st99: ansVec) {
+		cout << st99 << endl;
+	}
+	cout << endl;
 }
 void printit() {
 	printf("Rules: \n");
@@ -525,11 +411,11 @@ restart:
 			}
 		}
 
-                int found = 0;
-                for (int i = 0; i < leny; i++) {
-                        if (sums[i].complete == 0) {found = 1; break;}
-                }
-                if (found == 1) {goto restart;}
+		int found = 0;
+		for (int i = 0; i < leny; i++) {
+			if (sums[i].complete == 0) {found = 1; break;}
+		}
+		if (found == 1) {goto restart;}
 
 		//if (allcomplete == 1) {} else if (move == 0) {stuck = 1; goto restart;}
 		//if (move == 0) {stuck = 1; goto restart;}
