@@ -41,6 +41,7 @@ unsigned long long grabTheZ();
 void setTheX(unsigned long long val);
 void setTheY(unsigned long long val);
 void setTheZ(unsigned long long val);
+void printit();
 unsigned long long runSumAgainDifferentArrangement(int &stuck);
 void resetAllComplete();
 void swapRule(string a, string b);
@@ -124,8 +125,8 @@ int main(int argc, char **argv)
 	map <string, int> mpOrig = mp;
 	auto mpBookOrig = mpBook;
 	int stuck234 = 0;
-	unsigned long long Z1_1 = runSumAgainDifferentArrangement(stuck234);
-	cout << Z1_1 << endl;
+	//unsigned long long Z1_1 = runSumAgainDifferentArrangement(stuck234);
+	//cout << Z1_1 << endl;
 	vector <string> ansVec;
 	int notZCount = 0;
 	printf("Starting main search size:(%d) 4 levels):\n", (int)mpBook.size());
@@ -134,68 +135,50 @@ int main(int argc, char **argv)
 		int count = 0;
 		int sz = (int)mpBook.size();
 		for (/*auto itG1 = mpBook.begin()*/; itG1 != mpBook.end(); itG1++) {
+			if (((*itG1).first)[0] != 'z') {continue;}
 			cout << ++count << " of " << sz << endl;
-			auto ittmp1 = itG1;
 			auto it1 = itG1;
-			ittmp1++;
-			for (auto it2 = ittmp1; it2 != mpBook.end(); it2++) {
-				//for (auto it2 = mpBook.begin(); it2 != mpBook.end(); it2++) 
-
+			for (auto it2 = mpBook.begin(); it2 != mpBook.end(); it2++) {
+				if (((*it2).first)[0] != 'z') {continue;}
 				if (it2 == it1) {continue;}
 
-				auto ittmp2 = it2;
-				ittmp2++;
-				for (auto it3 = ittmp2; it3 != mpBook.end(); it3++) {
-					//for (auto it3 = mpBook.begin(); it3 != mpBook.end(); it3++) 
+				for (auto it3 = mpBook.begin(); it3 != mpBook.end(); it3++) {
+					if (((*it3).first)[0] != 'z') {continue;}
 					if (it3 == it2 || it3 == it1) {continue;}
-					auto ittmp3 = it3;
-					ittmp3++;
 
-					//jfor (auto it4 = mpBook.begin(); it4 != mpBook.end(); it4++) 
-					for (auto it4 = ittmp3; it4 != mpBook.end(); it4++) {
+					for (auto it4 = mpBook.begin(); it4 != mpBook.end(); it4++) {
+						if (((*it4).first)[0] != 'z') {continue;}
 						if (it4 == it3 || it4 == it2 || it4 == it1) {continue;}
-						for (int kk = 0; kk < 3; kk++) {
-							for (int i = 0; i < leny; i++) { sums[i] = sumsOrig[i]; }
-							if (kk == 0) {
-								swapRule((*itG1).first, (*it2).first);
-								swapRule((*it3).first, (*it4).first);
-							} else if (kk == 1) {
-								swapRule((*itG1).first, (*it3).first);
-								swapRule((*it2).first, (*it4).first);
-							} else if (kk == 2) {
-								swapRule((*itG1).first, (*it4).first);
-								swapRule((*it2).first, (*it3).first);
-							}
-
-							/*
-							   printf("Rules: \n");
-							   for (int i = 0; i < leny; i++) {
-							   printf("%s %c %s -> %s\n", sums[i].r1.c_str(), sums[i].type, sums[i].r2.c_str(), sums[i].r3.c_str());
-							   }
-							 */
+						{
+					                for (int i = 0; i < leny; i++) { sums[i] = sumsOrig[i]; }
+							swapRule((*itG1).first, (*it2).first);
+							swapRule((*it3).first, (*it4).first);
 
 							//if (sums[0].r3 == "z00" && sums[5].r3 == "z05") {printf("here1\n");}
 							//if (sums[1].r3 == "z01" && sums[2].r3 == "z02") {printf("here2\n");}
 							int got3 = 0;
 							if (sums[0].r3 == "z00" && sums[5].r3 == "z05" && sums[1].r3 == "z01" && sums[2].r3 == "z02") {got3 = 1; printf("here3 -- line up\n"); getchar();}
-							auto ittmp4 = it4;
-							ittmp4++;
-							eraseMPExceptXY();
-
 							int found = 0;
-							for (unsigned long long inX = 0; inX < 3/*moditVal*/; inX++) {
-								for (unsigned long long inY = 0; inY < 3/*moditVal*/; inY++) {
-									//printf("%llu && %llu\n", inX, inY);
+							for (unsigned long long inX = 0; inX < moditVal; inX++ ) {
+								for (unsigned long long inY = 0; inY < moditVal; inY++) {
+									//printf("inX,inY %llu && %llu %llu\n", inX, inY, moditVal);
+
+									if (inX + inY >= moditVal) {continue;} else {}
+
+									assert(inX + inY < moditVal);
+									//inX = moditVal+inX;
+									//inY = moditVal+inY;
 									setTheX(inX); setTheY(inY);
 									unsigned long long ans = (inX & inY) % moditVal;
 
 									unsigned long long X = grabTheX();
-									assert(X==inX);
+									//assert(X==(inX-moditVal));
 									unsigned long long Y = grabTheY();
-									assert(Y==inY);
-									assert(X == inX);
-									assert(Y == inY);
+									//assert(Y==(inY-moditVal));
+									//assert(X == inX);
+									//assert(Y == inY);
 
+									eraseMPExceptXY();
 									resetAllComplete();
 									int stuck123 = 0;
 									unsigned long long Z1 = runSumAgainDifferentArrangement(stuck123);
@@ -204,24 +187,27 @@ int main(int argc, char **argv)
 										//printf("grab:%llu V %llu:runSum\n", Z, Z1);
 										assert(Z == Z1);
 
-										if (got3 == 1) {cout << ans << " " << Z << endl;}
-										if (ans == Z) {
+										//if (got3 == 1) {cout << ans << " " << Z1 << endl;}
+										if (ans == Z1) {
 											//cout << "GOOD" << endl;
-											if (got3 == 1){printf("good good\n");}
-											continue;
+											//if (got3 == 1){printf("good good\n");}
+
+											//continue;
 										} else {
 											//cout << "BAD: " << Z << endl;
-											if (got3 == 1) {printf("oops...\n");}
-											found = 1; goto next;
+											//if (got3 == 1) {printf("oops...\n");}
+											found = 1; goto after;
 										}
+									} else {
+										found = 1; goto after;
+										//printf("stuck...\n");
 									}
 								}
 							}
-next:
-							//continue;
-
-							if (got3 == 1) {printf("found is %d\n", found);}
+after:
+							//if (got3 == 1) {printf("found is %d\n", found);}
 							if (found == 0) {
+								//printit(); getchar();
 								//printf("here22\n"); fflush(stdout);
 								if (((*itG1).first)[0] == 'z' && ((*it2).first)[0] == 'z' && ((*it3).first)[0] == 'z' && ((*it4).first)[0] == 'z') {
 									vector <string> BB;
@@ -325,7 +311,7 @@ void swapRule(string a, string b) {
 void setTheX(unsigned long long val) {
 	char regName[20];
 
-	for (int ii = 0; ii < 64; ii++) {
+	for (int ii = 0; ii < numZREGS; ii++) {
 		sprintf(regName, "x%02d", ii);
 		if (mp.find(regName) != mp.end()) {
 			//printf("regName: %s -- was:%d\n", regName, mp[regName]);
@@ -339,7 +325,7 @@ void setTheX(unsigned long long val) {
 void setTheY(unsigned long long val) {
 	char regName[20];
 
-	for (int ii = 0; ii < 64; ii++) {
+	for (int ii = 0; ii < numZREGS; ii++) {
 		sprintf(regName, "y%02d", ii);
 		if (mp.find(regName) != mp.end()) {
 			//printf("regName: %s -- %d\n", regName, mp[regName]);
@@ -353,7 +339,7 @@ void setTheY(unsigned long long val) {
 void setTheZ(unsigned long long val) {
 	char regName[20];
 
-	for (int ii = 0; ii < 64; ii++) {
+	for (int ii = 0; ii < numZREGS; ii++) {
 		sprintf(regName, "z%02d", ii);
 		if (mp.find(regName) != mp.end()) {
 			//printf("regName: %s -- %d\n", regName, mp[regName]);
@@ -366,7 +352,7 @@ void setTheZ(unsigned long long val) {
 unsigned long long grabTheY() {
 	unsigned long long val = 0;
 	char regName[20];
-	for (int ii = 0; ii < 64; ii++) {
+	for (int ii = 0; ii < numZREGS; ii++) {
 		sprintf(regName, "y%02d", ii);
 		if (mp.find(regName) != mp.end()) {
 			//printf("regName: %s -- %d\n", regName, mp[regName]);
@@ -378,7 +364,7 @@ unsigned long long grabTheY() {
 unsigned long long grabTheX() {
 	unsigned long long val = 0;
 	char regName[20];
-	for (int ii = 0; ii < 64; ii++) {
+	for (int ii = 0; ii < numZREGS; ii++) {
 		sprintf(regName, "x%02d", ii);
 		//printf("regName: %s\n", regName);
 		if (mp.find(regName) != mp.end()) {
@@ -391,7 +377,7 @@ unsigned long long grabTheX() {
 unsigned long long grabTheZ() {
 	unsigned long long val = 0;
 	char regName[20];
-	for (int ii = 0; ii < 64; ii++) {
+	for (int ii = 0; ii < numZREGS; ii++) {
 		sprintf(regName, "z%02d", ii);
 		//printf("regName: %s\n", regName);
 		if (mp.find(regName) != mp.end()) {
@@ -408,12 +394,15 @@ void resetAllComplete() {
 }
 
 unsigned long long runSumAgainDifferentArrangement(int &stuck) {
+	resetAllComplete();
+	eraseMPExceptXY();
+
 	//printf("in runSumAgainDifferentArrangement()\n");
 	int restartCount = 0;
 	stuck = 0;
 restart:
 	restartCount++;
-	if (restartCount > 100) { stuck = 1;}
+	if (restartCount > 500) { stuck = 1;}
 	if (stuck == 0) {
 		for (int i = 0; i < leny; i++) {
 			if (sums[i].complete != 1) { 
@@ -424,15 +413,15 @@ restart:
 					switch (sums[i].type) {
 						case '^':
 							mp[sums[i].r3] = mp[sums[i].r1] ^ mp[sums[i].r2]; 
-							//printf("bitwise xor %s -> %d", sums[i].r3.c_str(), mp[sums[i].r3]);
+						//	printf("bitwise xor %s -> %d", sums[i].r3.c_str(), mp[sums[i].r3]);
 							break;
 						case '|':
 							mp[sums[i].r3] = mp[sums[i].r1] | mp[sums[i].r2]; 
-							//printf("bitwise | %s -> %d", sums[i].r3.c_str(), mp[sums[i].r3]);
+						//	printf("bitwise | %s -> %d", sums[i].r3.c_str(), mp[sums[i].r3]);
 							break;
 						case '&':
 							mp[sums[i].r3] = mp[sums[i].r1] & mp[sums[i].r2]; 
-							//printf("bitwise & %s -> %d", sums[i].r3.c_str(), mp[sums[i].r3]);
+						//	printf("bitwise & %s -> %d", sums[i].r3.c_str(), mp[sums[i].r3]);
 							break;
 					}
 					sums[i].complete = 1;
