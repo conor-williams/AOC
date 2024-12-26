@@ -125,24 +125,26 @@ int main(int argc, char **argv)
 		int count = 0;
 		int sz = (int)mpBookQ.size();
 		for (/*auto itG1 = mpBookQ.begin()*/; itG1 != mpBookQ.end(); itG1++) {
-	end = clock();
-	if (count != 0) {
-		cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
-		printf("        time: %f seconds\n", cpu_time_used);
-	}
+			end = clock();
+			if (count != 0) {
+				cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+				printf("        time: %f seconds\n", cpu_time_used);
+			}
 			cout << count << " of " << sz << endl;
-	start = clock();
-			
+			start = clock();
+
 			auto ittmp1 = itG1;
 			auto it1 = itG1;
 			ittmp1++;
 			int count2 = 0;
+
 			for (auto it2 = mpBookQ.begin(); it2 != mpBookQ.end(); it2++) {
 				cout << " Level 2: " << count2++ << endl; fflush(stdout);
 				if (it2 == it1) {continue;}
 				auto ittmp2 = it2;
 				ittmp2++;
 				int count3 = 0;
+
 				for (auto it3 = mpBookQ.begin(); it3 != mpBookQ.end(); it3++) {
 					cout << " Level 3: " << count3++ << endl; fflush(stdout);
 					if (it3 == it2 || it3 == it1) {continue;}
@@ -151,11 +153,13 @@ int main(int argc, char **argv)
 
 					int count4 = 0;
 					for (auto it4 = mpBookQ.begin(); it4 != mpBookQ.end(); it4++) {
+
 						cout << " Level 4: " << count4++ << endl; fflush(stdout);
 						if (it4 == it3 || it4 == it2 || it4 == it1) {continue;}
 						auto ittmp4 = it4;
 						ittmp4++;
 						for (auto it5 = mpBookQ.begin(); it5 != mpBookQ.end(); it5++) {
+
 							if (it5 == it4 ||  it5 == it3 || it5 == it2 || it5 == it1) {continue;}
 							auto ittmp5 = it5;
 							ittmp5++;
@@ -165,6 +169,7 @@ int main(int argc, char **argv)
 								auto ittmp6 = it6;
 								ittmp6++;
 								for (auto it7 = mpBookQ.begin(); it7 != mpBookQ.end(); it7++) {
+
 									if (it7 == it6 || it7 == it5 || it7 == it4 || it7 == it3 || it7 == it2 || it7 == it1) {continue;}
 									auto ittmp7 = it7;
 									ittmp7++;
@@ -183,6 +188,7 @@ int main(int argc, char **argv)
 											int found = 0;
 											for (unsigned long long inX = 0; inX < 3 /* moditVal*/; inX++) {
 												for (unsigned long long inY = 0; inY < 3/*moditVal*/; inY++) {
+													eraseMPExceptXY();
 													//printf("%llu && %llu\n", inX, inY);
 													setTheX(inX); setTheY(inY);
 
@@ -233,6 +239,7 @@ next:
 													an+= bbone + ",";
 												}
 												an.pop_back(); 
+												cout << "good: " << an << endl;
 												ansVec.push_back(an);
 
 											}
@@ -276,17 +283,17 @@ void swapRule(deque <tuple<string, int>>::iterator a, deque<tuple<string, int>>:
 	{
 		int ipos = get<1>(atup);
 #ifdef _DEBUG_
-				printf("changing (left)r3 %s to %s\n", sums[ipos].r3.c_str(), bstr.c_str());
+		printf("changing (left)r3 %s to %s\n", sums[ipos].r3.c_str(), bstr.c_str());
 #endif
-				sums[ipos].r3 = bstr;
+		sums[ipos].r3 = bstr;
 	}
 
 	{
 		int ipos = get<1>(btup);
 #ifdef _DEBUG_
-				printf("changing (right)r3 %s to %s\n", sums[ipos].r3.c_str(), astr.c_str());
+		printf("changing (right)r3 %s to %s\n", sums[ipos].r3.c_str(), astr.c_str());
 #endif
-				sums[ipos].r3 = astr;
+		sums[ipos].r3 = astr;
 	}
 }
 
@@ -381,7 +388,7 @@ unsigned long long runSumAgainDifferentArrangement(int &stuck) {
 	stuck = 0;
 restart:
 	restartCount++;
-	if (restartCount > 1000) { stuck = 1;}
+	if (restartCount > 500) { stuck = 1;}
 	if (stuck == 0) {
 		for (int i = 0; i < leny; i++) {
 			if (sums[i].complete != 1) { 
@@ -422,7 +429,7 @@ restart:
 		for (auto it = mp.begin(); it!=mp.end();it++) {
 			string regg = (*it).first;
 			if (regg[0] == 'z') {
-				printf("%s: %d\n", regg.c_str(), (*it).second);
+				//printf("%s: %d\n", regg.c_str(), (*it).second);
 				ve.push_back((*it).second);
 			} else {
 				//printf("%s\n", regg.c_str());
