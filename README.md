@@ -1,4 +1,4 @@
-<p>Notes</p>
+<p><b>Notes: <i>c.w.</i></b></p>
 <ul>
 <li>gcc if no "using namespace std" </li>
 <li>g++ if "using namespace std" </li>
