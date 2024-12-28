@@ -13,12 +13,7 @@
 #include <deque>
 #include <map>
 
-////huge nums in this (add -I. to compile)
-/// these bigint headers are up one level in AOC -- slightly modified to original from internet
-/// bigint is brilliant for c++ - cw
-
-#include <bigintclass.h>
-#include <bigint_function_definitions.h>
+unsigned long long MINS = (unsigned long long)-1;
 
 using namespace std;
 
@@ -93,7 +88,7 @@ void getLevelMaps() {
 				///////////////////
 				veStrRobot[1].clear();
 				robotARM(st2, 1, 0, bb2);
-				unsigned long long minLN2 = 9999999999999999;
+				unsigned long long minLN2 = MINS;
 
 				for (auto st4: veStrRobot[1]) {
 					unsigned long long len = calcLen(st4);
@@ -123,7 +118,7 @@ void getLevelMaps() {
 					auto pa1234 = mp[{st2, ijk-1, bb2}];
 					vector <struct content_s> poss3 = get<2>(pa1234);
 					vector <struct content_s> dummy3;
-					unsigned long long minLen3 = 9999999999999999;
+					unsigned long long minLen3 = MINS;
 					struct content_s retCont;
 					resetContent(retCont);
 
@@ -194,7 +189,7 @@ int main(int argc, char **argv)
 	//char start = 'A';
 	//unsigned long long conans = 0;
 
-	bigint conans(0);
+	unsigned long long conans = 0;
 	for (int i = 0; i < leny; i++) {
 		printf("working on %s (%d)\n", numbersS[i], numbers[i]);
 		startRow = 3; startCol = 2;
@@ -301,7 +296,7 @@ ne:
 
 		for (int i25 = 3; i25 <= 25; i25++) 
 		{
-			unsigned long long minLength252525 = 999999999999999999;
+			unsigned long long minLength252525 = MINS;
 			for (auto st2: veStr) {
 				unsigned long long minSub = 0;
 				char crPrev = 'A';
@@ -319,25 +314,25 @@ ne:
 
 
 		int lev25 = 25;
-		//unsigned long long minLength25 = 999999999999999999;
-		bigint minLength25 = bigint("999999999999999999999999");
+		unsigned long long minLength25 = MINS;
 		for (auto st2: veStr) {
-			//unsigned long long minSub = 0;
-			bigint minSub = bigint(0);
+			unsigned long long minSub = 0;
+			
 			char crPrev = 'A';
 			for (auto cr: st2) {
 				string ab;
 				ab.push_back(cr);
 				auto tu11 = mp[{ab, lev25, crPrev}];
 
-				minSub += bigint(to_string(get <0>(tu11))); 
+				//minSub += bigint(to_string(get <0>(tu11))); 
+				minSub += get<0>(tu11);
 				crPrev = cr;
 			}
 			if (minSub < minLength25) {minLength25 = minSub;}
 		}
 		printf("LEVEL 25 min (using): "); cout <<  minLength25 << endl;
 
-		conans += minLength25 * (bigint)numbers[i];
+		conans += minLength25 * numbers[i];
 
 	}
 	printf("**ans: ");
