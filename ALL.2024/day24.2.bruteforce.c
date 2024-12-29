@@ -97,16 +97,15 @@ int main(int argc, char **argv)
 			//mpBookQ.push_back({sums[leny].r1, leny, 1});
 			//mpBookQ.push_back({sums[leny].r2, leny, 2});
 			mpBookQ.push_back({sums[leny].r3, leny});
+			if (r3[0] == 'z') {numZREGS++;}
 		} else if (go == 0) {
 			char regName[10]; int regval;
 			sscanf(line1, "%[^:]: %d\n", regName, &regval);
 			mp[regName] = regval;
-			numZREGS++;
 		}
 		leny++;
 	}
 	fclose(a);
-	numZREGS /= 2;
 	moditVal = pow(2, numZREGS);
 	for (int i = 0; i < leny; i++) {
 		sumsOrig[i] = sums[i];
@@ -124,7 +123,11 @@ int main(int argc, char **argv)
 	{
 		int count = 0;
 		int sz = (int)mpBookQ.size();
-		for (/*auto itG1 = mpBookQ.begin()*/; itG1 != mpBookQ.end(); itG1++) {
+		
+		auto itBegin = mpBookQ.begin();;
+		auto itEND = mpBookQ.end();;
+		auto itENDLess = mpBookQ.end(); itENDLess--;
+		for (/*auto itG1 = mpBookQ.begin()*/; itG1 != itENDLess; itG1++) {
 			end = clock();
 			if (count != 0) {
 				cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
@@ -138,42 +141,43 @@ int main(int argc, char **argv)
 			ittmp1++;
 			int count2 = 0;
 
-			for (auto it2 = mpBookQ.begin(); it2 != mpBookQ.end(); it2++) {
+			for (auto it2 = ittmp1; it2 != itEND; it2++) {
 				cout << " Level 2: " << count2++ << endl; fflush(stdout);
 				if (it2 == it1) {continue;}
 				auto ittmp2 = it2;
 				ittmp2++;
 				int count3 = 0;
 
-				for (auto it3 = mpBookQ.begin(); it3 != mpBookQ.end(); it3++) {
+				for (auto it3 = itBegin; it3 != itENDLess; it3++) {
 					cout << " Level 3: " << count3++ << endl; fflush(stdout);
 					if (it3 == it2 || it3 == it1) {continue;}
 					auto ittmp3 = it3;
 					ittmp3++;
 
 					int count4 = 0;
-					for (auto it4 = mpBookQ.begin(); it4 != mpBookQ.end(); it4++) {
+					for (auto it4 = ittmp3; it4 != itEND; it4++) {
 
 						cout << " Level 4: " << count4++ << endl; fflush(stdout);
 						if (it4 == it3 || it4 == it2 || it4 == it1) {continue;}
 						auto ittmp4 = it4;
 						ittmp4++;
-						for (auto it5 = mpBookQ.begin(); it5 != mpBookQ.end(); it5++) {
+
+						for (auto it5 = itBegin; it5 != itENDLess; it5++) {
 
 							if (it5 == it4 ||  it5 == it3 || it5 == it2 || it5 == it1) {continue;}
 							auto ittmp5 = it5;
 							ittmp5++;
-							for (auto it6 = mpBookQ.begin(); it6 != mpBookQ.end(); it6++) {
+
+							for (auto it6 = ittmp5; it6 != itEND; it6++) {
 								if (it6 == it5 || it6 == it4 || it6 == it3 || it6 == it2 || it6 == it1) {continue;}
 
-								auto ittmp6 = it6;
-								ittmp6++;
-								for (auto it7 = mpBookQ.begin(); it7 != mpBookQ.end(); it7++) {
+								for (auto it7 = itBegin; it7 != itENDLess; it7++) {
 
 									if (it7 == it6 || it7 == it5 || it7 == it4 || it7 == it3 || it7 == it2 || it7 == it1) {continue;}
 									auto ittmp7 = it7;
 									ittmp7++;
-									for (auto it8 = mpBookQ.begin(); it8 != mpBookQ.end(); it8++) {
+
+									for (auto it8 = ittmp7; it8 != itEND; it8++) {
 										if (it8 == it7 || it8 == it6 || it8 == it5 || it8 == it4 || it8 == it3 || it8 == it2 || it8 == it1) {continue;}
 
 										{
@@ -186,8 +190,15 @@ int main(int argc, char **argv)
 											eraseMPExceptXY();
 
 											int found = 0;
-											for (unsigned long long inX = 0; inX < 3 /* moditVal*/; inX++) {
-												for (unsigned long long inY = 0; inY < 3/*moditVal*/; inY++) {
+									                for (int iii = 0; iii < 7; iii++ ) {
+												{
+										                        unsigned long long inX = rand() % moditVal;
+										                        unsigned long long inY = rand() % (moditVal - inX);
+#ifdef _DEBUG_
+                        assert ((inY+inY) < moditVal);
+                        printf("%llu && %llu\n", inX, inY);
+#endif
+
 													eraseMPExceptXY();
 													//printf("%llu && %llu\n", inX, inY);
 													setTheX(inX); setTheY(inY);
@@ -300,7 +311,7 @@ void swapRule(deque <tuple<string, int>>::iterator a, deque<tuple<string, int>>:
 void setTheX(unsigned long long val) {
 	char regName[20];
 
-	for (int ii = 0; ii < 64; ii++) {
+	for (int ii = 0; ii < numZREGS; ii++) {
 		sprintf(regName, "x%02d", ii);
 		if (mp.find(regName) != mp.end()) {
 			//printf("regName: %s -- was:%d\n", regName, mp[regName]);
@@ -314,7 +325,7 @@ void setTheX(unsigned long long val) {
 void setTheY(unsigned long long val) {
 	char regName[20];
 
-	for (int ii = 0; ii < 64; ii++) {
+	for (int ii = 0; ii < numZREGS; ii++) {
 		sprintf(regName, "y%02d", ii);
 		if (mp.find(regName) != mp.end()) {
 			//printf("regName: %s -- %d\n", regName, mp[regName]);
@@ -328,7 +339,7 @@ void setTheY(unsigned long long val) {
 void setTheZ(unsigned long long val) {
 	char regName[20];
 
-	for (int ii = 0; ii < 64; ii++) {
+	for (int ii = 0; ii < numZREGS; ii++) {
 		sprintf(regName, "z%02d", ii);
 		if (mp.find(regName) != mp.end()) {
 			//printf("regName: %s -- %d\n", regName, mp[regName]);
@@ -341,7 +352,7 @@ void setTheZ(unsigned long long val) {
 unsigned long long grabTheY() {
 	unsigned long long val = 0;
 	char regName[20];
-	for (int ii = 0; ii < 64; ii++) {
+	for (int ii = 0; ii < numZREGS; ii++) {
 		sprintf(regName, "y%02d", ii);
 		if (mp.find(regName) != mp.end()) {
 			//printf("regName: %s -- %d\n", regName, mp[regName]);
@@ -353,7 +364,7 @@ unsigned long long grabTheY() {
 unsigned long long grabTheX() {
 	unsigned long long val = 0;
 	char regName[20];
-	for (int ii = 0; ii < 64; ii++) {
+	for (int ii = 0; ii < numZREGS; ii++) {
 		sprintf(regName, "x%02d", ii);
 		//printf("regName: %s\n", regName);
 		if (mp.find(regName) != mp.end()) {
@@ -366,7 +377,7 @@ unsigned long long grabTheX() {
 unsigned long long grabTheZ() {
 	unsigned long long val = 0;
 	char regName[20];
-	for (int ii = 0; ii < 64; ii++) {
+	for (int ii = 0; ii < numZREGS; ii++) {
 		sprintf(regName, "z%02d", ii);
 		//printf("regName: %s\n", regName);
 		if (mp.find(regName) != mp.end()) {
