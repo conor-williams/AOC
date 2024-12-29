@@ -138,7 +138,10 @@ int main(int argc, char **argv)
 			if (((*itG1).first)[0] != 'z') {continue;}
 			cout << ++count << " of " << sz << endl;
 			auto it1 = itG1;
-			for (auto it2 = mpBook.begin(); it2 != mpBook.end(); it2++) {
+                        auto ittmp1 = it1;
+                        ittmp1++;
+
+			for (auto it2 = ittmp1; it2 != mpBook.end(); it2++) {
 				if (((*it2).first)[0] != 'z') {continue;}
 				if (it2 == it1) {continue;}
 
@@ -146,7 +149,9 @@ int main(int argc, char **argv)
 					if (((*it3).first)[0] != 'z') {continue;}
 					if (it3 == it2 || it3 == it1) {continue;}
 
-					for (auto it4 = mpBook.begin(); it4 != mpBook.end(); it4++) {
+                        		auto ittmp3 = it3;
+		                        ittmp3++;
+					for (auto it4 = ittmp3; it4 != mpBook.end(); it4++) {
 						if (((*it4).first)[0] != 'z') {continue;}
 						if (it4 == it3 || it4 == it2 || it4 == it1) {continue;}
 						{
