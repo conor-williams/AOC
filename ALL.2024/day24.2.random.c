@@ -98,16 +98,17 @@ int main(int argc, char **argv)
 			//mpBookQ.push_back({sums[leny].r1, leny, 1});
 			//mpBookQ.push_back({sums[leny].r2, leny, 2});
 			mpBookQ.push_back({sums[leny].r3, leny});
+			if (r3[0] == 'z') {numZREGS++;}
 		} else if (go == 0) {
 			char regName[10]; int regval;
 			sscanf(line1, "%[^:]: %d\n", regName, &regval);
 			mp[regName] = regval;
-			numZREGS++;
+			//numZREGS++;
 		}
 		leny++;
 	}
 	fclose(a);
-	numZREGS /= 2;
+	//numZREGS /= 2;
 	moditVal = pow(2, numZREGS);
 	for (int i = 0; i < leny; i++) {
 		sumsOrig[i] = sums[i];
@@ -121,49 +122,71 @@ int main(int argc, char **argv)
 	getchar();
 
 	vector <string> ansVec;
-	long long count = 0;
+	//long long count = 0;
 	start = clock();
 	int size = (int)mpBookQ.size();
 randomagain:
 
-	int rand1 = rand() % size;  
-	int rand2 = rand() % size;  
-	int rand3 = rand() % size;  
-	int rand4 = rand() % size;  
-	int rand5 = rand() % size;  
-	int rand6 = rand() % size;  
-	int rand7 = rand() % size;  
-	int rand8 = rand() % size;  
+	int rand123[10] = {-1};
+	rand123[1] = rand() % size;  
+	rand123[2] = rand() % (rand123[1]+1); //int rand2 = rand() % size;  
+
+	rand123[3] = rand() % size;  
+	rand123[4] = rand() % (rand123[3]+1);  //int rand4 = rand() % size;  
+
+	rand123[5] = rand() % size;  
+	rand123[6] = rand() % (rand123[5]+1); //int rand6 = rand() % size;  
+
+	rand123[7] = rand() % size;  
+	rand123[8] = rand() % (rand123[7]+1); //int rand8 = rand() % size;  
 
 	itG1 = mpBookQ.begin();
-	advance(itG1, rand1);
+	advance(itG1, rand123[1]);
 	//advance(itG1, 77);
 
 	auto it2 = mpBookQ.begin();
-	advance(it2, rand2);
+	advance(it2, rand123[2]);
 
 	auto it3 = mpBookQ.begin();
-	advance(it3, rand3);
+	advance(it3, rand123[3]);
 
 	deque <tuple <string, int>>::iterator it4 = mpBookQ.begin();
-	advance(it4, rand4);
+	advance(it4, rand123[4]);
 
 	auto it5 = mpBookQ.begin();
-	advance(it5, rand5);
+	advance(it5, rand123[5]);
 
 	auto it6 = mpBookQ.begin();
-	advance(it6, rand6);
+	advance(it6, rand123[6]);
 
 	auto it7 = mpBookQ.begin();
-	advance(it7, rand7);
+	advance(it7, rand123[7]);
 
 	auto it8 = mpBookQ.begin();
-	advance(it8, rand8); 
+	advance(it8, rand123[8]); 
 
+{
+}
+
+
+
+	string st = "00000011";
+	sort (st.begin(), st.end());
+	do {
+		int pos1 = -1;
+		int pos2 = -1;
+		for (int jjj = 0; jjj < 8/*(int)st.length()*/; jjj++) {
+			if (st[jjj] == '1' && pos1 == -1) {pos1 = jjj+1;}
+			if (st[jjj] == '1' && pos1 != -1) {pos2 = jjj+1;}
+		}
+		if (rand123[pos1] == rand123[pos2]) {/*printf("%d V %d -- %d -- %d same\n", pos1, pos2, rand123[pos1], rand123[pos2]);*/ goto randomagain;}
+			
+	} while (next_permutation(st.begin(), st.end()));
 	{{{{
 	}}}}
 
         //tuple <string, int, int> tu = (*it4); printf("%s %d %d\n", (get<0>(tu)).c_str(), get<1>(tu), get<2>(tu)); fflush(stdout);
+#ifdef _CLOCK_
 	if (count++ % 3000 == 0) {
 		end = clock();
 		cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
@@ -172,13 +195,14 @@ randomagain:
 		if (count > 10000000000) {count = 0;}
 		printf("RANDOM: %d %d %d %d %d %d %d %d (%d)\n", rand1, rand2, rand3, rand4, rand5, rand6, rand7, rand8, size);
 	}
+#endif
 	{
 
 		for (int i = 0; i < leny; i++) { sums[i] = sumsOrig[i]; }
 		swapRule(itG1, it2);
 		swapRule(it3, it4);
 		swapRule(it5, it6);
-		swapRule(it7,  it8);
+		swapRule(it7, it8);
 
 		eraseMPExceptXY();
 
@@ -292,7 +316,7 @@ void swapRule(deque <tuple<string, int>>::iterator a, deque<tuple<string, int>>:
 void setTheX(unsigned long long val) {
 	char regName[20];
 
-	for (int ii = 0; ii < 64; ii++) {
+	for (int ii = 0; ii < numZREGS; ii++) {
 		sprintf(regName, "x%02d", ii);
 		if (mp.find(regName) != mp.end()) {
 			//printf("regName: %s -- was:%d\n", regName, mp[regName]);
@@ -306,7 +330,7 @@ void setTheX(unsigned long long val) {
 void setTheY(unsigned long long val) {
 	char regName[20];
 
-	for (int ii = 0; ii < 64; ii++) {
+	for (int ii = 0; ii < numZREGS; ii++) {
 		sprintf(regName, "y%02d", ii);
 		if (mp.find(regName) != mp.end()) {
 			//printf("regName: %s -- %d\n", regName, mp[regName]);
@@ -320,7 +344,7 @@ void setTheY(unsigned long long val) {
 void setTheZ(unsigned long long val) {
 	char regName[20];
 
-	for (int ii = 0; ii < 64; ii++) {
+	for (int ii = 0; ii < numZREGS; ii++) {
 		sprintf(regName, "z%02d", ii);
 		if (mp.find(regName) != mp.end()) {
 			//printf("regName: %s -- %d\n", regName, mp[regName]);
@@ -333,7 +357,7 @@ void setTheZ(unsigned long long val) {
 unsigned long long grabTheY() {
 	unsigned long long val = 0;
 	char regName[20];
-	for (int ii = 0; ii < 64; ii++) {
+	for (int ii = 0; ii < numZREGS; ii++) {
 		sprintf(regName, "y%02d", ii);
 		if (mp.find(regName) != mp.end()) {
 			//printf("regName: %s -- %d\n", regName, mp[regName]);
@@ -345,7 +369,7 @@ unsigned long long grabTheY() {
 unsigned long long grabTheX() {
 	unsigned long long val = 0;
 	char regName[20];
-	for (int ii = 0; ii < 64; ii++) {
+	for (int ii = 0; ii < numZREGS; ii++) {
 		sprintf(regName, "x%02d", ii);
 		//printf("regName: %s\n", regName);
 		if (mp.find(regName) != mp.end()) {
@@ -358,14 +382,19 @@ unsigned long long grabTheX() {
 unsigned long long grabTheZ() {
 	unsigned long long val = 0;
 	char regName[20];
-	for (int ii = 0; ii < 64; ii++) {
+	for (int ii = 0; ii < numZREGS; ii++) {
 		sprintf(regName, "z%02d", ii);
-		//printf("regName: %s\n", regName);
+		//printf("***regName: %s ", regName);
 		if (mp.find(regName) != mp.end()) {
-			//printf("regName: %s -- %d\n", regName, mp[regName]);
+			//printf("regName: %s - %d ----", regName, mp[regName]);
+			//printf(" %d ", mp[regName]);
 			val |= (mp[regName] & 1ull) << ii;
+		} else {
+			//printf("\nERROR missing %s\n", regName); exit(0);
 		}
+
 	}
+	//printf("\n");
 	return val;
 }
 void resetAllComplete() {
@@ -380,7 +409,7 @@ unsigned long long runSumAgainDifferentArrangement(int &stuck) {
 	stuck = 0;
 restart:
 	restartCount++;
-	if (restartCount > 1000) { stuck = 1;}
+	if (restartCount > 2000) { stuck = 1;}
 	if (stuck == 0) {
 		for (int i = 0; i < leny; i++) {
 			if (sums[i].complete != 1) { 
@@ -422,15 +451,20 @@ restart:
 		//printf("done the sum.. sending back val.\n");
 
 		vector <int> ve;
+		//printf("--------\n");
 		for (auto it = mp.begin(); it!=mp.end();it++) {
 			string regg = (*it).first;
-			if (regg[0] == 'z') {
-				//printf("%s: %d\n", regg.c_str(), (*it).second);
+			if (regg[0] == 'z' /*&& regg != "z45"*/) {
+				//printf("-- %s: %d ", regg.c_str(), (*it).second);
+				//printf(" %d ", (*it).second);
+				
 				ve.push_back((*it).second);
 			} else {
 				//printf("%s\n", regg.c_str());
 			}
+	
 		}
+		//printf("--------\n");
 		//cout << endl;
 		string deci;
 		for (auto it2 = ve.rbegin(); it2 != ve.rend(); it2++) {
