@@ -16,7 +16,27 @@
 
 using namespace std;
 
+/* this is the example file:
+x00: 0
+x01: 1
+x02: 0
+x03: 1
+x04: 0
+x05: 1
+y00: 0
+y01: 0
+y02: 1
+y03: 1
+y04: 0
+y05: 1
 
+x00 AND y00 -> z05
+x01 AND y01 -> z02
+x02 AND y02 -> z01
+x03 AND y03 -> z03
+x04 AND y04 -> z04
+x05 AND y05 -> z00
+*/
 FILE *a;
 #define LINE 1000
 #define getchar()
@@ -106,16 +126,15 @@ int main(int argc, char **argv)
 			mpBook[sums[leny].r1].push_back({leny, 1});
 			mpBook[sums[leny].r2].push_back({leny, 2});
 			mpBook[sums[leny].r3].push_back({leny, 3});
+			if (r3[0] == 'z') {numZREGS++;}
 		} else if (go == 0) {
 			char regName[10]; int regval;
 			sscanf(line1, "%[^:]: %d\n", regName, &regval);
 			mp[regName] = regval;
-			numZREGS++;
 		}
 		leny++;
 	}
 	fclose(a);
-	numZREGS /= 2;
 	moditVal = pow(2, numZREGS);
 	for (int i = 0; i < leny; i++) {
 		sumsOrig[i] = sums[i];
@@ -135,8 +154,8 @@ int main(int argc, char **argv)
 		int count = 0;
 		int sz = (int)mpBook.size();
 		for (/*auto itG1 = mpBook.begin()*/; itG1 != mpBook.end(); itG1++) {
-			if (((*itG1).first)[0] != 'z') {continue;}
 			cout << ++count << " of " << sz << endl;
+			if (((*itG1).first)[0] != 'z') {continue;}
 			auto it1 = itG1;
                         auto ittmp1 = it1;
                         ittmp1++;
@@ -176,9 +195,9 @@ int main(int argc, char **argv)
 									setTheX(inX); setTheY(inY);
 									unsigned long long ans = (inX & inY) % moditVal;
 
-									unsigned long long X = grabTheX();
+									//unsigned long long X = grabTheX();
 									//assert(X==(inX-moditVal));
-									unsigned long long Y = grabTheY();
+									//unsigned long long Y = grabTheY();
 									//assert(Y==(inY-moditVal));
 									//assert(X == inX);
 									//assert(Y == inY);
