@@ -128,6 +128,7 @@ int main(int argc, char **argv)
 		auto itEND = mpBookQ.end();;
 		auto itENDLess = mpBookQ.end(); itENDLess--;
 		for (/*auto itG1 = mpBookQ.begin()*/; itG1 != itENDLess; itG1++) {
+			int countCCC = 0;
 			end = clock();
 			if (count != 0) {
 				cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
@@ -148,7 +149,7 @@ int main(int argc, char **argv)
 				ittmp2++;
 				int count3 = 0;
 
-				for (auto it3 = itBegin; it3 != itENDLess; it3++) {
+				for (auto it3 = ittmp1; it3 != itENDLess; it3++) {
 					cout << " Level 3: " << count3++ << endl; fflush(stdout);
 					if (it3 == it2 || it3 == it1) {continue;}
 					auto ittmp3 = it3;
@@ -162,7 +163,7 @@ int main(int argc, char **argv)
 						auto ittmp4 = it4;
 						ittmp4++;
 
-						for (auto it5 = itBegin; it5 != itENDLess; it5++) {
+						for (auto it5 = ittmp3; it5 != itENDLess; it5++) {
 
 							if (it5 == it4 ||  it5 == it3 || it5 == it2 || it5 == it1) {continue;}
 							auto ittmp5 = it5;
@@ -171,7 +172,7 @@ int main(int argc, char **argv)
 							for (auto it6 = ittmp5; it6 != itEND; it6++) {
 								if (it6 == it5 || it6 == it4 || it6 == it3 || it6 == it2 || it6 == it1) {continue;}
 
-								for (auto it7 = itBegin; it7 != itENDLess; it7++) {
+								for (auto it7 = ittmp5; it7 != itENDLess; it7++) {
 
 									if (it7 == it6 || it7 == it5 || it7 == it4 || it7 == it3 || it7 == it2 || it7 == it1) {continue;}
 									auto ittmp7 = it7;
@@ -254,6 +255,14 @@ next:
 												ansVec.push_back(an);
 
 											}
+#ifdef _DEBUG_
+			if (countCCC % 1000 == 0) {
+			end = clock();
+			cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+			printf("        time: %f seconds\n", cpu_time_used);
+			}
+			countCCC++;
+#endif
 										}
 									}
 								}
