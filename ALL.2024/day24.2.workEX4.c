@@ -164,7 +164,7 @@ int main(int argc, char **argv)
 				if (((*it2).first)[0] != 'z') {continue;}
 				if (it2 == it1) {continue;}
 
-				for (auto it3 = mpBook.begin(); it3 != mpBook.end(); it3++) {
+				for (auto it3 = ittmp1; it3 != mpBook.end(); it3++) {
 					if (((*it3).first)[0] != 'z') {continue;}
 					if (it3 == it2 || it3 == it1) {continue;}
 
