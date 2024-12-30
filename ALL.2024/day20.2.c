@@ -12,9 +12,11 @@
 #include <algorithm>
 #include <deque>
 #include <unordered_set>
+//#include <f_set>
 #include <string>
 #include <iostream>
 #include <time.h>
+#include <bits/stdc++.h>
 
 /* slowish (sort takes a while) -- need some optims... */
 /* compile with -Wl,--stack,999777666 */
@@ -38,29 +40,63 @@ void calcLen(tuple <int, int, int, int> bla);
 
 void printit();
 deque <tuple<int, int, int>> deAns;
-//set <pair<int, int>> se;
 map <int, int> mp;
 int sx, sy, ex, ey;
 struct hash_function
 {
 	size_t operator()(const tuple<int , int , int, int>&x) const
 	{
-		return get<0>(x) ^ get<1>(x) ^ get<2>(x) ^ get<3>(x);
+		unsigned int hash = 
+get<0>(x);
+hash *= 37;
+hash += get<1>(x);
+hash *= 37;
+hash += get<2>(x);
+hash *= 37;
+hash += get<3>(x);
+		return hash;
+//		return get<0>(x) ^ get<1>(x) ^ get<2>(x) ^ get<3>(x);
 	}
+};
+
+/*
+bool operator==(const tuple<int, int, int, int> &lhs, const tuple<int, int, int, int>&rhs)
+{
+	return (get<0>(lhs) == get<0>(rhs)) && (get<1>(lhs) == get<1>(rhs)) && (get<2>(lhs) == get<2>(rhs)) &&
+		(get<3>(lhs) == get<3>(rhs)); 
+};
+*/
+/*
+struct Ineq
+{
+};
+*/
+
+/*
+	bool operator==(const tuple<int, int, int, int> &lhs, const tuple<int, int, int, int>&rhs)
+	{
+    		return (get<0>(lhs) == get<0>(rhs)) && (get<1>(lhs) == get<1>(rhs)) && (get<2>(lhs) == get<2>(rhs>)) &&
+			(get<3>(lhs) == get<3>(rhs)); 
+	}
+*/
+
+/*
 	size_t operator-(const tuple<int , int , int, int>&x) const
 	{
 		return 1;
 	}
-};
+*/
 int noCheatMinPath = 0;
-map <tuple<int, int, int, int>, int> preComputedLens;
 map <pair<int, int>, int> distToStart;
-map <pair<int, int>, int> disttoend;
 deque <tuple<int, int, int, int>> de4;
-set <tuple<int, int, int, int>, hash_function> de4_check;
+unordered_set <tuple<int, int, int, int>, hash_function> se4;
+
+//set <tuple<int, int, int, int>, hash_function> de4_check;
 //map <tuple<int, int, int, int>, int> dupMap;
-//set <tuple<int, int, int, int>> se4;
 //set <tuple<int, int, int, int, int, int, int, int>> fourPoints;
+//map <pair<int, int>, int> disttoend;
+//set <pair<int, int>> se;
+//map <tuple<int, int, int, int>, int> preComputedLens;
 
 int gcount = 0;
 
@@ -68,6 +104,7 @@ void generateAllCheatPaths();
 void generateAllCheatPaths() {
 	printf("Generating all Cheat Paths...\n");
 	int ii = 0;
+	memset(already, -1, sizeof(already));
 	for (auto se1: deAns) {
 		ii++;
 		int x2 = get<0>(se1);
@@ -94,7 +131,11 @@ void generateAllCheatPaths() {
 						   {de4.push_back({x2, y2, x1p, y1n});}
 						   }
 						 */
-						{de4.push_back({x2, y2, x1p, y1n});}
+						
+						if (se4.find({x2, y2, x1p, y1n}) == se4.end()) {
+						   	se4.insert({x2, y2, x1p, y1n});
+							{de4.push_back({x2, y2, x1p, y1n});}
+						}
 					}
 					if (x1p >= 0 && x1p <= lenx-1 && y1p >= 0 && y1p <= leny-1 && grid[y1p][x1p] == '.') {
 						//tuple <int, int, int, int> tu11 = make_tuple(x2, y2, x1p, y1p);
@@ -104,7 +145,10 @@ void generateAllCheatPaths() {
 						   {de4.push_back({x2, y2, x1p, y1p});}
 						   }
 						 */
-						{de4.push_back({x2, y2, x1p, y1p});}
+						if (se4.find({x2, y2, x1p, y1p}) == se4.end()) {
+						   	se4.insert({x2, y2, x1p, y1p});
+							{de4.push_back({x2, y2, x1p, y1p});}
+						}
 					}
 					if (x1n >= 0 && x1n <= lenx-1 && y1p >= 0 && y1p <= leny-1 && grid[y1p][x1n] == '.') {
 						//tuple <int, int, int, int> tu11 = make_tuple(x2, y2, x1n, y1p);
@@ -114,7 +158,10 @@ void generateAllCheatPaths() {
 						   {de4.push_back({x2, y2, x1n, y1p});}
 						   }
 						 */
-						{de4.push_back({x2, y2, x1n, y1p});}
+						if (se4.find({x2, y2, x1n, y1p}) == se4.end()) {
+						   	se4.insert({x2, y2, x1n, y1p});
+							{de4.push_back({x2, y2, x1n, y1p});}
+						}
 
 					}
 					if (x1n >= 0 && x1n <= lenx-1 && y1n >= 0 && y1n <= leny-1 && grid[y1n][x1n] == '.') {
@@ -125,7 +172,10 @@ void generateAllCheatPaths() {
 						   {de4.push_back({x2, y2, x1n, y1n});}
 						   }
 						 */
-						{de4.push_back({x2, y2, x1n, y1n});}
+						if (se4.find({x2, y2, x1n, y1n}) == se4.end()) {
+						   	se4.insert({x2, y2, x1n, y1n});
+							{de4.push_back({x2, y2, x1n, y1n});}
+						}
 					}
 				}
 			}
@@ -150,6 +200,7 @@ void saveinsave(int pathLen) {
 	}
 }
 
+/*
 int getPathLength(tuple <int, int, int, int> bla);
 int getPathLength(tuple <int, int, int, int> bla) {
 	//dEPRECATED
@@ -172,6 +223,7 @@ int getPathLength(tuple <int, int, int, int> bla) {
 	}
 
 }
+*/
 
 int main(int argc, char **argv)
 {
@@ -244,6 +296,8 @@ after:
 		printf("	time generating: %f seconds\n", cpu_time_used);
 	}
 
+/*DEPRECATED as using unordered_set
+	printf("sizebefore %d\n", (int)de4.size());
 	{//sort (quicker than using a set for no dups)
 		printf("calling sort (slow)(%d):\n", (int)de4.size());
 		start = clock();
@@ -261,7 +315,9 @@ after:
 		cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
 		printf("	time unique: %f seconds\n", cpu_time_used);
 	}
+	printf("sizeafter %d\n", (int)de4.size());
 
+*/
 	//printf("se4.size is %d\n", (int) se4.size()); fflush(stdout); 
 	printf("de4.size is %d\n", (int) de4.size()); fflush(stdout); 
 
