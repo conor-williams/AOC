@@ -9,6 +9,7 @@
 #include <time.h>
 /*
 #include <map>
+#include <unordered_map>
 #include <vector>
 #include <string>
 #include <iostream>
@@ -17,7 +18,18 @@
 #include <unordered_set>
 
 using namespace std;
+
+
+struct hash_function
+{
+        size_t operator()(const tuple<int , int , int, int>&x) const
+        {
+                unsigned int hash = get<0>(x); hash *= 37; hash += get<1>(x); hash *= 27; hash += get<2>(x); hash *= 27; hash += get<3>(x); return hash;
+        }
+};
+
 */
+
 
 
 FILE *a;
