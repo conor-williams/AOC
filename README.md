@@ -34,5 +34,5 @@
 	<tr><td><b>2021</b></td><td>todo</td></tr>
 	<tr><td><b>2022</b></td><td>todo</td></tr>
 	<tr><td><b>2023</b></td><td>todo</td></tr>
-	<tr><td><b>2024</b></td><td>day22.2</td></tr>
+	<tr><td><b><i>2024</i></b></td><td>day22.2</td></tr>
 </table>
