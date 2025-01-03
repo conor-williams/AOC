@@ -5,6 +5,9 @@
 #include <math.h>
 #include <mbedtls/md5.h>
 
+#include <unistd.h>
+
+#define getchar()
 int lenx, leny;
 #define DAY "2016 day17 part1 \n"
 #define _DEBUG_
@@ -57,6 +60,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
+	fflush(stdout); int fd = dup(1); close(1);
 while(1) 
 {
 	ansPos = 0;
@@ -113,6 +117,11 @@ while(1)
 		}
 		
 		printf("**min is %s\n", ans[minPos]);
+		dup2(fd, 1);
+		char ans2[100];
+		strncpy(ans2, ans[minPos]+(int)strlen(buf), 100);
+		printf("**ans: %s\n", ans2);
+		exit(0);
 	} else {
 		printf("no ans...\n");
 	}
@@ -120,6 +129,8 @@ while(1)
 }
 fclose(a);
 	tot = 0;
+
+	//dup2(fd, 1);
 	printf("***tot %ld END\n", tot); fflush(stdout);
 } 
 void next(int x, int y, int steps, char dir, char *in) {

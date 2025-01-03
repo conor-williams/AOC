@@ -4,6 +4,9 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 //////////////////////
 #include <stdio.h>
 #include <string.h>
@@ -72,6 +75,9 @@ int compute_md5(const char *input, int timerOn, int pr, int inputPos) {
 //////////////////////
 int main(int argc, char **argv)
 {
+
+	printf("2016 day14 part 2\n");
+	//fflush(stdout); int fd = dup(1); //close(1);
 	for (int i = 0; i < UPTO; i++) {
 		threefive[i].five =0;
 		threefive[i].three =0;
@@ -91,16 +97,17 @@ int main(int argc, char **argv)
 	}
 	
 	system("date");
-	printf("after...\n"); fflush(stdout); 
+	//printf("after...\n"); fflush(stdout); 
 	int pos = 0;
 	for (int i = 0; i < UPTO-2000; i++) {
 		if (threefive[i].three == 1) {
 			for (int j = i+1; j < 1000+i+1; j++) {
 				if (threefive[j].five == 1 && threefive[i].theThree == threefive[j].theFive) {
 					pos++;
-					printf("gotONE... @ j == %d **i is %d pos: %d\n", j, i, pos); getchar();
+					//printf("gotONE... @ j == %d **i is %d pos: %d\n", j, i, pos); getchar();
 					if (pos == 64) {
-						printf("gotcha... @ j == %d **i is %d pos: %d\n", j, i, pos); getchar();
+						//printf("gotcha... @ j == %d **i is %d pos: %d\n", j, i, pos); getchar();
+						printf("**ans %d\n", i);
 						exit(0);
 					}
 					goto cont;

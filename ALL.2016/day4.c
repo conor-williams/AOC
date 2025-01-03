@@ -4,6 +4,9 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 int lenx, leny;
 #define DAY "2016 day4 part1 \n"
 #undef _DEBUG_
@@ -17,6 +20,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[220];
 	unsigned int tot =0;
 while(1) 
@@ -31,7 +35,7 @@ while(1)
 //-------------------------
 	char lets[200]; char checksum[6]; char sectorID[20]; int pos = 0;
 	int a2z[26] = {0};
-	sscanf(line1, "%[^\[]\[%[^\]]", lets, checksum);
+	sscanf(line1, "%[^\[]\[%[^]]", lets, checksum);
 	printf("lets, checksum [%s],[%s]\n", lets, checksum);
 	for (int i = 0; i < strlen(lets); i++) {
 		if (islower((int)lets[i])) {
@@ -71,6 +75,8 @@ while(1)
 		printf("NOTA: [%s] [%s]\n", calcCS, checksum);
 	}
 } 
+
+	dup2(fd, 1);
 	printf("****tot [%d]\n", tot);
     fclose(a);
 }

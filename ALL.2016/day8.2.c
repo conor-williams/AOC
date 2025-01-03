@@ -38,23 +38,23 @@ while(1)
 	int f = 0; int s = 0; int r = 0; int c = 0;
 	int ret = 0;
 	ret = sscanf(line1, "rect %[^x]x%d", first, &s);
-	printf("ret X is %d\n", ret);
+	//printf("ret X is %d\n", ret);
 	if (ret == 2) {
 		f = atoi(first);
 		printf("f [%d], s %d\n", f, s); 
 		for (int y = 0; y < s; y++) {
 			for (int x = 0; x < f; x++) {
-				printf("y x %d %d\n", y, x);
+				//printf("y x %d %d\n", y, x);
 				grid[y][x] = 1;				
 			}
 		} 
-		printGrid(); 
+		///printGrid(); 
 		goto end;
 	}
 	ret = sscanf(line1, "rotate row y=%d by %d", &r, &f);
-	printf("ROT ROW: ret is %d\n", ret);
+	//printf("ROT ROW: ret is %d\n", ret);
 	if (ret == 2) {
-		printf("row %d, f %d\n", r, f);
+		//printf("row %d, f %d\n", r, f);
 		int y = r; 
 		int tmpX[XM];
 		for (int x1 = 0; x1 < XM; x1++) {
@@ -64,13 +64,13 @@ while(1)
 			int pos = (x+f) % XM;
 			grid[y][pos] = tmpX[x];
 		}
-		printGrid(); 
+		///printGrid(); 
 		goto end;
 	}
 	ret = sscanf(line1, "rotate column x=%d by %d", &c, &f);
-	printf("ROT COL: ret is %d\n", ret);
+	//printf("ROT COL: ret is %d\n", ret);
 	if (ret == 2) {
-	printf("column %d, f %d\n", c, f);
+		//printf("column %d, f %d\n", c, f);
 		int x = c;
 		int tmpCol[YM];
 		for (int y1 = 0; y1 < YM; y1++) {
@@ -79,7 +79,7 @@ while(1)
 		for (int y = 0; y < YM ; y++) {
 			int pos = (y+f) % YM;
 			grid[pos][x] = tmpCol[y]; 
-			printf("y x %d %d\n", pos, x); 
+			//printf("y x %d %d\n", pos, x); 
 		}
 		//printGrid(); 
 		goto end;
@@ -89,6 +89,8 @@ end:
 	leny++;
 }
 fclose(a);
+	dup2(fd, 1);
+	printGrid();
 	int count = 0;
 	for (int x = 0; x < XM; x++) {
 		for (int y = 0; y < YM; y++) {
@@ -97,10 +99,7 @@ fclose(a);
 			}
 		}
 	}	
-
-	dup2(fd, 1);
-	printf("***count %d\n", count);
-	//printf("END\n");
+	//printf("***count %d\n", count); printf("END\n");
 } 
 void printGrid() {
 	for (int y = 0; y < YM; y++) {

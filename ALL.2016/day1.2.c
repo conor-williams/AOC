@@ -4,6 +4,9 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 struct dire {
     int N;
     int S;
@@ -19,11 +22,14 @@ struct xy {
 void checkWereYouThereBefore(int curx, int cury);
 struct xy xytracks[10000];
 int pos = 0;
+int fd;
 int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s", argv[1]); fflush(stdin); fflush(stdout);
 
-        FILE * a = fopen(argv[1], "r"); printf("Day8.2\n"); fflush(stdin); fflush(stdout);
+        FILE * a = fopen(argv[1], "r"); printf("2016 Day1.2\n"); fflush(stdin); fflush(stdout);
+
+	fflush(stdout); fd = dup(1); close(1);
 
         char line1[1000];
         fgets(line1, 1000, a);
@@ -32,7 +38,7 @@ printf("line1 %s\n", line1);
 
 int pointing = 0;
 struct dire dirE = {0};
-int nextisdigit = 0;
+//int nextisdigit = 0;
 int currentNS = 0;
 int currentEW = 0;
         for (int f = 0; f < 1000; f++)  {
@@ -98,6 +104,7 @@ for (int d = 1; d <= dig; d++) {
      int eastwest = dirE.E - dirE.W;
 printf("pointing: %d\n", pointing);
 printf("N: %d S: %d E: %d W:%d\n", dirE.N, dirE.S, dirE.E, dirE.W);
+
       printf("****ns: %d ew: %d*****\n", northsouth, eastwest);
 
 }
@@ -105,6 +112,8 @@ void checkWereYouThereBefore(int curx, int cury) {
       for (int e = 0; e < pos; e++) {
 	if (curx == xytracks[e].x && cury == xytracks[e].y) {
 		printf("There before: %d, %d\n", curx, cury);
+		dup2(fd, 1);
+		printf("**ans: %d\n", abs(curx) + abs(cury));
 	        fflush(stdout);
 		exit(0);
         }

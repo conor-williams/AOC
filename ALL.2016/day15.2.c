@@ -5,8 +5,11 @@
 #include <math.h>
 #include <unistd.h>
 
+#include <unistd.h>
+
+#define getchar()
 int lenx, leny;
-#define DAY "2016 day16 part1 \n"
+#define DAY "2016 day15 part2 \n"
 #define _DEBUG_
 long tot;
 #define SIZE 200
@@ -24,6 +27,8 @@ int main(int argc, char **argv)
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); //close(1);
        
         char line1[SIZE];
 	for (int i = 0; i < 10; i++) {
@@ -32,10 +37,12 @@ int main(int argc, char **argv)
 		discs[i].startPos = -1;
 	}
 	int max = 0;
+	int breakNext = 0;
 while(1) 
 {
+	if (breakNext == 1) {break;}
         fgets(line1, SIZE-1, a);
-        if (feof(a)) break;
+        if (feof(a)) {strcpy(line1, "Disc #7 has 11 positions; at time=0, it is at position 0.\n"); breakNext = 1;}
 	line1[strlen(line1) -1]='\0';
 #ifdef _DEBUG_
 //	printf("LINE: %s\n", line1);
@@ -54,8 +61,6 @@ while(1)
 fclose(a);
 	int timeAns = 0;
 	int t = 0;	
-	int fd = dup(1);
-	close(1);
 	do {
 	//for (int t = 0; t < 1000000; t++) {
 		int ans[100] = {0};
@@ -64,7 +69,7 @@ fclose(a);
 			//printf("%d %d %d\n", discs[p].discNum, discs[p].totPos, discs[p].startPos);
 			int dtime = discs[p].discNum+t;
 			ans[p] = (((dtime % discs[p].totPos)) + discs[p].startPos) % discs[p].totPos;
-			printf("ans %d t = %d for disc %d\n", ans[p], t, p);  getchar();
+			//printf("ans %d t = %d for disc %d\n", ans[p], t, p);  getchar();
 		}
 		int found = 0;
 		for (int p = 1; p <= max; p++) {

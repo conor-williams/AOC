@@ -4,6 +4,9 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 //////////////////////
 #include <stdio.h>
 #include <string.h>
@@ -26,12 +29,12 @@ int compute_md5(const char *input, int timerOn, int pr) {
 	mbedtls_md5_finish_ret(&ctx, output);
 	mbedtls_md5_free(&ctx);
 
-	unsigned char out5[50];
+	char out5[100];
 	//printf("ouput is %s\n", output);
 
-	sprintf(out5, "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x\0", output[0], output[1], output[2], output[3], output[4], output[5], output[6], output[7], output[8], output[9], output[10], output[11], output[12], output[13], output[14], output[15]);
+	sprintf(out5, "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x", output[0], output[1], output[2], output[3], output[4], output[5], output[6], output[7], output[8], output[9], output[10], output[11], output[12], output[13], output[14], output[15]);
 
-	if (pr == 1) { printf("out5 is %s strlen(out5) %d\n", out5, strlen(out5)); print_hash(output); if (timerOn == 1) {printf("the is %c\n", the);}}
+	if (pr == 1) { printf("out5 is %s strlen(out5) %d\n", out5, (int)strlen(out5)); print_hash(output); if (timerOn == 1) {printf("the is %c\n", the);}}
 	if (timerOn == 1) {
 		for (int j = 0; j < 32-4; j++) {
 			if (out5[j] == the && out5[j] == out5[j+1] && out5[j+1] == out5[j+2] && out5[j+2] == out5[j+3] && out5[j+3] == out5[j+4]) {
@@ -47,31 +50,38 @@ int compute_md5(const char *input, int timerOn, int pr) {
 			}
 		}
 	}
+	return 0;
 }
 
 //////////////////////
 int main(int argc, char **argv)
 {
+
+	printf("2016 day14 part1\n");
+	fflush(stdout); int fd = dup(1); close(1);
 	unsigned long i = 0; 
 	char buf[100];
-	//char *input = "ihaygndm";
-	char *input = "abc";
+	char *input = "ihaygndm";
+	//char *input = "abc";
 	int pos = 0;
 	while (1) {
-		if (i % 1000 == 0) {printf(" i is: %d\n", i);}
+		//if (i % 1000 == 0) {printf(" i is: %lu\n", i);}
 		snprintf(buf, 50, "%s%lu", input, i);
 		if (compute_md5(buf, 0, 0) == 3) {
 			for (int j = i+1; j < 1000+i+1; j++) {
-				snprintf(buf, 50, "%s%lu", input, j);
+				snprintf(buf, 50, "%s%d", input, j);
 				if (compute_md5(buf, 1, 0) == 5) {
 					pos++;
 					if (pos == 64) {
-						printf("gotcha... @ j == %d **i is %d pos: %d\n", j, i, pos); getchar();
-						printf("**** index i is %d\n", i); getchar();
+						//printf("gotcha... @ j == %d **i is %lu pos: %d\n", j, i, pos); getchar();
+						//printf("**** index i is %lu\n", i); getchar();
+						dup2(fd, 1);
+						printf("**ans %lu\n", i);
+						exit(0);
 					} else if (pos == 63) {
-						printf("**** index i is %d\n", i); 
+						//printf("**** index i is %lu\n", i); 
 					} else if (pos == 65) {
-						printf("**** index i is %d\n", i); getchar();
+						//printf("**** index i is %lu\n", i); getchar();
 					}
 				}
 			}

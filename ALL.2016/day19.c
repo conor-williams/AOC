@@ -5,13 +5,16 @@
 #include <math.h>
 #include <unistd.h>
 
+#include <unistd.h>
+
+#define getchar()
 int lenx, leny;
 #define DAY "2016 day19 part1 \n"
 #define _DEBUG_
 long tot;
 #define SIZE 20
 #define getchar()
-
+// compile: -Wl,--stack,999777666
 int main(int argc, char **argv)
 {
 	tot = 0;lenx = 0; leny = 0;
@@ -19,6 +22,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[SIZE];
 	int elfP = -1;
 while(1) 
@@ -35,8 +39,6 @@ while(1)
 	}
 	int endElf = atoi(line1);
 	printf("endElf is [%d]\n", endElf);
-	int fd = dup(1);
-	close(1);
 	do {
 		for (int i = 1; i <= endElf; i++) {
 			if (presents[i] == 0) {
@@ -76,6 +78,7 @@ while(1)
 end:
 	dup2(fd,1);
 	printf("**elfP is %d\n", elfP);
+	exit(0);
 	leny++;
 }
 fclose(a);

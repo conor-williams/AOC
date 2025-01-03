@@ -7,6 +7,9 @@
 #include <algorithm>
 #include <bits/stdc++.h>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 int lenx, leny;
@@ -24,6 +27,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[SIZE];
 while(1) 
 {
@@ -33,7 +37,7 @@ while(1)
 #ifdef _DEBUG_
 //	printf("LINE: %s\n", line1);
 #endif
-	char buf[SIZES]; char in[SIZES];
+	char buf[SIZES+10]; char in[SIZES];
 	strcpy(in, line1);
 	do {
 		string b = in;	
@@ -69,7 +73,9 @@ again:
 		goto again;
 	}
 		
+	dup2(fd, 1);
 	printf("*** cSum %s\n", cSum);
+	exit(0);
 	leny++;
 	
 }

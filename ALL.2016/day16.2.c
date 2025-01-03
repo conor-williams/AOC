@@ -9,12 +9,15 @@
 #include <unistd.h>
 #include <deque>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 deque<int> b1;
 deque<int> b2;
 int lenx, leny;
-#define DAY "2016 day16 part1 \n"
+#define DAY "2016 day16 part2 \n"
 #define _DEBUG_
 long tot;
 #define SIZE 200
@@ -29,8 +32,8 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[SIZE];
-	//int fd = dup(1); close(1);
 while(1) 
 {
         fgets(line1, SIZE-1, a);
@@ -48,11 +51,9 @@ while(1)
 		}
 	}
 	
-	int fd = dup(1);
-	close(1);
 	b1 = in;	
 	do {
-		printf("in while %d\n", in.size());
+		//printf("in while %d\n", in.size());
 		b1.push_back(0);
 		for (auto it = in.rbegin(); it != in.rend(); it++)  {
 			if (*it == 0) {
@@ -68,7 +69,7 @@ while(1)
 		printf("\n"); getchar();
 	} while (b1.size() < CDISK);
 
-	printf("after while %d\n", in.size());
+	//printf("after while %d\n", in.size());
 	while (b1.size() > CDISK) {b1.pop_back();}
 	printf("20:\n");
 	for (auto it = b1.begin(); it != b1.end(); it++)  {
@@ -106,6 +107,7 @@ again:
 }
 fclose(a);
 		
+
 	printf(" ***tot %ld END\n", tot); fflush(stdout);
 } 
 

@@ -7,6 +7,9 @@
 #include <vector>
 #include <algorithm>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 int lenx, leny;
 #define DAY "2016 day10 part1 \n"
@@ -47,6 +50,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdout);
        
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[1000];
 while(1) 
 {
@@ -232,7 +236,7 @@ fclose(a);
 				} else if (bots[mBot].Bchip[j] == 17) {
 					found++;
 				}
-				if (found == 2) {printf("FOUND IT BOT: (%d)\n", bots[mBot].botNum); getchar();}
+				if (found == 2) {dup2(fd, 1); printf("FOUND IT BOT: (%d)\n", bots[mBot].botNum); getchar(); exit(0);}
 			}
 		} else {
 			printf("NOT Accessing (%d)\n", bots[mBot].botNum);

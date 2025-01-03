@@ -5,8 +5,11 @@
 #include <math.h>
 #include <mbedtls/md5.h>
 
+#include <unistd.h>
+// compile: -Wl,--stack,999777666
+#define getchar()
 int lenx, leny;
-#define DAY "2016 day17 part1 \n"
+#define DAY "2016 day17 part2 \n"
 #define _DEBUG_
 long tot;
 #define SIZE 50
@@ -32,17 +35,17 @@ void print_hash(unsigned char hash[16]) {
         printf("\n");
 }
 int compute_md5(const char *input) {
-        unsigned char output[16]; // MD5 output is 16 bytes
+        unsigned char output22[100]; // MD5 output is 16 bytes
 
         mbedtls_md5_context ctx;
         mbedtls_md5_init(&ctx);
         mbedtls_md5_starts_ret(&ctx);
         mbedtls_md5_update_ret(&ctx, (const unsigned char*) input, strlen(input));
-        mbedtls_md5_finish_ret(&ctx, output);
+        mbedtls_md5_finish_ret(&ctx, output22);
         mbedtls_md5_free(&ctx);
 
 
-        sprintf(out5, "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x", output[0], output[1], output[2], output[3], output[4], output[5], output[6], output[7], output[8], output[9], output[10], output[11], output[12], output[13], output[14], output[15]);
+        sprintf(out5, "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x", output22[0], output22[1], output22[2], output22[3], output22[4], output22[5], output22[6], output22[7], output22[8], output22[9], output22[10], output22[11], output22[12], output22[13], output22[14], output22[15]);
 
         //printf("out5 is %s\n", out5);
 	return 0;
@@ -56,6 +59,8 @@ int main(int argc, char **argv)
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
        
 while(1) 
 {
@@ -112,7 +117,10 @@ while(1)
 			if ((int)strlen(ans[i]) > max) {max = (int)strlen(ans[i]); maxPos = i;}
 		}
 		
-		printf("**max is %s LEN: %d\n", ans[maxPos], (int)strlen(ans[maxPos]) - (int)strlen(line1));
+		//printf("**max is %s LEN: %d\n", ans[maxPos], (int)strlen(ans[maxPos]) - (int)strlen(line1));
+		dup2(fd, 1);
+		printf("**ans: %d\n", (int)strlen(ans[maxPos]) - (int)strlen(line1));
+		exit(0);
 	} else {
 		printf("no ans...\n");
 	}
@@ -120,6 +128,7 @@ while(1)
 }
 fclose(a);
 	tot = 0;
+
 	printf("***tot %ld END\n", tot); fflush(stdout);
 } 
 void next(int x, int y, int steps, char dir, char *in) {

@@ -4,6 +4,10 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
+///// compile with -lmbedcrypto
 //////////////////////
 #include <stdio.h>
 #include <string.h>
@@ -27,13 +31,13 @@ void compute_md5(const char *input) {
     mbedtls_md5_finish_ret(&ctx, output);
     mbedtls_md5_free(&ctx);
 
-    unsigned char out5[7];
-    sprintf(out5, "%02x%02x%02x%02x%02x\0", output[0], output[1], output[2], output[3], output[4], output[5]);
+    char out5[20];
+    sprintf(out5, "%02x%02x%02x%02x%02x%02x", output[0], output[1], output[2], output[3], output[4], output[5]);
 
     if (out5[0] == '0' && out5[1] == '0' && out5[2] == '0' && out5[3] == '0' && out5[4] == '0') {
-    	print_hash(output);
+    	//print_hash(output);
 	pass[num] = out5[5];
-	printf("%c \n", out5[5]);
+	//printf("%c \n", out5[5]);
 	num++;
     }
 }
@@ -41,11 +45,14 @@ void compute_md5(const char *input) {
 //////////////////////
 int main(int argc, char **argv)
 {
+	printf("2016 Day5 Part 1\n");
 	unsigned long i = 0; 
 	char buf[100];
+
+	fflush(stdout); int fd = dup(1); close(1);
         num = 0;
 	int count = 0;
-	char *input = "ojvtpuvg";
+	char input[] = "ojvtpuvg";
 //	char *input = "abc";
 	while (1) {
 		count++;
@@ -61,5 +68,7 @@ int main(int argc, char **argv)
 		i++;
 	}
 	pass[8] = '\0';
+
+	dup2(fd, 1);
 	printf("***Password: %s\n", pass);
 }

@@ -4,8 +4,11 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 int lenx, leny;
-#define DAY "2016 day12 part1 \n"
+#define DAY "2016 day25 part1 \n"
 #define _DEBUG_
 long tot;
 #define SIZE 200
@@ -19,6 +22,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[SIZE];
 while(1) 
 {
@@ -143,9 +147,11 @@ fclose(a);
 				
 			printf("INVALID.. CONT [%s]\n", instrs[i]);
 		}
-		if (count == 1000) {printf("i:[%d] is good\n", i); getchar();} else {printf("i:%d bad\n", i);}
+		if (count == 1000) {dup2(fd, 1); printf("i:[%d] is good\n", i); exit(0);} else {/*printf("i:%d bad\n", i);*/}
 	}
 
 	//printf("***tot %ld END\n", tot); fflush(stdout);
+
+	dup2(fd, 1);
 	printf("***reg a %d\n", regs[0]); fflush(stdout);
 } 

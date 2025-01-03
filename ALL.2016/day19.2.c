@@ -8,6 +8,10 @@
 #include <algorithm>
 #include <string>
 
+#include <unistd.h>
+
+#define getchar()
+//compile: -Wl,--stack,999777666
 using namespace std;
 //int END = 3014387;
 //int END = 21;
@@ -35,7 +39,7 @@ void rotate(int d)
 
 
 int lenx, leny;
-#define DAY "2016 day19 part1 \n"
+#define DAY "2016 day19 part2 \n"
 #define _DEBUG_
 long tot;
 #define SIZE 20
@@ -48,6 +52,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[SIZE];
 while(1) 
 {
@@ -76,10 +81,12 @@ while(1)
 		int rem = circle2.size()/2 % 2;
 		rotateClock(rem);
 	}
-	//dup2(fd,1);
+	dup2(fd,1);
 	printf("** size: %d -- \n***ANS is %d\n", (int)circle2.size(), (int)circle2.front());
+	exit(0);
 	leny++;
 }
 fclose(a);
+
 	printf("***tot %ld END\n", tot); fflush(stdout);
 } 

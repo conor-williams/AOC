@@ -4,11 +4,16 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 int lenx, leny;
-#define DAY "2016 day8 part1 \n"
+#define DAY "2016 day9 part2 \n"
 #define _DEBUG_
 long tot;
+#define SIZE 90000000
 
+///compile: -Wl,--stack,999777666
 int main(int argc, char **argv)
 {
 	tot = 0;lenx = 0; leny = 0;
@@ -16,24 +21,25 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
-        char line1[220];
+	fflush(stdout); int fd = dup(1); close(1);
+        char line1[SIZE];
 while(1) 
 {
-        fgets(line1, 200, a);
+        fgets(line1, SIZE-1, a);
         if (feof(a)) break;
 	line1[strlen(line1) -1]='\0';
 #ifdef _DEBUG_
-	printf("LINE: %s\n", line1);
+//	printf("LINE: %s\n", line1);
 #endif
-	char newLine[1000]; int newLinePos = 0;
-	int found;
+	char newLine[SIZE]; int newLinePos = 0;
+	int found; int count = 0;
         do {
 		found = 0; newLinePos = 0;
 		memset(newLine, 0, sizeof(newLine));
 		for (int i = 0; i < (int)strlen(line1); i++) {
 			if (line1[i] == '\(') {
 				int fI = 0; int sI = 0;
-				char f[10]; char s[10];
+				char f[SIZE]; char s[SIZE];
 				int fPos = 0; int j; 
 				for (j = i+1; line1[j] != 'x'; j++) {
 					f[fPos] = line1[j]; fPos++;
@@ -47,21 +53,21 @@ while(1)
 				i = k+1;
 				s[sPos] = '\0'; sI = atoi(s);
 				int z;
-		printf("%d X %d\n", fI, sI); getchar();
-				char subString[100];
+//		printf("%d X %d\n", fI, sI); 
+				char subString[SIZE];
 		memset(subString, 0, sizeof(subString));
 				for (z = 0; z < fI; z++) {
 					subString[z] = line1[i]; i++;
 				}
 				subString[z] = '\0';
-		printf("substring = %s\n", subString); getchar();
-				char mulSubString[200];
+//		printf("substring = %s\n", subString); 
+				char mulSubString[SIZE];
 		memset(mulSubString, 0, sizeof(mulSubString));
 				for (int q = 0; q < sI; q++) {
 					strcat(mulSubString, subString);
 				}
 				strcat(newLine, mulSubString);
-		printf("mulSub %s\n", mulSubString); getchar();
+//		printf("mulSub %s\n", mulSubString); 
 				newLinePos += strlen(mulSubString);
 				found = 1;
 				i--;
@@ -73,13 +79,19 @@ while(1)
 			}
 		}
 		newLine[newLinePos] = '\0'; newLinePos++;
-	printf("newLine %s\n", newLine);
+//	printf("newLine %s\n", newLine); fflush(stdout);
+		dup2(fd, 1);
+		printf("pass %d len(%d)\n", count, (int)strlen(newLine)); fflush(stdout);
+		exit(0);
+		count++;
 		strcpy(line1, newLine);
+		//break;
 	} while (found == 1);
 	printf("deCOMP len %d\n", (int)strlen(newLine));
 	tot += (int)strlen(newLine);
 
 }
 fclose(a);
-	printf("***tot %ld END\n", tot);
+
+	printf("***tot %ld END\n", tot); fflush(stdout);
 } 

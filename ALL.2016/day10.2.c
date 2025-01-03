@@ -7,9 +7,12 @@
 #include <vector>
 #include <algorithm>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 int lenx, leny;
-#define DAY "2016 day10 part1 \n"
+#define DAY "2016 day10 part2 \n"
 #undef _DEBUG_
 long tot;
 vector <int> orderV;
@@ -47,6 +50,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdout);
        
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[1000];
 while(1) 
 {
@@ -360,7 +364,9 @@ fclose(a);
 			}
 		}
 	}
+
+	dup2(fd, 1);
 	printf("***mul %d\n", mul);
-	printf("mul END\n");
+	//printf("mul END\n");
     	return 0;
 } 

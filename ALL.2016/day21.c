@@ -9,6 +9,9 @@
 #include <string>
 #include <vector>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 int lenx, leny;
@@ -26,6 +29,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[SIZE];
 	char LINE[20];
 	if (strcmp (argv[1], "ex1.txt") == 0) {
@@ -135,6 +139,9 @@ for (auto it = V.begin(); it != V.end(); it++) { printf("%c", *it); } printf("\n
 	leny++;
 }
 fclose(a);
+	dup2(fd, 1);
+	printf("**ans: ");
 	for (auto it = V.begin(); it != V.end(); it++) { printf("%c", *it); } printf("\n");
-	printf("***tot %ld END\n", tot); fflush(stdout);
+
+	//printf("***tot %ld END\n", tot); fflush(stdout);
 } 

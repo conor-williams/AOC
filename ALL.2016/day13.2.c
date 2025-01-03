@@ -4,8 +4,11 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 int lenx, leny;
-#define DAY "2016 day8 part1 \n"
+#define DAY "2016 day13 part2 \n"
 #define _DEBUG_
 long tot;
 #define SIZE 100
@@ -27,6 +30,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[SIZE];
 while(1) 
 {
@@ -76,6 +80,8 @@ fclose(a);
 		}
 	}
 	printf("\n");
+
+	dup2(fd, 1);
 	printf("***tot %ld END\n", tot); fflush(stdout);
 } 
 

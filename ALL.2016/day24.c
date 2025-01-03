@@ -6,10 +6,13 @@
 #include <algorithm>
 #include <string>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 int lenx, leny;
-#define DAY "2016 day8 part1 \n"
+#define DAY "2016 day24 part1 \n"
 #define _DEBUG_
 long tot;
 #define SIZE 1000000
@@ -40,6 +43,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
+	fflush(stdout); int fd = dup(1); close(1);
 	for (int y = 0; y < NUMS; y++) {
 		for (int x = 0; x < NUMS; x++) {
 			distGrid[y][x] = -1;
@@ -82,8 +86,10 @@ fclose(a);
 		}
 		if (sumDist < minSumDist) {minSumDist = sumDist;}
 	} while (next_permutation(tosort, tosort+NUMS));
-	printf("***minSumDist %d END\n", minSumDist); fflush(stdout);
-	printf("***tot %ld END\n", tot); fflush(stdout);
+
+	dup2(fd, 1);
+	printf("***minSumDist %d\n", minSumDist); fflush(stdout);
+	//printf("***tot %ld END\n", tot); fflush(stdout);
 } 
 
 int sDist(int fr, int to) {

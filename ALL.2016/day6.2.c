@@ -4,9 +4,12 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 int lenx, leny;
-#define DAY "2016 day6 part1 \n"
-#define _DEBUG_
+#define DAY "2016 day6 part2 \n"
+#undef _DEBUG_
 long tot;
 
 char lines[700][12];
@@ -17,6 +20,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
+	//fflush(stdout); int fd = dup(1); //close(1);
         char line1[220];
 while(1) 
 {
@@ -35,7 +39,7 @@ while(1)
 		for (int i = 0; i < leny; i++) {
 			count[lines[i][j] -97]++;
 		}
-		int max = 0; int maxindex = 0;
+		//int max = 0; int maxindex = 0;
 		int min = 1000; int minindex = 0;
 		for (int k = 0; k < 26; k++) {
 			if (count[k] != 0 && count[k] < min) {min = count[k]; minindex = k;}
