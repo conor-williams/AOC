@@ -4,6 +4,9 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 int tot = 0;
 int gardaSleep[100][100][61] = {0};
 int gardaPos2[100] = {0};
@@ -15,11 +18,20 @@ int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
 
-        FILE * a = fopen(argv[1], "r"); printf("Day4.1\n"); fflush(stdout);
+	char newFileSorted[200];
+	sprintf(newFileSorted, "%s.sorted", argv[1]);
+	char sortCmd[500];
+	sprintf(sortCmd, "sort %s > %s", argv[1], newFileSorted);		
+	system(sortCmd);
+        //FILE * a = fopen(argv[1], "r"); printf("Day4.1\n"); fflush(stdout);
+        FILE * a = fopen(newFileSorted, "r"); printf("2018 Day4.2\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
+	
         char line1[1000];
 	int leny = 0;
-	int valid = 0;
-	int fiveone2 = 512;
+	//int valid = 0;
+	//int fiveone2 = 512;
 	int d1, d2, t1, t2, guardnum;
 	int curGarda = -1;
 	int startSleep;
@@ -45,7 +57,7 @@ int main(int argc, char **argv)
 			}
 		}
 	if (first == 1) {
-		ret = sscanf(line1, "\[1518-%d-%d %d:%d\] Guard #%d begins shift", &d1, &d2, &t1, &t2, &guardnum);
+		ret = sscanf(line1, "\[1518-%d-%d %d:%d] Guard #%d begins shift", &d1, &d2, &t1, &t2, &guardnum);
 		printf("here1"); fflush(stdout);
 		if (ret == 5) {
 			if (curGarda != -1) {gardaPos2[curGarda]++;}
@@ -69,14 +81,14 @@ int main(int argc, char **argv)
 		}
 	} else if (second == 1) {
 		printf("here2"); fflush(stdout);
-		ret = sscanf(line1, "\[1518-%d-%d %d:%d\] falls asleep", &d1, &d2, &t1, &t2);
+		ret = sscanf(line1, "\[1518-%d-%d %d:%d] falls asleep", &d1, &d2, &t1, &t2);
 		if (ret == 4) {
 			startSleep = t2;
 			printf("setting startSleep for garda %d @ %d\n", gardaMAP[curGarda].hashnum, startSleep);
 		}
 	} else if (third == 1) {
 		printf("here3"); fflush(stdout);
-		ret = sscanf(line1, "\[1518-%d-%d %d:%d\] wakes up", &d1, &d2, &t1, &t2);
+		ret = sscanf(line1, "\[1518-%d-%d %d:%d] wakes up", &d1, &d2, &t1, &t2);
 		printf("here5"); fflush(stdout);
 		if (ret == 4) {
 			printf("ret 4... %d\n", curGarda); fflush(stdout);
@@ -92,6 +104,9 @@ int main(int argc, char **argv)
 	fclose(a);
 	gardaPos2[curGarda]++;
 
+	int maxMinuteOverall = 0;
+	int maxMinute = 0;
+	int gardaMax = 0;
 	for (int i = 0; i < numGardai; i++) {
 		//printf("\nhereXXX i is %d gardaPos2[i](hours): %d\n", i, gardaPos2[i]);
 		int countMin[61] = {0};
@@ -109,5 +124,9 @@ int main(int argc, char **argv)
 			if (countMin[z] > max) {max = countMin[z]; countMinMax = z;}
 		}
 		printf("garda (%4d):%4d is %4d (max times == %4d) (totsleep: %4d) (tothours: %4d)\n", i, gardaMAP[i].hashnum, countMinMax, max, totsleep, gardaPos2[i]);
+
+		if (max > maxMinuteOverall) {maxMinute = countMinMax; gardaMax = gardaMAP[i].hashnum; maxMinuteOverall = max;}
 	}
+	dup2(fd, 1);
+	printf("**ans: %d * %d == %d\n", maxMinute, gardaMax, maxMinute * gardaMax);
 }
