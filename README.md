@@ -25,14 +25,14 @@
 <br><br>
 <h3>optimizations or work needed (todo)</h3>
 <table title="optimizations or work needed"> 
-	<tr><td><font color=red>2015</font></td><td>day10</td><td>day12&nbsp;&nbsp;&nbsp;</td><td>day19.2&nbsp;&nbsp;&nbsp;</td><td>day20&nbsp;&nbsp;&nbsp;</td><td>day24&nbsp;&nbsp;&nbsp;</td></tr>
-	<tr><td>2016</td><td>todo</td></tr>
-	<tr><td>2017</td><td>todo</td></tr>
-	<tr><td>2018</td><td>todo</td></tr>
-	<tr><td>2019</td><td>todo</td></tr>
-	<tr><td>2020</td><td>todo</td></tr>
-	<tr><td>2021</td><td>todo</td></tr>
-	<tr><td>2022</td><td>todo</td></tr>
-	<tr><td>2023</td><td>todo</td></tr>
-	<tr><td>2024</td><td>day22.2</td></tr>
+	<tr><td><b>2015</b></td><td>day10</td><td>day12&nbsp;&nbsp;&nbsp;</td><td>day19.2&nbsp;&nbsp;&nbsp;</td><td>day20&nbsp;&nbsp;&nbsp;</td><td>day24&nbsp;&nbsp;&nbsp;</td></tr>
+	<tr><td><b>2016>/b></td><td>todo</td></tr>
+	<tr><td><b>2017</b></td><td>todo</td></tr>
+	<tr><td><b>2018</b></td><td>todo</td></tr>
+	<tr><td><b>2019</b></td><td>todo</td></tr>
+	<tr><td><b>2020</b></td><td>todo</td></tr>
+	<tr><td><b>2021</b></td><td>todo</td></tr>
+	<tr><td><b>2022</b></td><td>todo</td></tr>
+	<tr><td><b>2023</b></td><td>todo</td></tr>
+	<tr><td><b>2024</b></td><td>day22.2</td></tr>
 </table>
