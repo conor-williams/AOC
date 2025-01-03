@@ -25,8 +25,8 @@
 <br><br>
 <h3>optimizations or work needed (todo)</h3>
 <table title="optimizations or work needed"> 
-	<tr><td><b>2015</b></td><td>day10</td><td>day12&nbsp;&nbsp;&nbsp;</td><td>day19.2&nbsp;&nbsp;&nbsp;</td><td>day20&nbsp;&nbsp;&nbsp;</td><td>day24&nbsp;&nbsp;&nbsp;</td></tr>
-	<tr><td><b>2016>/b></td><td>todo</td></tr>
+	<tr><td><b><i>2015</i></b></td><td>day10</td><td>day12&nbsp;&nbsp;&nbsp;</td><td>day19.2&nbsp;&nbsp;&nbsp;</td><td>day20&nbsp;&nbsp;&nbsp;</td><td>day24&nbsp;&nbsp;&nbsp;</td></tr>
+	<tr><td><b>2016</b></td><td>todo</td></tr>
 	<tr><td><b>2017</b></td><td>todo</td></tr>
 	<tr><td><b>2018</b></td><td>todo</td></tr>
 	<tr><td><b>2019</b></td><td>todo</td></tr>
