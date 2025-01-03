@@ -20,3 +20,23 @@
 <br>
 <address><b>conor.williams@gmail.com</b></address><br>
 <font size=1><i>last updated</i>: <b>29/12/2024</b></font>
+<br><br>
+
+<style>
+th, td {
+	border-style: dotted;
+}
+</style>
+<br><br>
+<table title="optimizations or work needed"> 
+	<tr><td>2015:</td><td>day10</td><td>day12&nbsp;&nbsp;&nbsp;</td><td>day19.2&nbsp;&nbsp;&nbsp;</td><td>day20&nbsp;&nbsp;&nbsp;</td><td>day24&nbsp;&nbsp;&nbsp;</td></tr>
+	<tr><td>2016</td><td>todo</td></tr>
+	<tr><td>2017</td><td>todo</td></tr>
+	<tr><td>2018</td><td>todo</td></tr>
+	<tr><td>2019</td><td>todo</td></tr>
+	<tr><td>2020</td><td>todo</td></tr>
+	<tr><td>2021</td><td>todo</td></tr>
+	<tr><td>2022</td><td>todo</td></tr>
+	<tr><td>2023</td><td>todo</td></tr>
+	<tr><td>2024</td><td>day22.2</td></tr>
+</table>
