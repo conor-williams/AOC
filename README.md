@@ -19,7 +19,7 @@
 </ul>
 <br>
 <address><b>conor.williams@gmail.com</b></address><br>
-<font size=1><i>last updated</i>: <b>29/12/2024</b></font>
+<font size=1><i>last updated</i>: <b>03/01/2025</b></font>
 <br><br>
 
 <h3>optimizations or work needed (todo)</h3>
