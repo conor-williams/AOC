@@ -4,8 +4,11 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 int lenx, leny;
-#define DAY "2015 day5 part1\n"
+#define DAY "2015 day6 part2\n"
 #define _DEBUG_
 
 int lights[1000][1000] = {0};
@@ -16,6 +19,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[200];
 while(1) {
         fgets(line1, 200, a);
@@ -65,5 +69,7 @@ for (int x = 0; x < 1000; x++) {
 	}
 }
 fclose(a);
+
+	dup2(fd, 1);
 printf("***count %d\n", count);
 }

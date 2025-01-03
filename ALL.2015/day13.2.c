@@ -7,11 +7,14 @@
 #include <algorithm>
 #include <string>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 int arr[10][10];
 map <string, int> mp;
 int lenx, leny;
-#define DAY "2015 day13 part1\n"
+#define DAY "2015 day13 part2\n"
 #define _DEBUG_
 
 int tot = 0;
@@ -22,6 +25,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdout);
        
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[200];
 	char prevMname[20];
 	int peopleCounter = 0;
@@ -66,6 +70,13 @@ while(1) {
 	leny++;
 }
 fclose(a);
+	//mp.insert({"Con", peopleConter});	
+	int con = peopleCounter;
+	peopleCounter++;
+	for (int i = 0; i < peopleCounter-1; i++) {
+		arr[con][i] = 0;
+		arr[i][con] = 0;
+	}
 
 	int sA[100];
 
@@ -89,5 +100,7 @@ fclose(a);
 		if (mySum > maxSum) {maxSum = mySum;}
 		
 	} while (next_permutation(sA, sA+peopleCounter));
+
+	dup2(fd, 1);
 	printf("***maxSum %d\n", maxSum); fflush(stdout);
 }

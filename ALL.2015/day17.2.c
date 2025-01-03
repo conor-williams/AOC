@@ -7,18 +7,23 @@
 #include <string>
 #include <map>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 int buckets[100];
 int lenx, leny;
-#define DAY "2015 day16 part1\n"
+#define DAY "2015 day17 part2\n"
 #undef _DEBUG_
 int main(int argc, char **argv)
 {
 	lenx = 0; leny = 0;
         //printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
         FILE * a = fopen(argv[1], "r"); 
-	//printf(DAY); fflush(stdin); fflush(stdout);
+	printf(DAY); fflush(stdin); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
        
 	char line1[1000];
 while(1) {
@@ -61,5 +66,7 @@ fclose(a);
 			}
 		} while (next_permutation(ar, ar+leny));
 	}
+	
+	dup2(fd, 1);
 	printf("****tot %d\n", tot);
 }

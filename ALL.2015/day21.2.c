@@ -7,6 +7,9 @@
 #include <map>
 #include <unistd.h>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 int tot = 0;
@@ -30,7 +33,9 @@ int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
 
-        FILE * a = fopen(argv[1], "r"); printf("Day20.1\n"); fflush(stdout);
+        FILE * a = fopen(argv[1], "r"); printf("2015 Day21.2\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[1000];
         int leny = 0;
         while (1) {
@@ -47,7 +52,6 @@ int main(int argc, char **argv)
         fclose(a);
 	
 	
-	int fd = dup(1); close(1);
 	//int minPlayerCost = 99999;
 	int maxPlayerCost = 0;
 	int arrWe[10];
@@ -148,9 +152,10 @@ int main(int argc, char **argv)
 		} while (next_permutation(arrWe, arrWe+weaponsTot));
 	
 	}
-	dup2(fd, 1);
         printf("***maxPlayerCost: %d\n", maxPlayerCost);
         printf("***tot: %d\n", tot);
+	dup2(fd, 1);
+	printf("**ans: %d\n", maxPlayerCost);
 }
 
 int play() 

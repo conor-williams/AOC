@@ -7,10 +7,13 @@
 #include <string>
 #include <map>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 int lenx, leny;
-#define DAY "2015 day14 part1\n"
+#define DAY "2015 day14 part2\n"
 #define _DEBUG_
 int tot = 0;
 struct deer {
@@ -31,6 +34,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdout);
        
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[200];
 	int dNum = 0;
 while(1) {
@@ -103,5 +107,7 @@ fclose(a);
 		printf("score %d\n", iter3->second.score);
 		if (iter3->second.score > maxScore) {maxScore = iter3->second.score;}
 	}
+
+	dup2(fd, 1);
 	printf("***maxScore %d\n", maxScore);
 }

@@ -3,7 +3,9 @@
 #include <string.h>
 #include <ctype.h>
 #include <math.h>
+#include <unistd.h>
 
+#define getchar()
 int lenx, leny;
 #define DAY "2015 day11 part1\n"
 #define _DEBUG_
@@ -13,26 +15,27 @@ int tot = 0;
 int main(int argc, char **argv)
 {
 	lenx = 0; leny = 0;
-        printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
-        //FILE * a = fopen(argv[1], "r"); 
+	printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
+	//FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
-       
-        //char line1[SIZE];
+
+	fflush(stdout); int fd = dup(1); close(1);
+	//char line1[SIZE];
 	char in[] = "hepxcrrq";
 	//int inI[] = {(int)'h', (int) 'e', (int) 'p', (int) 'x', (int) 'c', (int) 'r', (int) 'r', (int) 'q'};
-/*
-while(1) {
-        fgets(line1, SIZE-1, a);
-        if (feof(a)) break;
-	line1[strlen(line1) -1]='\0';
+	/*
+	   while(1) {
+	   fgets(line1, SIZE-1, a);
+	   if (feof(a)) break;
+	   line1[strlen(line1) -1]='\0';
 #ifdef _DEBUG_
-	printf("LINE: %s\n", line1);
+printf("LINE: %s\n", line1);
 #endif
-	}
+}
 */
-//fclose(a);
+	//fclose(a);
 
-	
+
 
 	for (int p = (int)'p'; p <= 122; p++) {
 		for (int x = (int)'x'; x <= 122; x++) {
@@ -44,9 +47,9 @@ while(1) {
 							myIn[0] = (int)in[0]; myIn[1] = (int)in[1];
 							myIn[2] = p; myIn[3] = x; myIn[4] = c; myIn[5] = r1;
 							myIn[6] = r; myIn[7] = q;
-							
+
 							printf("%c%c%c%c%c%c%c%c\n", myIn[0], myIn[1], myIn[2], myIn[3],
-								 myIn[4], myIn[5], myIn[6], myIn[7]);
+									myIn[4], myIn[5], myIn[6], myIn[7]);
 							int foundReq1 = 0;
 							for (int i = 0; i < 8-2; i++) {
 								if (myIn[i]+2 == myIn[i+1]+1 && myIn[i+1]+1 == myIn[i+2]) {
@@ -69,18 +72,20 @@ while(1) {
 										if (myIn[i] == myIn[i+1]) {
 											for (int j = i+2; j < 7; j++) {
 												if (myIn[j] == myIn[j+1]) {
-													printf("thats it...\n");
-							printf("%c%c%c%c%c%c%c%c\n", in[0], in[1], p, x, c, r1, r, q);
-													getchar();
+													dup2(fd, 1);
+													printf("thats it...: ");
+													printf("%c%c%c%c%c%c%c%c\n", in[0], in[1], p, x, c, r1, r, q);
+
+													printf("\n"); exit(0);
 												}
-												
+
 											}
 										}
 									}
-									
+
 								}
 							}
-								
+
 						}
 					}
 				}

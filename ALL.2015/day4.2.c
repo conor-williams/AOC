@@ -3,12 +3,15 @@
 #include <string.h>
 #include <ctype.h>
 #include <math.h>
+#include <unistd.h>
 
+#define getchar()
 //////////////////////
 #include <stdio.h>
 #include <string.h>
 #include <mbedtls/md5.h>
 int num = 0;
+
 
 void print_hash(unsigned char hash[16]) {
     for (int i = 0; i < 16; i++) {
@@ -28,16 +31,16 @@ void compute_md5(const char *input) {
     mbedtls_md5_finish_ret(&ctx, output);
     mbedtls_md5_free(&ctx);
 
-    unsigned char out5[7];
-    sprintf(out5, "%02x%02x%02x%02x%02x%02x%02x\0", output[0], output[1], output[2], output[3], output[4], output[5], output[6]);
+    char out5[30];
+    sprintf(out5, "%02x%02x%02x%02x%02x%02x%02x", output[0], output[1], output[2], output[3], output[4], output[5], output[6]);
 
     if (out5[0] == '0' && out5[1] == '0' && out5[2] == '0' && out5[3] == '0' && out5[4] == '0' && out5[5] == '0') {
-    	print_hash(output);
-	printf("%s\n", input);
-	printf("that was password^^^^^\n");
+    	//print_hash(output);
+	//printf("%s\n", input);
+	//printf("that was password^^^^^\n");
 	getchar();
 	pass[num] = out5[5];
-	printf("%c \n", out5[5]);
+	//printf("%c \n", out5[5]);
 	num++;
     }
 }
@@ -49,9 +52,11 @@ int main(int argc, char **argv)
 	char buf[100];
         num = 0;
 	int count = 0;
-	char *input = "bgvyzdsv";
+	char input[] = "bgvyzdsv";
 //	char *input = "abcdef";
 //	char *input = "pqrstuv";
+
+	char pass123[50];
 	while (1) {
 		count++;
 
@@ -62,9 +67,20 @@ int main(int argc, char **argv)
 		//}
 		compute_md5(buf);
 			
-		if (num == 1) {break;}
+		if (num == 1) {
+			int jj = 0;
+			for (int i = 0; i < (int)strlen(buf); i++) {
+				if (buf[i] >= '0' && buf[i] <= '9') {
+					pass123[jj++] = buf[i];
+				}
+				pass123[jj] = '\0';
+			}
+			break;
+		}
 		i++;
 	}
 	pass[8] = '\0';
-	printf("***Password: %s\n", pass);
+
+	//printf("***Password: %s\n", pass);
+	printf("**ans: %s\n", pass123);
 }

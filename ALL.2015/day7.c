@@ -6,6 +6,9 @@
 #include <map>
 #include <string>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 int lenx, leny;
@@ -28,6 +31,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[200];
 	int curinst = 0;
 while(1) {
@@ -192,7 +196,7 @@ while (1) {
 			break;
 	}
 	if (inst > 0) {
-		//printf("ans is %d\n", ans);
+		//printf("ans is %d\n", ans); getchar();
 		r3 = reg3;
 		if (notYet == 0) {
 			if (mp.find(r3) != mp.end()) {
@@ -206,7 +210,7 @@ while (1) {
 		if (mp.find(tofinda) != mp.end()) {
 			if (mp[tofinda] != 0) {
 				printf("wire a: [%d]\n", mp[tofinda]);
-				getchar();
+				break;
 			}
 		} else {
 			//printf("NO A???");
@@ -219,7 +223,10 @@ while (1) {
 	
 }
 	string tofinda = "a";
+
+	dup2(fd, 1);
 	if (mp.find(tofinda) != mp.end()) {
+		printf("here1\n");
 		printf("wire a: [%d]\n", mp[tofinda]);
 	} else {
 		printf("NO A???");

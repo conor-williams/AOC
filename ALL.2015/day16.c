@@ -4,6 +4,9 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 int lenx, leny;
 #define DAY "2015 day16 part1\n"
 #undef _DEBUG_
@@ -26,7 +29,9 @@ int main(int argc, char **argv)
 	lenx = 0; leny = 0;
         //printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
         FILE * a = fopen(argv[1], "r"); 
-	//printf(DAY); fflush(stdin); fflush(stdout);
+	printf(DAY); fflush(stdin); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
        
 	struct sue real1;
 	real1.children = 3;
@@ -114,7 +119,9 @@ fclose(a);
 		if (real1.trees == sues[i].trees || sues[i].trees == -1) { } else {found = 1; continue;}
 		if (real1.cars == sues[i].cars || sues[i].cars == -1) { } else {found = 1; continue;}
 		if (real1.perfumes == sues[i].perfumes || sues[i].perfumes == -1) { } else {found = 1; continue;}
-		printf("**possible Sue is %d\n", i);
+		printf("**possible Sue is %d (%d)\n", i, found);
+		dup2(fd, 1);
+		printf("**ans %d\n", i);
 	}
 		
 }

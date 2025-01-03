@@ -4,6 +4,9 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 int lenx, leny;
 #define DAY "2015 day8 part1\n"
 #define _DEBUG_
@@ -16,6 +19,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[200];
 while(1) {
         fgets(line1, 200, a);
@@ -51,5 +55,7 @@ while(1) {
 	leny++;
 }
 fclose(a);
+
+	dup2(fd, 1);
 	printf("***tot %d\n", tot); fflush(stdout);
 }

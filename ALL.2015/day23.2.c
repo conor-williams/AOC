@@ -5,17 +5,21 @@
 #include <math.h>
 #include <unistd.h>
 
+#include <unistd.h>
+
+#define getchar()
 char instr[100][30];
 #define printf2 printf
 //#pragma GCC poison printf
 //#define printf(fmt, ...) (0)
 //int printf(const char *__restrict, ...)  {  return 0; }
-int fd;
 int main(int argc, char **argv)
 {
 	printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
 
-	FILE * a = fopen(argv[1], "r"); printf("Day24.1\n"); fflush(stdout);
+	FILE * a = fopen(argv[1], "r"); printf("Day23.2\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
 	char line1[1000];
 	int leny = 0;
 	unsigned long long  regs[27] = {0};
@@ -31,8 +35,6 @@ int main(int argc, char **argv)
 	}
 	fclose(a);
 
-	int fd = dup(1);
-	close(1);
 	for (int i = 0; i < leny; i++) {
 		char reg; int ret = 0; int num1;
 		printf("instr[i] is %s\n", instr[i]);
@@ -52,8 +54,8 @@ int main(int argc, char **argv)
 
 	 //while
 	
-	dup2(fd, 1);
 	printf2("\n* a is %llu\n", regs[0]);
+	dup2(fd, 1);
 	printf2("\n*** b is %llu\n", regs[1]);
 }
 

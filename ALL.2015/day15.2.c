@@ -62,7 +62,6 @@ while(1) {
 	
 }
 fclose(a);
-		
 /*
 Butterscotch: capacity -1, durability -2, flavor 6, texture 3, calories 8
 Cinnamon: capacity 2, durability 3, flavor -2, texture -1, calories 3
@@ -85,13 +84,13 @@ Cinnamon: capacity 2, durability 3, flavor -2, texture -1, calories 3
 				if (textot < 0) {textot = 0;}
 				if (caltot < 0) {caltot = 0;}
 				unsigned long long ans = captot * durtot * flatot * textot;
-				//if (caltot == 500) {printf("%d %d %d %d (%llu)\n", a, b, c, d, ans);}
+				if (caltot == 500) {printf("%d %d %d %d (%llu)\n", a, b, c, d, ans);}
 				if (ans > max) {max = ans;}
 					
 
 		}
 	}
-	*/
+*/
 	unsigned long long max = 0;
 	for (int a = 1; a < 98; a++) {
 		for (int b = 1; b < 100 -a; b++) {
@@ -109,8 +108,8 @@ Cinnamon: capacity 2, durability 3, flavor -2, texture -1, calories 3
 				if (textot < 0) {textot = 0;}
 				if (caltot < 0) {caltot = 0;}
 				unsigned long long ans = captot * durtot * flatot * textot;
-				//if (caltot == 500) {printf("%d %d (%llu)\n", a, b, ans);}
-				if (ans > max) {max = ans;}
+				if (caltot == 500) {printf("%d %d (%llu)\n", a, b, ans);}
+				if (caltot == 500 && ans > max) {max = ans;}
 					
 
 			}

@@ -4,7 +4,10 @@
 #include <ctype.h>
 #include <math.h>
 
-#define DAY "2015 Day 2.1"
+#include <unistd.h>
+
+#define getchar()
+#define DAY "2015 Day 2.2"
 int tot = 0;
 int main(int argc, char **argv)
 {
@@ -13,6 +16,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r");
 	printf(DAY); printf("\n"); fflush(stdin); fflush(stdout);
 
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[8000];
 	int nums[3];
         int numlines = 0;
@@ -36,6 +40,8 @@ int main(int argc, char **argv)
 		
         }
         fclose(a);
+
+	dup2(fd, 1);
         printf("****TOT: %d\n", tot);
 
 }

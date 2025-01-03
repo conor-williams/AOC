@@ -6,11 +6,15 @@
 #include <map>
 #include <algorithm>
 #include <string>
+#include <vector>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 int lenx, leny;
-#define DAY "2015 day8 part1\n"
+#define DAY "2015 day9 part1\n"
 #define _DEBUG_
 
 int tot = 0;
@@ -28,6 +32,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[200];
 while(1) {
         fgets(line1, 200, a);
@@ -98,5 +103,7 @@ fclose(a);
 		if (itot < min) {min = itot;}
 		
 	} while (next_permutation(citiesI.begin(), citiesI.end()));
+
+	dup2(fd, 1);
 	printf("***citydistmin %d\n", min); fflush(stdout);
 }

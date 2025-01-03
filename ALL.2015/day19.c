@@ -7,21 +7,25 @@
 #include <bits/stdc++.h>
 #include <string>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 int lenx, leny;
-#define DAY "2015 day18 part1\n"
+#define DAY "2015 day19 part1\n"
 #undef _DEBUG_
 multimap <string, string> mp;
 map <string, string> mpStore;
 char mol[1000];
-#define getchar()
 int main(int argc, char **argv)
 {
 	lenx = 0; leny = 0;
         //printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
         FILE * a = fopen(argv[1], "r"); 
-	//printf(DAY); fflush(stdin); fflush(stdout);
+	printf(DAY); fflush(stdin); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
        
 	char line1[1000];
 	int readMol = 0;
@@ -64,6 +68,8 @@ while(1) {
 		}
 			
 	}
-	int tot = 0;
+	//int tot = 0;
+
+	dup2(fd, 1);
 	printf("****tot %d\n", (int)mpStore.size());
 }

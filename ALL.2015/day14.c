@@ -7,6 +7,9 @@
 #include <string>
 #include <map>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 int lenx, leny;
@@ -30,6 +33,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdout);
        
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[200];
 	int dNum = 0;
 while(1) {
@@ -80,5 +84,7 @@ fclose(a);
 		if (dist > maxDist){maxDist = dist;}
 
 	}
+
+	dup2(fd, 1);
 	printf("***max %d\n", maxDist);
 }

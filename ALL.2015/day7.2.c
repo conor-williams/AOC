@@ -6,10 +6,13 @@
 #include <map>
 #include <string>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 int lenx, leny;
-#define DAY "2015 day7 part1\n"
+#define DAY "2015 day7 part2\n"
 #define _DEBUG_
 struct instruction {
 	int type;
@@ -28,6 +31,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[200];
 	int curinst = 0;
 while(1) {
@@ -73,7 +77,13 @@ while(1) {
 	strcpy(insts[curinst].reg1, reg1);
 	strcpy(insts[curinst].reg2, reg2);
 	strcpy(insts[curinst].reg3, reg3);
-	insts[curinst].num = num;
+	if (reg3[0] == 'b' && (int)strlen(reg3) == 1) {
+		//printf("here222\n"); getchar();
+		insts[curinst].num = 46065;
+		
+	} else {
+		insts[curinst].num = num;
+	}
 /*
 	printf("[%s] [%s] [%s] [%d] [%d]\n",
 		insts[curinst].reg1,
@@ -90,11 +100,15 @@ int maxInst = curinst;
 curinst = 0;
 int times = 0;
 string tofindb = "b";
+/*
 if (mp.find(tofindb) != mp.end()) {
 	mp["b"] = 46065;
+	mp["a"] = 0;
+	printf("here22222\n");
 } else {
 	printf("OOPS"); getchar();
 }
+*/
 while (1) {
 	int ans = 0;
 	char reg1[10], reg2[10], reg3[10]; int num;
@@ -212,7 +226,8 @@ while (1) {
 		if (mp.find(tofinda) != mp.end()) {
 			if (mp[tofinda] != 0) {
 				printf("wire a: [%d]\n", mp[tofinda]);
-				getchar();
+				break;
+				//getchar();
 			}
 		} else {
 			//printf("NO A???");
@@ -225,6 +240,8 @@ while (1) {
 	
 }
 	string tofinda = "a";
+
+	dup2(fd, 1);
 	if (mp.find(tofinda) != mp.end()) {
 		printf("wire a: [%d]\n", mp[tofinda]);
 	} else {

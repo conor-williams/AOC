@@ -4,6 +4,10 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
+
 //To continue, please consult the code grid in the manual.  Enter the code at row 2978, column 3083.
 
 unsigned long long int rc[8000][3200] = {0};
@@ -14,6 +18,8 @@ int main(int argc, char **argv)
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
 
         FILE * a = fopen(argv[1], "r"); printf("Day25.1\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[1000];
         int leny = 0;
         while (1) {
@@ -65,9 +71,10 @@ int main(int argc, char **argv)
 	for (int i = 1; i < mynum; i++) {
 		next = ((next * 252533) % 33554393);
 	}
+	dup2(fd, 1);
 	printf("***next: %llu \n", next);
 	
 			
-        printf("***tot: %d\n", tot);
+        //printf("***tot: %d\n", tot);
 }
 
