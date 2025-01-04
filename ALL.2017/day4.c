@@ -16,7 +16,7 @@ int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
 
-        FILE * a = fopen(argv[1], "r"); printf("2017 Day4.2\n"); fflush(stdout);
+        FILE * a = fopen(argv[1], "r"); printf("2017 Day4.1\n"); fflush(stdout);
 
 	fflush(stdout); int fd = dup(1); close(1);
         char line1[3000];
@@ -48,7 +48,8 @@ while (1)
 		}
 	}
 	
-	int sArrayOrig[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
+	//int sArrayOrig[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
+	/*
 	if (found == 0) {
 		for (int i = 0; i < wordPos-1; i++) {
 		    for (int j = i+1; j < wordPos; j++) {
@@ -76,7 +77,8 @@ while (1)
 		    }
 		}
 	}
-end:
+	*/
+//end:
 	if (found == 1) {
 		printf("not valid\n");
         } else {

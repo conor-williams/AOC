@@ -4,11 +4,16 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
 
-        FILE * a = fopen(argv[1], "r"); printf("2017 Day5.1\n"); fflush(stdout);
+        FILE * a = fopen(argv[1], "r"); printf("2017 Day6.2\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
 
         char line1[3000];
 
@@ -118,7 +123,9 @@ if (strcmp(argv[1], "i1.txt") != 0) {
 				if (numsMEM[k][j] == numsMEM[numsMEMPos-1][j] && found == 0) {
 					if (j == NUMS-1) {
 						allSame = numsMEMPos -1 - k;
+						dup2(fd, 1);
 						printf("CYCLES %d\n", allSame); getchar();
+						exit(0);
 					}
 				} else {
 					found = 1; break;

@@ -4,6 +4,9 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 #define SIZE 200
 char line1[SIZE];
 struct ar_s {
@@ -25,8 +28,9 @@ int groupPos = 0;
 int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
-        FILE * a = fopen(argv[1], "r"); printf("2017 Day9.1\n"); fflush(stdout);
+        FILE * a = fopen(argv[1], "r"); printf("2017 Day12.1\n"); fflush(stdout);
 
+	fflush(stdout); int fd = dup(1); close(1);
 for (int i = 0; i < 10000; i++) {
 	arBack[i].numnums = 0;
 }
@@ -99,12 +103,15 @@ while (1)
 		printf("\n");
 	}
 	
+
 	printf("max is %d\n", max);
 	for (int i = 0; i < errorsPos; i++) {
 		printf("%d failed zero test\n", errors[i]);
 	}
 	printf("notfail is (not inc 0)%d\n", notfail);
 	printf("notfail is (inc 0)%d\n", notfail+1);
+	dup2(fd, 1);
+	printf("**ans %d\n", notfail+1);
 	return 0;
 }
 int check(int num) {
@@ -129,4 +136,5 @@ int check(int num) {
 			if (ret == 0) {return 0;} else if (ret == 2) {continue;}
 		}
 	}
+	//return 0;
 }

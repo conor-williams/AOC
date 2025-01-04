@@ -4,6 +4,9 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 #define X 10000
 #define Y 10000
 int grid[X][Y] = {0};
@@ -14,9 +17,12 @@ int main(int argc, char **argv)
 
         FILE * a = fopen(argv[1], "r"); printf("Day3.2\n"); fflush(stdin); fflush(stdout);
 
+
         char line1[3000];
 */
         printf("Day3.2\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
 
 /*
 while (1) 
@@ -67,8 +73,8 @@ start:
 		dir = (4 + dir - 1)%4;	
 	} else {
 		grid[y][x] = val;
-		{printf("%d ", val); }
-		if (val > 277678) {printf("** val is %d\n", val);exit(0);}
+		//{printf("%d ", val); }
+		if (val > 277678) {dup2(fd, 1); printf("**ans: %d\n", val);exit(0);}
 	}
 	if (dir == 1) {x = x+1;} else if (dir == 0) {y=y-1;} else if (dir == 3) {x=x-1;} else if (dir == 2) {y=y+1;}
 	goto start;

@@ -5,6 +5,10 @@
 #include <math.h>
 #include <map>
 #include <string>
+
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 map <string, int> mp;
@@ -13,6 +17,7 @@ int main(int argc, char **argv)
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
         FILE * a = fopen(argv[1], "r"); printf("2017 Day8.1\n"); fflush(stdout);
 
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[3000];
 
 int leny = 0;
@@ -81,6 +86,8 @@ while (1)
 	for (auto iter = mp.begin(); iter !=  mp.end(); iter++) {
 		if (iter->second> max) {max = iter->second;}
 	}
+
+	dup2(fd, 1);
 	printf("***max %d\n", max);
 }
 

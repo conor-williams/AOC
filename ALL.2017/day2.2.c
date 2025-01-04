@@ -4,6 +4,9 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 #define DAY "2017 Day2.2"
 int pos = 0;
 int main(int argc, char **argv)
@@ -13,6 +16,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r");
 	printf(DAY); printf("\n"); fflush(stdout);
 
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[3000];
 
 int NUMS = 16;
@@ -25,7 +29,7 @@ while (1)
  	printf("line1 %s\n", line1);
         sscanf(line1, "%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d", &nums[0], &nums[1], &nums[2], &nums[3], &nums[4], &nums[5], &nums[6], &nums[7], &nums[8], &nums[9], &nums[10], &nums[11], &nums[12], &nums[13], &nums[14], &nums[15]);
 
-        int bigindex = 0;
+        //int bigindex = 0;
         int jumpout = 0;
         for (int i = 0; i < NUMS; i++) {
 		printf("here1..."); fflush(stdout);
@@ -53,6 +57,8 @@ while (1)
 	printf("here1..."); fflush(stdout);
 }
 
+
+	dup2(fd, 1);
         printf("******CHKSUM: %d\n", checksum);
 }
 

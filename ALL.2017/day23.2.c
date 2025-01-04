@@ -1,11 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void main(void) {
+#include <unistd.h>
 
+#define getchar()
+int main(void) {
+	printf("2017 day23 Part 2\n");
+	fflush(stdout); int fd = dup(1); close(1);
 	long long h = 0;
 	long long b = ((57*100)+100000);
-	long long c = (b+1000);
+	//long long c = (b+1000);
 	
 	long long f = 0;
 	long long d = 0;
@@ -24,7 +28,7 @@ void main(void) {
 			e = 2;
 		
 			int times = 0;
-			int timesF = 0;
+			//int timesF = 0;
 			//e -= 1*105698;
 			//times = 105698;
 			do {
@@ -69,6 +73,8 @@ fset:
 		
 	} while (z < 1000);
 		
+	
+	fflush(stdout); dup2(fd, 1);
 	printf("h is %lld\n", h);
 
 

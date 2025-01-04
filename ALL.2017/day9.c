@@ -4,6 +4,9 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 int score = 0;
 unsigned long long tot = 0;
 int iX = 0;
@@ -17,6 +20,7 @@ int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
         FILE * a = fopen(argv[1], "r"); printf("2017 Day9.1\n"); fflush(stdout);
+	fflush(stdout); int fd = dup(1); close(1);
 
 
 int leny = 0;
@@ -34,12 +38,15 @@ while (1)
 	}
 	leny++;
 	//printf("***score is %d\n", score);
-	printf("***tot is ^^ [%llu]\n", tot);
+
+	//printf("***tot is ^^ [%llu]\n", tot);
 }
 	printf("catchA (%d):\n", catchAPos);
 	for (int i = 0; i < catchAPos; i++) {
 		printf("	[%s]\n", catchA[i]);
 	}
+	dup2(fd, 1);
+	printf("***tot is ^^ [%llu]\n", tot);
 
 }
 int loop() {
@@ -83,14 +90,20 @@ int loop() {
 				printf("!");
 				int count = 1;
 				char catch[20];
+
 				memset(catch, '\0', 19);
-				sprintf(catch, "%s%c", catch, '!');
+				char catch2[18];
+				strcpy(catch2, catch);
+				sprintf(catch, "%s%c", catch2, '!');
+				
 				do {
 					if (isdigit((int)line1[iX+count]) || isupper((int)line1[iX+count]) || islower((int)line1[iX+count]) || line1[iX+count] == '\"' || line1[iX+count] == ',' || line1[iX+count] == '\'' || line1[iX+count] == '\"') {
 						break;
 					} else {
 						printf("%c", line1[iX+count]);
-						sprintf(catch, "%s%c", catch, line1[iX+count]);
+						char catch3[18];
+						strcpy(catch3, catch);
+						sprintf(catch, "%s%c", catch3, line1[iX+count]);
 					}
 					count++;
 					if (count == 4) {break;}

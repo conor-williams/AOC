@@ -4,13 +4,18 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 int pos = 0;
 int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s", argv[1]); fflush(stdin); fflush(stdout);
 
-        FILE * a = fopen(argv[1], "r"); printf("Day8.2\n"); fflush(stdin); fflush(stdout);
+        FILE * a = fopen(argv[1], "r"); printf("2017 Day2.1\n"); fflush(stdin); fflush(stdout);
 
+
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[3000];
 
 int NUMS = 16;
@@ -34,6 +39,8 @@ while (1)
 	checksum += nums[bigindex] - nums[smallindex];
 }
 
+	
+	dup2(fd, 1);
         printf("******CHKSUM: %d\n", checksum);
 }
 

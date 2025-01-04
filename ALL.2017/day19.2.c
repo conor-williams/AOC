@@ -15,16 +15,16 @@ int already[400][400] = {0};
 void next(int x, int y, char DIR, int frX, int frY);
 int leny = 0;
 int maxX = 0;
-char ANS[2000];
-char ANS22[1500];
+char ANS[1000];
+char ANS2[999];
 #define getchar()
+int indOverall;
 int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
-        FILE * a = fopen(argv[1], "r"); printf("2017 Day19.1\n"); fflush(stdout);
+        FILE * a = fopen(argv[1], "r"); printf("2017 Day19.2\n"); fflush(stdout);
 
 	fflush(stdout); int fd = dup(1); close(1);
-
 
 while (1) 
 {
@@ -51,10 +51,10 @@ fclose(a);
 	printf("%d %d\n", startX, startY);
 	already[startY][startX] = 1;
 	next(startX, startY+1, 'D', startX, startY);
-			
-	fflush(stdout);
-	dup2(fd, 1);
 	printf("**ANS [ %s ] \n", ANS);
+			
+	dup2(fd, 1);
+	printf("*ans: %d\n", indOverall);
 return 0;
 }
 int ind = 0;
@@ -128,8 +128,9 @@ void next(int x, int y, char DIR, int frX, int frY) {
 		case 'Y':
 		case 'Z':
 			printf("[%c]", grid[y][x]); getchar();
-			strcpy(ANS22, ANS);
-			sprintf(ANS, "%s%c", ANS22, grid[y][x]);
+			strcpy(ANS2, ANS);
+			sprintf(ANS, "%s%c", ANS2, grid[y][x]);
+			indOverall = ind+1;
 			printf("Partial [ %s ]\n", ANS);
 			if (DIR == 'R') {
 				if (x+1 < (int)strlen(grid[y])) {

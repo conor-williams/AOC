@@ -4,6 +4,9 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 unsigned long long tot = 0;
 #define SIZE 20000
 char line1[SIZE];
@@ -19,8 +22,9 @@ int floodGroup = 1;
 int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
-        FILE * a = fopen(argv[1], "r"); printf("2017 Day9.1\n"); fflush(stdout);
+        FILE * a = fopen(argv[1], "r"); printf("2017 Day14.2\n"); fflush(stdout);
 
+	fflush(stdout); int fd = dup(1); close(1);
 	for (int y = 0; y<128; y++) {
 		for (int x = 0; x < 128; x++) {
 			grid2[y][x] = 0;
@@ -186,6 +190,8 @@ while (1)
 
 	printf("floodGroup %d\n", floodGroup);
 	printf("***floodGroup -1 %d\n", floodGroup-1);
+	dup2(fd, 1);
+	printf("**ans: %d\n", floodGroup-1);
 }
 int floodfill(int x, int y, int first) {
 	if (grid[y][x] == '1' && grid2[y][x] == 0) {

@@ -4,6 +4,9 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 unsigned long long tot = 0;
 #define SIZE 200
 char line1[SIZE];
@@ -17,11 +20,13 @@ struct rules_s {
 struct rules_s rules[1111];
 void next(char from[], int weightIn);
 int leny = 0;
+char bottom[30];
 int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
-        FILE * a = fopen(argv[1], "r"); printf("2017 Day9.1\n"); fflush(stdout);
+        FILE * a = fopen(argv[1], "r"); printf("2017 Day7.1\n"); fflush(stdout);
 
+	fflush(stdout); int fd = dup(1); close(1);
 
 while (1) 
 {
@@ -56,11 +61,18 @@ fclose(a);
 		if (rules[i].toPos == 0) {
 			weight+=rules[i].weight;
 			printf("[%s]\n", rules[i].from);
+			printf("calling next\n");
+			char bottomPrev[50];
+			if (i > 0) {strcpy(bottomPrev, bottom);}
 			next(rules[i].from, weight);
+			if (i > 0) {if (strcmp(bottom, bottomPrev) != 0) {dup2(fd, 1); printf("not found...\n"); exit(0);}}
+			printf("bottom: %s\n", bottom);
 			weight = 0;
 		}
 	}
-	printf("***tot is ^^ [%llu]\n", tot);
+	//printf("***tot is ^^ [%llu]\n", tot);
+	dup2(fd, 1);
+	printf("**ans: %s\n", bottom);
 	return 0;
 }
 int ind = 0;
@@ -70,7 +82,8 @@ void next(char from[], int weightIn) {
 	for (int i = 0; i < leny; i++) {
 		for (int k = 0; k < rules[i].toPos; k++) {
 			if (strcmp(rules[i].to[k], from) == 0) {
-				for (int j = 0; j< ind; j++) {printf("	");} printf("[%s]\n", rules[i].from);
+				strcpy(bottom, rules[i].from);
+				for (int j = 0; j< ind; j++) {printf("	");} printf("h1[%s]\n", rules[i].from);
 				weight += rules[i].weight;
 				next(rules[i].from, weight);
 				weight = weightIn;

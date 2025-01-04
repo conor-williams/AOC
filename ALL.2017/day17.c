@@ -8,6 +8,9 @@
 #include <string>
 #include <deque>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 deque <int> circle2;
@@ -39,7 +42,9 @@ char line1[SIZE];
 int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
-        FILE * a = fopen(argv[1], "r"); printf("2017 Day9.1\n"); fflush(stdout);
+        FILE * a = fopen(argv[1], "r"); printf("2017 Day17.1\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
 
 int leny = 0;
 int spin;
@@ -67,7 +72,8 @@ while (1)
 		circle2.push_back(i);
 	}
 //for (auto it = circle2.begin(); it != circle2.end(); it++) { printf(" [%d] ", *it); } printf("\n"); getchar();
-	printf("** %d \n", circle2.front());
+	dup2(fd, 1);
+	printf("**ans: %d \n", circle2.front());
 
 	return 0;
 }

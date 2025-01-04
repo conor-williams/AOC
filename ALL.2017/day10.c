@@ -4,6 +4,9 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 unsigned long long tot = 0;
 #define SIZE 20000
 char line1[SIZE];
@@ -13,8 +16,9 @@ int theInts[100];
 int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
-        FILE * a = fopen(argv[1], "r"); printf("2017 Day9.1\n"); fflush(stdout);
+        FILE * a = fopen(argv[1], "r"); printf("2017 Day10.1\n"); fflush(stdout);
 
+	fflush(stdout); int fd = dup(1); close(1);
 int leny = 0;
 int pos = 0;
 while (1) 
@@ -74,6 +78,8 @@ while (1)
 		printf("new start %d\n", startpos);
 		printf("skip %d\n", skip);
 	}
+	
+	dup2(fd, 1);
 	printf("***mul %d*%d =  %d\n", initial[0], initial[1], initial[0] * initial[1]);
 	printf("\nEND\n");
 

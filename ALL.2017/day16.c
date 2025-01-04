@@ -7,6 +7,9 @@
 #include <algorithm>
 #include <string>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 vector <char> V;
@@ -21,8 +24,9 @@ char line1[SIZE];
 int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
-        FILE * a = fopen(argv[1], "r"); printf("2017 Day9.1\n"); fflush(stdout);
+        FILE * a = fopen(argv[1], "r"); printf("2017 Day16.1\n"); fflush(stdout);
 
+	fflush(stdout); int fd = dup(1); close(1);
 	printf("%s\n", start);
 	V.clear();
 	for (int i = 0; i < (int)strlen(start); i++) {
@@ -76,6 +80,8 @@ while (1)
 	leny++;
 }
 	fclose(a);
+	dup2(fd, 1);
+	printf("**ans: ");
 	for (auto it = V.begin(); it != V.end(); it++) { printf("%c", *it); } printf("\n"); getchar();
 	return 0;
 }

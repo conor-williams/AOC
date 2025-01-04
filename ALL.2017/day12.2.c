@@ -5,6 +5,9 @@
 #include <math.h>
 #include <algorithm>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 #define SIZE 200
@@ -27,7 +30,9 @@ int groupsPos = 0;
 int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
-        FILE * a = fopen(argv[1], "r"); printf("2017 Day9.1\n"); fflush(stdout);
+        FILE * a = fopen(argv[1], "r"); printf("2017 Day12.2\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
 
 for (int i = 0; i < 10000; i++) {
 	arBack[i].numnums = 0;
@@ -116,6 +121,7 @@ while (1)
 		printf("\n");
 	}
 	
+		
 	printf("max is %d\n", max);
 	for (int i = 0; i < errorsPos; i++) {
 		printf("%d failed zero test\n", errors[i]);
@@ -124,6 +130,8 @@ while (1)
 	printf("groupsPos is %d (plus the 0) (not inc)\n", groupsPos);
 	printf("notfail (with 0) is %d\n", notfail+1);
 	printf("groupsPos is %d (with 0)\n", groupsPos+1);
+	dup2(fd, 1);
+	printf("**ans: %d\n", groupsPos+1);
 	return 0;
 }
 int check(int num) {

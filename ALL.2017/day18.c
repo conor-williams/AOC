@@ -4,6 +4,9 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 int tot = 0;
 #define SIZE 20
 #undef _DEBUG_
@@ -12,8 +15,9 @@ char inst[100][20];
 int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
-        FILE * a = fopen(argv[1], "r"); printf("2017 Day9.1\n"); fflush(stdout);
+        FILE * a = fopen(argv[1], "r"); printf("2017 Day18.1\n"); fflush(stdout);
 
+	fflush(stdout); int fd = dup(1); close(1);
 
 int leny = 0;
 while (1) 
@@ -71,7 +75,7 @@ fclose(a);
 		ret = sscanf(inst[i], "rcv %d", &num1);
 		if (ret == 1) {printf("hey rcv");}
 		ret = sscanf(inst[i], "rcv %c", &reg1);
-		if (ret == 1) {if (regs[reg1-97] != 0) {printf("lastSound: %lld\n", lastSound); getchar(); continue;} else {continue;}}
+		if (ret == 1) {if (regs[reg1-97] != 0) {dup2(fd, 1); printf("lastSound: %lld\n", lastSound); exit(0); continue;} else {continue;}}
 
 		ret = sscanf(inst[i], "jgz %d %d", &num1, &num2);
 		if (ret ==2 ) {printf("hey jgz");}

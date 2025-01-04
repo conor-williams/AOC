@@ -4,6 +4,9 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 int tot = 0;
 #define SIZE 200
 char line1[SIZE];
@@ -35,11 +38,13 @@ struct it_s it[1001];
 struct it_s itLast[1001];
 //#define SZ 1000
 //struct it2_s itPos[SZ][1001];
+int whichMinOverall;
 int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
-        FILE * a = fopen(argv[1], "r"); printf("2017 Day9.1\n"); fflush(stdout);
+        FILE * a = fopen(argv[1], "r"); printf("2017 Day20.1\n"); fflush(stdout);
 
+	fflush(stdout); int fd = dup(1); close(1);
 int leny = 0;
 while (1) 
 {
@@ -96,6 +101,7 @@ fclose(a);
 			count++;
 			if (count > 1000) {
 				printf("Looks like it:- whichMin: [ %d ]---\n", whichMin);
+				whichMinOverall = whichMin;
 			}
 		} else {
 			count = 0;
@@ -104,5 +110,7 @@ fclose(a);
 		origWhichMin = whichMin;
 	}
 	printf("***tot is ^^ [%d]\n", tot);
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %d\n", whichMinOverall);
 	return 0;
 }

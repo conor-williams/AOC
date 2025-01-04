@@ -8,12 +8,15 @@
 #include <algorithm>
 #include <string>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 int tot = 0;
 #define SIZE 100
 char line1[SIZE];
 int leny = 0;
-
+//compile: -Wl,--stack,999777666
 //.#.
 //..# == .#./..#/### == .#...###
 //###
@@ -43,12 +46,14 @@ int threesPos = 0;
 void printStartHashes(char start[]);
 struct twosandthrees_s eighty1s[515];
 int eighty1sPos = 0;
-
+int fd;
 
 int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
-        FILE * a = fopen(argv[1], "r"); printf("2017 Day21.1\n"); fflush(stdout);
+        FILE * a = fopen(argv[1], "r"); printf("2017 Day21.2\n"); fflush(stdout);
+
+	fflush(stdout); fd = dup(1); close(1);
 
 
 while (1) 
@@ -220,6 +225,7 @@ void s2(char startIn[]) {
 						}
 						printf("sub1 %d\n", sub1);
 					}
+					dup2(fd, 1);
 					printf("***ans: %lld\n", my3); exit(0);
 						
 				default:	
@@ -981,6 +987,7 @@ printf("--------------------\n");
 	}
 	strcpy(startG, ".#...####");
 	convEighty1(startG, 0);
+	printf("calling s2\n");
 	s2(ans[0]);
 	//s3(realAns);
 }
