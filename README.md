@@ -27,8 +27,8 @@
 <h3>Table of years/days of days which need optimizations or work (todo: ongoing):</h3>
 <table> 
 	<tr><td><b><i>2015</i></b></td><td>day10</td><td>day12&nbsp;&nbsp;&nbsp;</td><td>day19.2&nbsp;&nbsp;&nbsp;</td><td>day20&nbsp;&nbsp;&nbsp;</td><td>day24&nbsp;&nbsp;&nbsp;</td></tr>
-	<tr><td><b>2016</b></td><td><s>day2 x 2</s></td></td><td>day9.2</td><td>day11 x 2 </td><td>day20.2</td><td>day22.2</td><td>day23.2</td></tr>
-	<tr><td><b>2017</b></td><td>todo</td></tr>
+	<tr><td><b>2016</b></td><td><s>day2 x 2 </s></td></td><td>day9.2</td><td>day11 x 2 </td><td>day20.2</td><td>day22.2</td><td>day23.2</td></tr>
+	<tr><td><b>2017</b></td><td>day7.2</td></td><td>day11.2</td><td>day16.2</td><td>day17.2</td><td>day18.2</td><td>day20.2</td></tr>
 	<tr><td><b>2018</b></td><td>todo</td></tr>
 	<tr><td><b>2019</b></td><td>todo</td></tr>
 	<tr><td><b>2020</b></td><td>todo</td></tr>
