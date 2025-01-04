@@ -29,7 +29,7 @@
 	<tr><td><b><i>2015</i></b></td><td>day10</td><td>day12&nbsp;&nbsp;&nbsp;</td><td>day19.2&nbsp;&nbsp;&nbsp;</td><td>day20&nbsp;&nbsp;&nbsp;</td><td>day24&nbsp;&nbsp;&nbsp;</td></tr>
 	<tr><td><b>2016</b></td><td><s>day2 x 2 </s></td></td><td>day9.2</td><td>day11 x 2 </td><td>day20.2</td><td>day22.2</td><td>day23.2</td></tr>
 	<tr><td><b>2017</b></td><td>day7.2</td></td><td>day11.2</td><td>day16.2</td><td>day17.2</td><td>day18.2</td><td>day20.2</td></tr>
-	<tr><td><b>2018</b></td><td>todo</td></tr>
+	<tr><td><b>2018</b></td><td>day3</td><td>day5</td><td>day7</td><td>day9.2</td><td>day11.2</td><td>day15</td><td>day19.2</td><td>day21</td><td>day22.2</td><td>day23.2</td></tr>
 	<tr><td><b>2019</b></td><td>todo</td></tr>
 	<tr><td><b>2020</b></td><td>todo</td></tr>
 	<tr><td><b>2021</b></td><td>todo</td></tr>
