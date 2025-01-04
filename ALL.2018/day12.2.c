@@ -6,6 +6,9 @@
 #include <string>
 #include <algorithm>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 #undef _DEBUG_
@@ -28,8 +31,9 @@ struct nn_s nn[1000000];
 int main(int argc, char **argv)
 {
 	printf("%d", argc); printf("@%s", argv[1]); fflush(stdout);
-	FILE * a = fopen(argv[1], "r"); printf("2018 Day9.1\n"); fflush(stdout);
+	FILE * a = fopen(argv[1], "r"); printf("2018 Day12.2\n"); fflush(stdout);
 
+	fflush(stdout); int fd = dup(1); close(1);
 	char initial3[900];
 	int leny = 0;
 	while (1)
@@ -55,7 +59,10 @@ int main(int argc, char **argv)
 		unsigned long long pos = (unsigned long long) 50000000000  -87 + i;
 		tot+= pos;
 	}
+	
+	fflush(stdout); dup2(fd, 1);
 	printf("**tot %llu\n", tot);
+	exit(0);
 
 	getchar();
 	char initial[2000];

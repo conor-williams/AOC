@@ -4,6 +4,9 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 #undef _DEBUG_
 #define SIZE 40000
 char line1[SIZE];
@@ -11,11 +14,14 @@ unsigned long tot = 0;
 #define cSIZE 8000000
 int circle[cSIZE] = {0};
 void play(int players, int lastMarble);
+//compile: -Wl,--stack,999777666
+int fd;
 int main(int argc, char **argv)
 {
 	printf("%d", argc); printf("@%s", argv[1]); fflush(stdout);
 	FILE * a = fopen(argv[1], "r"); printf("2018 Day9.1\n"); fflush(stdout);
 
+	fflush(stdout); int fd = dup(1); close(1);
 	int leny = 0;
 	while (1)
 	{
@@ -30,6 +36,8 @@ int main(int argc, char **argv)
 		leny++;
 	}
 	fclose(a);
+
+	fflush(stdout); dup2(fd, 1);
 	printf("**tot %lu\n", tot);
 }
 
@@ -103,5 +111,8 @@ void play(int players, int lastMarble) {
 	for (int s = 0; s < players; s++) {
 		if (score[s] > max) {max = score[s];}
 	}
+
+	fflush(stdout); dup2(fd, 1);
 	printf("MAX SCORE %llu\n", max);
+	exit(0);
 }

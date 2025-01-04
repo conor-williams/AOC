@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -6,6 +5,9 @@
 #include <math.h>
 #include <assert.h>
 
+#include <unistd.h>
+
+#define getchar()
 #undef _DEBUG_
 #define getchar()
 #define SIZE 400
@@ -56,8 +58,9 @@ void attack(int attr, struct atk_s attd);
 int main(int argc, char **argv)
 {
 	printf("%d", argc); printf("@%s", argv[1]); fflush(stdout);
-	FILE * a = fopen(argv[1], "r"); printf("2018 Day24.1\n"); fflush(stdout);
+	FILE * a = fopen(argv[1], "r"); printf("2018 Day24.2\n"); fflush(stdout);
 
+	fflush(stdout); int fd = dup(1); close(1);
 	int leny = 0;
 	int part = -1;
 	while (1)
@@ -217,6 +220,9 @@ again44:
 		}
 		if (immCount == 0 || infCount == 0) {
 			printf("game over **tot: %d zz is %d im:%d V inf:%d\n", tot, zz, immCount, infCount);
+			dup2(fd, 1);
+			printf("game over **tot: %d \n", tot);
+			exit(0);
 			if (infCount == 0) {
 				printf("game over FOR GOOD **tot: %d zz is %d im%d V inf%d\n", tot, zz, immCount, infCount);
 				printf("for GOOD ROUND:  %d \n", zz);
@@ -295,7 +301,7 @@ again44:
 }
 
 void attack(int attr, struct atk_s attd) {
-	int origU = both[attd.itsI].units;
+	//int origU = both[attd.itsI].units;
 	struct atk_s rejig;
 	int found = 0;
 	for (int j = RAD; j <= COL; j++) {

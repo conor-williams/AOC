@@ -4,16 +4,21 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 #define BOARD_X 1000
 #define BOARD_Y 1000
 int lenx, leny;
-#define DAY "2018 day3 part1\n"
+#define DAY "2018 day3 part2\n"
 #undef _DEBUG_
 char board[1366][BOARD_X][BOARD_Y];
 //char (*board)[BOARD_X][BOARD_Y];
+//compile: -Wl,--stack,999777666
 
 void printboard(int b);
 
+int fd;
 int main(int argc, char **argv)
 {
 //	printf("before malloc...\n");  fflush(stdout);
@@ -23,6 +28,8 @@ int main(int argc, char **argv)
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
+
+	fflush(stdout); fd = dup(1); close(1);
         char line1[2000];
 
    for (int b = 0; b < 1366; b++) {
@@ -38,11 +45,11 @@ while(1) {
         fgets(line1, 999, a);
         if (feof(a)) break;
 	line1[strlen(line1) -1]='\0';
-	printf("%s\n", line1); 
+	//printf("%s\n", line1); 
 	char boardnum[10]; int topleftx; int toplefty; int width; int height;
-	printf("here2"); fflush(stdout);
+	//printf("here2"); fflush(stdout);
 	sscanf(line1, "#%[^ ] @ %d,%d: %dx%d", boardnum, &topleftx, &toplefty, &width, &height);
-	printf("here2"); fflush(stdout);
+	//printf("here2"); fflush(stdout);
 
 	for (int x = topleftx; x < topleftx + width; x++) {
 		for (int y = toplefty; y < toplefty + height; y++) {
@@ -59,11 +66,11 @@ while(1) {
 
 	//strcpy(board[leny], line1);
 	leny++; lenx = strlen(line1);
-	printf("lenx %d - leny %d\n", lenx, leny);
-	printf("here1"); fflush(stdout);
+	//printf("lenx %d - leny %d\n", lenx, leny);
+	//printf("here1"); fflush(stdout);
 }
-	printf("maxx is %d\n", maxx);
-	printf("maxy is %d getchar\n", maxy);
+	//printf("maxx is %d\n", maxx);
+	//printf("maxy is %d getchar\n", maxy);
 fclose(a);
 
 	int foundboard[BOARD_Y][BOARD_X];
@@ -103,7 +110,7 @@ while(1) {
         fgets(line1, 999, a);
         if (feof(a)) break;
 	line1[strlen(line1) -1]='\0';
-	printf("%s\n", line1); 
+	//printf("%s\n", line1); 
 	char boardnum[10]; int topleftx; int toplefty; int width; int height;
 	sscanf(line1, "#%[^ ] @ %d,%d: %dx%d", boardnum, &topleftx, &toplefty, &width, &height);
 
@@ -118,7 +125,9 @@ while(1) {
 	}
 after:
 	if (found22 == 0) {
+		dup2(fd, 1);
 		printf("***%s\n", boardnum); getchar(); getchar();
+		exit(0);
 	}
 }
 //free(board);
@@ -130,11 +139,15 @@ after:
 		}
 	}
 	
+	
 	printf("after...\n");
+	
+	fflush(stdout); dup2(fd, 1);
 	printf("\n******** tot %d\n", tot);
 }
 void printboard(int bnum)
 {
+	return;
 	for (int x = 0; x < 20; x++) {
 		for (int y = 0; y < 20; y++) {
 			printf("%c", board[bnum][y][x]);

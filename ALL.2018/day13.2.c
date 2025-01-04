@@ -5,6 +5,9 @@
 #include <math.h>
 #include <algorithm>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 int tot = 0;
@@ -38,10 +41,13 @@ void printit();
 		int poPos = 0;
 void mysort(); 
 
+int fd;
 int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
-        FILE * a = fopen(argv[1], "r"); printf("2017 Day9.1\n"); fflush(stdout);
+        FILE * a = fopen(argv[1], "r"); printf("2018 Day13.2\n"); fflush(stdout);
+
+	fflush(stdout); fd = dup(1); close(1);
 
 while (1) 
 {
@@ -124,6 +130,7 @@ fclose(a);
 		}
 
 		if (startsPos == 1) {
+
 			printf("%d,%d\n", starts[0].x, starts[0].y); 
 			printf("^^^^   ANS POSS  ^^^^\n"); getchar();
 		}
@@ -346,7 +353,9 @@ restart:
 		}
 	}
 	if (startsPos == 1) {
-		printf("%d,%d\n", starts[0].x, starts[0].y); 
+		dup2(fd, 1);
+		printf("ANS: %d,%d\n", starts[0].x, starts[0].y); 
+		exit(0);
 		printf("^^^^   ANS  ^^^^\n"); getchar();
 	}
 }

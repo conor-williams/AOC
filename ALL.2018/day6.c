@@ -4,6 +4,9 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 #define GRIDX 400
 #define GRIDY 400
 #define COORDS 100
@@ -11,6 +14,8 @@ int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
         FILE * a = fopen(argv[1], "r"); printf("2018 Day6.1\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
 	int SIZE = 1000; char line1[SIZE];
 
 	struct coords {
@@ -108,5 +113,7 @@ printf("numcoords %d\n", numcoords);
 		if (poses[i].count > max) {max = poses[i].count; winner = i; winnerx = poses[i].x; winnery = poses[i].y;}
 	}
 	printf("***winner [%d] count [%d] x,y[%d,%d]\n", winner, poses[winner].count, winnerx, winnery);
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %d\n", poses[winner].count);
 }
 

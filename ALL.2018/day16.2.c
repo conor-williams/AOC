@@ -4,6 +4,9 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 int tot = 0;
 #define SIZE 500
 char line1[SIZE];
@@ -19,8 +22,9 @@ int instNum =0;
 int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
-        FILE * a = fopen(argv[1], "r"); printf("2018 Day16.1\n"); fflush(stdout);
+        FILE * a = fopen(argv[1], "r"); printf("2018 Day16.2\n"); fflush(stdout);
 
+	fflush(stdout); int fd = dup(1); close(1);
 	int numBlanks = 0;
 	int regb[5];
 	int op, regA, regB, regC;
@@ -142,7 +146,7 @@ fclose(a);
 	printf("\n");
 	printf("here1\n"); fflush(stdout);
 
-next:
+//next:
 	int donear[50]; for (int p = 0; p < 16; p++) {donear[p] = 33;}
 	int changed =0;
 
@@ -257,7 +261,9 @@ again:
 					printf("ERR\n"); exit(0);
 			}
 		}
+		dup2(fd,1);
 		printf("**regb[0] is %d\n", regb[0]);
+		exit(0);
 	}
 }
 	

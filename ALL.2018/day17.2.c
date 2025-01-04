@@ -37,7 +37,9 @@ int origMaxy = maxy;
 int main(int argc, char **argv)
 {
 	printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
-	FILE * a = fopen(argv[1], "r"); printf("2017 Day17.1\n"); fflush(stdout);
+	FILE * a = fopen(argv[1], "r"); printf("2017 Day17.2\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
 
 	if (strcmp(argv[1], "ex1.txt") == 0) {
 		EX1 = 1;
@@ -206,6 +208,7 @@ int main(int argc, char **argv)
 			}
 		}
 	}
+	dup2(fd, 1);
 	printf("*** tot (2) is %d\n", tot);
 	
 }

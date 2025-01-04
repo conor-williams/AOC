@@ -4,6 +4,9 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 #define BOARD_X 1000
 #define BOARD_Y 1000
 int lenx, leny;
@@ -11,7 +14,7 @@ int lenx, leny;
 #undef _DEBUG_
 char board[1366][BOARD_X][BOARD_Y];
 //char (*board)[BOARD_X][BOARD_Y];
-
+//compile: -Wl,--stack,999777666
 void printboard(int b);
 
 int main(int argc, char **argv)
@@ -23,6 +26,8 @@ int main(int argc, char **argv)
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[2000];
 
    for (int b = 0; b < 1366; b++) {
@@ -107,7 +112,9 @@ fclose(a);
 		}
 	}
 	
-	printf("\n******** tot %d\n", tot);
+
+	fflush(stdout); dup2(fd, 1);
+	printf("\n*** tot %d\n", tot);
 }
 void printboard(int bnum)
 {

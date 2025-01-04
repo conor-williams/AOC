@@ -4,6 +4,9 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 #undef _DEBUG_
 #define SIZE 400
 char line1[SIZE];
@@ -19,10 +22,13 @@ int cou(int x, int y, char tre);
 int leny = 0;
 int lenx = 0;
 void giveAns();
+int fd;
 int main(int argc, char **argv)
 {
 	printf("%d", argc); printf("@%s", argv[1]); fflush(stdout);
-	FILE * a = fopen(argv[1], "r"); printf("2018 Day9.1\n"); fflush(stdout);
+	FILE * a = fopen(argv[1], "r"); printf("2018 Day18.2\n"); fflush(stdout);
+	
+	fflush(stdout); fd = dup(1); close(1);
 
 	while (1)
 	{
@@ -105,7 +111,10 @@ void giveAns() {
 			}
 		}
 	}
+
+	fflush(stdout); dup2(fd, 1);
 	printf("**ansP %d\n", countT*countL);
+	exit(0);
 }
 void printit() {
 	for (int y = 0; y < leny; y++) {

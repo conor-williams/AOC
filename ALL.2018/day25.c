@@ -4,6 +4,9 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 #undef _DEBUG_
 #define SIZE 400
 char line1[SIZE];
@@ -25,7 +28,9 @@ void groupit(int grp);
 int main(int argc, char **argv)
 {
 	printf("%d", argc); printf("@%s", argv[1]); fflush(stdout);
-	FILE * a = fopen(argv[1], "r"); printf("2018 Day9.1\n"); fflush(stdout);
+	FILE * a = fopen(argv[1], "r"); printf("2018 Day25.1\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
 
 	while (1)
 	{
@@ -60,9 +65,11 @@ int main(int argc, char **argv)
 		}
 		printf("----------\n");
 	} while (count != leny); 
-	printf("groups: %d\n", grp1);
 	
+
 	printf("**tot %lu\n", tot);
+	fflush(stdout); dup2(fd, 1);
+	printf("ans: %d\n", grp1);
 }
 
 void groupit(int grp) {

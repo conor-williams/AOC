@@ -4,6 +4,9 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 #define _DEBUG_
 int loopit();
 char *first;
@@ -14,7 +17,9 @@ unsigned long totmetadata = 0;
 int main(int argc, char **argv)
 {
 	printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
-	FILE * a = fopen(argv[1], "r"); printf("2018 Day6.1\n"); fflush(stdout);
+	FILE * a = fopen(argv[1], "r"); printf("2018 Day8.2\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
 
 	int leny = 0;
 	while (1)
@@ -73,6 +78,8 @@ int main(int argc, char **argv)
 		}
 		leny++;
 	}
+
+	fflush(stdout); dup2(fd, 1);
 	printf("**tot %lu\n", totmetadata);
 	fclose(a);
 }

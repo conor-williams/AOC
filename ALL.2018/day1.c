@@ -4,6 +4,9 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 int pos = 0;
 int main(int argc, char **argv)
 {
@@ -24,6 +27,6 @@ int num = 0;
            tot -= num;
 	}
 }
-	printf("****TOT %d ", tot);
+	printf("****TOT %ld ", tot);
 fclose(a);
 }

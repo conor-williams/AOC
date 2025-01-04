@@ -4,6 +4,9 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 void checkIsTotInTotPrev(int totNow);
 int pos = 0;
 long tot = 0;
@@ -15,6 +18,7 @@ int main(int argc, char **argv)
         printf("%d", argc); printf("%s", argv[1]); fflush(stdin); fflush(stdout);
 
         a = fopen(argv[1], "r"); printf("2018 Day1.2\n"); fflush(stdin); fflush(stdout);
+
         char line1[1000];
 
 loopit:
@@ -35,7 +39,7 @@ totPrevPos++;
 }
 fseek(a, 0, SEEK_SET);
 goto loopit;
-	printf("****TOT %d ", tot);
+	printf("****TOT %ld ", tot);
 fclose(a);
 }
 void checkIsTotInTotPrev(int totNow) {

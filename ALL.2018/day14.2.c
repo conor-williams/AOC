@@ -4,6 +4,9 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 //int END = 2028;	//plus ten
 //int END = 59414;
 int END = 330121;
@@ -19,8 +22,9 @@ char ar[40000000];
 int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
-        FILE * a = fopen(argv[1], "r"); printf("2017 Day9.1\n"); fflush(stdout);
+        FILE * a = fopen(argv[1], "r"); printf("2017 Day14.2\n"); fflush(stdout);
 
+	fflush(stdout); int fd = dup(1); close(1);
 while (1) 
 {
         fgets(line1, SIZE -1, a);
@@ -99,6 +103,8 @@ fclose(a);
 			
 	} while (1);
 
+
+	fflush(stdout); dup2(fd, 1);
 	if (ans == 1) {
 		printf("ANS1: ");
 		printf("%d\n", (int)strlen(ar)-(int)strlen(end));

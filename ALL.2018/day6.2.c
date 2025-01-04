@@ -4,13 +4,18 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 #define GRIDX 400
 #define GRIDY 400
 #define COORDS 100
 int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
-        FILE * a = fopen(argv[1], "r"); printf("2018 Day6.1\n"); fflush(stdout);
+        FILE * a = fopen(argv[1], "r"); printf("2018 Day6.2\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
 	int SIZE = 1000; char line1[SIZE];
 
 	struct coords {
@@ -61,7 +66,8 @@ printf("numcoords %d\n", numcoords);
 	for (int x = minx-1; x <= maxx+1; x++) {
 		for (int y = miny-1; y <= maxy+1; y++) {
 			int dist = 0;
-			int mindist = 1000000; int winningcoord = 0;
+			//int mindist = 1000000;
+			int winningcoord = 0;
 			for (int i = 0; i < numcoords; i++) {
 				//distance from x y to coords[i].x and coords[i].y
 				//printf("trying coord: %d %d\n", poses[i].x, poses[i].y);
@@ -87,7 +93,9 @@ printf("numcoords %d\n", numcoords);
 	printf("%d,%d %d,%d\n", regXmin, regYmin, regXmax, regYmax);
 	printf("%d,%d %d,%d\n", regXmin, regYmin, regXmax, regYmax);
 	printf("area: %f\n", (double)(regXmax - regXmin+1)*(double)(regYmax-regYmin+1)); 
+	dup2(fd, 1);
 	printf("**count %d\n", count); getchar();
+	exit(0);
 	int excludeList[1000];
 	for (int i = 0; i < 1000; i++) {
 		excludeList[i] = 999;

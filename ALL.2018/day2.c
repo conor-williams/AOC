@@ -4,6 +4,9 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 int lenx, leny;
 int numlet[26];
 #define DAY "2018 day2 part1\n"
@@ -17,6 +20,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[1000];
 
 while(1) {
@@ -31,7 +35,7 @@ while(1) {
 		int pos = (int)((int)line1[i] - (int)'a');
 		if (pos < 0 || pos > 25) {
 #ifdef _DEBUG_
-			printf("CONTINUE: ERROR getchar: [%]", line1[i]); 
+			printf("CONTINUE: ERROR getchar: [%c]", line1[i]); 
 #endif
 			break;
 		} else {
@@ -63,5 +67,7 @@ fclose(a);
 long tot = 0;
 	tot = totFound2 * totFound3;
 	
-	printf("******** tot %ld\n", tot);
+
+	fflush(stdout); dup2(fd, 1);
+	printf("*** tot %ld\n", tot);
 }

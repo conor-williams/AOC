@@ -4,6 +4,9 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 int tot = 0;
 #define SIZE 50
 char line1[SIZE];
@@ -14,6 +17,7 @@ int main(int argc, char **argv)
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
         FILE * a = fopen(argv[1], "r"); printf("2018 Day16.1\n"); fflush(stdout);
 
+	fflush(stdout); int fd = dup(1); close(1);
 	int numBlanks = 0;
 	int regb[5];
 	int op, regA, regB, regC;
@@ -118,7 +122,7 @@ while (1)
 	}	
 	if (strlen(line1) == 0) {
 		numBlanks++;
-		if (numBlanks > 2) {printf("**tot %d\n", tot); exit(0);}
+		if (numBlanks > 2) {dup2(fd, 1); printf("**tot %d\n", tot); exit(0);}
 		continue;
 	}
 	leny++;
