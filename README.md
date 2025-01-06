@@ -23,7 +23,7 @@ rectified soon
 </ul>
 <br>
 <address><b>conor.williams@gmail.com</b></address><br>
-<font size=1><i>last updated</i>: <b>03/01/2025</b></font>
+<font size=1><i>last updated</i>: <b>06/01/2025</b></font>
 <br><br>
 
 <h3>Table of years/days of days which need optimizations or work (todo: ongoing):</h3>
