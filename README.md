@@ -5,7 +5,7 @@ rectified soon
 <li>g++ if "using namespace std" </li>
 <li>either gcc or g++, if no "using namespace std" </li>
 <li>expand the stack if errors compiling or linking: --Wl,--stack,999777666 </li>
-<li>-I. to the compiler when using bigint </li>
+<li>-I. to the compiler when using bigint (after copying into this dir, the .h files) </li>
 <li>if crashes or "segmentation falit" expand/widen the stack </li>
 <li>add widen stack check in specific c files; maybe a simple malloc with a free and a note (<i><b>todo in 2025</b></i>) </li>
 <s><li>a couple need the input sorted externally first or else they crash: sort file.1 > file.2: (will do internal sort -- (<i><b>todo in 2025</b></i>)) </li></s>
