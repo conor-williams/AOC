@@ -3,7 +3,7 @@ apologies, some of my files got overwritten causing me to upload ones that gave 
 rectified soon
 <ul>
 <li>g++ if "using namespace std" </li>
-<li>either if no "using namespace std" </li>
+<li>either gcc or g++, if no "using namespace std" </li>
 <li>expand the stack if errors compiling or linking: --Wl,--stack,999777666 </li>
 <li>-I. to the compiler when using bigint </li>
 <li>if crashes or "segmentation falit" expand/widen the stack </li>
