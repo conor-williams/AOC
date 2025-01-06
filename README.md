@@ -7,7 +7,7 @@ rectified soon
 <li>expand the stack if errors compiling or linking: --Wl,--stack,999777666 </li>
 <li>-I. to the compiler when using bigint </li>
 <li>if crashes or "segmentation falit" expand/widen the stack </li>
-<li>add widen stack check in specific c files; maybe a simple malloc with a free and a note (<i><b>todo in 2025</b></i></li>
+<li>add widen stack check in specific c files; maybe a simple malloc with a free and a note (<i><b>todo in 2025</b></i>) </li>
 <s><li>a couple need the input sorted externally first or else they crash: sort file.1 > file.2: (will do internal sort -- (<i><b>todo in 2025</b></i>)) </li></s>
 <li>dayX.c is part1 of day X </li>
 <li>dayX.2.c is part2 of day X </li>
@@ -28,7 +28,7 @@ rectified soon
 
 <h3>Table of years/days of days which need optimizations or work (todo: ongoing):</h3>
 <table> 
-	<tr><td><b><i>2015</i></b></td><td>day10</td><td>day12&nbsp;&nbsp;&nbsp;</td><td>day19.2&nbsp;&nbsp;&nbsp;</td><td>day20&nbsp;&nbsp;&nbsp;</td><td>day24&nbsp;&nbsp;&nbsp;</td></tr>
+	<tr><td><b>2015</b></td><td>day10</td><td>day12</td><td>day19.2</td><td>day20</td><td>day24</td></tr>
 	<tr><td><b>2016</b></td><td><s>day2 x 2 </s></td></td><td>day9.2</td><td>day11 x 2 </td><td>day20.2</td><td>day22.2</td><td>day23.2</td></tr>
 	<tr><td><b>2017</b></td><td>day7.2</td></td><td>day11.2</td><td>day16.2</td><td>day17.2</td><td>day18.2</td><td>day20.2</td></tr>
 	<tr><td><b>2018</b></td><td>day3</td><td>day5</td><td>day7</td><td>day9.2</td><td>day11.2</td><td>day15</td><td>day19.2</td><td>day21</td><td>day22.2</td><td>day23.2</td></tr>
@@ -47,7 +47,7 @@ rectified soon
 <h2>Split of the above table into three tables: broken, slow, not yet attempted</h2>
 <h2>Broken</h2>
 <table> 
-	<tr><td><b><i>2015</i></b></td><td>day12</td><td>day19.2</td></tr>
+	<tr><td><b>2015</b></td><td>day12</td><td>day19.2</td></tr>
 	<tr><td><b>2016</b></td><td>day 11</td></tr>
 	<tr><td><b>2017</b></td><td>day7.2</td></td><td>day11</td><td>day20.2</td></tr>
 	<tr><td><b>2018</b></td><td>day7</td><td>day9.2</td><td>day15</td><td>day21</td><td>day22.2</td><td>day23.2</td></tr>
