@@ -1,4 +1,6 @@
 <p><b>Notes: <i>c.w.</i></b></p>
+apologies, some of my files got overwritten causing me to upload ones that gave the wrong answers (find and cp overwrite!!):
+rectified soon
 <ul>
 <li>g++ if "using namespace std" </li>
 <li>either if no "using namespace std" </li>
@@ -37,6 +39,7 @@
 				<td>day21.2</td><td>day22.2</td><td>day23</td><td>day24</td></tr>
 	<tr><td><b>2022</b></td><td>day9.2</td><td>day13.2</td><td>day15.2</td><td>day17.2</td><td>day18.2</td><td>day21.2</td>
 				<td>day22.2</td><td>day25.1 (java)</td></tr>
-	<tr><td><b>2023</b></td><td>todo</td></tr>
+	<tr><td><b>2023</b></td><td>day1</td><td>day3</td><td>day5</td><td>day7</td><td>day8.2</td><td>day9</td><td>day10.2</td><td>day11.2</td><td>day12.2</td><td>day13.2</td>
+				<td>day14.2</td><td>day15</td><td>day17</td><td>day21</td></tr>
 	<tr><td><b><i>2024</i></b></td><td>day22.2</td></tr>
 </table>
