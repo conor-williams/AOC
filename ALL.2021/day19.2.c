@@ -11,6 +11,9 @@
 #include <vector>
 #include <algorithm> 
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 //deque <int> b1Q;
 int other = 0;
@@ -1321,10 +1324,12 @@ int main(int argc, char **argv)
 		if (det == 1) {count5++;}
 	}
 	assert(count5 == 24);
-	printf("count5 is %d\n", count5);
+	//printf("count5 is %d\n", count5);
 	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-	FILE *a = fopen(argv[1], "r"); printf("2021 Day19\n"); fflush(stdout);
+	FILE *a = fopen(argv[1], "r"); printf("2021 Day19.2\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
 	char line1[LINE];
 
 	int leny = 0;
@@ -1460,6 +1465,7 @@ int main(int argc, char **argv)
 			}
 		}
 	}
+
 	printf("after calc dist\n"); fflush(stdout);
 
 /*
@@ -2085,7 +2091,7 @@ END PPPPPPPPPPPPPP
 				}
 				printf("\nclear...\n");
 */
-	system("date");
+	//system("date");
 
 //	FILE *out1 = fopen("lineI.snip", "w+");
 //	lineIPos = 0;
@@ -3265,7 +3271,11 @@ end:
 			if (dist > maxDist) {maxDist = dist;}
 		}
 	}
+	
 	printf("**ans maxDist is %d\n", maxDist);
+
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %d\n", maxDist);
 
 	exit(0);
 	for (int i = 0; i < beaconNum; i++) {
@@ -3286,7 +3296,7 @@ end:
 	}
 	//if (strcmp(var_orient, "NNNNN") != 0) { //printf("going to restart...\n"); goto restart; }
 	//printf("%s %d\n", var_orient, allBPos);
-	system("date");
+	//system("date");
 	printf("** ans %d\n", (int)mp2.size());
 	int subtot = 0;
 	for (int i = 0; i < beaconNum; i++) {
@@ -3305,6 +3315,7 @@ end:
 	printf("**ans %d\n", (int)mp2.size()); fflush(stdout);
 	printf("**var_tot %d\n", (int)var_tot); fflush(stdout);
 	fclose(outfd);
+
 
 }
 

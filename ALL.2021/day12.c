@@ -11,6 +11,9 @@
 #include <vector>
 #include <iostream>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 FILE *a;
@@ -30,6 +33,8 @@ int main(int argc, char **argv)
         printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
         a = fopen(argv[1], "r"); printf("2021 Day 12 - 1\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[LINE];
 // XW-ed
 int leny = 0;
@@ -95,6 +100,9 @@ fclose(a);
 	}
 */
 	printf("FIN ** count %d\n", count);
+
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %d\n", count);
 }
 int ind = 0;
 void traverse(string st, string en, string called, map<string, int> al) {

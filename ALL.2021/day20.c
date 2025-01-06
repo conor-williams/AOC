@@ -5,6 +5,9 @@
 #include <math.h>
 #include <assert.h>
 
+#include <unistd.h>
+
+#define getchar()
 FILE *a;
 #define LINE 1000
 char algo[LINE];
@@ -17,10 +20,12 @@ char gridtmp[GX+20][GX+20];
 #define PAD 20
 int main(int argc, char **argv)
 {
-        printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
+	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-        a = fopen(argv[1], "r"); printf("2021 Day20\n"); fflush(stdout);
-        char line1[LINE];
+	a = fopen(argv[1], "r"); printf("2021 Day20.1\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
+	char line1[LINE];
 
 	for (int y = 0; y < GX; y++) {
 		for (int x = 0; x < GX; x++) {
@@ -30,52 +35,52 @@ int main(int argc, char **argv)
 		grid[y][GX] = '\0';
 		gridtmp[y][GX] = '\0';
 	}
-	
 
-int leny = 0;
-int imagePos = PAD;
 
-int g3co = 0;
-int numlines = 0;
-while (1) {
-        fgets(line1, LINE-1, a);
-        if (feof(a)) break;
-        line1[strlen(line1)-1] = '\0';
-        printf("LINE: %s\n", line1);
-	if (line1[0] == '\0') {
-		continue;		
-	} else if (leny == 0) {
-		strcpy(algo, line1);
-	} else {
-		strcpy(grid3[g3co++], line1);
-		char line2[GX+30] = "...................."; //PAD
-		strcat(line2, line1);
-		for (int i = (int)strlen(line2); i < GX; i++) {
-			line2[i] = '.';
+	int leny = 0;
+	int imagePos = PAD;
+
+	int g3co = 0;
+	int numlines = 0;
+	while (1) {
+		fgets(line1, LINE-1, a);
+		if (feof(a)) break;
+		line1[strlen(line1)-1] = '\0';
+		printf("LINE: %s\n", line1);
+		if (line1[0] == '\0') {
+			continue;		
+		} else if (leny == 0) {
+			strcpy(algo, line1);
+		} else {
+			strcpy(grid3[g3co++], line1);
+			char line2[GX+30] = "...................."; //PAD
+			strcat(line2, line1);
+			for (int i = (int)strlen(line2); i < GX; i++) {
+				line2[i] = '.';
+			}
+			//strcat(line2, "..........");
+
+			strcpy(grid[imagePos], line2);
+			grid[imagePos][GX] = '\0';
+			imagePos++;
+			numlines++;
 		}
-		//strcat(line2, "..........");
-		
-		strcpy(grid[imagePos], line2);
-		grid[imagePos][GX] = '\0';
-		imagePos++;
-		numlines++;
+		leny++;
 	}
-	leny++;
-}
-int co3 = 0;
-for (int y = 0; y < g3co; y++) {
-	for (int x = 0; x < (int)strlen(line1); x++) {
-		if (grid3[y][x] == '#') {
-			co3++;
+	int co3 = 0;
+	for (int y = 0; y < g3co; y++) {
+		for (int x = 0; x < (int)strlen(line1); x++) {
+			if (grid3[y][x] == '#') {
+				co3++;
+			}
 		}
 	}
-}
-	
-imagePos+= PAD;
-lenx = (int)strlen(grid[0]);
-leny = imagePos;
-printf("lenx: %d\n", lenx); getchar();
-fclose(a);
+
+	imagePos+= PAD;
+	lenx = (int)strlen(grid[0]);
+	leny = imagePos;
+	printf("lenx: %d\n", lenx); getchar();
+	fclose(a);
 	printf("GRID:\n");
 	for (int i = 0; i < leny; i++) {
 		printf("%s\n", grid[i]);
@@ -90,7 +95,7 @@ fclose(a);
 			}
 		}
 	}
-	
+
 	printf("count1 is %d\n", count1); getchar();
 	assert(count1 == co3);
 	{
@@ -144,14 +149,14 @@ fclose(a);
 			printf("**minx: %d\n", minx);
 			printf("**miny: %d\n", miny); getchar();
 			assert(minx-1 == startx); assert(maxx+2 == endx); assert(miny-1 == starty); assert(maxy+2 == endy);
-			
+
 			startx = minx-1; endx = maxx+2; starty = miny-1; endy = maxy+2;
 
 		} 
-/*
-		for (int y = starty; y < endy; y++) {
-			for (int x = startx; x < endx; x++) {
-*/
+		/*
+		   for (int y = starty; y < endy; y++) {
+		   for (int x = startx; x < endx; x++) {
+		   */
 		for (int y = 1; y < GX; y++) {
 			for (int x = 1; x < GX; x++) {
 				int var_bit = 0;
@@ -165,45 +170,45 @@ fclose(a);
 				if (grid[y+1][x] == '#') { var_bit |= 1 << 1;}
 				if (grid[y+1][x+1] == '#') { var_bit |= 1 << 0;}
 
-/*
-			if (i % 2 == 1 && (x <= minX + 5 || x >= maxX - 5 || y <= minY + 5 || y >= maxY - 5)) {
-				newNodes.put(x + "," + y, new Node(x, y, '.'));
-                	} else {
-                    		newNodes.put(x + "," + y, new Node(x, y, imageEnhancementAlgorithm.charAt(decimalPosition)));
-                	}
-*/
-			gridtmp[y][x] = algo[var_bit];
-/*
-				assert(var_bit < 512);
-				if (var_bit == 0) {printf("var_bit: %d (x:%d y:%d)\n", var_bit, x, y);}
-				if (r == 0 ) {
-					if (var_bit == 0 && (y <= starty)) {
-						gridtmp[y][x] = algo[var_bit];
-					} else if (var_bit == 0 && (x <= startx)) {
-						gridtmp[y][x] = algo[var_bit];
-					} else if (var_bit == 0 && (y >= endy-1)) {
-						gridtmp[y][x] = algo[var_bit];
-					} else if (var_bit == 0 && (x >= endx-1)) {
-						gridtmp[y][x] = algo[var_bit];
-					} else {
-						gridtmp[y][x] = algo[var_bit];
-					}
-				} else if (r == 1) {
-					if (var_bit == 0 && (y <= starty+1)) {
-						gridtmp[y][x] = '.';
-					} else if (var_bit == 0 && (x <= startx+1)) {
-						gridtmp[y][x] = '.';
-					} else if (var_bit == 0 && (y >= endy-2)) {
-						gridtmp[y][x] = '.';
-					} else if (var_bit == 0 && (x >= endx-2)) {
-						gridtmp[y][x] = '.';
-					} else {
-						gridtmp[y][x] = algo[var_bit];
-					}
-				} else {
-					gridtmp[y][x] = algo[var_bit];
-				}
-*/
+				/*
+				   if (i % 2 == 1 && (x <= minX + 5 || x >= maxX - 5 || y <= minY + 5 || y >= maxY - 5)) {
+				   newNodes.put(x + "," + y, new Node(x, y, '.'));
+				   } else {
+				   newNodes.put(x + "," + y, new Node(x, y, imageEnhancementAlgorithm.charAt(decimalPosition)));
+				   }
+				   */
+				gridtmp[y][x] = algo[var_bit];
+				/*
+				   assert(var_bit < 512);
+				   if (var_bit == 0) {printf("var_bit: %d (x:%d y:%d)\n", var_bit, x, y);}
+				   if (r == 0 ) {
+				   if (var_bit == 0 && (y <= starty)) {
+				   gridtmp[y][x] = algo[var_bit];
+				   } else if (var_bit == 0 && (x <= startx)) {
+				   gridtmp[y][x] = algo[var_bit];
+				   } else if (var_bit == 0 && (y >= endy-1)) {
+				   gridtmp[y][x] = algo[var_bit];
+				   } else if (var_bit == 0 && (x >= endx-1)) {
+				   gridtmp[y][x] = algo[var_bit];
+				   } else {
+				   gridtmp[y][x] = algo[var_bit];
+				   }
+				   } else if (r == 1) {
+				   if (var_bit == 0 && (y <= starty+1)) {
+				   gridtmp[y][x] = '.';
+				   } else if (var_bit == 0 && (x <= startx+1)) {
+				   gridtmp[y][x] = '.';
+				   } else if (var_bit == 0 && (y >= endy-2)) {
+				   gridtmp[y][x] = '.';
+				   } else if (var_bit == 0 && (x >= endx-2)) {
+				   gridtmp[y][x] = '.';
+				   } else {
+				   gridtmp[y][x] = algo[var_bit];
+				   }
+				   } else {
+				   gridtmp[y][x] = algo[var_bit];
+				   }
+				   */
 				if (x == 22 && y == 22) {printf("var_bit is %d\n", var_bit);}
 				if (x == 22 && y == 22) {printf("g is %c\n", gridtmp[y][x]);}
 			}
@@ -243,6 +248,10 @@ fclose(a);
 			}
 		}
 	}
+
 	printf("**count is %d\n", count);
+
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %d\n", count);
 
 }

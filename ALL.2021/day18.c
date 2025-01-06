@@ -8,6 +8,9 @@
 #include <iostream>
 #include <cassert>
 
+#include <unistd.h>
+
+#define getchar()
 #define getchar()
 using namespace std;
 FILE *a;
@@ -23,7 +26,10 @@ int main(int argc, char **argv)
 {
 	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-	a = fopen(argv[1], "r"); printf("2021 Day18\n"); fflush(stdout);
+	a = fopen(argv[1], "r"); printf("2021 Day18.1\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
+
 	char line1[LINE];
 	int leny = 0;
 	while (1) {
@@ -178,6 +184,10 @@ again:
 		if (isalfa(line2[i])) {
 			printf("line2[i]: %c isalfa: %d\n", line2[i], isalfa(line2[i]));
 			cout << "**ans: " << getPlaceHolder(line2[i]) << endl;
+
+			fflush(stdout); dup2(fd, 1);
+			printf("**ans: %d\n", getPlaceHolder(line2[i]));
+			exit(0);
 		}
 	}
 

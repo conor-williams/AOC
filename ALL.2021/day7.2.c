@@ -4,6 +4,9 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 struct crab {
 	int posI;
 	char posS[10];
@@ -15,7 +18,9 @@ int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-        a = fopen(argv[1], "r"); printf("2021 Day6\n"); fflush(stdout);
+        a = fopen(argv[1], "r"); printf("2021 Day7 Part2\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[5000];
 	char *first;
 	int posC = 0;
@@ -61,6 +66,10 @@ fclose(a);
 		if (tot < minTOT) {minTOT = tot; minPOS = i;}
         } 
 	printf("***minTOT %d (%d)\n", minTOT, minPOS);
+	
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans %d\n", minTOT);
+	exit(0);
 
 	int maxTOT = 0;
 	int maxPOS = 0;
@@ -71,5 +80,6 @@ fclose(a);
 		}
 		if (tot > maxTOT) {maxTOT = tot; maxPOS = i;}
         } 
+
 	printf("***maxTOT %d (%d)\n", maxTOT, maxPOS);
 }

@@ -10,6 +10,9 @@
 #include <iostream>
 #include <map>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 FILE *a;
@@ -25,7 +28,7 @@ struct diffs_s {
 struct diffs_s diffs[15];
 int diffsPos = 0;
 
-char input[] = "89999999999999"; 
+char input[50] = "89999999999999"; 
 //char input[] = "12";
 long long zvar = 0;
 char inputPrev[15];
@@ -36,10 +39,14 @@ void sigfunc(int a) {
 
 int main(int argc, char **argv)
 {
+	printf("SLOW ~2mins\n");
 	signal(SIGTSTP, &sigfunc);
+
 	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-	a = fopen(argv[1], "r"); printf("2021 Day 24\n"); fflush(stdout);
+	a = fopen(argv[1], "r"); printf("2021 Day 24 Part2\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
 	char line1[LINE];
 
 	int leny = 0;
@@ -419,17 +426,20 @@ end:
 		printf("x11.first %lld x11.second %d\n", x11.first, x11.second);
 	}
 	printf("first digit is %d %c\n", digit_max, digit_max);
-	char ans[20];
+	char ans[50];
 	sprintf(ans, "%d", digit_max);
+	char anstmp[30];
 	for (int ii = 1; ii < 14; ii++) {
 		pair p1 = stage[ii].mp2[var_max];
 		var_max = p1.first;
 		int digit1 = p1.second;
 		//pair p2 = stage[ii+1].mp2[out1];
 		printf("digit %d: %d\n", ii, digit1);
-		sprintf(ans, "%s%d", ans, digit1);
+		strcpy(anstmp, ans);
+		sprintf(ans, "%s%d", anstmp, digit1);
 	}
 
+	dup2(fd, 1);
 	printf("**ans [[ %s ]]\n", ans);
 	exit(0);
 

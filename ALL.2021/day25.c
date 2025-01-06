@@ -7,9 +7,11 @@
 #include <unistd.h>
 #include <signal.h>
 
+#include <unistd.h>
+
+#define getchar()
 FILE *a;
 #define LINE 1000
-//#define getchar()
 void sigfunc(int a) { printf("[[ %s ]]\n", "signal hand..\n"); }
 
 #define GX 200
@@ -18,22 +20,24 @@ char gridtmp[GX][GX];
 
 int main(int argc, char **argv)
 {
-        signal(SIGTSTP, &sigfunc);
-        printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
+	signal(SIGTSTP, &sigfunc);
+	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-        a = fopen(argv[1], "r"); printf("2021 Day 25\n"); fflush(stdout);
-        char line1[LINE];
+	a = fopen(argv[1], "r"); printf("2021 Day 25\n"); fflush(stdout);
 
-int leny = 0;
-while (1) {
-        fgets(line1, LINE-1, a);
-        if (feof(a)) break;
-        line1[strlen(line1)-1] = '\0';
-        printf("LINE: %s\n", line1);
-	strcpy(grid[leny], line1);
-	leny++;
-}
-fclose(a);
+	fflush(stdout); int fd = dup(1); close(1);
+	char line1[LINE];
+
+	int leny = 0;
+	while (1) {
+		fgets(line1, LINE-1, a);
+		if (feof(a)) break;
+		line1[strlen(line1)-1] = '\0';
+		printf("LINE: %s\n", line1);
+		strcpy(grid[leny], line1);
+		leny++;
+	}
+	fclose(a);
 	int lenx = (int)strlen(grid[0]);
 
 	printf("Initial state:\n");
@@ -66,7 +70,7 @@ fclose(a);
 					gridtmp[y][lenx-1] = '.';
 					gridtmp[y][0] = '>';
 				}
-	 
+
 			}
 		}
 		for (int y = 0; y < leny; y++) {
@@ -90,7 +94,7 @@ fclose(a);
 					gridtmp[y][x] = '.';
 					gridtmp[0][x] = 'v';
 				}
-	 
+
 			}
 		}
 		for (int y = 0; y < leny; y++) {
@@ -102,7 +106,7 @@ fclose(a);
 		}
 		//printf("\n");
 
-		if (found == 0) {printf("last round %d\n", round); break;}
+		if (found == 0) {dup2(fd, 1); printf("last round %d\n", round); break;}
 		printf("After %d step:\n", round);
 		for (int y = 0; y < leny; y++) {
 			for (int x = 0; x < lenx; x++) {

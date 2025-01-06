@@ -5,6 +5,9 @@
 #include <math.h>
 #include <assert.h>
 
+#include <unistd.h>
+
+#define getchar()
 FILE *a;
 #define LINE 100
 #define GX 1400
@@ -22,7 +25,9 @@ int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-        a = fopen(argv[1], "r"); printf("2021 Day13\n"); fflush(stdout);
+        a = fopen(argv[1], "r"); printf("2021 Day13.2\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[LINE];
 	for (int y = 0; y < GX; y++) {
 		for (int x = 0; x < GX; x++) {
@@ -161,6 +166,9 @@ fclose(a);
 		printf("R: %d count: %d\n", i, count); getchar();
 					
 	}
+
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: \n");
 	for (int y = 0; y <= maxy; y++) {
 		for (int x = 0; x <= maxx; x++) {
 			if (grid[y][x] == '.') {

@@ -5,6 +5,9 @@
 #include <math.h>
 #include <algorithm>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 struct xy {
@@ -25,7 +28,10 @@ int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-        a = fopen(argv[1], "r"); printf("2021 Day8\n"); fflush(stdout);
+        a = fopen(argv[1], "r"); printf("2021 Day9.2\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
+
         char line1[5000];
 	int tot = 0;
 	int leny = 0;
@@ -95,6 +101,9 @@ fclose(a);
 	
 	printf("***MUL %d\n", basinSizes[basinSizesPos-1]*basinSizes[basinSizesPos-2]*basinSizes[basinSizesPos-3]);
 	printf("***tot %d\n", tot);
+
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %d\n", basinSizes[basinSizesPos-1]*basinSizes[basinSizesPos-2]*basinSizes[basinSizesPos-3]);
 }
 
 int check(int x, int y, int x1, int y1) {

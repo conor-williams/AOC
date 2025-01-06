@@ -4,6 +4,9 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 #include <deque>
 
 using namespace std;
@@ -14,7 +17,9 @@ int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-        a = fopen(argv[1], "r"); printf("2021 Day10\n"); fflush(stdout);
+        a = fopen(argv[1], "r"); printf("2021 Day10.1\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[5000];
 	int tot = 0;
 	int leny = 0;
@@ -89,7 +94,7 @@ out:
 					break;
 				case('>'):
 					tot2 *= 2;
-					tot2 += 4
+					tot2 += 4;
 					break;
 			}
 		}
@@ -99,5 +104,8 @@ out:
 fclose(a);
 	lenx = (int)strlen(line1);
 	printf("**** tot %d\n", tot);
+
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %d\n", tot);
 }
 

@@ -4,6 +4,9 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 FILE *a;
 #define LINE 1000
 #define getchar()
@@ -13,12 +16,14 @@ int grid[GX][GX] = {0};
 int gridtmp[GX][GX] = {0};
 int gridfl[GX][GX] = {0};
 int leny = 0, lenx = 0;
-int ROUNDS = 2;
+int ROUNDS = 100;
 int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-        a = fopen(argv[1], "r"); printf("2021 Day11\n"); fflush(stdout);
+        a = fopen(argv[1], "r"); printf("2021 Day11.1\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[LINE];
 
 	if (argc == 3) {ROUNDS = atoi(argv[2]);}
@@ -100,4 +105,8 @@ reflash:
 		printf("\n"); getchar();
 	}
 	printf("tot flashes is %d\n", totFlashes);
+
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %d\n", totFlashes);
+
 }

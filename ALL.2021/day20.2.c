@@ -5,6 +5,9 @@
 #include <math.h>
 #include <assert.h>
 
+#include <unistd.h>
+
+#define getchar()
 FILE *a;
 #define LINE 1000
 char algo[LINE];
@@ -17,10 +20,12 @@ char gridtmp[GX+20][GX+20];
 #define getchar()
 int main(int argc, char **argv)
 {
-        printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
+	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-        a = fopen(argv[1], "r"); printf("2021 Day20 part2\n"); fflush(stdout);
-        char line1[LINE];
+	a = fopen(argv[1], "r"); printf("2021 Day20 part2\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
+	char line1[LINE];
 
 	for (int y = 0; y < GX; y++) {
 		for (int x = 0; x < GX; x++) {
@@ -30,47 +35,47 @@ int main(int argc, char **argv)
 		grid[y][GX] = '\0';
 		gridtmp[y][GX] = '\0';
 	}
-	
 
-int leny = 0;
-int imagePos = PAD;
 
-while (1) {
-        fgets(line1, LINE-1, a);
-        if (feof(a)) break;
-        line1[strlen(line1)-1] = '\0';
-        printf("LINE: %s\n", line1);
+	int leny = 0;
+	int imagePos = PAD;
 
-	if (line1[0] == '\0') {
-		continue;		
-	} else if (leny == 0) {
-		strcpy(algo, line1);
-	} else {
-		//char line2[GX+30] = "...................."; //PAD
-		char line2[GX+30];
-		int i;
-		for (i = 0; i < PAD; i++) {
-			line2[i] = '.';
+	while (1) {
+		fgets(line1, LINE-1, a);
+		if (feof(a)) break;
+		line1[strlen(line1)-1] = '\0';
+		printf("LINE: %s\n", line1);
+
+		if (line1[0] == '\0') {
+			continue;		
+		} else if (leny == 0) {
+			strcpy(algo, line1);
+		} else {
+			//char line2[GX+30] = "...................."; //PAD
+			char line2[GX+30];
+			int i;
+			for (i = 0; i < PAD; i++) {
+				line2[i] = '.';
+			}
+			line2[i] = '\0';
+
+			strcat(line2, line1);
+			for (int i = (int)strlen(line2); i < GX; i++) {
+				line2[i] = '.';
+			}
+
+			strcpy(grid[imagePos], line2);
+			grid[imagePos][GX] = '\0';
+			imagePos++;
 		}
-		line2[i] = '\0';
-		
-		strcat(line2, line1);
-		for (int i = (int)strlen(line2); i < GX; i++) {
-			line2[i] = '.';
-		}
-		
-		strcpy(grid[imagePos], line2);
-		grid[imagePos][GX] = '\0';
-		imagePos++;
+		leny++;
 	}
-	leny++;
-}
-	
-imagePos+= PAD;
-lenx = (int)strlen(grid[0]);
-leny = imagePos;
-printf("lenx: %d\n", lenx); getchar();
-fclose(a);
+
+	imagePos+= PAD;
+	lenx = (int)strlen(grid[0]);
+	leny = imagePos;
+	printf("lenx: %d\n", lenx); getchar();
+	fclose(a);
 
 
 	for (int r = 0; r < 50; r++) {
@@ -111,5 +116,8 @@ fclose(a);
 	}
 	printf("\n");
 	printf("**count is %d\n", count);
+
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %d\n", count);
 
 }

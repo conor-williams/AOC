@@ -7,6 +7,9 @@
 #include <iostream>
 #include <string>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 struct bins_s {
@@ -17,23 +20,23 @@ map<string, int> mp2;
 map<int, string> mp;
 //struct bins_s bins = {0, "000", 1, "001", 2, "010", 3, "011", 4, "100", 5, "101", 6, "110", 7, "111" };
 /*
-'0' = "0000"
-'1' = "0001"
-'2' = "0010"
-'3' = "0011"
-'4' = "0100"
-'5' = "0101"
-'6' = "0110"
-'7' = "0111"
-'8' = "1000"
-'9' = "1001"
-'A' = "1010"
-'B' = "1011"
-'C' = "1100"
-'D' = "1101"
-'E' = "1110"
-'F' = "1111"
-*/
+   '0' = "0000"
+   '1' = "0001"
+   '2' = "0010"
+   '3' = "0011"
+   '4' = "0100"
+   '5' = "0101"
+   '6' = "0110"
+   '7' = "0111"
+   '8' = "1000"
+   '9' = "1001"
+   'A' = "1010"
+   'B' = "1011"
+   'C' = "1100"
+   'D' = "1101"
+   'E' = "1110"
+   'F' = "1111"
+   */
 FILE *a;
 void getitit(string bitS, int &subCounter);
 #define LINE 2000
@@ -49,54 +52,60 @@ int main(int argc, char **argv)
 
 	mp2["000"] = 0; mp2["001"] = 1; mp2["010"] = 2; mp2["011"] = 3;
 	mp2["100"] = 4; mp2["101"] = 5; mp2["110"] = 6; mp2["111"] = 7;
-        printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
+	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
 	//mp4[0] = "0000";
 
 	//mp4_4["0000"] = 0;
-        a = fopen(argv[1], "r"); printf("2021 Day12\n"); fflush(stdout);
-        char line1[LINE];
+	a = fopen(argv[1], "r"); printf("2021 Day15.1\n"); fflush(stdout);
 
-int leny = 0;
-strcpy(bitLine, "");
-while (1) {
-        fgets(line1, LINE-1, a);
-        if (feof(a)) break;
-        printf("LINE: %s\n", line1);
-        line1[strlen(line1)-1] = '\0';
-	for (int i = 0; i < (int)strlen(line1); i++) {
-		switch(line1[i]) {
-			case ('0'): strcat(bitLine, "0000"); break;
-			case ('1'): strcat(bitLine, "0001"); break;
-			case ('2'): strcat(bitLine, "0010"); break;
-			case ('3'): strcat(bitLine, "0011"); break;
-			case ('4'): strcat(bitLine, "0100"); break;
-			case ('5'): strcat(bitLine, "0101"); break;
-			case ('6'): strcat(bitLine, "0110"); break;
-			case ('7'): strcat(bitLine, "0111"); break;
-			case ('8'): strcat(bitLine, "1000"); break;
-			case ('9'): strcat(bitLine, "1001"); break;
-			case ('A'): strcat(bitLine, "1010"); break;
-			case ('B'): strcat(bitLine, "1011"); break;
-			case ('C'): strcat(bitLine, "1100"); break;
-			case ('D'): strcat(bitLine, "1101"); break;
-			case ('E'): strcat(bitLine, "1110"); break;
-			case ('F'): strcat(bitLine, "1111"); break;
-			default: perror("ERR"); exit(0);
+	fflush(stdout); int fd = dup(1); close(1);
+	char line1[LINE];
+
+	int leny = 0;
+	strcpy(bitLine, "");
+	while (1) {
+		fgets(line1, LINE-1, a);
+		if (feof(a)) break;
+		printf("LINE: %s\n", line1);
+		line1[strlen(line1)-1] = '\0';
+		for (int i = 0; i < (int)strlen(line1); i++) {
+			switch(line1[i]) {
+				case ('0'): strcat(bitLine, "0000"); break;
+				case ('1'): strcat(bitLine, "0001"); break;
+				case ('2'): strcat(bitLine, "0010"); break;
+				case ('3'): strcat(bitLine, "0011"); break;
+				case ('4'): strcat(bitLine, "0100"); break;
+				case ('5'): strcat(bitLine, "0101"); break;
+				case ('6'): strcat(bitLine, "0110"); break;
+				case ('7'): strcat(bitLine, "0111"); break;
+				case ('8'): strcat(bitLine, "1000"); break;
+				case ('9'): strcat(bitLine, "1001"); break;
+				case ('A'): strcat(bitLine, "1010"); break;
+				case ('B'): strcat(bitLine, "1011"); break;
+				case ('C'): strcat(bitLine, "1100"); break;
+				case ('D'): strcat(bitLine, "1101"); break;
+				case ('E'): strcat(bitLine, "1110"); break;
+				case ('F'): strcat(bitLine, "1111"); break;
+				default: perror("ERR"); exit(0);
+			}
 		}
-	}
-	printf("%s\n", bitLine);
+		printf("%s\n", bitLine);
 
-	string bitLineS = bitLine;
-	bitLineOrig = bitLineS;
-	bitLineOrigPos = 0;
-	int blah = 0;
-	getitit(bitLineS, blah);
-	leny++;
-}
-fclose(a);
+		string bitLineS = bitLine;
+		bitLineOrig = bitLineS;
+		bitLineOrigPos = 0;
+		int blah = 0;
+		getitit(bitLineS, blah);
+		leny++;
+	}
+	fclose(a);
 
 	cout << "**vvtot " << vvtot << endl;
+	
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %d\n", vvtot);
+
 }
 int ind = 0;
 void getitit(string bitLineS, int &subCounter) {
@@ -110,7 +119,7 @@ void getitit(string bitLineS, int &subCounter) {
 		}
 	}
 	if (found == 0) {return;}
-	
+
 	string version = bitLineS.substr(0, 3);
 	cout << "Version: " << mp2[version] << endl;
 	vvtot += mp2[version];
@@ -129,15 +138,15 @@ void getitit(string bitLineS, int &subCounter) {
 				string fourbit = literal.substr(start+1, 4);
 				lit += fourbit;	
 				cout << "fourbit: " << fourbit << endl;
-				
+
 				if (onebit == "0") {break;}
 				start += 5;
-				
+
 			}
 			cout << "lit: " << lit << endl;
 			cout << "litDec: " << strtol(lit.c_str(), NULL, 2) << endl;
 			cout << "vvtot now : " << vvtot << endl;
-		
+
 			bitLineOrigPos += start+5;
 			subCounter += start+5+6;
 		} else {
@@ -145,8 +154,8 @@ void getitit(string bitLineS, int &subCounter) {
 			bitLineOrigPos += start;
 			subCounter += start+6;
 		}
-			
-		
+
+
 	} else { //operator packet
 		printf("found operator packet\n");
 		int I = atoi(bitLineS.substr(6, 1).c_str());

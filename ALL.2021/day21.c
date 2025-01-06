@@ -6,6 +6,9 @@
 #include <assert.h>
 #include <deque>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 FILE *a;
@@ -13,9 +16,9 @@ FILE *a;
 #define getchar()
 
 /*
-Player 1 starting position: 4
-Player 2 starting position: 8
-*/
+   Player 1 starting position: 4
+   Player 2 starting position: 8
+   */
 int startP1; int startP2;
 
 deque <int> qp1;
@@ -23,22 +26,24 @@ deque <int> qp2;
 
 int main(int argc, char **argv)
 {
-        printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
+	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-        a = fopen(argv[1], "r"); printf("2021 Day 21\n"); fflush(stdout);
-        char line1[LINE];
+	a = fopen(argv[1], "r"); printf("2021 Day 21\n"); fflush(stdout);
 
-int leny = 0;
-while (1) {
-        fgets(line1, LINE-1, a);
-        if (feof(a)) break;
-        line1[strlen(line1)-1] = '\0';
-        printf("LINE: %s\n", line1);
-	sscanf(line1, "Player 1 starting position: %d", &startP1);
-	sscanf(line1, "Player 2 starting position: %d", &startP2);
-	leny++;
-}
-fclose(a);
+	fflush(stdout); int fd = dup(1); close(1);
+	char line1[LINE];
+
+	int leny = 0;
+	while (1) {
+		fgets(line1, LINE-1, a);
+		if (feof(a)) break;
+		line1[strlen(line1)-1] = '\0';
+		printf("LINE: %s\n", line1);
+		sscanf(line1, "Player 1 starting position: %d", &startP1);
+		sscanf(line1, "Player 2 starting position: %d", &startP2);
+		leny++;
+	}
+	fclose(a);
 	printf("%d V %d\n", startP1, startP2); getchar();
 	for (int i = startP1; i < startP1+10; i++) {
 		int j = i % 10; if (j == 0) {j = 10;}
@@ -48,7 +53,7 @@ fclose(a);
 		int j = i % 10; if (j == 0) {j = 10;}
 		qp2.push_back(j);
 	}
-		
+
 	printf("qp1\n");
 	for (auto it = qp1.begin(); it != qp1.end(); it++) {
 		printf(" %d ", *it);
@@ -104,9 +109,13 @@ fclose(a);
 		}
 	}
 	printf("scorep1: %d scorep2: %d\n", scorep1, scorep2); getchar();
+
+	fflush(stdout); dup2(fd, 1);
 	if (scorep1 >= 1000) {
-		printf("**ans %d = (%d * %d)\n", scorep2 * round, scorep2, round);
+		//printf("**ans %d = (%d * %d)\n", scorep2 * round, scorep2, round);
+		printf("**ans %d\n", scorep2 * round);
 	} else {
-		printf("**ans %d = (%d * %d)\n", scorep1 * round, scorep1, round);
+		//printf("**ans %d = (%d * %d)\n", scorep1 * round, scorep1, round);
+		printf("**ans %d\n", scorep1 * round);
 	}
 }

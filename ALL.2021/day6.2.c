@@ -6,6 +6,9 @@
 #include <deque>
 #include <iostream>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 FILE *a;
 deque <unsigned long long> starfish;
@@ -37,7 +40,9 @@ int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-        a = fopen(argv[1], "r"); printf("2021 Day6\n"); fflush(stdout);
+        a = fopen(argv[1], "r"); printf("2021 Day6 Part2\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[5000];
 while (1) {
         fgets(line1, 4999, a);
@@ -97,7 +102,10 @@ while (1) {
 
 		unsigned long long sum = 0;
 		for (auto it = starfish.begin(); it != starfish.end(); ++it) { cout << ' ' << *it; sum+= *it; } cout << endl;
+		
 		printf("\nsum (%d) is %llu\n", loop1, sum);
+		fflush(stdout); dup2(fd, 1);
+		printf("**ans: %llu\n", sum);
 		break;
 	} else if (loop1 == 80) {
 		unsigned long long sum = 0;

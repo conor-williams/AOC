@@ -20,7 +20,7 @@ while (1) {
         if (feof(a)) break;
         line1[strlen(line1)-1] = '\0';
 
-	for (int i = 0; i < strlen(line1); i++) {
+	for (int i = 0; i < (int)strlen(line1); i++) {
 		grid[leny][i] = line1[i] - 48;
 	}
 	leny++;
@@ -52,5 +52,6 @@ fclose(a);
 			}
 		}
 	}
-	printf("***tot %d\n", tot);
+	//printf("***tot %d\n", tot);
+	printf("**ans: %d\n", tot);
 }
