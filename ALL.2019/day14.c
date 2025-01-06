@@ -8,7 +8,10 @@
 #include <iostream>
 #include <assert.h>
 #include <algorithm>
+#include <unordered_map>
+#include <unistd.h>
 
+#define getchar()
 using namespace std;
 
 #define getchar()
@@ -26,20 +29,23 @@ struct Fnode {
 	int numNodes;
 };
 
-map<string, struct Fnode> mp;
+unordered_map<string, struct Fnode> mp;
 int search(char *start, double startCost, char *end);
-map <string, double> mpingred;
-map <string, double> mpspare;
+unordered_map <string, double> mpingred;
+unordered_map <string, double> mpspare;
 
 #define SIZEL 400
-
+int fd;
 int main(int argc, char **argv)
 {
+	printf("SLOW: ~%d minutes\n", 5);
+
 	lenx = 0; leny = 0;
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdout);
        
+	fflush(stdout); fd = dup(1); close(1);
         char line1[SIZEL];
 
 //2 JNLZG => 7 SJTKF
@@ -115,6 +121,7 @@ fclose(a);
 			}
 		}
 
+			/*
 		double mytot = 0;
 		for (auto iter4 = mpingred.begin(); iter4 != mpingred.end(); iter4++) {
 			//printf("**%s %lf\n", iter4->first.c_str(), iter4->second);
@@ -124,7 +131,7 @@ fclose(a);
 			}
 		}
 		//printf("** mytot [[ %lf ]]\n", mytot);
-
+			*/
 		double mytot2 = 0;
 		for (auto iter4 = mpingred.begin(); iter4 != mpingred.end(); iter4++) {
 			//printf("**%s %lf\n", iter4->first.c_str(), iter4->second);
@@ -134,9 +141,12 @@ fclose(a);
 			}
 		}
 		printf("** mytot2 [[ %lf ]]\n", mytot2);
-		assert (mytot2 == mytot);
+		//assert (mytot2 == mytot);
 		if (mytot2 < min) {min = mytot2;}
+		//if (mytot < min) {min = mytot;}
 	} while (next_permutation(list, list+SIZE));
+
+	fflush(stdout); dup2(fd, 1);
 	printf("***ANS: %d\n", min);
 }
 

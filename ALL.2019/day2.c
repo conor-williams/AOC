@@ -4,6 +4,9 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 int lenx, leny;
 #define DAY "2019 day2 part1\n"
 #define _DEBUG_
@@ -14,6 +17,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[3000];
 	int nums[300];
 for (int i = 0; i < 300; i++) {nums[i] = 0;}
@@ -30,11 +34,15 @@ while(1) {
 #ifdef _DEBUG_
 	printf("TOKEN %s\n", token);
 #endif
+	int pos = 0;
 	while (token != NULL) {
 #ifdef _DEBUG_
 	printf("TOKEN %s\n", token);
 #endif
-		nums[leny] = atoi(token);
+		if (pos == 0) {nums[leny] = 1;pos++;}
+		else if (pos == 1) {nums[leny] = 12;pos++;}
+		else if (pos == 2) {nums[leny] = 2;pos++;}
+		else {nums[leny] = atoi(token);}
 #ifdef _DEBUG_
 	printf("nums[%d] %d\n", leny, nums[leny]);
 #endif
@@ -75,6 +83,9 @@ fclose(a);
 	for (int i = 0; i < leny; i++) {
 		printf("%d,", nums[i]);
 	}
+
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %d\n", nums[0]);
 
 	//printf("******** tot %ld\n", tot);
 }

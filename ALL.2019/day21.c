@@ -8,6 +8,9 @@
 #include <cassert>
 
 using namespace std;
+#include <unistd.h>
+
+#define getchar()
 
 int lenx, leny;
 #define DAY "2019 day 19 part1\n"
@@ -53,8 +56,7 @@ char out3[300];
 char out4[300];
 int OUTPos = 0;
 int OUTStart = 0;
-
-
+int fd;
 
 int main(int argc, char **argv)
 {
@@ -63,6 +65,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
+	fflush(stdout); fd = dup(1); close(1);
         char line1[MAX];
 	for (int i = 0 ; i < MAX; i++) {
 		inst[i] = 0;
@@ -303,6 +306,9 @@ int machine(int machineNumber, int one) {
 				printf("%c", (char)OUT);
 			} else {
 				printf("OUT outside range... %lld\n", OUT);
+				dup2(fd,1);
+				printf("**ans: %lld\n", OUT);
+
 			}
 
 			if (OUT == ';') {
@@ -328,7 +334,7 @@ int machine(int machineNumber, int one) {
 			return 34;
                         //i++;
 		} else if (myINST == 99) {
-			printf("GOT QUIT 99\n"); //in = 1; 
+			//printf("GOT QUIT 99\n"); //in = 1; 
 #ifdef _DEBUG_
 #endif
 #ifdef _DEBUG_

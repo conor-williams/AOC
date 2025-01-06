@@ -4,10 +4,14 @@
 #include <ctype.h>
 #include <math.h>
 #include <algorithm>
+
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 int lenx, leny;
-#define DAY "2019 day7 part1\n"
+#define DAY "2019 day11 part1\n"
 #undef _DEBUG_
 #define MAX 2000
 int instTOT = 0;
@@ -34,6 +38,7 @@ int y11 = SZ/2;
 struct sq_s grid[SZ][SZ];
 int outForS = 0;
 int dir = 0;
+int fd;
 int main(int argc, char **argv)
 {
 
@@ -42,6 +47,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
+	fflush(stdout);  fd = dup(1); close(1);
         char line1[3000];
 	for (int i = 0 ; i < MAX; i++) {
 		inst[i] = 0;
@@ -137,7 +143,10 @@ printf("***OUTPUTMAX: %lld\n", outputMAX);
 	printf("PHASEMAX:\n"); for (int i = 0; i < 5; i++) { printf("%d ", phaseMAX[i]); } printf("\n"); //getchar();
 
 
-	unsigned long long tot = 0; for (int y = 0; y < SZ; y++) { for (int x = 0; x < SZ; x++) { if (grid[y][x].times >= 1) { tot++; } } } printf("***tot is %llu\n", tot);
+	unsigned long long tot = 0; for (int y = 0; y < SZ; y++) { for (int x = 0; x < SZ; x++) { if (grid[y][x].times >= 1) { tot++; } } } 
+	
+	fflush(stdout); dup2(fd, 1);
+	printf("***tot is %llu\n", tot);
 }
 
 
@@ -276,7 +285,9 @@ int machine(int machineNumber, int one) {
 			finished[machineNumber] = 1;
 			
 			if (one == 1) {printf("here2..outForS: %d.\n", outForS);
-				unsigned long long tot = 0; for (int y = 0; y < SZ; y++) { for (int x = 0; x < SZ; x++) { if (grid[y][x].times >= 1) { tot++; } } } printf("***tot is %llu\n", tot);
+				unsigned long long tot = 0; for (int y = 0; y < SZ; y++) { for (int x = 0; x < SZ; x++) { if (grid[y][x].times >= 1) { tot++; } } } 
+				dup2(fd, 1);	
+				printf("***tot is %llu\n", tot);
 				exit(0);
 			}
 			if (machineNumber == 4) {return 33;} else if (machineNumber == 0 && one == 1) {return 33;} else {return 22;}

@@ -4,6 +4,9 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 int lenx, leny;
 #define DAY "2019 day8 part1\n"
 #undef _DEBUG_
@@ -20,6 +23,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[MAX] = {0};
 	int lay = 0;
 while(1) {
@@ -65,5 +69,7 @@ fclose(a);
 		if (countZERO < minZERO) {minZERO = countZERO; ONE = countONE; TWO = countTWO; minLAYER = l;}
 	}
 
+	
+	fflush(stdout); dup2(fd, 1);
 	printf("***ONE*TWO %d\n", ONE*TWO);
 }

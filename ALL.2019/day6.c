@@ -6,6 +6,9 @@
 #include <map>
 #include <string>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 int lenx, leny;
@@ -33,6 +36,8 @@ int main(int argc, char **argv)
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
        
         char line1[20];
 
@@ -120,13 +125,15 @@ restart:
 	for (auto iter2 = mp.begin(); iter2 != mp.end(); iter2++) {
 		foundEND = 0;
 		if (iter2->first != search) {
-			int totbefore = tot;
+			//int totbefore = tot;
 			//printf("_____%s____->__ %s__________\n", search.c_str(), iter2->first.c_str());
 			traverse(search, iter2->first);
 			if (foundEND == 0) {/*printf("***found is zero\n");*/ }
 			//printf("__BEF:%d_____AFT:%d____________\n", totbefore, tot); 
 		}
 	}
+
+	fflush(stdout); dup2(fd, 1);
 	printf("**%d\n", tot); 
 }
 

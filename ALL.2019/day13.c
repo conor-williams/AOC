@@ -6,6 +6,9 @@
 #include <algorithm>
 using namespace std;
 
+#include <unistd.h>
+
+#define getchar()
 #define SIZE 9000
 int lenx, leny;
 #define DAY "2019 day13 part1\n"
@@ -31,6 +34,7 @@ int machine(int machineNumber, int one);
 int grid[GR][GR];
 int myx = GR/2;
 int myy = GR/2;
+int fd;
 int main(int argc, char **argv)
 {
 
@@ -39,6 +43,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
+	fflush(stdout); fd = dup(1); close(1);
         char line1[SIZE];
 	for (int i = 0 ; i < MAX; i++) {
 		inst[i] = 0;
@@ -258,7 +263,10 @@ int machine(int machineNumber, int one) {
 						}
 					}
 				}
+
+				fflush(stdout); dup2(fd, 1);
 				printf("**ans %d\n", tot);
+				exit(0);
 
 exit(0);}
 			if (machineNumber == 4) {return 33;} else if (machineNumber == 0 && one == 1) {return 33;} else {return 22;}

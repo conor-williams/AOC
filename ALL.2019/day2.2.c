@@ -4,8 +4,11 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 int lenx, leny;
-#define DAY "2019 day2 part1\n"
+#define DAY "2019 day2 part2\n"
 #undef _DEBUG_
 int main(int argc, char **argv)
 {
@@ -13,6 +16,8 @@ int main(int argc, char **argv)
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
        
         char line1[3000];
 	int nums[300];
@@ -94,7 +99,7 @@ for (int i = 0; i < leny; i++) {nums[i] = numsOrig[i];}
 		printf("%d,", nums[i]);
 	} 
 #endif
-	if (nums[0] == 19690720) {printf("found %d%d\n" , noun, verb); getchar(); break;}
+	if (nums[0] == 19690720) {dup2(fd, 1); printf("**ans %d%d\n" , noun, verb); exit(0);getchar(); break;}
 #ifdef _DEBUG_
 	printf("nums[0] %d\n", nums[0]);
 #endif

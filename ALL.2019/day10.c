@@ -4,6 +4,9 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 int lenx, leny;
 #define DAY "2019 day10 part1\n"
 #undef _DEBUG_
@@ -21,6 +24,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[MAX] = {0};
 while(1) {
         fgets(line1, MAX -1, a);
@@ -148,4 +152,7 @@ fclose(a);
 		}
 	}
 	printf("\n***maxDetect:%d @ %d, %d\n", maxDetect, maxX, maxY);
+	dup2(fd, 1);
+	printf("**ans: %d\n", maxDetect);
 }
+

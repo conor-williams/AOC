@@ -8,16 +8,19 @@
 #include <assert.h>
 #include <string>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 int lenx, leny;
-#define DAY "2019 day20 part1\n"
+#define DAY "2019 day20 part2\n"
 #undef _DEBUG_
 #define SZ 150
 char grid[SZ][SZ];
 #define lAL 150
 int already[lAL+1][SZ][SZ];
-
+//compile: -Wl,--stack,999777666
 #define getchar()
 void ne(int x, int y, int eX, int eY, int path, int numAl);
 void getsecond(char one1, char two1, int px1, int py1, int inside);
@@ -36,12 +39,14 @@ map <string, int> mpLets;
 
 int main(int argc, char **argv)
 {
+	printf("SLOW: 36 seconds\n");
 	signal(SIGTSTP, signal_hand);
 	lenx = 0; leny = 0;
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); 
        
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[SZ];
 while(1) {
         fgets(line1, SZ-1, a);
@@ -124,6 +129,8 @@ fclose(a);
 	int path = 0;
 	printf("%d,%d -> %d,%d\n", stX, stY, endX, endY);
 	ne(stX, stY, endX, endY, path, lAL/2);
+
+	fflush(stdout); dup2(fd, 1);
 	printf("**minPath: %d\n", minPath);
 }
 void ne(int x, int y, int eX, int eY, int path, int ind) {

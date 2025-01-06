@@ -6,6 +6,7 @@
 #include <vector>
 #include <algorithm>
 #include <assert.h>
+#include <unistd.h>
 
 using namespace std;
 
@@ -25,6 +26,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); 
        
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[LINE];
 
 	for (int i = 0; i < END; i++) {
@@ -97,5 +99,7 @@ fclose(a);
 	}
 	printf("\n");
 	assert(pos1 == pos2);
+	dup2(fd, 1);
 	printf("******** pos1 %d\n", pos1);
+
 }

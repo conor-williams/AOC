@@ -7,6 +7,9 @@
 #include <deque>
 #include <cassert>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 int lenx, leny;
@@ -65,6 +68,7 @@ struct pos_s pos2;
 int MOVE = 0;
 deque <char> PATH;
 int pathPOS = 0;
+int fd;
 int main(int argc, char **argv)
 {
 
@@ -96,6 +100,8 @@ int main(int argc, char **argv)
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
        
         char line1[MAX];
 	for (int i = 0 ; i < MAX; i++) {
@@ -458,6 +464,8 @@ int machine(int machineNumber, int one) {
 						printf("%d", x%10);
 					}
 				}
+				
+				fflush(stdout); dup2(fd, 1);
 				printf("**var_count %d\n", var_count);
 				exit(0);
 			} else {

@@ -6,6 +6,9 @@
 
 #include <vector>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 int lenx, leny;
@@ -19,7 +22,7 @@ int phases = 4;
 int len = 0;
 void genbase(int k, vector <int>base);
 vector <int>newbase[1010];
-
+int fd;
 int main(int argc, char **argv)
 {
 	lenx = 0; leny = 0;
@@ -27,6 +30,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
+	fflush(stdout); fd = dup(1); close(1);
         char line1[SIZE];
 while(1) {
         fgets(line1, SIZE-1, a);
@@ -69,11 +73,14 @@ while(1) {
 		ans[lenx] = '\0';
 		if (z+1 == 100) {
 			printf("after phase %d, ans is %s\n", z+1, ans); getchar();
-			printf("FIRST 8: [ ");
+			//printf("FIRST 8: [ ");
+			dup2(fd, 1);
+			printf("**ans: [ ");
 			for (int m = 0; m < 8; m++) {
 				printf("%c", ans[m]);
 			}
 			printf(" ]\n");
+			exit(0);
 		}
 		strcpy(line1, ans);
 	}

@@ -11,6 +11,9 @@
 #include <time.h>
 #include <map>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 
@@ -84,6 +87,7 @@ struct pos_s pos2;
 int MOVE = 0;
 deque <char> PATH;
 int pathPOS = 0;
+int fd;
 int main(int argc, char **argv)
 {
 	pthread_mutex_init(&lock, NULL);
@@ -105,6 +109,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
+	fflush(stdout); fd = dup(1); close(1);
         char line1[MAX];
 	for (int i = 0 ; i < MAX; i++) {
 		inst[0][i] = 0;
@@ -332,6 +337,7 @@ ag2:
 				auto it1 = mp.find(yval);
 				
 				if (it1 != mp.end() && yval != -1) {
+					dup2(fd, 1);
 					printf("ANS is %lld\n", yval); fflush(stdout); exit(0);
 				} else {
 					mp[yval] = 1;

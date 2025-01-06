@@ -8,6 +8,9 @@
 #include <assert.h>
 #include <string>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 int lenx, leny;
@@ -39,7 +42,8 @@ int main(int argc, char **argv)
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); 
-       
+	       
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[SZ];
 while(1) {
         fgets(line1, SZ-1, a);
@@ -126,6 +130,8 @@ fclose(a);
 	int path = 0;
 	printf("%d,%d -> %d,%d\n", stX, stY, endX, endY);
 	ne(stX, stY, endX, endY, path);
+
+	fflush(stdout); dup2(fd, 1);
 	printf("**minPath: %d\n", minPath);
 }
 void ne(int x, int y, int eX, int eY, int path) {

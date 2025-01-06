@@ -6,8 +6,11 @@
 #include <algorithm>
 using namespace std;
 
+#include <unistd.h>
+
+#define getchar()
 int lenx, leny;
-#define DAY "2019 day7 part1\n"
+#define DAY "2019 day9 part2\n"
 #undef _DEBUG_
 #define MAX 2000
 int instTOT = 0;
@@ -24,7 +27,7 @@ int finished[6] = {0};
 int inputCounters[6] = {0};
 int phase[] = {2,2,2,2,2,-1};
 int machine(int machineNumber, int one);
-
+int fd;
 int main(int argc, char **argv)
 {
 
@@ -33,6 +36,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
+	fflush(stdout); fd = dup(1); close(1);
         char line1[3000];
 	for (int i = 0 ; i < MAX; i++) {
 		inst[i] = 0;
@@ -183,6 +187,9 @@ int machine(int machineNumber, int one) {
 				}
                                 printf("REL OUT: %lld (base: %lld+%lld)\n", inst[relativeBase[machineNumber]+inst[i+1]],
 					relativeBase[machineNumber], inst[i+1]);
+				dup2(fd, 1);
+				printf("**ans: %lld\n", inst[relativeBase[machineNumber]+inst[i+1]]);
+				exit(0);
 #ifdef _DEBUG_
 #endif
                         } else if (inst[i] > 100) {

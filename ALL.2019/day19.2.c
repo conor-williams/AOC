@@ -8,10 +8,13 @@
 #include <cassert>
 #include <unistd.h>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 int lenx, leny;
-#define DAY "2019 day 19 part1\n"
+#define DAY "2019 day 19 part2\n"
 //#define _DEBUG_
 #undef DEBUG
 #define getchar()
@@ -74,9 +77,8 @@ int pathPOS = 0;
 int fd;
 int main(int argc, char **argv)
 {
+	printf("SLOW: 2mins\n");
 
-	fd = dup(1);
-	close(1);
 	struct pos_s st = {xCur, yCur, PATH};
 	
 	//myInputQ.push_back(st);
@@ -105,6 +107,7 @@ int main(int argc, char **argv)
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
+	fd = dup(1); close(1);
        
         char line1[MAX];
 	for (int i = 0 ; i < MAX; i++) {
@@ -444,7 +447,6 @@ int machine(int machineNumber, int one) {
 
 			//exit(0);
 			if (var_inputY == TOY+1) {
-				dup2(fd,1);
 				int var_count = 0;
 				for (int y = FRMY; y<TOY; y++) {
 					for (int x = FRMX; x < TOX; x++) {
@@ -497,7 +499,9 @@ aft2:
 				if (found33 == 1) {
 					unsigned long long ans = (unsigned long long)(lastX-99) * (unsigned long long)10000;
 					ans += fY;
+					dup2(fd, 1);
 					printf("\n\n**ans %llu\n", ans);
+					exit(0);
 				} else if (y99 > TOY) {
 					printf("widen...\n");
 					break;

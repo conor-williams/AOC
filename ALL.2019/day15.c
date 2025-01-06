@@ -7,6 +7,9 @@
 #include <deque>
 #include <cassert>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 int lenx, leny;
@@ -58,6 +61,7 @@ struct pos_s pos2;
 int MOVE = 0;
 deque <char> PATH;
 int pathPOS = 0;
+int fd;
 int main(int argc, char **argv)
 {
 
@@ -82,6 +86,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
+	fflush(stdout); fd = dup(1); close(1);
         char line1[MAX];
 	for (int i = 0 ; i < MAX; i++) {
 		inst[i] = 0;
@@ -190,7 +195,9 @@ char reverseInput(char in) {
 }
 void next(int x, int y, int path) {
 	if (x == OXX && y == OXY) {
+		dup2(fd, 1);
 		printf("end reached path is %d\n", path);
+		exit(0);
 	}
 
 	if (already[y][x] == -1 || path < already[y][x]) {

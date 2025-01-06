@@ -7,10 +7,13 @@
 #include <deque>
 #include <cassert>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 int lenx, leny;
-#define DAY "2019 day 15 part1\n"
+#define DAY "2019 day 17 part1\n"
 //#define _DEBUG_
 #undef DEBUG
 #define getchar()
@@ -61,6 +64,7 @@ struct pos_s pos2;
 int MOVE = 0;
 deque <char> PATH;
 int pathPOS = 0;
+int fd;
 int main(int argc, char **argv)
 {
 
@@ -85,6 +89,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
+	fflush(stdout); fd = dup(1); close(1);
         char line1[MAX];
 	for (int i = 0 ; i < MAX; i++) {
 		inst[i] = 0;
@@ -412,6 +417,9 @@ int machine(int machineNumber, int one) {
 			printf("stX, stY %d,%d\n", stX, stY);
 			printf("enX, enY %d,%d\n", enX, enY);
 			printf("**alignment is %d (minus bogie...)\n", alignment);
+			dup2(fd, 1);
+			printf("**ans: %d \n", alignment);
+			exit(0);
 					
 			printit();
 

@@ -7,6 +7,9 @@
 
 using namespace std;
 
+#include <unistd.h>
+
+#define getchar()
 int lenx, leny;
 #define DAY "2019 day10 part2\n"
 #undef _DEBUG_
@@ -37,6 +40,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[MAX] = {0};
 while(1) {
         fgets(line1, MAX -1, a);
@@ -373,11 +377,14 @@ fclose(a);
 
 }
 			}	
+			dup2(fd, 1);
 			if (zap > 200) {printf("ANS: %d\n", zapit[200].x*100 + zapit[200].y); getchar(); getchar();}
+			exit(0);
 		}
 }
 
 int loop(int x, int y, int xA, int yA) {
+
 	int found = 0; int foundZap = 0;
 	for (int z = 1; z < Y; z++) {
 		int xC = x + z*xA; int yC = y + z*yA;

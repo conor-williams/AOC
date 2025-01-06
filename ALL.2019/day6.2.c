@@ -6,10 +6,13 @@
 #include <map>
 #include <string>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 int lenx, leny;
-#define DAY "2019 day6 part1\n"
+#define DAY "2019 day6 part2\n"
 #define _DEBUG_
 char already[1000][20];
 int alreadyPos = 0;
@@ -29,7 +32,7 @@ int tot = 0;
 int split[100] = {0};
 int splitCounters = 0;
 int foundEND = 0;
-
+int fd;
 int main(int argc, char **argv)
 {
 	lenx = 0; leny = 0;
@@ -37,6 +40,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdout);
        
+	fflush(stdout); fd = dup(1); close(1);
         char line1[20];
 
 while(1) {
@@ -190,6 +194,9 @@ int traverse2(string tra, string endPoint) {
 	if (endPoint == tra) {
 		tot--; ind--;
 		printf("FOUND endPoint [%s] tot %d \n", endPoint.c_str(), tot); getchar();
+		dup2(fd, 1);
+		printf("**ans: %d \n", tot); getchar();
+		exit(0);
 		return 22;
 	}
 

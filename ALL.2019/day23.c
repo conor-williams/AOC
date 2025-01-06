@@ -10,6 +10,9 @@
 #include <unistd.h>
 #include <time.h>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 int lenx, leny;
@@ -65,7 +68,7 @@ int yCur = 0;
 int xCur = 0;
 int already[SY][SX];
 int MAXPATH = 0;
-
+int fd;
 struct pos_s {
 	//char dir;
 	int x;
@@ -98,6 +101,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
+	fflush(stdout); fd = dup(1); close(1);
         char line1[MAX];
 	for (int i = 0 ; i < MAX; i++) {
 		inst[0][i] = 0;
@@ -387,6 +391,7 @@ int machineMulti(int var_mach, int machineNumber, int one, long long inst[MAXI],
 					char cans[100];
 					sprintf(cans, "touch %lld", Yval);
 					system(cans);
+					dup2(fd, 1);
 					printf("ANS is %lld\n", Yval); exit(0);
 				} else {
 					destReady[var_mach] = 1;

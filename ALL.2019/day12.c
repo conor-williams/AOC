@@ -4,6 +4,9 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 int lenx, leny;
 #define DAY "2019 day12 part1\n"
 #undef _DEBUG_
@@ -29,6 +32,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[MAX] = {0};
 while(1) {
         fgets(line1, MAX -1, a);
@@ -41,6 +45,7 @@ while(1) {
 }
 fclose(a);
 
+	int totProper;
 	for (int t = 1; t <= 1000; t++) {
 		for (int i = 0; i < leny; i++) {
 			for (int j = 0; j < leny; j++) {
@@ -82,7 +87,11 @@ fclose(a);
 			tot += pos[i].pe * pos[i].ke;
 		}
 
+
 		printf("*inter tot is %d\n", tot);
+		totProper = tot;
 		//getchar();
 	}
+	dup2(fd, 1);
+	printf("**ans: %d\n", totProper);
 }

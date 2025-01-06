@@ -4,8 +4,11 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 int lenx, leny;
-#define DAY "2019 day2 part1\n"
+#define DAY "2019 day3 part1\n"
 #undef _DEBUG_
 /*
 #define GRIDX 50
@@ -20,7 +23,7 @@ int lenx, leny;
 int prevX; int prevY; 
 char puz[2][GRIDY][GRIDX];
 void manX();
-
+int fd;
 
 void manX() {
 		for (int y = 0; y < GRIDY; y++) {
@@ -46,7 +49,9 @@ void minmanX() {
 				}
 			}
 		}
+		dup2(fd,1);
 		printf("min is %d\n", min);
+		exit(0);
 
 }
 void printpuzzle();
@@ -77,6 +82,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
+	fflush(stdout); fd = dup(1); close(1);
         char line1[3000];
 	int wire = 0;
 while(1) {

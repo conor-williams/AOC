@@ -8,6 +8,9 @@
 #include <time.h>
 #include <assert.h>
 
+#include <unistd.h>
+
+#define getchar()
 #include <vector>
 
 using namespace std;
@@ -29,8 +32,9 @@ int main(int argc, char **argv)
 	//lenx = 0; //leny = 0;
         //printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
         FILE * a = fopen(argv[1], "r"); 
-	//printf(DAY); fflush(stdin); fflush(stdout);
+	printf(DAY); fflush(stdin); fflush(stdout);
        
+	fflush(stdout); int fd = dup(1); close(1);
 	//time_t t = time(NULL); struct tm *tm = localtime(&t); printf("%s", asctime(tm));
 
         char line1[SIZE];
@@ -95,11 +99,13 @@ int main(int argc, char **argv)
 		strcpy(line3, ans3);
 	}
 	//free(line2);
-	//printf("ANS: [ ");
+	
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: [ ");
 	for (int j = 0; j < 8; j++) {
 		printf("%c", ans3[j]);
 	}
-	//printf(" ]\n");
+	printf(" ]\n");
 	}
 	
 fclose(a);

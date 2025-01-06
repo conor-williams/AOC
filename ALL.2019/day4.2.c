@@ -5,7 +5,7 @@
 #include <math.h>
 
 int lenx, leny;
-#define DAY "2019 day4 part1\n"
+#define DAY "2019 day4 part2\n"
 #define _DEBUG_
 
 int main(int argc, char **argv)
@@ -15,8 +15,8 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
-        char line1[3000];
-	int wire = 0;
+        //char line1[3000];
+	//int wire = 0;
 
 /*
 while(1) {
@@ -67,6 +67,6 @@ fclose(a);
 		}
 	}
 	
-	printf("lenx %d - leny %d\n", lenx, leny);
+	//printf("lenx %d - leny %d\n", lenx, leny);
 	printf("***count %d\n", count);
 }

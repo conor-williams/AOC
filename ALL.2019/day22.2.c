@@ -12,12 +12,15 @@
 #include <bigintclass.h>
 #include <bigint_function_definitions.h>
 
+#include <unistd.h>
+
+#define getchar()
 //#include <bigintclass.h>
 //#include <bigint_function_definitions.h>
 
 using ll=long long int;
 using namespace std;
-
+//compile: copy in bigint .h headers : -I.
 int lenx, leny;
 #define DAY "2019 day22 part2\n"
 #undef _DEBUG_
@@ -39,13 +42,15 @@ void runFOR2();
 bigint inv(bigint va);
 bigint offset("0");
 bigint increment("1");
-
+int fd;
 int main(int argc, char **argv)
 {
 	lenx = 0; leny = 0;
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); 
+
+	fflush(stdout); fd = dup(1); close(1);
         char line1[LINE];
 
 	printf("filled the deck...\n"); fflush(stdout);
@@ -112,8 +117,11 @@ fclose(a);
 //	bigint ans2 =  (((((bigint) (((bigint)2020 * increment) + ((bigint)1-increment) *offset))) % ENDL) + (bigint)10*ENDL) %ENDL;
 
 	assert(ans2 < ENDL);
-	printf("\n\nCONOR: ans2->  ");
-	cout << ans2 << endl;
+	dup2(fd, 1);
+	printf("\n\nans: ans2->  ");
+	//cout << ans2 << endl;
+	printf("%s\n", ans2.str.c_str());
+	//exit(0);
 /*
 	runFOR2();
 	offset *= _big__big_pow2(1-increment,  ENDL-2, ENDL);  

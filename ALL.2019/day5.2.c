@@ -4,10 +4,14 @@
 #include <ctype.h>
 #include <math.h>
 #include <algorithm>
+
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 int lenx, leny;
-#define DAY "2019 day7 part1\n"
+#define DAY "2019 day5 part2\n"
 #define _DEBUG_
 #define MAX 2000
 char instruction    [MAX][10];
@@ -15,7 +19,7 @@ char instructionOrig[MAX][10];
 int instTOT = 0;
 int inst[MAX];
 int instOrig[MAX];
-
+int fd;
 int main(int argc, char **argv)
 {
 	lenx = 0; leny = 0;
@@ -23,6 +27,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
+	fflush(stdout); fd = dup(1); close(1);
         char line1[3000];
 	for (int i = 0 ; i < MAX; i++) {
 		strcpy(instruction    [i], "\0");
@@ -101,7 +106,9 @@ while(1) {
 				printf("or is it OUTS: %s\n", instruction[i+1]);
 			} else {
 				printf("OUT: %d\n", inst[inst[i+1]]);
+				dup2(fd, 1);
 				printf("OUTS: %s\n", instruction[inst[i+1]]); getchar();
+				exit(0);
 			}
 			getchar();
 			//output = inst[inst[i+1]]; getchar();

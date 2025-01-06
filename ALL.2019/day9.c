@@ -6,8 +6,11 @@
 #include <algorithm>
 using namespace std;
 
+#include <unistd.h>
+
+#define getchar()
 int lenx, leny;
-#define DAY "2019 day7 part1\n"
+#define DAY "2019 day9 part1\n"
 #define _DEBUG_
 #define MAX 2000
 int instTOT = 0;
@@ -27,6 +30,7 @@ int machine(int machineNumber, int one);
 
 long long myIns[] = {1, 1, 3, 1};
 int myInsPos = 0;
+int fd;
 int main(int argc, char **argv)
 {
 
@@ -35,6 +39,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
+	fflush(stdout); fd = dup(1); close(1);
         char line1[3000];
 	for (int i = 0 ; i < MAX; i++) {
 		inst[i] = 0;
@@ -212,11 +217,13 @@ int machine(int machineNumber, int one) {
 	                                output[(machineNumber)%5] = inst[inst[i+1]]; 
 				}
                         }
+			dup2(fd, 1);
 			if (one == 0) {
 				printf("conor OUT: %lld\n", output[(machineNumber+1) % 5]);
 			} else {
 				printf("conor OUT: %lld\n", output[(machineNumber) % 5]);
 			}
+			exit(0);
 			for (int i = 0; i < instTOT; i++) {
 				saveInst[machineNumber][i] = inst[i];
 			}

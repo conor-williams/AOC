@@ -6,6 +6,9 @@
 #include <map>
 
 using namespace std;
+#include <unistd.h>
+
+#define getchar()
 
 int lenx, leny;
 #define DAY "2019 day24 part2\n"
@@ -32,6 +35,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY);
        
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[LINE];
 while(1) {
 
@@ -124,6 +128,7 @@ fclose(a);
 			}
 		}
 	}
+	dup2(fd, 1);
 	printf("**ans is [ %d ]\n", count2);
 		
 }

@@ -7,10 +7,13 @@
 #include <deque>
 #include <cassert>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 int lenx, leny;
-#define DAY "2019 day 19 part1\n"
+#define DAY "2019 day 19 part2\n"
 //#define _DEBUG_
 #undef DEBUG
 #define getchar()
@@ -84,8 +87,7 @@ char out4[300];
 int OUTPos = 0;
 int OUTStart = 0;
 
-
-
+int fd;
 int main(int argc, char **argv)
 {
 	lenx = 0; leny = 0;
@@ -93,6 +95,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
+	fflush(stdout); fd = dup(1); close(1);
         char line1[MAX];
 	for (int i = 0 ; i < MAX; i++) {
 		inst[i] = 0;
@@ -333,6 +336,9 @@ int machine(int machineNumber, int one) {
 				printf("%c", (char)OUT);
 			} else {
 				printf("OUT outside range... %lld\n", OUT);
+				dup2(fd, 1);
+				printf("**ans: %lld\n", OUT);
+				close(1);
 			}
 
 			if (OUT == ';') {

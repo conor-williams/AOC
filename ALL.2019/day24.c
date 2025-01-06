@@ -5,8 +5,10 @@
 #include <math.h>
 #include <map>
 
-using namespace boost::multiprecision;
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 int lenx, leny;
@@ -29,6 +31,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY);
        
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[LINE];
 	strcpy(grid[0], ".......");
 	leny++;
@@ -104,6 +107,8 @@ fclose(a);
 		} else {
 			printf("found\n");
 			printf("** var_bio %d\n", var_bio);
+			dup2(fd, 1);
+			printf("**ans: %d\n", var_bio);
 			break;
 		}
 		t++;

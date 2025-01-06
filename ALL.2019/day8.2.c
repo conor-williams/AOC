@@ -5,7 +5,7 @@
 #include <math.h>
 
 int lenx, leny;
-#define DAY "2019 day8 part1\n"
+#define DAY "2019 day8 part2\n"
 #undef _DEBUG_
 #define MAX 15200
 #define Y 6
@@ -67,9 +67,9 @@ fclose(a);
 				}
 			}
 			if (c == 0) {
-				printf("0");
+				printf(" ");
 			} else {
-				printf(" ");				
+				printf("x");				
 			}	
 		}
 		printf("\n");
