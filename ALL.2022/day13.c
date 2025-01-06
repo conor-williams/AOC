@@ -12,6 +12,9 @@
 #include <string>
 #include <deque>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 FILE *a;
@@ -45,6 +48,8 @@ int main(int argc, char **argv)
 	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
 	a = fopen(argv[1], "r"); printf("2021 Day 13 - 1\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
 	char line1[LINE];
 
 	int leny = 0;
@@ -84,6 +89,8 @@ int main(int argc, char **argv)
 	}
 	fclose(a);
 
+
+	fflush(stdout); dup2(fd, 1);
 	printf("**ans %d\n", tot);
 }
 
@@ -439,7 +446,8 @@ ag2:
 	assert(Q1.size() == Q2.size());
 */
 	
-	cout << "Leving compare..." << endl;
+	//cout << "Leving compare..." << endl;
+
 }
 string ridOfEmpties2(string s1) {
 ag:

@@ -4,6 +4,9 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 FILE *a;
 long long tot = 0;
 long long reg = 1;
@@ -14,7 +17,9 @@ int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
 
-        a = fopen(argv[1], "r"); printf("2022 Day9\n"); fflush(stdout);
+        a = fopen(argv[1], "r"); printf("2022 Day10.1\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[1000];
 
 int leny = 0;
@@ -52,6 +57,9 @@ switchagain:
 fclose(a);
 	checkit();
 	printf("****tot %lld\n", tot);
+
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %lld\n", tot);
 }
 void checkit() {
 	if (cycles >= 179 && cycles <= 225) {

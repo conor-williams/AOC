@@ -9,6 +9,9 @@
 #include <algorithm>
 #include <iostream>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 FILE *a;
@@ -35,11 +38,12 @@ int canIMoveSq(int startX, int startY, int xM, int yM);
 
 int main(int argc, char **argv)
 {
-        signal(SIGTSTP, &sigfunc);
-        printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
+	signal(SIGTSTP, &sigfunc);
+	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-        a = fopen(argv[1], "r"); printf("2021 Day day17 part1\n"); fflush(stdout);
+	a = fopen(argv[1], "r"); printf("2021 Day day17 part1\n"); fflush(stdout);
 
+	fflush(stdout); int fd = dup(1); close(1);
 	memset(grid, '.', sizeof(grid));
 	for (int y = 0; y < SX; y++) {
 		for (int x = 0; x < 7; x++) {
@@ -50,15 +54,15 @@ int main(int argc, char **argv)
 	for (int x = 0; x < 7; x++) {
 		grid[vBottom][x] = '#';
 	}
-int leny = 0;
-while (1) {
-        fgets(line1, LINE-1, a);
-        if (feof(a)) break;
-        line1[strlen(line1)-1] = '\0';
-        printf("LINE: %s\n", line1);
-	leny++;
-}
-fclose(a);
+	int leny = 0;
+	while (1) {
+		fgets(line1, LINE-1, a);
+		if (feof(a)) break;
+		line1[strlen(line1)-1] = '\0';
+		printf("LINE: %s\n", line1);
+		leny++;
+	}
+	fclose(a);
 
 	for (int j = 0; j < 2022; j++) {
 		int shape = j % 5;
@@ -81,6 +85,8 @@ fclose(a);
 		}
 	}
 
+
+	fflush(stdout); dup2(fd, 1);
 	printf("**ans %d\n", vBottom - bottomIt());
 }
 
@@ -123,11 +129,11 @@ int bottomIt() {
 	}
 
 	for (int i = 0; i < 7; i++) {
-		printf("Bottom %d is %d\n", i, bottom[i]);
+		//printf("Bottom %d is %d\n", i, bottom[i]);
 		bottomSrt[i] = bottom[i];
 	}
 	getchar();
-	
+
 	sort(bottomSrt, bottomSrt+7);
 	assert(bottomSrt[0] <= bottomSrt[1]);
 
@@ -142,15 +148,15 @@ int canIMoveSq(int startX, int startY, int xM, int yM)
 		grid[startY][startX] = '#'; grid[startY][startX+1] = '#';
 		return 1;
 	}
-	
+
 	int var_sx = startX+xM;
 	int var_sy = startY+yM;
 	if (grid[var_sy-1][var_sx] == '.' && grid[var_sy-1][var_sx+1] == '.' &&
-	   	grid[var_sy][var_sx] == '.' && grid[var_sy][var_sx+1] == '.') {
+			grid[var_sy][var_sx] == '.' && grid[var_sy][var_sx+1] == '.') {
 		return 1;
 	}
 	return 0;
-	
+
 }
 
 
@@ -167,9 +173,9 @@ int canIMovePipe(int startX, int startY, int xM, int yM)
 	int var_sx = startX+xM;
 	int var_sy = startY+yM;
 	if (grid[var_sy][var_sx] == '.' &&
-		grid[var_sy-1][var_sx] == '.' &&
-		grid[var_sy-2][var_sx] == '.' &&
-		grid[var_sy-3][var_sx] == '.') {
+			grid[var_sy-1][var_sx] == '.' &&
+			grid[var_sy-2][var_sx] == '.' &&
+			grid[var_sy-3][var_sx] == '.') {
 		return 1;
 	}
 	return 0;
@@ -185,7 +191,7 @@ void drawSquare()
 
 	int startX = 2;
 	int endX = 3;
-	
+
 	jetPos = jetPos % ((int) strlen(line1));
 
 	while (1) {
@@ -199,8 +205,8 @@ void drawSquare()
 			}
 
 			if (canIMoveSq(startX, startY, 0, +1))  {
-					printf("dropping...");
-					startY++;
+				printf("dropping...");
+				startY++;
 			} else {
 				printf("not dropping...\n");
 				break;
@@ -241,10 +247,10 @@ void drawPipe()
 	printf("starting off y: %d\n",  startY);
 	int startX = 2;
 	int endX = 2;
-	
+
 	jetPos = jetPos % ((int) strlen(line1));
 
-	
+
 	while (1) {
 		if (line1[jetPos] == '>') {
 			printf("move right");
@@ -270,8 +276,8 @@ void drawPipe()
 				printf(" -- no move left\n");
 			}
 			if (canIMovePipe(startX, startY, 0, 1)) {
-					printf("dropping...");
-					startY++;
+				printf("dropping...");
+				startY++;
 			} else {
 				printf("not dropping...\n");	
 				break;
@@ -291,11 +297,11 @@ int canIMoveMinus(int startX, int startY, int xM, int yM) {
 		grid[startY][startX] = '#'; grid[startY][startX+1] = '#'; grid[startY][startX+2] = '#'; grid[startY][startX+3] = '#';
 		return 0;
 	}
-	
-	
+
+
 	int var_sY = startY+yM;
 	int var_sX = startX+xM;
-	
+
 	if (grid[var_sY][var_sX] == '.' && grid[var_sY][var_sX+1] == '.' && grid[var_sY][var_sX+2] == '.' && grid[var_sY][var_sX+3] == '.') {
 		return 1;
 	}
@@ -310,10 +316,10 @@ void drawMinus()
 
 	int startX = 2;
 	int endX = 5;
-	
+
 	jetPos = jetPos % ((int) strlen(line1));
 
-	
+
 	while (1) {
 		if (line1[jetPos] == '>') {
 			printf("move right");
@@ -358,15 +364,15 @@ void drawMinus()
 int canIMovePlus(int startX, int startY, int xM, int yM)
 {
 	if(xM == 7 && yM == 7) {
-						grid[startY-2][startX+1] = '#';
+		grid[startY-2][startX+1] = '#';
 		grid[startY-1][startX] = '#'; 	grid[startY-1][startX+1] = '#'; grid[startY-1][startX+2] = '#';
-					 	grid[startY  ][startX+1] = '#';
+		grid[startY  ][startX+1] = '#';
 		return 0;
 	} 
-	
+
 	if (						grid[startY-2+yM][startX+1+xM] == '.' && 
-		grid[startY-1+yM][startX+xM] == '.' && 	grid[startY-1+yM][startX+1+xM] == '.' && grid[startY-1+yM][startX+2+xM] == '.' &&
-						 	grid[startY  +yM][startX+1+xM] == '.') {
+			grid[startY-1+yM][startX+xM] == '.' && 	grid[startY-1+yM][startX+1+xM] == '.' && grid[startY-1+yM][startX+2+xM] == '.' &&
+			grid[startY  +yM][startX+1+xM] == '.') {
 		return 1;
 
 	}
@@ -380,9 +386,9 @@ void drawPlus()
 
 	int startX = 2;
 	int endX = 4;
-	
+
 	jetPos = jetPos % ((int) strlen(line1));
-	
+
 	while (1) {
 		if (line1[jetPos] == '>') {
 			printf("move right"); //+
@@ -410,8 +416,8 @@ void drawPlus()
 			}
 
 			if (canIMovePlus(startX, startY, 0, 1)) {
-					printf("dropping...");
-					startY++;
+				printf("dropping...");
+				startY++;
 			} else {
 				printf("not dropping...\n");
 				break;
@@ -428,17 +434,17 @@ void drawPlus()
 }
 int canIMoveEll(int startX, int startY, int mX, int mY) 
 {
-	
+
 	if (mX == 7 && mY == 7) {
-								 		grid[startY-2][startX+2] = '#';
-								 		grid[startY-1][startX+2] = '#';
- 		grid[startY][startX] = '#';	grid[startY][startX+1] = '#';  	grid[startY  ][startX+2] = '#';
-			return 0;
+		grid[startY-2][startX+2] = '#';
+		grid[startY-1][startX+2] = '#';
+		grid[startY][startX] = '#';	grid[startY][startX+1] = '#';  	grid[startY  ][startX+2] = '#';
+		return 0;
 	}
 	if (										       grid[startY-2+mY][startX+2+mX] == '.' &&
-										               grid[startY-1+mY][startX+2+mX] == '.' &&
- 		grid[startY+mY][startX+mX] == '.' && 	grid[startY+mY][startX+1+mX] == '.' && grid[startY  +mY][startX+2+mX] == '.') {
-			return 1;
+			grid[startY-1+mY][startX+2+mX] == '.' &&
+			grid[startY+mY][startX+mX] == '.' && 	grid[startY+mY][startX+1+mX] == '.' && grid[startY  +mY][startX+2+mX] == '.') {
+		return 1;
 	}
 	return 0;
 
@@ -454,10 +460,10 @@ void drawEll()
 
 	int startX = 2;
 	int endX = 4;
-	
+
 	jetPos = jetPos % ((int) strlen(line1));
 
-	
+
 	while (1) {
 
 		if (line1[jetPos] == '>') { //_|

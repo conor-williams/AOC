@@ -4,13 +4,18 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 char ar[300][60];
 FILE *a;
 int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
 
-        a = fopen(argv[1], "r"); printf("2022 Day3\n"); fflush(stdout);
+        a = fopen(argv[1], "r"); printf("2022 Day3.1\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[1000];
 
 //int lenx = 0;
@@ -29,8 +34,8 @@ int count = 0;
 for (int y = 0; y < leny; y++) {
 	char matchList[300];
 	int matchListLen = 0;
-	for (int x1 = 0; x1 < strlen(ar[y])/2; x1++) {
-		for (int x2 = strlen(ar[y])/2; x2 < strlen(ar[y]); x2++) {
+	for (int x1 = 0; x1 < (int)strlen(ar[y])/2; x1++) {
+		for (int x2 = (int)strlen(ar[y])/2; x2 < (int)strlen(ar[y]); x2++) {
 			if (ar[y][x1] == ar[y][x2]) {
 				int found1 = 0;
 				for (int m = 0; m < matchListLen; m++) {
@@ -56,4 +61,7 @@ for (int y = 0; y < leny; y++) {
 }
 	printf("***tot %d\n", tot);
 	printf("***count %d\n", count);
+
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %d\n", tot);
 }

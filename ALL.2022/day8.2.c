@@ -4,29 +4,34 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 char ar[102][102];
 FILE *a;
 int main(int argc, char **argv)
 {
-        printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
+	printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
 
-        a = fopen(argv[1], "r"); printf("2022 Day3\n"); fflush(stdout);
-        char line1[1000];
+	a = fopen(argv[1], "r"); printf("2022 Day8.2\n"); fflush(stdout);
 
-int lenx = 0;
-int leny = 0;
-while (1) {
-        fgets(line1, 999, a);
-        printf("LINE: %s\n", line1);
-        if (feof(a)) break;
-	line1[strlen(line1)-1] = '\0';	
+	fflush(stdout); int fd = dup(1); close(1);
+	char line1[1000];
 
-	strcpy(ar[leny], line1);
-	leny++;
-}
-lenx = strlen(ar[0]);
+	int lenx = 0;
+	int leny = 0;
+	while (1) {
+		fgets(line1, 999, a);
+		printf("LINE: %s\n", line1);
+		if (feof(a)) break;
+		line1[strlen(line1)-1] = '\0';	
 
-fclose(a);
+		strcpy(ar[leny], line1);
+		leny++;
+	}
+	lenx = strlen(ar[0]);
+
+	fclose(a);
 
 	int ans = 0;
 	int maxAns = 0;
@@ -49,9 +54,9 @@ fclose(a);
 				} else {
 					foundR++;
 				}
-				
+
 			}
-				
+
 			int foundU = 0;
 			for (int yU = y-1; yU >= 0; yU--) {
 				if (ar[yU][x] >= ar[y][x]) {
@@ -75,5 +80,8 @@ fclose(a);
 		}
 	}
 
-printf("***maxAns %d (%d %d)\n", maxAns, mX, mY);
+	printf("***maxAns %d (%d %d)\n", maxAns, mX, mY);
+
+	fflush(stdout); dup2(fd, 1);
+	printf("***ans: %d \n", maxAns);
 }

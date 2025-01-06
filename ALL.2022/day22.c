@@ -7,6 +7,9 @@
 #include <unistd.h>
 #include <signal.h>
 
+#include <unistd.h>
+
+#define getchar()
 FILE *a;
 #define LINE 6000
 #define getchar()
@@ -36,41 +39,43 @@ int numPos = 0;
 void printit(int crx, int cry, int dir);
 int leny = 0;
 int hide = 0;
+int fd;
 int main(int argc, char **argv)
 {
-        signal(SIGTSTP, &sigfunc);
-        printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
+	signal(SIGTSTP, &sigfunc);
+	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-        a = fopen(argv[1], "r"); printf("2021 Day 22 part1\n"); fflush(stdout);
-        char line1[LINE];
+	a = fopen(argv[1], "r"); printf("2021 Day 22 part1\n"); fflush(stdout);
+
+	fflush(stdout); fd = dup(1); close(1);
+	char line1[LINE];
 
 	if (argc == 3) {hide = 1;}
-	int fd;
 	if (hide == 1) {
 		fd = dup(1); close(1);
 	}
 
-int lenx = 0;
-int f1 = 1;
-while (1) {
-        fgets(line1, LINE-1, a);
-        if (feof(a)) break;
-        line1[strlen(line1)-1] = '\0';
-        printf("LINE: %s\n", line1);
-	if (line1[0] == '\0') {
-		f1 = 0;
-		continue;
-	} else if (f1 == 1) {
-		strcpy(grid[leny], line1);
-		if ((int)strlen(grid[leny]) > lenx) {lenx = (int)strlen(grid[leny]);}
-	} else if (f1 == 0) {
-		strcpy(mands, line1);
+	int lenx = 0;
+	int f1 = 1;
+	while (1) {
+		fgets(line1, LINE-1, a);
+		if (feof(a)) break;
+		line1[strlen(line1)-1] = '\0';
+		printf("LINE: %s\n", line1);
+		if (line1[0] == '\0') {
+			f1 = 0;
+			continue;
+		} else if (f1 == 1) {
+			strcpy(grid[leny], line1);
+			if ((int)strlen(grid[leny]) > lenx) {lenx = (int)strlen(grid[leny]);}
+		} else if (f1 == 0) {
+			strcpy(mands, line1);
+		}
+
+		leny++;
 	}
 
-	leny++;
-}
-
-fclose(a);
+	fclose(a);
 
 	for (int y = 0; y < leny; y++) {
 		int first = 1;
@@ -120,7 +125,7 @@ fclose(a);
 			newPos++;
 		}
 	}
-	
+
 	printf("----COMMANDS--------\n");
 	for (int i = 0; i < numPos; i++) {
 		printf("%c: %d\n", mands2[i].rl, mands2[i].val);
@@ -135,57 +140,57 @@ fclose(a);
 		printf("forward %d\n", mands2[i].val);
 		switch(dir) {
 			case(0):
-			{
-				//y-- ^^^^
-				for (int kk = 0; kk < mands2[i].val; kk++) {
-					if (cry == ColStae[crx].st || grid[cry-1][crx] == '\0' || grid[cry-1][crx] == ' ') {
-						 if (grid[ColStae[crx].en][crx] != '#') {cry = ColStae[crx].en;} else {break;}
-					} else if (grid[cry-1][crx] == '.') {cry--;}
-					else if (grid[cry-1][crx] == '#') {break;}
-					else {printf("NOT HERE ^^"); exit(0); break;}
-					printit(crx, cry, dir);
+				{
+					//y-- ^^^^
+					for (int kk = 0; kk < mands2[i].val; kk++) {
+						if (cry == ColStae[crx].st || grid[cry-1][crx] == '\0' || grid[cry-1][crx] == ' ') {
+							if (grid[ColStae[crx].en][crx] != '#') {cry = ColStae[crx].en;} else {break;}
+						} else if (grid[cry-1][crx] == '.') {cry--;}
+						else if (grid[cry-1][crx] == '#') {break;}
+						else {printf("NOT HERE ^^"); exit(0); break;}
+						printit(crx, cry, dir);
+					}
+					break;
 				}
-				break;
-			}
 			case(1):
-			{
-				//x++ >>>>>
-				for (int kk = 0; kk < mands2[i].val; kk++) {
-					if (crx == RowStae[cry].en || grid[cry][crx+1] == '\0' || grid[cry][crx+1] == ' ') {
-						if (grid[cry][RowStae[cry].st] != '#') {crx = RowStae[cry].st;} else {break;}
-					} else if (grid[cry][crx+1] == '.') {crx++;}
-					else if (grid[cry][crx+1] == '#') {break;}
-					else {printf("NOT HERE >> [[%c]] [[%c]]", grid[cry][crx], grid[cry][crx+1]); exit(0); break;}
-					printit(crx, cry, dir);
+				{
+					//x++ >>>>>
+					for (int kk = 0; kk < mands2[i].val; kk++) {
+						if (crx == RowStae[cry].en || grid[cry][crx+1] == '\0' || grid[cry][crx+1] == ' ') {
+							if (grid[cry][RowStae[cry].st] != '#') {crx = RowStae[cry].st;} else {break;}
+						} else if (grid[cry][crx+1] == '.') {crx++;}
+						else if (grid[cry][crx+1] == '#') {break;}
+						else {printf("NOT HERE >> [[%c]] [[%c]]", grid[cry][crx], grid[cry][crx+1]); exit(0); break;}
+						printit(crx, cry, dir);
+					}
+					break;
 				}
-				break;
-			}
 			case(2):
-			{
-				for (int kk = 0; kk < mands2[i].val; kk++) {
-					if (cry == ColStae[crx].en || grid[cry+1][crx] == '\0' || grid[cry+1][crx] == ' ') {
-						if (grid[ColStae[crx].st][crx] != '#') {cry = ColStae[crx].st;} else {break;}
-					} else if (grid[cry+1][crx] == '.') {cry++;}
-					else if (grid[cry+1][crx] == '#') {break;}
-					else {printf("NOT HERE vv [[%c]%c]", grid[cry][crx], grid[cry+1][crx]); exit(0); break;}
-					printit(crx, cry, dir);
+				{
+					for (int kk = 0; kk < mands2[i].val; kk++) {
+						if (cry == ColStae[crx].en || grid[cry+1][crx] == '\0' || grid[cry+1][crx] == ' ') {
+							if (grid[ColStae[crx].st][crx] != '#') {cry = ColStae[crx].st;} else {break;}
+						} else if (grid[cry+1][crx] == '.') {cry++;}
+						else if (grid[cry+1][crx] == '#') {break;}
+						else {printf("NOT HERE vv [[%c]%c]", grid[cry][crx], grid[cry+1][crx]); exit(0); break;}
+						printit(crx, cry, dir);
+					}
+					//y++ vvvvvv
+					break;
 				}
-				//y++ vvvvvv
-				break;
-			}
 			case(3):
-			{
-				//x-- <<<<<<
-				for (int kk = 0; kk < mands2[i].val; kk++) {
-					if (crx == RowStae[cry].st || grid[cry][crx-1] == '\0' || grid[cry][crx-1] == ' ') {
-						if (grid[cry][RowStae[cry].en] != '#') {crx = RowStae[cry].en;} else {break;}
-					} else if (grid[cry][crx-1] == '.') {crx--;}
-					else if (grid[cry][crx-1] == '#') {break;}
-					else {printf("NOT HERE << [[%c]][%c]]", grid[cry][crx-1], grid[cry][crx]); exit(0); break;}
-					printit(crx, cry, dir);
+				{
+					//x-- <<<<<<
+					for (int kk = 0; kk < mands2[i].val; kk++) {
+						if (crx == RowStae[cry].st || grid[cry][crx-1] == '\0' || grid[cry][crx-1] == ' ') {
+							if (grid[cry][RowStae[cry].en] != '#') {crx = RowStae[cry].en;} else {break;}
+						} else if (grid[cry][crx-1] == '.') {crx--;}
+						else if (grid[cry][crx-1] == '#') {break;}
+						else {printf("NOT HERE << [[%c]][%c]]", grid[cry][crx-1], grid[cry][crx]); exit(0); break;}
+						printit(crx, cry, dir);
+					}
+					break;
 				}
-				break;
-			}
 		}
 		if (     mands2[i].rl == 'R')      {printf("turning R\n"); dir++; dir %= 4;}
 		else if (mands2[i].rl == 'L') {printf("turning L\n"); dir--; dir+= 4; dir %= 4;} 
@@ -201,13 +206,15 @@ fclose(a);
 	posDir %= 4;
 	printf("crx is %d\n", crx);
 	printf("cry is %d\n", cry);
+
+	fflush(stdout); dup2(fd, 1);
 	printf("ans: %d\n", (1000 * (cry+1)) + (4 * (crx+1)) + posDir);
-	
+
 }
 void printit(int crx, int cry, int dir) {
 	int sx, sy;
 	int ex, ey;
-	
+
 	sx = crx-5 <                      0 ? 0                      : crx-5;
 	ex = crx+5 > (int)strlen(grid[cry]) ? (int)strlen(grid[cry]) : crx+5;
 

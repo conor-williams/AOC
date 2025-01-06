@@ -41,7 +41,6 @@ int main(int argc, char **argv)
 		//X lose
 		//Z win
 		sscanf(line1, "%c %c\n", &HIS, &MINE);
-		/*
 		switch(HIS) {
 			case 'A':
 				switch (MINE) {
@@ -87,7 +86,7 @@ int main(int argc, char **argv)
 		}	
 
 
-*/
+
 
 		switch (HIS) {
 			case 'A': 

@@ -4,6 +4,9 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 FILE *a;
 long long tot = 0;
 long long reg = 1;
@@ -15,55 +18,64 @@ int row = 0;
 int pos = 0;
 int main(int argc, char **argv)
 {
-        printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
+	printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
 
-        a = fopen(argv[1], "r"); printf("2022 Day10 part2\n"); fflush(stdout);
-        char line1[1000];
+	a = fopen(argv[1], "r"); printf("2022 Day10 part2\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
+	char line1[1000];
 
 	for (int y = 0; y < 10; y++) {
 		for (int x = 0; x < 50; x++) {
 			screen[y][x] = '.';
 		}
 	}
-int leny = 0;
-checkit();
-while (1) {
-        fgets(line1, 999, a);
-        //printf("LINE: %s\n", line1);
-        if (feof(a)) break;
-	line1[strlen(line1)-1] = '\0';	
-	
-	int addit;
-	if (strcmp(line1, "noop") == 0) {
-		cycles++;
-		checkit();
-	} else {
-		sscanf(line1, "addx %d\n", &addit);		
-		cycles++;
-		checkit();
-		cycles++;
-		reg += addit;
-		checkit();
+	int leny = 0;
+	checkit();
+	while (1) {
+		fgets(line1, 999, a);
+		//printf("LINE: %s\n", line1);
+		if (feof(a)) break;
+		line1[strlen(line1)-1] = '\0';	
+
+		int addit;
+		if (strcmp(line1, "noop") == 0) {
+			cycles++;
+			checkit();
+		} else {
+			sscanf(line1, "addx %d\n", &addit);		
+			cycles++;
+			checkit();
+			cycles++;
+			reg += addit;
+			checkit();
+		}
+		leny++;
 	}
-	leny++;
-}
-fclose(a);
+	fclose(a);
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans:\n");
 	printf("*****************************************\n");
 	for (int y = 0; y < 6; y++) {
 		for (int x = 0; x < 40; x++) {
-			printf("%c", screen[y][x]);
+			if (screen[y][x] == '.') {
+				printf(" ");
+			} else {
+				printf("%c", screen[y][x]);
+			}
 		}
 		printf("\n");
 	}
 	printf("\n");
 	printf("*****************************************\n");
-	printf("****tot %lld\n", tot);
+	//printf("****tot %lld\n", tot);
+
 }
 void checkit() {
 	if (reg > 40) {printf("ERROR\n"); exit(0);}
 	int pos = cycles%40;
 	if (reg == pos-1 || reg == pos || reg == pos+1) {screen[row][pos]   = '#';}
-	
+
 
 	switch(cycles) {
 		case 39:

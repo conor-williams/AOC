@@ -10,6 +10,9 @@
 #include <iostream>
 #include <stack>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 map <tuple<int, int, int>, int> mpALL;
@@ -45,13 +48,13 @@ void sigfunc(int a) { printf("minminPath %d -- cur minPath is %d\n", minPath, mi
    };
 
    struct al_s already[120][120];
- */
+   */
 /*
    struct visited_s {
    int path;
    };
    struct visited_s visited[120][120];
- */
+   */
 
 
 //int already[120][120];
@@ -78,6 +81,7 @@ int main(int argc, char **argv)
 	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
 	a = fopen(argv[1], "r"); printf("2022 Day 24 Part2 \n"); fflush(stdout);
+	fflush(stdout); int fd = dup(1); close(1);
 	if (hide == 1) {
 		fd = dup(1); close(1);
 	}
@@ -155,6 +159,7 @@ int main(int argc, char **argv)
 	printf("minPath now %d\n", minPath);
 	tot += minPath;
 
+	fflush(stdout); dup2(fd, 1);
 	printf("**ans %d\n", tot);
 
 }
@@ -241,6 +246,7 @@ egg:
 			}
 		}
 	}
+	return 0;
 }
 
 
@@ -295,7 +301,7 @@ again:
 	}
 	}
 	mpTmp = mpTmp3;
-	 */
+	*/
 	for (auto it = mpTmp.begin(); it != mpTmp.end(); it++) {
 		tuple fir = it->first;
 		int cx = get<0>(fir); int cy = get<1>(fir); int pa = get<2>(fir);
@@ -460,7 +466,7 @@ void printit(int gridX)
 				} else {
 					printf("#");
 				}
-			} else if (gridNum[y][x] == 0) {
+			} else if (gridNum[gridX][y][x] == 0) {
 				printf(".");
 			} else {
 				if (gridNum[gridX][y][x] < 10) {

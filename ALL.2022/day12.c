@@ -7,6 +7,9 @@
 #include <unistd.h>
 #include <signal.h>
 
+#include <unistd.h>
+
+#define getchar()
 FILE *a;
 #define LINE 1000
 //#define getchar()
@@ -22,21 +25,23 @@ int minPath = 99999;
 int leny = 0;
 int main(int argc, char **argv)
 {
-        signal(SIGTSTP, &sigfunc);
-        printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
+	signal(SIGTSTP, &sigfunc);
+	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-        a = fopen(argv[1], "r"); printf("2021 Day 12 - 1\n"); fflush(stdout);
-        char line1[LINE];
+	a = fopen(argv[1], "r"); printf("2021 Day 12 - 1\n"); fflush(stdout);
 
-while (1) {
-        fgets(line1, LINE-1, a);
-        if (feof(a)) break;
-        line1[strlen(line1)-1] = '\0';
-        printf("LINE: %s\n", line1);
-	strcpy(grid[leny], line1);
-	leny++;
-}
-fclose(a);
+	fflush(stdout); int fd = dup(1); close(1);
+	char line1[LINE];
+
+	while (1) {
+		fgets(line1, LINE-1, a);
+		if (feof(a)) break;
+		line1[strlen(line1)-1] = '\0';
+		printf("LINE: %s\n", line1);
+		strcpy(grid[leny], line1);
+		leny++;
+	}
+	fclose(a);
 	lenx = (int)strlen(grid[0]);
 
 	int stx, sty;
@@ -53,7 +58,11 @@ fclose(a);
 		}
 	}
 	next(stx, sty, 0, enx, eny);
+
 	printf("**minPath %d\n", minPath);
+
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %d\n", minPath);
 }
 
 
@@ -65,7 +74,7 @@ void next(int x, int y, int path, int ex, int ey) {
 
 	if (already[y][x] > path || already[y][x] == 0) {
 		already[y][x] = path;
-	
+
 		if (grid[y-1][x] - grid[y][x] <= 1) {
 			if (y-1 >= 0) {next(x, y-1, path+1, ex, ey);}
 		}

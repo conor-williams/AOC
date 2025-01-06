@@ -9,6 +9,9 @@
 #include <map>
 #include <iostream>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 map <tuple<int, int, int>, int> mpALL;
@@ -65,7 +68,9 @@ int main(int argc, char **argv)
 	signal(SIGTSTP, &sigfunc);
 	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
+
 	a = fopen(argv[1], "r"); printf("2022 Day 24 Part1 \n"); fflush(stdout);
+	fflush(stdout); int fd = dup(1); close(1);
 	if (hide == 1) {
 		fd = dup(1); close(1);
 	}
@@ -136,15 +141,18 @@ int main(int argc, char **argv)
 	//dik2(1, 0, lenx-2, leny-1, 0); 
 	printf("**minPath is %d\n", minPath);
 
-/*
-	if (strcmp(argv[1], "ext2.txt") == 0) {assert(minPath == 18);}
-	dikjstra(lenx-2, leny-1, 1, 0, minPath);
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans:  %d\n", minPath);
 
-	if (strcmp(argv[1], "ext2.txt") == 0) {if (minPath != 23) {printf("ADJ ADJ %d\n", minPath);} minPath = 23; minPathTot = 18+23;}
-	dikjstra(1, 0, lenx-2, leny-1, minPath);
+	/*
+	   if (strcmp(argv[1], "ext2.txt") == 0) {assert(minPath == 18);}
+	   dikjstra(lenx-2, leny-1, 1, 0, minPath);
 
-	if (hide == 1) {dup2(fd, 1);}
-*/
+	   if (strcmp(argv[1], "ext2.txt") == 0) {if (minPath != 23) {printf("ADJ ADJ %d\n", minPath);} minPath = 23; minPathTot = 18+23;}
+	   dikjstra(1, 0, lenx-2, leny-1, minPath);
+
+	   if (hide == 1) {dup2(fd, 1);}
+	   */
 	//printf("**ans %d\n", minPathTot);
 
 }
@@ -192,7 +200,7 @@ again:
 			for (int ex1 = 1; ex1 < lenx-1; ex1++) {
 
 				if (ey1 == 0 && ex1 != 1) {continue;} else
-				if (ey1 == leny-1 && ex1 != lenx -2) {continue;}
+					if (ey1 == leny-1 && ex1 != lenx -2) {continue;}
 				for (int y = 0; y < SX; y++) {
 					for (int x = 0; x < SX; x++) {
 						already[y][x].depth = -1;
@@ -353,7 +361,7 @@ void printit(int gridX)
 				} else {
 					printf("#");
 				}
-			} else if (gridNum[y][x] == 0) {
+			} else if (gridNum[gridX][y][x] == 0) {
 				printf(".");
 			} else {
 				if (gridNum[gridX][y][x] < 10) {

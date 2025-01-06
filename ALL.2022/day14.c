@@ -8,6 +8,9 @@
 #include <signal.h>
 #include <string>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 FILE *a;
@@ -25,6 +28,7 @@ std::string replaceAll(std::string str, const std::string& from, const std::stri
 }
 #define SX 2000
 //447 515 13 168
+int ans;
 int y22, x21;
 char grid[SX][SX];
 char gridTmp[SX][SX];
@@ -39,15 +43,17 @@ int hide = 0;
 void justCount(); 
 int var_count = 0;
 
-int fd;
 void sigfunc(int a) { countit(); }
 int check(char a, char b, char c, int *x, int *y);
+int fd;
 int main(int argc, char **argv)
 {
         signal(SIGTSTP, &sigfunc);
         printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
         a = fopen(argv[1], "r"); printf("2021 Day 14 part1\n"); fflush(stdout);
+
+	fflush(stdout); fd = dup(1); close(1);
         char line1[LINE];
         char l2[LINE];
 
@@ -113,7 +119,7 @@ while (1) {
 fclose(a);
 
 	printf("------------------- %d %d %d %d\n", minX, maxX, minY, maxY); getchar();
-	if (hide == 1) { fd = dup(1); close(1); }
+	if (hide == 1) {/* fd = dup(1); close(1);*/ }
 	int count = 0, prevCount;
 		leftOrRight(500, 1);
 //	do {
@@ -144,7 +150,10 @@ fclose(a);
 //		printit(); printf("count: %d\n", count); getchar();
 //	} while (1);
 
-	printf(" **ans %d\n", count);
+
+	//printf("**ans %d\n", count);
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans %d\n", ans);
 }
 
 /*
@@ -165,6 +174,7 @@ void justCount()
 	} 
 	//printit();
 	printf("**var_count is %d\n", var_count);
+	ans = var_count;
 }
 
 void countit() 
@@ -177,10 +187,11 @@ void countit()
 			}
 		}
 	} 
-	if (hide == 1) {dup2(fd, 1);}
+	if (hide == 1) {/*dup2(fd, 1);*/}
 	printit();
 	printf("**var_count is %d\n", var_count);
-	if (hide == 1) {fd = dup(1); close(1);}
+	//ans = var_count;
+	if (hide == 1) {/*fd = dup(1); close(1);*/}
 }
 
 int ind = 0;
@@ -213,7 +224,7 @@ ag:
 			break;
 		}
 	} while (1);
-	if (y > maxY+3) { printit(); perror ("out of range"); exit(0);}
+	if (y > maxY+3) { printit(); /*perror ("ERRCON: out of range"); */return; /*exit(0);*/}
 	assert(grid[y][x] == '.');
 	assert(grid[y+1][x] != '.');
 	printit3(x,y);

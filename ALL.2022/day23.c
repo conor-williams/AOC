@@ -7,6 +7,9 @@
 #include <unistd.h>
 #include <signal.h>
 
+#include <unistd.h>
+
+#define getchar()
 FILE *a;
 #define LINE 1000
 #define getchar()
@@ -37,11 +40,13 @@ int main(int argc, char **argv)
 	signal(SIGTSTP, &sigfunc);
 	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-	a = fopen(argv[1], "r"); printf("2021 Day 23\n"); fflush(stdout);
+	a = fopen(argv[1], "r"); printf("2021 Day 23.1\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
 	char line1[LINE];
 	char line2[LINE];
 
-	int fd = dup(1); close(1);
+	//int fd = dup(1); close(1);
 	for (int i = 0; i < PAD; i++) {
 		strcpy(grid[i], "........................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................");
 	}
@@ -72,7 +77,7 @@ int main(int argc, char **argv)
 	printit();
 	getchar();
 
-	int numRounds = 3;
+	int numRounds = 10;
 	if (argc == 3) {numRounds = atoi(argv[2]);}
 	int rounds = 0;
 	setitup(0);
@@ -171,13 +176,13 @@ void moveNfirst()
 	for (int y = 1; y < leny-1; y++) {
 		for (int x = 1; x < lenx-1; x++) {
 			if (grid[y][x] == '#' &&
-				grid[y-1][x-1] == '.' && grid[y-1][x] == '.' && grid[y-1][x+1] == '.' &&
-				grid[y][x+1] == '.' && 
-				grid[y+1][x+1] == '.' &&  grid[y+1][x] == '.' && grid[y+1][x-1] == '.' &&
-				grid[y][x-1] == '.') {
-					printf("all dots around\n");
-					gridNew[y][x] = '#';
-					continue;
+					grid[y-1][x-1] == '.' && grid[y-1][x] == '.' && grid[y-1][x+1] == '.' &&
+					grid[y][x+1] == '.' && 
+					grid[y+1][x+1] == '.' &&  grid[y+1][x] == '.' && grid[y+1][x-1] == '.' &&
+					grid[y][x-1] == '.') {
+				printf("all dots around\n");
+				gridNew[y][x] = '#';
+				continue;
 				//no move of grid[y][x];
 			}
 			if (grid[y][x] == '#' && grid[y-1][x-1] == '.' && grid[y-1][x] == '.' && grid[y-1][x+1] == '.') {
@@ -251,12 +256,12 @@ void moveSfirst()
 	for (int y = 1; y < leny-1; y++) {
 		for (int x = 1; x < lenx-1; x++) {
 			if (grid[y][x] == '#' &&
-				grid[y-1][x-1] == '.' && grid[y-1][x] == '.' && grid[y-1][x+1] == '.' &&
-				grid[y][x+1] == '.' && 
-				grid[y+1][x+1] == '.' &&  grid[y+1][x] == '.' && grid[y+1][x-1] == '.' &&
-				grid[y][x-1] == '.') {
-					gridNew[y][x] = '#';
-					continue;
+					grid[y-1][x-1] == '.' && grid[y-1][x] == '.' && grid[y-1][x+1] == '.' &&
+					grid[y][x+1] == '.' && 
+					grid[y+1][x+1] == '.' &&  grid[y+1][x] == '.' && grid[y+1][x-1] == '.' &&
+					grid[y][x-1] == '.') {
+				gridNew[y][x] = '#';
+				continue;
 				//printf("all dots\n");
 				//no move of grid[y][x];
 			}
@@ -328,12 +333,12 @@ void moveWfirst() {
 	for (int y = 1; y < leny-1; y++) {
 		for (int x = 1; x < lenx-1; x++) {
 			if (grid[y][x] == '#' &&
-				grid[y-1][x-1] == '.' && grid[y-1][x] == '.' && grid[y-1][x+1] == '.' &&
-				grid[y][x+1] == '.' && 
-				grid[y+1][x+1] == '.' &&  grid[y+1][x] == '.' && grid[y+1][x-1] == '.' &&
-				grid[y][x-1] == '.') {
-					gridNew[y][x] = '#';
-					continue;
+					grid[y-1][x-1] == '.' && grid[y-1][x] == '.' && grid[y-1][x+1] == '.' &&
+					grid[y][x+1] == '.' && 
+					grid[y+1][x+1] == '.' &&  grid[y+1][x] == '.' && grid[y+1][x-1] == '.' &&
+					grid[y][x-1] == '.') {
+				gridNew[y][x] = '#';
+				continue;
 			}
 
 			if (grid[y][x] == '#' && grid[y-1][x-1] == '.' && grid[y][x-1] == '.' && grid[y+1][x-1] == '.') {
@@ -393,7 +398,7 @@ void moveWfirst() {
 					gridNew[y][x] = '#';			
 				}
 			}
-				//move to grid grid[y-1][x]
+			//move to grid grid[y-1][x]
 		}
 	}
 }
@@ -403,12 +408,12 @@ void moveEfirst() {
 	for (int y = 1; y < leny-1; y++) {
 		for (int x = 1; x < lenx-1; x++) {
 			if (grid[y][x] == '#' &&
-				grid[y-1][x-1] == '.' && grid[y-1][x] == '.' && grid[y-1][x+1] == '.' &&
-				grid[y][x+1] == '.' && 
-				grid[y+1][x+1] == '.' &&  grid[y+1][x] == '.' && grid[y+1][x-1] == '.' &&
-				grid[y][x-1] == '.') {
-					gridNew[y][x] = '#';
-					continue;
+					grid[y-1][x-1] == '.' && grid[y-1][x] == '.' && grid[y-1][x+1] == '.' &&
+					grid[y][x+1] == '.' && 
+					grid[y+1][x+1] == '.' &&  grid[y+1][x] == '.' && grid[y+1][x-1] == '.' &&
+					grid[y][x-1] == '.') {
+				gridNew[y][x] = '#';
+				continue;
 			}
 
 			if (grid[y][x] == '#' && grid[y-1][x+1] == '.' && grid[y][x+1] == '.' && grid[y+1][x+1] == '.') {

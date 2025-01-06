@@ -13,6 +13,9 @@
 #include <unistd.h>
 #include <algorithm>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 FILE *a;
@@ -35,26 +38,27 @@ int hide = 0;
 int main(int argc, char **argv)
 {
 	if (argc == 3) {hide = 1;}	
-        signal(SIGTSTP, &sigfunc);
-        printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
+	signal(SIGTSTP, &sigfunc);
+	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-        a = fopen(argv[1], "r"); printf("2021 Day ***20**part 1\n"); fflush(stdout);
-        char line1[LINE];
+	a = fopen(argv[1], "r"); printf("2021 Day 20 Part 1\n"); fflush(stdout);
 
-	int fd;
+	fflush(stdout); fd = dup(1); close(1);
+	char line1[LINE];
+
 	if (hide == 1) {fd = dup(1); close(1);}
-int leny = 0;
-while (1) {
-        fgets(line1, LINE-1, a);
-        if (feof(a)) break;
-        line1[strlen(line1)-1] = '\0';
-        printf("LINE: %s\n", line1);
-	veOrig.push_back(atoi(line1));
-	ve3.push_back(atoi(line1));
-	leny++;
-	
-}
-fclose(a);
+	int leny = 0;
+	while (1) {
+		fgets(line1, LINE-1, a);
+		if (feof(a)) break;
+		line1[strlen(line1)-1] = '\0';
+		printf("LINE: %s\n", line1);
+		veOrig.push_back(atoi(line1));
+		ve3.push_back(atoi(line1));
+		leny++;
+
+	}
+	fclose(a);
 
 	sz = veOrig.size();
 	for (int i = 0; i < (int)veOrig.size(); i++) {
@@ -67,7 +71,7 @@ fclose(a);
 
 	auto it = veOrig.begin();
 	printf("sz is %d\n", sz);
-	
+
 	printf("sz is %d\n", sz);
 	for (int po1 = 0; po1 < sz; po1++) {
 		gPo1 = po1;
@@ -88,12 +92,12 @@ fclose(a);
 
 		assert(position1 == 0);
 		vePosTmp = vePos;
-		
+
 		if (mv1 > 0) {
 			int mv1Orig = mv1;
 			printf("moving %d (@ position zero) mv1 forward: positions: mv1:%d\n", *it, mv1);
 			if (mv1 >= sz-2) {mv1 %= sz-1;}
-			
+
 			if (mv1 != mv1Orig) {
 				printf("mv1 forward: now %d\n", mv1);
 			}
@@ -109,7 +113,7 @@ fclose(a);
 			}
 			assert(mv1 >= 0 && mv1 < sz-1);
 		}
-		
+
 		if (mv1 == 0 || mv1 == sz || mv1 == sz-1) {
 			it++;
 			continue;
@@ -126,7 +130,7 @@ fclose(a);
 		}
 		for (int kk = 0; kk < sz; kk++) { printf("[%d]", ve3[vePosTmp[kk]]); } printf("\n");getchar();
 	}
-	
+
 	if (hide == 1) {dup2(fd, 1);}
 	//if (argc != 3) {end = 1000;} else {end = atoi(argv[2]);}
 	int end = 0;
@@ -161,8 +165,10 @@ fclose(a);
 		assert (sum2 == sum);
 	}
 	printf("var_pos is %d\n", var_pos);
+
+	fflush(stdout); dup2(fd, 1);
 	printf("**ans %d\n", sum);
-	 
+
 }
 
 
@@ -176,38 +182,38 @@ int getCurrentPositionOf(int val)
 	}
 	perror("NOT FOUND\n"); exit(0);
 	return -1;
-	
+
 }
 
 
 /*
-vector<int> left_rotate(const vector<int>& v)
-{
+   vector<int> left_rotate(const vector<int>& v)
+   {
    vector<int> result;
    int size = v.size(); // this way you are able to rotate vectors of any size
    for (auto i = 1; i < size; ++i)
-       result.push_back(v.at(i));
+   result.push_back(v.at(i));
 
-   // adding first element of v at end of result
-   result.push_back(v.front());
-   return result;
+// adding first element of v at end of result
+result.push_back(v.front());
+return result;
 }
 
 */
 /*
-			if (tmp1+mv1 < sz || tmp1 + mv1 > sz) {
-				int zz;
-				mv1 %= sz;
-				for (zz = 1; zz < sz; zz++) {
-					if (zz > tmp1 && zz <= tmp1+mv1) {
-						vePosTmp[zz-1] = vePos[zz];
-						//printf("**moving value: ve3[vePosTmp[%d]]: %d to where?? zz-1:%d?\n", zz, ve3[vePosTmp[zz]], zz-1); getchar();
-						//for (int kk = 0; kk < sz; kk++) { printf("[%d]", ve3[vePosTmp[kk]]); } printf("\n");getchar();
-					}
-					if (zz == tmp1+mv1) {break;}
-				}
-				vePosTmp[tmp1+mv1] = vePos[tmp1];
-			}
+   if (tmp1+mv1 < sz || tmp1 + mv1 > sz) {
+   int zz;
+   mv1 %= sz;
+   for (zz = 1; zz < sz; zz++) {
+   if (zz > tmp1 && zz <= tmp1+mv1) {
+   vePosTmp[zz-1] = vePos[zz];
+//printf("**moving value: ve3[vePosTmp[%d]]: %d to where?? zz-1:%d?\n", zz, ve3[vePosTmp[zz]], zz-1); getchar();
+//for (int kk = 0; kk < sz; kk++) { printf("[%d]", ve3[vePosTmp[kk]]); } printf("\n");getchar();
+}
+if (zz == tmp1+mv1) {break;}
+}
+vePosTmp[tmp1+mv1] = vePos[tmp1];
+}
 */
 //
 //				//for (zzz = 1; zzz < sz; zzz++) 
