@@ -6,6 +6,9 @@
 #include <assert.h>
 #include <map>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 int lenx = 0;
 int leny = 0;
@@ -48,7 +51,9 @@ int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-        FILE *a = fopen(argv[1], "r"); printf("2020 Day20\n"); fflush(stdout);
+        FILE *a = fopen(argv[1], "r"); printf("2020 Day20 Part1\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[LINE];
 
 //Tile 2477:
@@ -109,6 +114,8 @@ while (1) {
 			printf("sides %d -- %d\n", (int)sidesMap.size(), grid[i].num);
 		}
 	}
+
+	fflush(stdout); dup2(fd, 1);
 	printf("**ans %llu\n", mul);
 }
 int swap2(char *a, char *b)

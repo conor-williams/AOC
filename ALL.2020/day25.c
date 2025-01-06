@@ -5,6 +5,9 @@
 #include <math.h>
 #include <assert.h>
 
+#include <unistd.h>
+
+#define getchar()
 int leny = 0;
 
 int LINE = 1000;
@@ -14,7 +17,9 @@ int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-        FILE *a = fopen(argv[1], "r"); printf("2020 Day17\n"); fflush(stdout);
+        FILE *a = fopen(argv[1], "r"); printf("2020 Day25 Part 1\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[LINE];
 	int cardPubKey;
 	int doorPubKey;
@@ -60,8 +65,11 @@ while (1) {
 		enc1 = enc1 * cardPubKey;
 		enc1 = enc1 % 20201227;
 	}
+	
 	printf("part3 over...\n");
 	printf("enckey is %llu\n", enc1);
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %llu\n", enc1);
 
 	unsigned long long enc2 = 1;
 	for (int i = 0; i < cardLoopSize; i++) {

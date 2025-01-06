@@ -5,6 +5,9 @@
 #include <math.h>
 #include <algorithm>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 FILE *a;
@@ -13,7 +16,9 @@ int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-        a = fopen(argv[1], "r"); printf("2020 Day9\n"); fflush(stdout);
+        a = fopen(argv[1], "r"); printf("2020 Day9 Part2\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[1000];
 	
 int leny = 0;
@@ -68,7 +73,10 @@ restart:
 				mysort[k] = aR[i+k];
 			}
 			sort(mysort, mysort+j);
-			printf("found it.. pos %d nums(%d) SUM: %d\n", i, j, mysort[0]+mysort[j-1]); exit(0);
+			printf("found it.. pos %d nums(%d) SUM: %d\n", i, j, mysort[0]+mysort[j-1]); 
+			
+			fflush(stdout); dup2(fd, 1);
+			printf("**ans: %d\n", mysort[0]+mysort[j-1]); exit(0);
 		} else {
 			goto restart;
 		}

@@ -4,12 +4,16 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 int watugot[129][9] = {0};
 int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-        FILE *a = fopen(argv[1], "r"); printf("2021 Day3\n"); fflush(stdout);
+        FILE *a = fopen(argv[1], "r"); printf("2020 Day5 Part2\n"); fflush(stdout);
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[1000];
 
 int leny = 0;
@@ -63,8 +67,14 @@ fclose(a);
 		for (int c = 1; c < 7; c++) {
 			if (watugot[s][c-1] == 1 && watugot[s][c] == 0 && watugot[s][c+1] == 1) {
 				printf("got ya... %d", (s*8)+c);	
+				fflush(stdout);
+				dup2(fd, 1);
+				printf("**ans: %d\n", (s*8)+c);
+				exit(0);
 			}	
 		}
 	}
 	printf("**idmax: %d\n", idmax);
+
+	printf("**ans: %d\n", idmax);
 }

@@ -4,6 +4,9 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 FILE *a;
 
 struct instruction {
@@ -19,7 +22,9 @@ int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-        a = fopen(argv[1], "r"); printf("2021 Day3\n"); fflush(stdout);
+        a = fopen(argv[1], "r"); printf("2020 Day8 Part2\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[1000];
 	
 int leny = 0;
@@ -143,7 +148,9 @@ printf("compare with %d\n", allInst[instNUM].pos);
 				printf("thats all folks - Infinite Loop detected [ %d ]\n", accum); infin = 1; break;
 			}
 		} else {
-			printf("no infin... **accum %d\n", accum); exit(0); getchar();
+			printf("no infin... **accum %d\n", accum);
+			dup2(fd, 1);
+			printf("**ans %d\n", accum); exit(0);
 		}
 	}
     }

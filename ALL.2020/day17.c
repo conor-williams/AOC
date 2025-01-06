@@ -5,6 +5,9 @@
 #include <math.h>
 #include <assert.h>
 
+#include <unistd.h>
+
+#define getchar()
 int lenx = 0;
 int leny = 0;
 int lenz = 0;
@@ -23,7 +26,9 @@ int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-        FILE *a = fopen(argv[1], "r"); printf("2020 Day17\n"); fflush(stdout);
+        FILE *a = fopen(argv[1], "r"); printf("2020 Day17 Part1\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[LINE];
 
 	for (int z = 0; z < GX; z++) {
@@ -58,6 +63,7 @@ while (1) {
 			printf("%d %d <- %d %d (%c)\n", sX+x, sY+y, x, y, grid[0][sY+y][sX+x]);
 		}
 	}
+	int countANS = 0;
 	for (int t = 0; t < 6; t++) {
 		for (int z = 1; z < GX-1; z++) {
 			for (int y = 1; y < GX-1; y++) {
@@ -129,7 +135,11 @@ while (1) {
 			}
 		}
 		printf("CYCLE %d -- active: %d\n", t, countHash);
+		countANS = countHash;
 	}
+	dup2(fd, 1);
+	printf("**ans: %d\n", countANS);
+
 }
 
 int countActive(int x, int y, int z) {

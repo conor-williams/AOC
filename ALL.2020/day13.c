@@ -4,6 +4,9 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 int lenx = 0;
 int leny = 0;
 int LINE = 1000;
@@ -11,7 +14,9 @@ int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-        FILE *a = fopen(argv[1], "r"); printf("2020 Day13\n"); fflush(stdout);
+        FILE *a = fopen(argv[1], "r"); printf("2020 Day13 Part1\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[LINE];
 
 	int var_ts;
@@ -58,5 +63,7 @@ while (1) {
 			
 		}
 	}
-	printf("**Ans %d\n", minTime * minBus);
+
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %d\n", minTime * minBus);
 }

@@ -7,6 +7,9 @@
 #include <deque>
 #include <assert.h>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 int lenx = 0;
@@ -17,13 +20,15 @@ int lenz = 0;
 int LINE = 1000;
 
 deque <int> deck;
-int ROUNDS = 10;
+int ROUNDS = 100;
 int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
 	if (argc == 3) {ROUNDS = atoi(argv[2]);}
-        FILE *a = fopen(argv[1], "r"); printf("2020 Day23\n"); fflush(stdout);
+        FILE *a = fopen(argv[1], "r"); printf("2020 Day23 Part1\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[LINE];
 
 while (1) {
@@ -122,7 +127,11 @@ while (1) {
 		printf("\n");
 	}
 
+
 	printf("**ANS round %d\n", ROUNDS);
+
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: ");
 	{
 		do {
 			int fro = deck.front();

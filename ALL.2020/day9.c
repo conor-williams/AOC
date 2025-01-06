@@ -4,13 +4,18 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 FILE *a;
 int aR[1200];
 int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-        a = fopen(argv[1], "r"); printf("2020 Day9\n"); fflush(stdout);
+        a = fopen(argv[1], "r"); printf("2020 Day9 Part1\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[1000];
 	
 int leny = 0;
@@ -41,7 +46,11 @@ fclose(a);
 			}
 end:
 			if (found == 0) {
-				printf("****aR[i] is %d\n", aR[i]); exit(0);
+				printf("****aR[i] is %d\n", aR[i]); 
+
+				fflush(stdout); dup2(fd, 1);
+				printf("***ans: %d\n", aR[i]); 
+				exit(0);
 			}
 	}
 

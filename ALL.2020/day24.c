@@ -5,6 +5,9 @@
 #include <math.h>
 #include <assert.h>
 
+#include <unistd.h>
+
+#define getchar()
 int LINE = 1000;
 
 #define GX 400
@@ -15,7 +18,8 @@ int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-        FILE *a = fopen(argv[1], "r"); printf("2020 Day24\n"); fflush(stdout);
+        FILE *a = fopen(argv[1], "r"); printf("2020 Day24 Part1\n"); fflush(stdout);
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[LINE];
 
 while (1) {
@@ -66,6 +70,8 @@ while (1) {
 			}
 		}
 	}
+	
+	fflush(stdout); dup2(fd, 1);
 	printf("**ans %d\n", count);
 }
 

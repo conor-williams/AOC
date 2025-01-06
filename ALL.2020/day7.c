@@ -4,6 +4,9 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 struct bag {
 	char bagcolor[100];
 	char contains[40][100];
@@ -21,7 +24,9 @@ int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-        a = fopen(argv[1], "r"); printf("2021 Day3\n"); fflush(stdout);
+        a = fopen(argv[1], "r"); printf("2020 Day7 Part 1\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[1000];
         char line2[1000];
 	
@@ -87,7 +92,10 @@ for (int i = 0; i < bagpos; i++) {
 	if (checkBAG(i)) {count++;}
 	printf("___________%d---------------\n", i);
 }
+
 	printf("***count %d\n", count);
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %d\n", count);
 }
 int checkBAG(int mypos) {
 	printf("bagcolor: [%s]\n", bags[mypos].bagcolor);

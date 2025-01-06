@@ -4,6 +4,9 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 FILE *a;
 char grid[102][102];
 char gridNew[102][102];
@@ -12,7 +15,9 @@ int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-        a = fopen(argv[1], "r"); printf("2020 Day11\n"); fflush(stdout);
+        a = fopen(argv[1], "r"); printf("2020 Day11 Part1\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[1000];
 	
 int leny = 0;
@@ -59,7 +64,10 @@ next:
 	}
 	printf("\n"); getchar();
 	if (prevSeatCount == seatCount && seatCount != 0) {
-		printf("SAME at %d\n", seatCount); exit(0);
+		printf("SAME at %d\n", seatCount);
+
+		fflush(stdout); dup2(fd, 1);
+		printf("**ans: %d\n", seatCount); exit(0);
 	}
 	for (int y = 1; y < leny-1; y++) {
 		for (int x = 1; x < lenx-1; x++) {
