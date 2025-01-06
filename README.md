@@ -30,8 +30,9 @@
 	<tr><td><b>2016</b></td><td><s>day2 x 2 </s></td></td><td>day9.2</td><td>day11 x 2 </td><td>day20.2</td><td>day22.2</td><td>day23.2</td></tr>
 	<tr><td><b>2017</b></td><td>day7.2</td></td><td>day11.2</td><td>day16.2</td><td>day17.2</td><td>day18.2</td><td>day20.2</td></tr>
 	<tr><td><b>2018</b></td><td>day3</td><td>day5</td><td>day7</td><td>day9.2</td><td>day11.2</td><td>day15</td><td>day19.2</td><td>day21</td><td>day22.2</td><td>day23.2</td></tr>
-	<tr><td><b>2019</b></td><td>todo</td></tr>
-	<tr><td><b>2020</b></td><td>todo</td></tr>
+	<tr><td><b>2019</b></td><td>day12.2</td><td>day3.2</td><td>day14.2</td><td>day17.2</td><td>day18</td></tr>
+	<tr><td><b>2020</b></td><td>day10.2</td><td>day12.2</td><td>day13.2</td><td>day14.2</td><td>day15.2</td><td>day16.2</td><td>day17.2</td><td>day18.2</td><td>day19.2</td><td>day20.2</td>
+				<td>day21.2</td><td>day22.2</td><td>day23.2</td><td>day24.2</td></tr>
 	<tr><td><b>2021</b></td><td>todo</td></tr>
 	<tr><td><b>2022</b></td><td>todo</td></tr>
 	<tr><td><b>2023</b></td><td>todo</td></tr>
