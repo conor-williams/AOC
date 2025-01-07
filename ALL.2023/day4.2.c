@@ -26,8 +26,8 @@ int main(int argc, char **argv)
 	int win[10] = {0};
 	int me[25] = {0};
 	int cardnum = 0;
-	int score = 0;
-	int games[300];
+	//int score = 0;
+	//int games[300];
 	int card[10000];
 	while (1) {
 		fseek(a, 117*(222 - linenum), SEEK_SET);
