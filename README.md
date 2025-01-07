@@ -55,7 +55,7 @@ rectified soon
 	<tr><td><b>2020</b></td><td></td></tr>
 	<tr><td><b>2021</b></td><td></td></tr>
 	<tr><td><b>2022</b></td><td>day25.1(written in java)</td></tr>
-	<tr><td><b>2023</b></td><td>day1</td><td>day3</td><td>day5</td><td>day7</td><td>day9</td><td>day10.2</td><td>day11.2</td><td>day12.2</td><td>day13.2</td>
+	<tr><td><b>2023</b></td><td><s>day1</s></td><td>day2</td><td>day5</td><td>day7</td><td>day9</td><td>day10.2</td><td>day11.2</td><td>day12.2</td><td>day13.2</td>
 				<td>day15</td><td>day17</td><td>day21</td></tr>
 	<tr><td><b><i>2024</i></b></td><td></td></tr>
 </table>
