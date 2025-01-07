@@ -25,7 +25,7 @@ rectified soon
 <address><b>conor.williams@gmail.com</b></address><br>
 <font size=1><i>last updated</i>: <b>06/01/2025</b></font>
 <br><br>
-
+<hr>
 <h3>Table of years/days of days which need optimizations or work (todo: ongoing):</h3>
 <table> 
 	<tr><td><b>2015</b></td><td>day10</td><td>day12</td><td>day19.2</td><td>day20</td><td>day24</td></tr>
