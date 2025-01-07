@@ -4,7 +4,10 @@
 #include <ctype.h>
 #include <math.h>
 
-#define DAY "2023 Day14 Part1"
+#include <unistd.h>
+
+#define getchar()
+#define DAY "2023 Day14 Part2"
 
 char line1[1000];
 char line[1000][1000];
@@ -23,48 +26,51 @@ void tilttowardWest();
 void someDebug();
 int main(int argc, char **argv)
 {
+	printf("SLOW ~2mins\n");
 	tot = 0;
-        printf("%d\n", argc); printf("%s\n", argv[1]); fflush(stdin); fflush(stdout);
-        FILE * a = fopen(argv[1], "r"); 
+	printf("%d ", argc); printf("%s ", argv[1]); fflush(stdin); fflush(stdout);
+	FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); printf("\n"); fflush(stdin); fflush(stdout);
 
-linenum = 0;
-while(1) {
+
+	fflush(stdout); int fd = dup(1); close(1);
+	linenum = 0;
+	while(1) {
 #ifdef _DEBUG_
-printf("---------NEXT LINE----------\n");
+		printf("---------NEXT LINE----------\n");
 #endif
-        fgets(line1, 999, a);
-	if (feof(a)) {break;}
+		fgets(line1, 999, a);
+		if (feof(a)) {break;}
 #ifdef _DEBUG_
-	printf("LINE: %s", line1); fflush(stdout);
+		printf("LINE: %s", line1); fflush(stdout);
 #endif
 
-	strcpy(line[linenum], line1);
-	line[linenum][strlen(line1)-1] = '\0';
-	linenum++;
+		strcpy(line[linenum], line1);
+		line[linenum][(int)strlen(line1)-1] = '\0';
+		linenum++;
 
-} //while 
-fclose(a);
+	} //while 
+	fclose(a);
 
-	printf("LINENUM: %d strlen(line[0]): %ld\n", linenum, strlen(line[0]));
+	printf("LINENUM: %d (int)strlen(line[0]): %d\n", linenum, (int)strlen(line[0]));
 #ifdef _DEBUG_
-	printf("LINENUM: %d strlen(line[0]): %ld\n", linenum, strlen(line[0]));
+	printf("LINENUM: %d (int)strlen(line[0]): %d\n", linenum, (int)strlen(line[0]));
 #endif
-{
-	someDebug();
-}
+	{
+		someDebug();
+	}
 #define CYCLES 1000000000
-for (int i = 0; i< CYCLES;i++)
-{
-	tilttowardNorth();
-	tilttowardWest();
-	tilttowardSouth();
-	tilttowardEast();
-}
-{
-	printpuzzle(linenum);
-}
-	for (int x = 0; x < strlen(line[0]); x++) {
+	for (int i = 0; i< CYCLES;i++)
+	{
+		tilttowardNorth();
+		tilttowardWest();
+		tilttowardSouth();
+		tilttowardEast();
+	}
+	{
+		printpuzzle(linenum);
+	}
+	for (int x = 0; x < (int)strlen(line[0]); x++) {
 		for (int y=0; y < linenum; y++) {
 			if (line[y][x] == 'O') {
 				tot += linenum - y;
@@ -72,40 +78,43 @@ for (int i = 0; i< CYCLES;i++)
 		}
 	}
 	printf("tot***  %ld\n", tot);
-{
-	someDebug();
-}
+	{
+		someDebug();
+	}
+
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %ld\n", tot);
 }
 void tilttowardWest()
 {
 	for (int y=0; y < linenum; y++) {
-	for (int x = 1; x < strlen(line[0]); x++) {
+		for (int x = 1; x < (int)strlen(line[0]); x++) {
 			moveleft(y, x);
 		}
 	}
-//	printpuzzle(linenum);
+	//	printpuzzle(linenum);
 }
 void tilttowardEast()
 {
 	for (int y=0; y < linenum; y++) {
-	for (int x = strlen(line[0]); x > 0; x--) {
+		for (int x = (int)strlen(line[0]); x > 0; x--) {
 			moveright(y, x);
 		}
 	}
-//	printpuzzle(linenum);
+	//	printpuzzle(linenum);
 }
 void tilttowardSouth()
 {
-	for (int x = 0; x < strlen(line[0]); x++) {
+	for (int x = 0; x < (int)strlen(line[0]); x++) {
 		for (int y=linenum-1; y >= 0; y--) {
 			movedown(y, x);
 		}
 	}
-//	printpuzzle(linenum);
+	//	printpuzzle(linenum);
 }
 void tilttowardNorth()
 {
-	for (int x = 0; x < strlen(line[0]); x++) {
+	for (int x = 0; x < (int)strlen(line[0]); x++) {
 		for (int y=1; y < linenum; y++) {
 			moveup(y, x);
 		}
@@ -115,7 +124,7 @@ void tilttowardNorth()
 void someDebug() {
 	int totDots = 0;
 	int totO1 = 0;
-	for (int x = 0; x < strlen(line[0]); x++) {
+	for (int x = 0; x < (int)strlen(line[0]); x++) {
 		for (int y=0; y < linenum; y++) {
 			if (line[y][x] == '.') {totDots++;}
 			else if (line[y][x] == 'O') {totO1++;}
@@ -136,7 +145,7 @@ void moveleft(int myy, int myx) {
 	}
 }
 void moveright(int myy, int myx) {
-	while (myx < strlen(line[0])) {
+	while (myx < (int)strlen(line[0])) {
 		if ( line[myy][myx-1] == 'O' && line[myy][myx] == '.') {
 			line[myy][myx-1] = '.'; line[myy][myx] = 'O';	
 			myx++;

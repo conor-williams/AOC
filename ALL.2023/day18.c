@@ -4,11 +4,15 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 int lenx, leny;
 #define DAY "2023 day18 part1 \n"
 #undef _DEBUG_
 long tot;
 
+//compile: widen stack: -Wl,--stack,999777666
 #define GRIDX 570
 #define GRIDY 340
 char puzzle[GRIDY][GRIDX];
@@ -23,101 +27,106 @@ void controllerfloodpuzzle(char what);
 void floodpuzzle(int myx, int myy, char what);
 int main(int argc, char **argv)
 {
+	printf("widen the stack\n");
 	tot = 0;lenx = 0; leny = 0;
-        printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
-        FILE * a = fopen(argv[1], "r"); 
-	printf(DAY); fflush(stdin); fflush(stdout);
-       
-        char line1[220];
+	printf("%d", argc); printf("%s", argv[1]);
+	FILE * a = fopen(argv[1], "r"); 
+	printf(DAY); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
+	char line1[220];
 	startx = 170; starty = 200;
 	for (int x = 0; x < GRIDX; x++) {
 		for (int y = 0; y < GRIDY; y++) {
 			puzzle[y][x] = '.';
 		}
 	}
-while(1) 
-{
-        fgets(line1, 200, a);
-        if (feof(a)) break;
-	line1[strlen(line1) -1]='\0';
+	while(1) 
+	{
+		fgets(line1, 200, a);
+		if (feof(a)) break;
+		line1[strlen(line1) -1]='\0';
 #ifdef _DEBUG_
-	printf("LINE: %s\n", line1);
+		printf("LINE: %s\n", line1);
 #endif
 
-//-------------------------
-	lenx = GRIDX; leny = GRIDY;
+		//-------------------------
+		lenx = GRIDX; leny = GRIDY;
 #ifdef _DEBUG_
-	printf("lenx: %d leny: %d\n", lenx, leny);
+		printf("lenx: %d leny: %d\n", lenx, leny);
 #endif
-	struct instruction instr;
-	sscanf(line1, "%c %d", &instr.inst, &instr.nummoves);
+		struct instruction instr;
+		sscanf(line1, "%c %d", &instr.inst, &instr.nummoves);
 
-	takemove(instr);
-    }
-/*
-	int smallestX = 1000;; int smallestY = 2000;
-	int maxX = 0; int maxY = 0;
-	for (int y = 0; y< leny; y++) {
-		for (int x = 0; x< lenx; x++) {
-			if(puzzle[y][x] == '#') {
-				if (y > maxY) {maxY = y;} if (y < smallestY) {smallestY = y;}
-				if (x > maxX) {maxX = x;} if (x < smallestX) {smallestX = x;}
+		takemove(instr);
+	}
+	/*
+	   int smallestX = 1000;; int smallestY = 2000;
+	   int maxX = 0; int maxY = 0;
+	   for (int y = 0; y< leny; y++) {
+	   for (int x = 0; x< lenx; x++) {
+	   if(puzzle[y][x] == '#') {
+	   if (y > maxY) {maxY = y;} if (y < smallestY) {smallestY = y;}
+	   if (x > maxX) {maxX = x;} if (x < smallestX) {smallestX = x;}
+	   }
+	   }
+	   }
+	   printf("from: %d,%d to:%d,%d\n", smallestX, smallestY, maxX, maxY);
+	   */
+	//        printpuzzle();
+	{
+		controllerfloodpuzzle('o');
+		//printpuzzle();
+
+		for (int y = 0; y< leny; y++) {
+			for (int x = 0; x< lenx; x++) {
+				if(puzzle[y][x] == '#' || puzzle[y][x] == '.') {
+					tot++;
+				}
 			}
 		}
-	}
-	printf("from: %d,%d to:%d,%d\n", smallestX, smallestY, maxX, maxY);
-*/
-//        printpuzzle();
-{
-    controllerfloodpuzzle('o');
-    //printpuzzle();
+		//printpuzzle();
+	} 
+	printpuzzle();
+	printf("********* tot %ld\n", tot);
+	fclose(a);
 
-	for (int y = 0; y< leny; y++) {
-		for (int x = 0; x< lenx; x++) {
-			if(puzzle[y][x] == '#' || puzzle[y][x] == '.') {
-				tot++;
-			}
-		}
-	}
-        //printpuzzle();
-} 
-    printpuzzle();
-    printf("********* tot %ld\n", tot);
-fclose(a);
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %ld\n", tot);
 }
 
 void floodpuzzle(int myx, int myy, char what) 
 {
-		if (puzzle[myy][myx] == '.') {
-			puzzle[myy][myx] = what;
-			if (myx+1 < lenx) {floodpuzzle(myx+1, myy, what);}
-			if (myx-1 > 0) {floodpuzzle(myx-1, myy, what);} 
-			if (myy+1 < leny) {floodpuzzle(myx, myy+1, what);}
-			if (myy-1 > 0) {floodpuzzle(myx, myy-1, what);}
-		}
+	if (puzzle[myy][myx] == '.') {
+		puzzle[myy][myx] = what;
+		if (myx+1 < lenx) {floodpuzzle(myx+1, myy, what);}
+		if (myx-1 > 0) {floodpuzzle(myx-1, myy, what);} 
+		if (myy+1 < leny) {floodpuzzle(myx, myy+1, what);}
+		if (myy-1 > 0) {floodpuzzle(myx, myy-1, what);}
+	}
 
 }
 void controllerfloodpuzzle(char what) 
 {
-		
-		int y = 0; int x = 0;
-		for (x = 0; x< lenx; x++) {
-			floodpuzzle(x, y, what);	
-		}
 
-		y = leny -1;
-		for (x = 0; x< lenx; x++) {
-			floodpuzzle(x, y, what);	
-		}
-		x = 0;
-		for (y = 0; y< leny; y++) {
-			floodpuzzle(x, y, what);	
-		}
-		x = lenx -1;
-		for (y = 0; y< leny; y++) {
-			floodpuzzle(x, y, what);	
-		}
-		printf("\n");
+	int y = 0; int x = 0;
+	for (x = 0; x< lenx; x++) {
+		floodpuzzle(x, y, what);	
+	}
+
+	y = leny -1;
+	for (x = 0; x< lenx; x++) {
+		floodpuzzle(x, y, what);	
+	}
+	x = 0;
+	for (y = 0; y< leny; y++) {
+		floodpuzzle(x, y, what);	
+	}
+	x = lenx -1;
+	for (y = 0; y< leny; y++) {
+		floodpuzzle(x, y, what);	
+	}
+	printf("\n");
 }
 
 void printpuzzle() 
@@ -163,6 +172,6 @@ void takemove(struct instruction instr)
 		default:
 			printf("ERROR: Unknown instruction - getchar"); getchar();
 			break;
-        }
+	}
 
 }
