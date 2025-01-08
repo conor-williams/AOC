@@ -31,9 +31,9 @@ int main(int argc, char **argv)
 {
 	printf("%d", argc); printf("%s", argv[1]); fflush(stdin); fflush(stdout);
 
+	FILE * a = fopen(argv[1], "r"); printf("Day8.1\n"); fflush(stdin); fflush(stdout);
 	fflush(stdout); int fd = dup(1); close(1);
 	map<string, struct lr> mp;
-	FILE * a = fopen(argv[1], "r"); printf("Day8.1\n"); fflush(stdin); fflush(stdout);
 
 	char line1[1000];
 	char instructs[1000];
