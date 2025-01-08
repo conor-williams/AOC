@@ -3,12 +3,16 @@
 #include <string.h>
 #include <ctype.h>
 #include <math.h>
+#include <assert.h>
 
+#include <unistd.h>
+
+#define getchar()
 int lenx, leny;
-#define DAY "2016 day8 part1 \n"
+#define DAY "2016 day9 part2 \n"
 #define _DEBUG_
 long tot;
-#define SIZE 90000000
+#define SIZE 120000
 
 int main(int argc, char **argv)
 {
@@ -17,6 +21,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[SIZE];
 while(1) 
 {
@@ -26,64 +31,49 @@ while(1)
 #ifdef _DEBUG_
 //	printf("LINE: %s\n", line1);
 #endif
-	char newLine[SIZE]; int newLinePos = 0;
-	int found; int count = 0;
-        do {
-		found = 0; newLinePos = 0;
-		memset(newLine, 0, sizeof(newLine));
-		for (int i = 0; i < (int)strlen(line1); i++) {
-			if (line1[i] == '\(') {
-				int fI = 0; int sI = 0;
-				char f[SIZE]; char s[SIZE];
-				int fPos = 0; int j; 
-				for (j = i+1; line1[j] != 'x'; j++) {
-					f[fPos] = line1[j]; fPos++;
-				}
-				f[fPos] = '\0'; fI = atoi(f);
-				int k; int sPos = 0;
-				for (k = j+1; line1[k] != ')'; k++) {
-					s[sPos] = line1[k]; sPos++;
-					
-				}
-				i = k+1;
-				s[sPos] = '\0'; sI = atoi(s);
-				int z;
-//		printf("%d X %d\n", fI, sI); 
-				char subString[SIZE];
-		memset(subString, 0, sizeof(subString));
-				for (z = 0; z < fI; z++) {
-					subString[z] = line1[i]; i++;
-				}
-				subString[z] = '\0';
-//		printf("substring = %s\n", subString); 
-				char mulSubString[SIZE];
-		memset(mulSubString, 0, sizeof(mulSubString));
-				for (int q = 0; q < sI; q++) {
-					strcat(mulSubString, subString);
-				}
-				strcat(newLine, mulSubString);
-//		printf("mulSub %s\n", mulSubString); 
-				newLinePos += strlen(mulSubString);
-				found = 1;
-				i--;
-			} else if (line1[i] == ')') {
-				printf("ERROR\n"); getchar();
-				found = 1;
-			} else {
-				newLine[newLinePos] = line1[i]; newLinePos++;
+	///char newLine[SIZE]; int newLinePos = 0;
+	//int found; int count = 0;
+	int a[SIZE];
+	for (int ii = 0; ii < (int)strlen(line1); ii++) {
+		a[ii] = 1;
+	}
+	for (int i = 0; i < (int)strlen(line1); i++) {
+		if (line1[i] == '(') {
+			int j = i;
+			char line2[1000];
+			do {
+				line2[j-i] = line1[j];
+				j++;
+			} while (line1[j] != ')');
+			line2[j-i] = ')';
+			line2[j-i+1] = '\0';
+			int fir; int sec;
+			int ret = sscanf(line2, "(%dx%d)", &fir, &sec);
+			if (ret != 2) {printf("ERR"); exit(0);}
+			//printf("fir: %d sec: %d\n", fir, sec);
+			for (int kk = j+1; kk < j+1+fir; kk++) {
+				a[kk] *= sec;
 			}
+			i = j;
+			assert(line1[i] == ')');
 		}
-		newLine[newLinePos] = '\0'; newLinePos++;
-//	printf("newLine %s\n", newLine); fflush(stdout);
-		printf("pass %d len(%d)\n", count, (int)strlen(newLine)); fflush(stdout);
-		count++;
-		strcpy(line1, newLine);
-		//break;
-	} while (found == 1);
-	printf("deCOMP len %d\n", (int)strlen(newLine));
-	tot += (int)strlen(newLine);
-
+		//printf("weights: ");
+		//for (int zz = 0; zz < (int)strlen(line1); zz++) {
+		//	printf("%d", a[zz]);
+		//}
+		//printf("\n");
+	}
+	tot = 0;
+	int ignore = 0;
+	for (int ii = 0; ii < (int)strlen(line1); ii++) {
+		if (line1[ii] == '(') {ignore = 1; continue;}
+		else if (line1[ii] == ')') {ignore = 0;continue;}
+		if (ignore == 0) {tot += a[ii];}
+	}
+	dup2(fd, 1);
+	printf("**ans: %ld\n", tot);
+	close(1);
 }
 fclose(a);
-	printf("***tot %ld END\n", tot); fflush(stdout);
+
 } 
