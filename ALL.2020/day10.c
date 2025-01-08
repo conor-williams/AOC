@@ -49,6 +49,7 @@ fclose(a);
 			jStart = aR[i];
 		}
 	}
+
 	printf("diffs:\n");
 	for (int j = 0; j < 4; j++) {
 		printf("%d:%d\n", j, d[j]);
