@@ -7,6 +7,9 @@
 #include <string>
 #include <unistd.h>
 
+#include <unistd.h>
+
+#define getchar()
 using namespace std;
 
 unsigned long long tot = 0;
@@ -16,7 +19,9 @@ int main(int argc, char **argv)
 {
 	printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
 
-	FILE * a = fopen(argv[1], "r"); printf("Day24.1\n"); fflush(stdout);
+	FILE * a = fopen(argv[1], "r"); printf("Day24.2\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
 	char line1[1000];
 	int leny = 0;
 	while (1) {
@@ -48,11 +53,11 @@ int main(int argc, char **argv)
 	int minePos = 0;
 	//unsigned long long int count1 = 0;
 
-//	int fd = dup(1);
-//	close(1);
 	int mymin = 99999;
 	tot = 0;
+#ifdef _DEBUG_
 	int count = 0;
+#endif
 	for (int end = 0; end < leny; end++) {
 		int arr[100] = {0};
 //		printf("end is %d leny is %d\n", end, leny);
@@ -101,7 +106,9 @@ int main(int argc, char **argv)
 							}
 						}
 						if (mysum1 == weTot) {
-							/*if (count++ % 10 == 0)*/ {count = 1; printf("num1 %d QE %llu tot %llu end1 is %d pos is %d\n", num1, QE, tot, end1, pos);}
+#ifdef _DEBUG_
+							if (count++ % 10 == 0) {count = 1; printf("num1 %d QE %llu tot %llu end1 is %d pos is %d\n", num1, QE, tot, end1, pos);}
+#endif
 							int pos2 = 0; int tmpW2[100] = {0};
 							for (int k = 0; k < leny; k++) {
 								if (arr1[k] == 0) {
@@ -138,7 +145,9 @@ int main(int argc, char **argv)
 											mine[minePos].QE = QE; minePos++;
 											tot++;
 											goto jump;
-											/*if (count++ % 50000 == 0) */{count = 1; printf("num1 %d QE %llu tot %llu end2 is %d pos2 is %d\n", num1, QE, tot, end2, pos2);}
+#ifdef _DEBUG_
+											if (count++ % 50000 == 0) {count = 1; printf("num1 %d QE %llu tot %llu end2 is %d pos2 is %d\n", num1, QE, tot, end2, pos2);}
+#endif
 										}
 										
 									}
@@ -153,7 +162,6 @@ jump:
 			continue;
 		}  while (next_permutation(arr, arr+leny));
 	}
-	//dup2(fd, 1);
 	printf("tot is %llu\n", tot); getchar();
         int min = 1000;
         for (int i = 0; i < minePos; i++) {
@@ -166,7 +174,10 @@ jump:
                         if (mine[i].QE < minQE) {minQE = mine[i].QE;}
                 }
         }
+
 	printf("***minQE: %llu\n", minQE);
+	dup2(fd, 1);
+	printf("**ans: %llu\n", minQE);
 }
 
 
