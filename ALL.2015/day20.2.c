@@ -4,45 +4,77 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <unistd.h>
+
+#define getchar()
 int tot = 0;
-int elves = 1000;
-int house[29000100] = {0};
+#define INP 29000000
+int NUMHOUSES = INP;
 int main(int argc, char **argv)
 {
-        printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
+        printf("%d", argc);
 
-        FILE * a = fopen(argv[1], "r"); printf("Day20.1\n"); fflush(stdout);
-        char line1[1000];
-        int leny = 0;
-        while (1) {
+        printf("2015 Day20.2\n"); fflush(stdout);
+	printf("Using Input %d\n", NUMHOUSES);
 
-                fgets(line1, 1000, a); if (feof(a)) {break;}
-                line1[strlen(line1) -1] = '\0';
-//              printf("line1 %s", line1);
-
-
-
-        } //while
-        fclose(a);
-	int counterTo50[900000] = {0};
-        for (int h = 1; h < 29000000; h++) {
-                for (int e = 1; e <= h; e++) {
-                        if (h % e == 0 ) {
-				counterTo50[e]++;
-				if (counterTo50[e] <= 50) {
-                                	house[h] += 11 * e;
+	fflush(stdout); int fd = dup(1); close(1);
+	int up;
+	for (up = 0; ; up++) {
+		int su = (up*(up+1)/2) * 10;
+		if (su > NUMHOUSES) {up--; break;}
+	}
+	printf("up is %d\n", up);
+	for (int housei = up; ; housei++ /*=1*2*3*5*7*/) {
+		int interimtot = 0;
+		int e = (int)sqrt((double)housei) + 1;
+		for (int fact = 1; fact <= e; fact++) {
+			if ((housei % fact) == 0) {
+				if ((fact*50) >= housei) {
+					interimtot += fact;
 				}
-                        }
-                }
-                if (house[h] >= 29000000) {
-                        printf("House: %d\n", h);
-                        exit(0);
-                }
+				int val;
+				if ((val = housei/fact) *50 >= housei) {
+					interimtot += val;
+				}
+			 }
+		}
 
+		interimtot *= 11;
+
+		if (interimtot >= NUMHOUSES) {
+			fflush(stdout); dup2(fd, 1);
+                        printf("**ans: %d\n", housei);
+                        exit(0);
+		}
         }
-        for (int i = 1; i < 10; i++) {
-                printf("house %d got %d presents\n", i, house[i]);
+	printf("after...\n");
+
+	/*
+        for (int housei = 0; housei < NUMHOUSES; housei += 1*3*5*7) {
+		int interimtot = 0;
+		for (int fact = 1; fact <= housei; fact++) {
+			int thistot = 0;
+			if (housei % fact == 0) {
+				interimtot += fact * 10;
+			 }
+		}
+		if (interimtot >= NUMHOUSES) {
+			for (int fact = 1; fact <= housei; fact++) {
+				int thistot = 0;
+				if (housei % fact == 0) {
+					printf("fact %d\n", fact);
+				}
+			}
+			printf("interimtot is %d\n", interimtot);
+                        printf("**ans: %d\n", housei);
+                        exit(0);
+		}
         }
+	*/
+        for (int housei = 1; housei < 10; housei++) {
+                //printf("house %d got %d presents\n", housei, presents[housei]);
+        }
+
         printf("***tot: %d\n", tot);
 }
 
