@@ -7,6 +7,10 @@
 #include <unistd.h>
 #include <signal.h>
 #include <time.h>
+
+#include <unistd.h>
+///#define assert(asf)
+#define getchar()
 /*
 #include <map>
 #include <unordered_map>
@@ -22,10 +26,10 @@ using namespace std;
 
 struct hash_function
 {
-        size_t operator()(const tuple<int , int , int, int>&x) const
-        {
-                unsigned int hash = get<0>(x); hash *= 37; hash += get<1>(x); hash *= 27; hash += get<2>(x); hash *= 27; hash += get<3>(x); return hash;
-        }
+size_t operator()(const tuple<int , int , int, int>&x) const
+{
+unsigned int hash = get<0>(x); hash *= 37; hash += get<1>(x); hash *= 27; hash += get<2>(x); hash *= 27; hash += get<3>(x); return hash;
+}
 };
 
 */
@@ -41,28 +45,32 @@ int leny;
 
 int main(int argc, char **argv)
 {
-        clock_t start, end; double cpu_time_used; 
+	clock_t start, end; double cpu_time_used; 
 	start = clock();
 	//DO
-        end = clock();
-        cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
-        printf("        time: %f seconds\n", cpu_time_used);
+	end = clock();
+	cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+	printf("        time: %f seconds\n", cpu_time_used);
 
-        //signal(SIGTSTP, &sigfunc);
-        signal(SIGQUIT, &sigfunc);
-        printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
+	//signal(SIGTSTP, &sigfunc);
+	signal(SIGQUIT, &sigfunc);
+	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-        a = fopen(argv[1], "r"); printf("2024 Day ***XYZXYZ** Part *XYZ**\n"); fflush(stdout);
-        char line1[LINE];
+	a = fopen(argv[1], "r"); if (a == NULL) {printf("BAD file %s\n", argv[1]); exit(0);}
+	printf("20YY Day ***XYZXYZ** Part *XYZ**\n"); fflush(stdout);
+
+	//fflush(stdout); int fd = dup(1); close(1);
+	char line1[LINE];
 
 	leny = 0;
-while (1) {
-        fgets(line1, LINE-1, a);
-        if (feof(a)) break;
-        line1[strlen(line1)-1] = '\0';
-        printf("LINE: %s\n", line1);
-	leny++;
-}
-fclose(a);
+	while (1) {
+		fgets(line1, LINE-1, a);
+		if (feof(a)) break;
+		line1[strlen(line1)-1] = '\0';
+		printf("LINE: %s\n", line1);
+		leny++;
+	}
+	fclose(a);
 
+	//fflush(stdout); dup2(fd, 1);
 }
