@@ -1,10 +1,20 @@
 <p><b>Notes: <i>c.w.</i></b></p>
 <hr>
 <br>
-apologies, some of my files got overwritten causing me to upload ones that gave the wrong answers (find and cp overwrite!!):
-rectified soon (update: nearly rectified...)
+	<hr>
+ 	<h2>Update (11/01/25):</h2>
+  	<pre>
+	o all day 1's for every year working well, except:
+		-- 2016 Day 11
+		-- 2019 Day 18
+		-- 2022 Day 22
+	o all years days 1->10 working well, except:
+		-- 2017 Day7.2
+		-- 2018 Day 7 1&2
+ 	
+	</pre>
+ <hr>
 <br>
-<br
 	<hr>
  	<h2>Update (08/01/25):</h2>
   	<pre>
@@ -14,6 +24,12 @@ rectified soon (update: nearly rectified...)
    	o part 2's unfinished after that 
 	</pre>
 	<hr>
+<br>
+<hr>
+	Update: apologies, some of my files got overwritten causing me to upload ones that gave the wrong answers (find and cp overwrite!!):
+rectified soon (update: nearly rectified...) (late december 2024)
+
+<hr>
 <ul>
 <li>g++ if "using namespace std" </li>
 <li>either gcc or g++, if no "using namespace std" </li>
