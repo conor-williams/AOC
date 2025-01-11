@@ -1,0 +1,13 @@
+#follow steps similar to these to get the answer (manual ish...)
+//compile: day25.one.c day25.two.c
+
+$ g++ day25.one.c -o b
+$ ./b i1.txt > ab.txt
+$ sh day25.gendiag.sh ab.txt
+##identify the three breaks by looking at diagram - they are right in the middle
+$ g++ day25.two.c -o c
+$ ./c i1.txt cmg bvb nvd jqt hfx pzl
+(make sure you twin the components)
+-> ans -> will appear
+--Conor 11/01/2025
+
