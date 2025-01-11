@@ -3,9 +3,16 @@
 #include <string.h>
 #include <ctype.h>
 #include <math.h>
+#define NDEBUG
 #include <assert.h>
 #include <unistd.h>
+#include <map>
+#include <unordered_map>
 
+#define assert(ignore) 
+#include <unistd.h>
+using namespace std;
+#define getchar()
 FILE *a;
 #define LINE 1000
 #define getchar()
@@ -21,10 +28,16 @@ int origD1x, origD1y; int origD2x, origD2y;
 #define SX 30
 #define SY 30
 int fd;
+
+/*
+   bool operator<(const MyThing& rhs) {
+   return std::tie(this->member1, this->member2) < std::tie(rhs.member1, rhs.member2);
+   }
+   */
 /*
 #...........#
 ###B#C#B#D###
-  #A#D#C#A#
+#A#D#C#A#
 */
 
 struct pos_s {
@@ -34,12 +47,12 @@ struct pos_s {
 
 
 struct pos_s all[] = {{1,0},{2,0},{3,0},{4,0},{5,0},{6,0},{7,0},{8,0},{9,0},{10,0},{11,0},
-		{3,1},{5,1},{7,1},{9,1},
-		{3,2},{5,2},{7,2},{9,2}};
+	{3,1},{5,1},{7,1},{9,1},
+	{3,2},{5,2},{7,2},{9,2}};
 
 struct pos_s land[] = {{1,0},{2,0},{4,0},{6,0},{8,0},{10,0},{11,0},
-		{3,1},{5,1},{7,1},{9,1},
-		{3,2},{5,2},{7,2},{9,2}};
+	{3,1},{5,1},{7,1},{9,1},
+	{3,2},{5,2},{7,2},{9,2}};
 
 struct pos_s notCorridor[] = {{3,0}, {5,0}, {7,0}, {9,0}};
 int notCorridorLen = sizeof(notCorridor)/sizeof(struct pos_s);
@@ -48,7 +61,7 @@ struct pos_s corridor[] = {{1,0}, {2,0}, {3,0}, {4,0}, {5,0}, {6,0}, {7,0}, {8,0
 int corridorLen = sizeof(corridor)/sizeof(struct pos_s);
 struct pos_s aend[] = {{3,2}, {3,1}};
 struct pos_s bend[] = {{5,2}, {5,1}};
-struct pos_s cend[] = {{7,2}, {7,1}};
+struct pos_s cendC[] = {{7,2}, {7,1}};
 struct pos_s dend[] = {{9,2}, {9,1}};
 
 struct grid_s {
@@ -65,9 +78,67 @@ struct grid_s {
 	//char grid[SY][SX];
 	//int cantmove;
 };
+struct trim_s {
+	struct pos_s A1;
+	struct pos_s A2;
+	struct pos_s B1;
+	struct pos_s B2;
+	struct pos_s C1;
+	struct pos_s C2;
+	struct pos_s D1;
+	struct pos_s D2; 
+};
+
 int makemove(int g, char wat);
 int endgame(int gnum, int abcd);
-	
+
+struct hash_function
+{
+	size_t operator()(const struct trim_s x) const
+	{
+		unsigned int 
+			hash =  x.A1.x; hash *= 37; 
+		hash += x.A1.y; hash *= 37; 
+		hash += x.A2.x; hash *= 27;
+		hash += x.A2.y; hash *= 27;
+		hash += x.B1.x; hash *= 27;
+		hash += x.B1.y; hash *= 27;
+		hash += x.B2.x; hash *= 27;
+		hash += x.B2.y; hash *= 27;
+		hash += x.C1.x; hash *= 27;
+		hash += x.C1.y; hash *= 27;
+		hash += x.C2.x; hash *= 27;
+		hash += x.C2.y; hash *= 27;
+		hash += x.D1.x; hash *= 27;
+		hash += x.D1.y; hash *= 27;
+		hash += x.D2.x; hash *= 27;
+		hash += x.D2.y; hash *= 27;
+
+		return hash;
+	}
+};
+unordered_map <struct trim_s, tuple<struct trim_s, int>, hash_function> mp;
+bool operator==(const struct trim_s x, const struct trim_s y) {
+	if (
+			y.A1.x == x.A1.x &&  
+			y.A1.y == x.A1.y &&  
+			y.A2.x == x.A2.x &&  
+			y.A2.y == x.A2.y &&  
+			y.B1.x == x.B1.x && 
+			y.B1.y == x.B1.y &&  
+			y.B2.x == x.B2.x &&  
+			y.B2.y == x.B2.y &&  
+			y.C1.x == x.C1.x &&  
+			y.C1.y == x.C1.y &&  
+			y.C2.x == x.C2.x &&  
+			y.C2.y == x.C2.y &&  
+			y.D1.x == x.D1.x &&  
+			y.D1.y == x.D1.y &&  
+			y.D2.x == x.D2.x &&  
+			y.D2.y == x.D2.y) {return true;}
+	else {return false;}
+}
+
 #define MAXNUMGRID 10000000
 struct grid_s *grid;
 int numgrids = 0;
@@ -95,34 +166,36 @@ int samePoses(int gr);
 int isEnd(int gr);
 int main(int argc, char **argv)
 {
+	printf("SLOW: ~4hours\n");
 	grid = (struct grid_s *)malloc(MAXNUMGRID * sizeof(struct grid_s));
 	if (grid == NULL) {printf("no mem\n"); exit(0);}
-        printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
+	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-        a = fopen(argv[1], "r"); printf("2021 Day 23 - 1\n"); fflush(stdout);
-        char line1[LINE];
-	fd = dup(1); close(1);
+	a = fopen(argv[1], "r"); printf("2021 Day 23 - 1\n"); fflush(stdout);
 
-int leny = 0;
-while (1) {
-        fgets(line1, LINE-1, a);
-        if (feof(a)) break;
-        line1[strlen(line1)-1] = '\0';
-        //printf("LINE: %s\n", line1);
-	if (leny == 0 || leny == 4) {
-	} else {
-		strcpy(gridInitial[leny-1], line1);
+	fflush(stdout); int fd = dup(1); close(1);
+	char line1[LINE];
+
+	int leny = 0;
+	while (1) {
+		fgets(line1, LINE-1, a);
+		if (feof(a)) break;
+		line1[strlen(line1)-1] = '\0';
+		//printf("LINE: %s\n", line1);
+		if (leny == 0 || leny == 4) {
+		} else {
+			strcpy(gridInitial[leny-1], line1);
+		}
+		leny++;
 	}
-	leny++;
-}
 
-fclose(a);
+	fclose(a);
 	for (int y = 0; y < SY; y++) {
 		for (int x = 0; x < SX; x++) {
-			printf("%c", gridInitial[y][x]);
-			
+			//printf("%c", gridInitial[y][x]);
+
 		}
-		printf("\n");
+		//printf("\n");
 	}
 	int fA = 0, fB = 0, fC = 0, fD = 0;
 	for (int y = 0; y < SY; y++) {
@@ -171,64 +244,105 @@ fclose(a);
 again:
 	int endGrid = numgrids;
 	int changed = 0;
-	printf("\n\n\n\n\nnumgrids: %d\n", numgrids);
+	//printf("\n\n\n\n\nnumgrids: %d\n", numgrids);
 	for (int i = 0; i < endGrid; i++) {
 		if (grid[i].ignore != 1) {
-			printGrid(i); getchar();
+			//printGrid(i); getchar();
 			assert(samePoses(i) == 0);
-			if (makemove(i, 'A')) {if (changed != 1) {changed = 1;}}
-			if (makemove(i, 'a')) {if (changed != 1) {changed = 1;}}
-			if (makemove(i, 'B')) {if (changed != 1) {changed = 1;}}
-			if (makemove(i, 'b')) {if (changed != 1) {changed = 1;}}
-			if (makemove(i, 'C')) {if (changed != 1) {changed = 1;}}
-			if (makemove(i, 'c')) {if (changed != 1) {changed = 1;}}
-			if (makemove(i, 'D')) {if (changed != 1) {changed = 1;}}
-			if (makemove(i, 'd')) {if (changed != 1) {changed = 1;}}
+			struct trim_s tr;
+			tr.A1 = grid[i].A1;
+			tr.A2 = grid[i].A2;
+			tr.B1 = grid[i].B1;
+			tr.B2 = grid[i].B2;
+			tr.C1 = grid[i].C1;
+			tr.C2 = grid[i].C2;
+			tr.D1 = grid[i].D1;
+			tr.D2 = grid[i].D2;
+
+			if (1/*(mp.find(tr)) == mp.end()*/) {
+				//printf("not using map\n");
+				struct grid_s gBef = grid[i];
+				int bef = grid[i].score;
+				if (makemove(i, 'A')) {if (changed != 1) {changed = 1;}}
+				if (makemove(i, 'a')) {if (changed != 1) {changed = 1;}}
+				if (makemove(i, 'B')) {if (changed != 1) {changed = 1;}}
+				if (makemove(i, 'b')) {if (changed != 1) {changed = 1;}}
+				if (makemove(i, 'C')) {if (changed != 1) {changed = 1;}}
+				if (makemove(i, 'c')) {if (changed != 1) {changed = 1;}}
+				if (makemove(i, 'D')) {if (changed != 1) {changed = 1;}}
+				if (makemove(i, 'd')) {if (changed != 1) {changed = 1;}}
+
+				int aft = grid[i].score;
+				struct trim_s tr2;
+				tr2.A1 = grid[i].A1; tr2.A2 = grid[i].A2;
+				tr2.B1 = grid[i].B1; tr2.B2 = grid[i].B2;
+				tr2.C1 = grid[i].C1; tr2.C2 = grid[i].C2;
+				tr2.D1 = grid[i].D1; tr2.D2 = grid[i].D2;
+				tuple tu = make_tuple(tr2, aft-bef);
+				mp[tr] = tu;
+			} else {
+				printf("using map...\n");
+				tuple tu = mp[tr];
+				struct trim_s tr2 = get<0>(tu);
+				grid[i].A1 = tr2.A1;
+				grid[i].A2 = tr2.A2;
+				grid[i].B1 = tr2.B1;
+				grid[i].B2 = tr2.B2;
+				grid[i].C1 = tr2.C1;
+				grid[i].C2 = tr2.C2;
+				grid[i].D1 = tr2.D1;
+				grid[i].D2 = tr2.D2;
+				grid[i].score += grid[i].score + get<1>(tu);
+				changed = 1;
+			}
 			if (isEnd(i)) {
-				printf("\n\n\nis an end -- %d\n", grid[i].score);
+				//printf("\n\n\nis an end -- %d\n", grid[i].score);
 				if (grid[i].score < minScore) {minScore = grid[i].score;}
 				grid[i].ignore = 1; getchar(); 
 			} else {
 				//printf("\n\n\nnot an end - grid %d\n", i);
 			}
+		} else {
+
 		}
-                if (grid[i].ignore != 1) {grid[i].ignore = 1;}
+		if (grid[i].ignore != 1) {grid[i].ignore = 1;}
 	}
 
 	if (changed) {goto again;}
 
-	dup2(fd,1);
-	printf("\n\n\n\n\nnumgrids %d\n", numgrids);
+	//printf("\n\n\n\n\nnumgrids %d\n", numgrids);
 	printf("\n\n\n\n\n**minScore %d\n", minScore);
+	dup2(fd,1);
+	printf("**ans: %d\n", minScore);
 	free(grid);
 }
 int isEnd(int gr) {
 	if (
-		((grid[gr].A1.x == aend[0].x && grid[gr].A1.y == aend[0].y &&
-		grid[gr].A2.x == aend[1].x && grid[gr].A2.y == aend[1].y) ||
-		(grid[gr].A2.x == aend[0].x && grid[gr].A2.y == aend[0].y &&
-		grid[gr].A1.x == aend[1].x && grid[gr].A1.y == aend[1].y))
-		&&
+			((grid[gr].A1.x == aend[0].x && grid[gr].A1.y == aend[0].y &&
+			  grid[gr].A2.x == aend[1].x && grid[gr].A2.y == aend[1].y) ||
+			 (grid[gr].A2.x == aend[0].x && grid[gr].A2.y == aend[0].y &&
+			  grid[gr].A1.x == aend[1].x && grid[gr].A1.y == aend[1].y))
+			&&
 
-		((grid[gr].B1.x == bend[0].x && grid[gr].B1.y == bend[0].y &&
-		grid[gr].B2.x == bend[1].x && grid[gr].B2.y == bend[1].y) ||
-		(grid[gr].B2.x == bend[0].x && grid[gr].B2.y == bend[0].y &&
-		grid[gr].B1.x == bend[1].x && grid[gr].B1.y == bend[1].y))
-		&&
+			((grid[gr].B1.x == bend[0].x && grid[gr].B1.y == bend[0].y &&
+			  grid[gr].B2.x == bend[1].x && grid[gr].B2.y == bend[1].y) ||
+			 (grid[gr].B2.x == bend[0].x && grid[gr].B2.y == bend[0].y &&
+			  grid[gr].B1.x == bend[1].x && grid[gr].B1.y == bend[1].y))
+			&&
 
-		((grid[gr].C1.x == cend[0].x && grid[gr].C1.y == cend[0].y &&
-		grid[gr].C2.x == cend[1].x && grid[gr].C2.y == cend[1].y) ||
-		(grid[gr].C2.x == cend[0].x && grid[gr].C2.y == cend[0].y &&
-		grid[gr].C1.x == cend[1].x && grid[gr].C1.y == cend[1].y))
-		&&
+			((grid[gr].C1.x == cendC[0].x && grid[gr].C1.y == cendC[0].y &&
+			  grid[gr].C2.x == cendC[1].x && grid[gr].C2.y == cendC[1].y) ||
+			 (grid[gr].C2.x == cendC[0].x && grid[gr].C2.y == cendC[0].y &&
+			  grid[gr].C1.x == cendC[1].x && grid[gr].C1.y == cendC[1].y))
+			&&
 
-		((grid[gr].D1.x == dend[0].x && grid[gr].D1.y == dend[0].y &&
-		grid[gr].D2.x == dend[1].x && grid[gr].D2.y == dend[1].y) ||
-		(grid[gr].D2.x == dend[0].x && grid[gr].D2.y == dend[0].y &&
-		grid[gr].D1.x == dend[1].x && grid[gr].D1.y == dend[1].y))
-	) {
-		return 1;	
-	}
+			((grid[gr].D1.x == dend[0].x && grid[gr].D1.y == dend[0].y &&
+			  grid[gr].D2.x == dend[1].x && grid[gr].D2.y == dend[1].y) ||
+			 (grid[gr].D2.x == dend[0].x && grid[gr].D2.y == dend[0].y &&
+			  grid[gr].D1.x == dend[1].x && grid[gr].D1.y == dend[1].y))
+			) {
+				return 1;	
+			}
 	return 0;
 
 
@@ -237,7 +351,7 @@ int samePoses(int gr) {
 	int xxes[8];
 	int yyes[8];
 
-	printf("\n\n\n\n\nnumgrids %d\n", numgrids);
+	//printf("\n\n\n\n\nnumgrids %d\n", numgrids);
 
 	xxes[0] = grid[gr].A1.x;
 	xxes[1] = grid[gr].A2.x;
@@ -257,9 +371,9 @@ int samePoses(int gr) {
 	yyes[6] = grid[gr].D1.y;
 	yyes[7] = grid[gr].D2.y;
 
-	printf("\n\n\n\n%d %d %d\n", inCorridor(gr, 'A'), ((grid[gr].A1.x ==  origA1x && grid[gr].A1.y == origA1y) || (grid[gr].A2.x == origA1x && grid[gr].A2.y == origA1x)), inHome(gr, 'A'));
-	printf("grid[gr].A1.x is %d\n", grid[gr].A1.x);
-	printf("grid[gr].A1.y is %d\n", grid[gr].A1.y);
+	//printf("\n\n\n\n%d %d %d\n", inCorridor(gr, 'A'), ((grid[gr].A1.x ==  origA1x && grid[gr].A1.y == origA1y) || (grid[gr].A2.x == origA1x && grid[gr].A2.y == origA1x)), inHome(gr, 'A'));
+	//printf("grid[gr].A1.x is %d\n", grid[gr].A1.x);
+	//printf("grid[gr].A1.y is %d\n", grid[gr].A1.y);
 	assert ((inCorridor(gr, 'A')  || (grid[gr].A1.x ==  origA1x && grid[gr].A1.y == origA1y) || inHome(gr, 'A')) == 1); 
 	assert ((inCorridor(gr, 'a')  || (grid[gr].A2.x ==  origA2x && grid[gr].A2.y == origA2y) || inHome(gr, 'a')) == 1); 
 	assert ((inCorridor(gr, 'B')  || (grid[gr].B1.x ==  origB1x && grid[gr].B1.y == origB1y) || inHome(gr, 'B')) == 1); 
@@ -268,7 +382,7 @@ int samePoses(int gr) {
 	assert ((inCorridor(gr, 'c')  || (grid[gr].C2.x ==  origC2x && grid[gr].C2.y == origC2y) || inHome(gr, 'c')) == 1); 
 	assert ((inCorridor(gr, 'D')  || (grid[gr].D1.x ==  origD1x && grid[gr].D1.y == origD1y) || inHome(gr, 'D')) == 1); 
 	assert ((inCorridor(gr, 'd')  || (grid[gr].D2.x ==  origD2x && grid[gr].D2.y == origD2y) || inHome(gr, 'd')) == 1); 
-	
+
 
 	for (int i = 0; i < notCorridorLen; i++) {
 		assert (!(grid[gr].A1.x == notCorridor[i].x && grid[gr].A1.y == notCorridor[i].y));
@@ -293,6 +407,7 @@ int samePoses(int gr) {
 	return 0;
 }
 void printGrid(int gr) {
+	return;
 	int xxes[10]; int yyes[10];
 	xxes[0] = grid[gr].A1.x;
 	xxes[1] = grid[gr].A2.x;
@@ -311,24 +426,24 @@ void printGrid(int gr) {
 	yyes[5] = grid[gr].C2.y;
 	yyes[6] = grid[gr].D1.y;
 	yyes[7] = grid[gr].D2.y;
-	
+
 	int pOffset = 2;
-        printf("\x1b[2J");
-        printf("\x1b[H");
+	printf("\x1b[2J");
+	printf("\x1b[H");
 	printf("\x1b[%dC \x1b[%dBA", grid[gr].A1.x+pOffset, grid[gr].A1.y+pOffset);
-        printf("\x1b[H");
+	printf("\x1b[H");
 	printf("\x1b[%dC \x1b[%dBa", grid[gr].A2.x+pOffset, grid[gr].A2.y+pOffset);
-        printf("\x1b[H");
+	printf("\x1b[H");
 	printf("\x1b[%dC \x1b[%dBB", grid[gr].B1.x+pOffset, grid[gr].B1.y+pOffset);
-        printf("\x1b[H");
+	printf("\x1b[H");
 	printf("\x1b[%dC \x1b[%dBb", grid[gr].B2.x+pOffset, grid[gr].B2.y+pOffset);
-        printf("\x1b[H");
+	printf("\x1b[H");
 	printf("\x1b[%dC \x1b[%dBC", grid[gr].C1.x+pOffset, grid[gr].C1.y+pOffset);
-        printf("\x1b[H");
+	printf("\x1b[H");
 	printf("\x1b[%dC \x1b[%dBc", grid[gr].C2.x+pOffset, grid[gr].C2.y+pOffset);
-        printf("\x1b[H");
+	printf("\x1b[H");
 	printf("\x1b[%dC \x1b[%dBD", grid[gr].D1.x+pOffset, grid[gr].D1.y+pOffset);
-        printf("\x1b[H");
+	printf("\x1b[H");
 	printf("\x1b[%dC \x1b[%dBd", grid[gr].D2.x+pOffset, grid[gr].D2.y+pOffset);
 
 	for (int i = 0; i < 8; i++) {
@@ -373,16 +488,16 @@ int makemove(int g, char wat) {
 			break;
 	}
 
-/*
-	if (inHomeOther(g, fir) && inHomeBottom(g, sec) && blankHomeOtherTop(g, fir) && !blockedFromHomeCorr(g, fir)) {
-		dupGrid(g);
-		makeMoveStraitHome(numgrids-1, fir);
-		return 1;
-	} else if (inHomeOther(g, fir) && blankBottom(g, fir) && !blockedFromHomeCorr(g, fir)) {
-		dupGrid(g);
-		makeMoveStraitHome(numgrids-1, fir);
-		return 1;
-	} else */
+	/*
+	   if (inHomeOther(g, fir) && inHomeBottom(g, sec) && blankHomeOtherTop(g, fir) && !blockedFromHomeCorr(g, fir)) {
+	   dupGrid(g);
+	   makeMoveStraitHome(numgrids-1, fir);
+	   return 1;
+	   } else if (inHomeOther(g, fir) && blankBottom(g, fir) && !blockedFromHomeCorr(g, fir)) {
+	   dupGrid(g);
+	   makeMoveStraitHome(numgrids-1, fir);
+	   return 1;
+	   } else */
 
 	if (inCorridor(g, fir) && inHomeBottom(g, sec) && blankTop(g, fir) && !blockedFromHomeCorr(g, fir)) {
 		dupGrid(g);
@@ -426,7 +541,7 @@ int makemove(int g, char wat) {
 		}
 		return ret;
 	}
-		
+
 	return 0;
 }
 
@@ -462,14 +577,14 @@ int blankHomeOtherTop(int gr, char wat) {
 
 	assert(val_y == 2);
 	if ((grid[gr].A1.x == val_x && grid[gr].A1.y == val_y-1) ||
-		(grid[gr].A2.x == val_x && grid[gr].A2.y == val_y-1) ||
-		(grid[gr].B1.x == val_x && grid[gr].B1.y == val_y-1) ||
-		(grid[gr].B2.x == val_x && grid[gr].B2.y == val_y-1) ||
-		(grid[gr].C1.x == val_x && grid[gr].C1.y == val_y-1) ||
-		(grid[gr].C2.x == val_x && grid[gr].C2.y == val_y-1) ||
-		(grid[gr].D1.x == val_x && grid[gr].D1.y == val_y-1) ||
-		(grid[gr].D2.x == val_x && grid[gr].D2.y == val_y-1)) {
-			return 0;
+			(grid[gr].A2.x == val_x && grid[gr].A2.y == val_y-1) ||
+			(grid[gr].B1.x == val_x && grid[gr].B1.y == val_y-1) ||
+			(grid[gr].B2.x == val_x && grid[gr].B2.y == val_y-1) ||
+			(grid[gr].C1.x == val_x && grid[gr].C1.y == val_y-1) ||
+			(grid[gr].C2.x == val_x && grid[gr].C2.y == val_y-1) ||
+			(grid[gr].D1.x == val_x && grid[gr].D1.y == val_y-1) ||
+			(grid[gr].D2.x == val_x && grid[gr].D2.y == val_y-1)) {
+		return 0;
 	} else {
 		return 1;
 	}
@@ -503,7 +618,7 @@ void makeMoveCorridor(int gr, char wat, int which) {
 			perror("not here\n");
 			exit(0);
 			break;
-		
+
 	}
 	//pos_s corridor[] {{1,0}, {2,0}, {3,0}, {4,0}, {5,0}, {6,0}, {7,0}, {8,0}, {9,0}, {10,0}, {11,0}};
 	//pos_s corridor[] {{1,0}, {2,0},        {4,0},        {6,0},        {8,0},        {10,0}, {11,0}};
@@ -512,113 +627,113 @@ void makeMoveCorridor(int gr, char wat, int which) {
 	switch (wat) {
 		case 'A':
 			{
-			int xdist = abs(grid[gr].A1.x - x_pos);
-			xscore = xdist * SCOREA;	
-			int ydist = abs(grid[gr].A1.y); 
-			yscore = ydist * SCOREA;
+				int xdist = abs(grid[gr].A1.x - x_pos);
+				xscore = xdist * SCOREA;	
+				int ydist = abs(grid[gr].A1.y); 
+				yscore = ydist * SCOREA;
 
-			grid[gr].A1.x = x_pos; grid[gr].A1.y = 0;
-			assert(ydist == 2 || ydist == 1);
+				grid[gr].A1.x = x_pos; grid[gr].A1.y = 0;
+				assert(ydist == 2 || ydist == 1);
 			}
 			break;
 		case 'a':
 			{
-			int xdist = abs(grid[gr].A2.x - x_pos);
-			xscore = xdist * SCOREA ;	
-			int ydist = abs(grid[gr].A2.y); 
-			yscore = ydist * SCOREA;
-			grid[gr].A2.x = x_pos; grid[gr].A2.y = 0;
-			assert(ydist == 2 || ydist == 1);
+				int xdist = abs(grid[gr].A2.x - x_pos);
+				xscore = xdist * SCOREA ;	
+				int ydist = abs(grid[gr].A2.y); 
+				yscore = ydist * SCOREA;
+				grid[gr].A2.x = x_pos; grid[gr].A2.y = 0;
+				assert(ydist == 2 || ydist == 1);
 			}
 			break;
 		case 'B':
 			{
-			int xdist = abs(grid[gr].B1.x - x_pos);
-			xscore = xdist * SCOREB;	
-			int ydist = abs(grid[gr].B1.y); 
-			yscore = ydist * SCOREB;
-			grid[gr].B1.x = x_pos; grid[gr].B1.y = 0;
-			assert(ydist == 2 || ydist == 1);
+				int xdist = abs(grid[gr].B1.x - x_pos);
+				xscore = xdist * SCOREB;	
+				int ydist = abs(grid[gr].B1.y); 
+				yscore = ydist * SCOREB;
+				grid[gr].B1.x = x_pos; grid[gr].B1.y = 0;
+				assert(ydist == 2 || ydist == 1);
 			}
 			break;
 		case 'b':
 			{
-			int xdist = abs(grid[gr].B2.x - x_pos);
-			xscore = xdist * SCOREB;	
-			int ydist = abs(grid[gr].B2.y); 
-			yscore = ydist * SCOREB;
-			grid[gr].B2.x = x_pos; grid[gr].B2.y = 0;
-			assert(ydist == 2 || ydist == 1);
+				int xdist = abs(grid[gr].B2.x - x_pos);
+				xscore = xdist * SCOREB;	
+				int ydist = abs(grid[gr].B2.y); 
+				yscore = ydist * SCOREB;
+				grid[gr].B2.x = x_pos; grid[gr].B2.y = 0;
+				assert(ydist == 2 || ydist == 1);
 			}
 			break;
 		case 'C':
 			{
-			int xdist = abs(grid[gr].C1.x - x_pos);
-			xscore = xdist * SCOREC;	
-			int ydist = abs(grid[gr].C1.y); 
-			yscore = ydist * SCOREC;
-			grid[gr].C1.x = x_pos; grid[gr].C1.y = 0;
-			assert(ydist == 2 || ydist == 1);
+				int xdist = abs(grid[gr].C1.x - x_pos);
+				xscore = xdist * SCOREC;	
+				int ydist = abs(grid[gr].C1.y); 
+				yscore = ydist * SCOREC;
+				grid[gr].C1.x = x_pos; grid[gr].C1.y = 0;
+				assert(ydist == 2 || ydist == 1);
 			}
 			break;
 		case 'c':
 			{
-			int xdist = abs(grid[gr].C2.x - x_pos);
-			xscore = xdist * SCOREC;	
-			int ydist = abs(grid[gr].C2.y); 
-			yscore = ydist * SCOREC;
-			assert(ydist == 2 || ydist == 1);
-			grid[gr].C2.x = x_pos; grid[gr].C2.y = 0;
+				int xdist = abs(grid[gr].C2.x - x_pos);
+				xscore = xdist * SCOREC;	
+				int ydist = abs(grid[gr].C2.y); 
+				yscore = ydist * SCOREC;
+				assert(ydist == 2 || ydist == 1);
+				grid[gr].C2.x = x_pos; grid[gr].C2.y = 0;
 			}
 			break;
 		case 'D':
 			{
-			int xdist = abs(grid[gr].D1.x - x_pos);
-			xscore = xdist * SCORED;	
-			int ydist = abs(grid[gr].D1.y); 
-			yscore = ydist * SCORED;
-			assert(ydist == 2 || ydist == 1);
-			grid[gr].D1.x = x_pos; grid[gr].D1.y = 0;
+				int xdist = abs(grid[gr].D1.x - x_pos);
+				xscore = xdist * SCORED;	
+				int ydist = abs(grid[gr].D1.y); 
+				yscore = ydist * SCORED;
+				assert(ydist == 2 || ydist == 1);
+				grid[gr].D1.x = x_pos; grid[gr].D1.y = 0;
 			}
 			break;
 		case 'd':
 			{
-			int xdist = abs(grid[gr].D2.x - x_pos);
-			xscore = xdist * SCORED;	
-			int ydist = abs(grid[gr].D2.y); 
-			assert(ydist == 2 || ydist == 1);
-			yscore = ydist * SCORED;
-			grid[gr].D2.x = x_pos; grid[gr].D2.y = 0;
+				int xdist = abs(grid[gr].D2.x - x_pos);
+				xscore = xdist * SCORED;	
+				int ydist = abs(grid[gr].D2.y); 
+				assert(ydist == 2 || ydist == 1);
+				yscore = ydist * SCORED;
+				grid[gr].D2.x = x_pos; grid[gr].D2.y = 0;
 			}
 			break;
 	}
 	grid[gr].score += xscore + yscore;
 	for (int i = 0; i < numgrids-1; i++) {
 		if (		(((grid[i].A1.x == grid[gr].A1.x && grid[i].A1.y == grid[gr].A1.y) &&
-				(grid[i].A2.x == grid[gr].A2.x && grid[i].A2.y == grid[gr].A2.y)) ||
-				((grid[i].A2.x == grid[gr].A1.x && grid[i].A2.y == grid[gr].A1.y) &&
-				(grid[i].A1.x == grid[gr].A2.x && grid[i].A1.y == grid[gr].A2.y))) 
+						(grid[i].A2.x == grid[gr].A2.x && grid[i].A2.y == grid[gr].A2.y)) ||
+					((grid[i].A2.x == grid[gr].A1.x && grid[i].A2.y == grid[gr].A1.y) &&
+					 (grid[i].A1.x == grid[gr].A2.x && grid[i].A1.y == grid[gr].A2.y))) 
 				&& 
-	
+
 				(((grid[i].B1.x == grid[gr].B1.x && grid[i].B1.y == grid[gr].B1.y) &&
-				(grid[i].B2.x == grid[gr].B2.x && grid[i].B2.y == grid[gr].B2.y)) ||
-				((grid[i].B2.x == grid[gr].B1.x && grid[i].B2.y == grid[gr].B1.y) &&
-				(grid[i].B1.x == grid[gr].B2.x && grid[i].B1.y == grid[gr].B2.y))) 
+				  (grid[i].B2.x == grid[gr].B2.x && grid[i].B2.y == grid[gr].B2.y)) ||
+				 ((grid[i].B2.x == grid[gr].B1.x && grid[i].B2.y == grid[gr].B1.y) &&
+				  (grid[i].B1.x == grid[gr].B2.x && grid[i].B1.y == grid[gr].B2.y))) 
 				&&
 
 				(((grid[i].C1.x == grid[gr].C1.x && grid[i].C1.y == grid[gr].C1.y) &&
-				(grid[i].C2.x == grid[gr].C2.x && grid[i].C2.y == grid[gr].C2.y)) ||
-				((grid[i].C2.x == grid[gr].C1.x && grid[i].C2.y == grid[gr].C1.y) &&
-				(grid[i].C1.x == grid[gr].C2.x && grid[i].C1.y == grid[gr].C2.y)))
-				 &&
+				  (grid[i].C2.x == grid[gr].C2.x && grid[i].C2.y == grid[gr].C2.y)) ||
+				 ((grid[i].C2.x == grid[gr].C1.x && grid[i].C2.y == grid[gr].C1.y) &&
+				  (grid[i].C1.x == grid[gr].C2.x && grid[i].C1.y == grid[gr].C2.y)))
+				&&
 				(((grid[i].D1.x == grid[gr].D1.x && grid[i].D1.y == grid[gr].D1.y) &&
-				(grid[i].D2.x == grid[gr].D2.x && grid[i].D2.y == grid[gr].D2.y)) ||
-				((grid[i].D2.x == grid[gr].D1.x && grid[i].D2.y == grid[gr].D1.y) &&
-				(grid[i].D1.x == grid[gr].D2.x && grid[i].D1.y == grid[gr].D2.y)))  ) 
-		{
+				  (grid[i].D2.x == grid[gr].D2.x && grid[i].D2.y == grid[gr].D2.y)) ||
+				 ((grid[i].D2.x == grid[gr].D1.x && grid[i].D2.y == grid[gr].D1.y) &&
+				  (grid[i].D1.x == grid[gr].D2.x && grid[i].D1.y == grid[gr].D2.y)))  ) 
+				  {
 
-			if (grid[i].score >= grid[gr].score) {grid[i].ignore = 1;} else {grid[gr].ignore = 1;}
-		}
+					  if (grid[i].score >= grid[gr].score) {grid[i].ignore = 1;} else {grid[gr].ignore = 1;}
+				  }
 	}
 	assert(prevScore != grid[gr].score);
 }
@@ -680,8 +795,8 @@ int blockedToCorr(int gr, char  wat) {
 		if (isfree(gr, 8) && isfree(gr, 6)) {retVal += 16;} 
 		if (isfree(gr, 10) && isfree(gr, 8) && isfree(gr, 6)) {retVal += 32;} 
 		if (isfree(gr, 11) && isfree(gr, 10) && isfree(gr, 8) && isfree(gr, 6)) {retVal += 64;} 
-	//pos_s corridor[] {{1,0}, {2,0}, {3,0}, {4,0}, {5,0}, {6,0}, {7,0}, {8,0}, {9,0}, {10,0}, {11,0}};
-	//pos_s corridor[] {{1,0}, {2,0},        {4,0},        {6,0},        {8,0},   HE   {10,0}, {11,0}};
+		//pos_s corridor[] {{1,0}, {2,0}, {3,0}, {4,0}, {5,0}, {6,0}, {7,0}, {8,0}, {9,0}, {10,0}, {11,0}};
+		//pos_s corridor[] {{1,0}, {2,0},        {4,0},        {6,0},        {8,0},   HE   {10,0}, {11,0}};
 	} else if (val_x == 7) {
 		if (isfree(gr, 1) && isfree(gr, 2) && isfree(gr, 4) && isfree(gr, 6)) {retVal += 1;} 
 		if (isfree(gr, 2) && isfree(gr, 4) && isfree(gr, 6)) {retVal += 2;} 
@@ -703,7 +818,7 @@ int blockedToCorr(int gr, char  wat) {
 
 }
 int isfree(int gr, int xv) {
-		if (grid[gr].A1.x == xv
+	if (grid[gr].A1.x == xv
 			|| grid[gr].A2.x == xv
 			|| grid[gr].B1.x == xv 
 			|| grid[gr].B2.x == xv 
@@ -711,14 +826,14 @@ int isfree(int gr, int xv) {
 			|| grid[gr].C2.x == xv 
 			|| grid[gr].D1.x == xv 
 			|| grid[gr].D2.x == xv) {
-			return 0;
-		} else {
-			return 1;
-		}
+		return 0;
+	} else {
+		return 1;
+	}
 }
 
 void dupGrid(int gr) {
-	if (numgrids+3000 > MAXNUMGRID) {dup2(fd,1); free(grid);perror("GRID"); printf("numgrids:%d minScore:%d\n", numgrids, minScore); dup2(fd, 1);exit(0);}
+	//if (numgrids+3000 > MAXNUMGRID) {dup2(fd,1); free(grid);perror("GRID"); printf("numgrids:%d minScore:%d\n", numgrids, minScore); dup2(fd, 1);exit(0);}
 	grid[numgrids].A1.x = grid[gr].A1.x;
 	grid[numgrids].A1.y = grid[gr].A1.y;
 
@@ -742,10 +857,10 @@ void dupGrid(int gr) {
 
 	grid[numgrids].D2.x = grid[gr].D2.x;
 	grid[numgrids].D2.y = grid[gr].D2.y;
-	
+
 	grid[numgrids].score = grid[gr].score;
 	grid[numgrids].ignore = 0;
-	
+
 	numgrids++;
 }
 
@@ -756,162 +871,162 @@ void makeMoveStraitHome(int gr, char wat) {
 	int prevScore = grid[gr].score;
 	switch (wat) {
 		case 'A':
-			printf("\n\n\n\nmaking A move HOME\n");
+			//printf("\n\n\n\nmaking A move HOME\n");
 			{
-			int xdist = abs(grid[gr].A1.x - 3); xscore = xdist * SCOREA;
-			int ydist = grid[gr].A1.y;
-			if (blankTop(gr, wat) && blankBottom(gr, wat)) {
-				ydist += 2;
-				grid[gr].A1.x = aend[0].x;
-				grid[gr].A1.y = aend[0].y;
-			} else if (inHome(gr, 'a')) {
-				ydist += 1;
-				grid[gr].A1.x = aend[1].x;
-				grid[gr].A1.y = aend[1].y;
-			}
-			yscore = ydist * SCOREA;
+				int xdist = abs(grid[gr].A1.x - 3); xscore = xdist * SCOREA;
+				int ydist = grid[gr].A1.y;
+				if (blankTop(gr, wat) && blankBottom(gr, wat)) {
+					ydist += 2;
+					grid[gr].A1.x = aend[0].x;
+					grid[gr].A1.y = aend[0].y;
+				} else if (inHome(gr, 'a')) {
+					ydist += 1;
+					grid[gr].A1.x = aend[1].x;
+					grid[gr].A1.y = aend[1].y;
+				}
+				yscore = ydist * SCOREA;
 			}
 			break;
 		case 'a':
 			{
-			int xdist = abs(grid[gr].A2.x - 3); xscore = xdist * SCOREA;
-			int ydist = grid[gr].A2.y;
-			if (blankTop(gr, wat) && blankBottom(gr, wat)) {
-				ydist += 2;
-				grid[gr].A2.x = aend[0].x;
-				grid[gr].A2.y = aend[0].y;
-			} else if (inHome(gr, 'A')) {
-				ydist += 1;
-				grid[gr].A2.x = aend[1].x;
-				grid[gr].A2.y = aend[1].y;
-			}
-			yscore = ydist * SCOREA;
+				int xdist = abs(grid[gr].A2.x - 3); xscore = xdist * SCOREA;
+				int ydist = grid[gr].A2.y;
+				if (blankTop(gr, wat) && blankBottom(gr, wat)) {
+					ydist += 2;
+					grid[gr].A2.x = aend[0].x;
+					grid[gr].A2.y = aend[0].y;
+				} else if (inHome(gr, 'A')) {
+					ydist += 1;
+					grid[gr].A2.x = aend[1].x;
+					grid[gr].A2.y = aend[1].y;
+				}
+				yscore = ydist * SCOREA;
 			}
 			break;
 		case 'B':
 			{
-			int xdist = abs(grid[gr].B1.x - 5); xscore = xdist * SCOREB;
-			int ydist = grid[gr].B1.y;
-			if (blankTop(gr, wat) && blankBottom(gr, wat)) {
-				ydist+=2;
-				grid[gr].B1.x = bend[0].x;
-				grid[gr].B1.y = bend[0].y;
-			} else if (inHome(gr, 'b')) {
-				ydist += 1;
-				grid[gr].B1.x = bend[1].x;
-				grid[gr].B1.y = bend[1].y;
-			}
-			yscore = ydist * SCOREB;
+				int xdist = abs(grid[gr].B1.x - 5); xscore = xdist * SCOREB;
+				int ydist = grid[gr].B1.y;
+				if (blankTop(gr, wat) && blankBottom(gr, wat)) {
+					ydist+=2;
+					grid[gr].B1.x = bend[0].x;
+					grid[gr].B1.y = bend[0].y;
+				} else if (inHome(gr, 'b')) {
+					ydist += 1;
+					grid[gr].B1.x = bend[1].x;
+					grid[gr].B1.y = bend[1].y;
+				}
+				yscore = ydist * SCOREB;
 			}
 			break;
 		case 'b':
 			{
-			int xdist = abs(grid[gr].B2.x - 5); xscore = xdist * SCOREB;	
-			int ydist = grid[gr].B2.y;
-			if (blankTop(gr, wat) && blankBottom(gr, wat)) {
-				ydist+=2;
-				grid[gr].B2.x = bend[0].x;
-				grid[gr].B2.y = bend[0].y;
-			} else if (inHome(gr, 'B')) {
-				ydist += 1;
-				grid[gr].B2.x = bend[1].x;
-				grid[gr].B2.y = bend[1].y;
-			}
-			yscore = ydist * SCOREB;
+				int xdist = abs(grid[gr].B2.x - 5); xscore = xdist * SCOREB;	
+				int ydist = grid[gr].B2.y;
+				if (blankTop(gr, wat) && blankBottom(gr, wat)) {
+					ydist+=2;
+					grid[gr].B2.x = bend[0].x;
+					grid[gr].B2.y = bend[0].y;
+				} else if (inHome(gr, 'B')) {
+					ydist += 1;
+					grid[gr].B2.x = bend[1].x;
+					grid[gr].B2.y = bend[1].y;
+				}
+				yscore = ydist * SCOREB;
 			}
 			break;
 		case 'C':
 			{
-			int xdist = abs(grid[gr].C1.x - 7); xscore = xdist * SCOREC;	
-			int ydist = grid[gr].C1.y;
-			if (blankTop(gr, wat) && blankBottom(gr, wat)) {
-				ydist+=2;
-				grid[gr].C1.x = cend[0].x;
-				grid[gr].C1.y = cend[0].y;
-			} else if (inHome(gr, 'c')) {
-				ydist += 1;
-				grid[gr].C1.x = cend[1].x;
-				grid[gr].C1.y = cend[1].y;
-			}
-			yscore = ydist * SCOREC;
+				int xdist = abs(grid[gr].C1.x - 7); xscore = xdist * SCOREC;	
+				int ydist = grid[gr].C1.y;
+				if (blankTop(gr, wat) && blankBottom(gr, wat)) {
+					ydist+=2;
+					grid[gr].C1.x = cendC[0].x;
+					grid[gr].C1.y = cendC[0].y;
+				} else if (inHome(gr, 'c')) {
+					ydist += 1;
+					grid[gr].C1.x = cendC[1].x;
+					grid[gr].C1.y = cendC[1].y;
+				}
+				yscore = ydist * SCOREC;
 			}
 			break;
 		case 'c':
 			{
-			int xdist = abs(grid[gr].C2.x - 7);xscore = xdist * SCOREC;
-			int ydist = grid[gr].C2.y;
-			if (blankTop(gr, wat) && blankBottom(gr, wat)) {
-				ydist+=2;
-				grid[gr].C2.x = cend[0].x;
-				grid[gr].C2.y = cend[0].y;
-			} else if (inHome(gr, 'C')) {
-				ydist += 1;
-				grid[gr].C2.x = cend[1].x;
-				grid[gr].C2.y = cend[1].y;
-			}
-			yscore = ydist * SCOREC;
+				int xdist = abs(grid[gr].C2.x - 7);xscore = xdist * SCOREC;
+				int ydist = grid[gr].C2.y;
+				if (blankTop(gr, wat) && blankBottom(gr, wat)) {
+					ydist+=2;
+					grid[gr].C2.x = cendC[0].x;
+					grid[gr].C2.y = cendC[0].y;
+				} else if (inHome(gr, 'C')) {
+					ydist += 1;
+					grid[gr].C2.x = cendC[1].x;
+					grid[gr].C2.y = cendC[1].y;
+				}
+				yscore = ydist * SCOREC;
 			}
 			break;
 		case 'D':
 			{
-			int xdist = abs(grid[gr].D1.x - 9); xscore = xdist * SCORED;	
-			int ydist =  grid[gr].D1.y;
-			if (blankTop(gr, wat) && blankBottom(gr, wat)) {
-				ydist+=2;
-				grid[gr].D1.x = dend[0].x;
-				grid[gr].D1.y = dend[0].y;
-			} else if (inHome(gr, 'd')) {
-				ydist += 1;
-				grid[gr].D1.x = dend[1].x;
-				grid[gr].D1.y = dend[1].y;
-			}
-			yscore = ydist * SCORED;
+				int xdist = abs(grid[gr].D1.x - 9); xscore = xdist * SCORED;	
+				int ydist =  grid[gr].D1.y;
+				if (blankTop(gr, wat) && blankBottom(gr, wat)) {
+					ydist+=2;
+					grid[gr].D1.x = dend[0].x;
+					grid[gr].D1.y = dend[0].y;
+				} else if (inHome(gr, 'd')) {
+					ydist += 1;
+					grid[gr].D1.x = dend[1].x;
+					grid[gr].D1.y = dend[1].y;
+				}
+				yscore = ydist * SCORED;
 			}
 			break;
 		case 'd':
 			{
-			int xdist = abs(grid[gr].D2.x - 9); xscore = xdist * SCORED;
-			int ydist = grid[gr].D2.y;
-			if (blankTop(gr, wat) && blankBottom(gr, wat)) {
-				ydist+=2;
-				grid[gr].D2.x = dend[0].x;
-				grid[gr].D2.y = dend[0].y;
-			} else if (inHome(gr, 'D')) {
-				ydist += 1;
-				grid[gr].D2.x = dend[1].x;
-				grid[gr].D2.y = dend[1].y;
-			}
-			yscore = ydist * SCORED;
+				int xdist = abs(grid[gr].D2.x - 9); xscore = xdist * SCORED;
+				int ydist = grid[gr].D2.y;
+				if (blankTop(gr, wat) && blankBottom(gr, wat)) {
+					ydist+=2;
+					grid[gr].D2.x = dend[0].x;
+					grid[gr].D2.y = dend[0].y;
+				} else if (inHome(gr, 'D')) {
+					ydist += 1;
+					grid[gr].D2.x = dend[1].x;
+					grid[gr].D2.y = dend[1].y;
+				}
+				yscore = ydist * SCORED;
 			}
 			break;
 	}
 	grid[gr].score += xscore + yscore;
 	for (int i = 0; i < numgrids-1; i++) {
 		if (		(((grid[i].A1.x == grid[gr].A1.x && grid[i].A1.y == grid[gr].A1.y) &&
-				(grid[i].A2.x == grid[gr].A2.x && grid[i].A2.y == grid[gr].A2.y)) ||
-				((grid[i].A2.x == grid[gr].A1.x && grid[i].A2.y == grid[gr].A1.y) &&
-				(grid[i].A1.x == grid[gr].A2.x && grid[i].A1.y == grid[gr].A2.y))) 
+						(grid[i].A2.x == grid[gr].A2.x && grid[i].A2.y == grid[gr].A2.y)) ||
+					((grid[i].A2.x == grid[gr].A1.x && grid[i].A2.y == grid[gr].A1.y) &&
+					 (grid[i].A1.x == grid[gr].A2.x && grid[i].A1.y == grid[gr].A2.y))) 
 				&& 
-	
+
 				(((grid[i].B1.x == grid[gr].B1.x && grid[i].B1.y == grid[gr].B1.y) &&
-				(grid[i].B2.x == grid[gr].B2.x && grid[i].B2.y == grid[gr].B2.y)) ||
-				((grid[i].B2.x == grid[gr].B1.x && grid[i].B2.y == grid[gr].B1.y) &&
-				(grid[i].B1.x == grid[gr].B2.x && grid[i].B1.y == grid[gr].B2.y))) 
+				  (grid[i].B2.x == grid[gr].B2.x && grid[i].B2.y == grid[gr].B2.y)) ||
+				 ((grid[i].B2.x == grid[gr].B1.x && grid[i].B2.y == grid[gr].B1.y) &&
+				  (grid[i].B1.x == grid[gr].B2.x && grid[i].B1.y == grid[gr].B2.y))) 
 				&&
 
 				(((grid[i].C1.x == grid[gr].C1.x && grid[i].C1.y == grid[gr].C1.y) &&
-				(grid[i].C2.x == grid[gr].C2.x && grid[i].C2.y == grid[gr].C2.y)) ||
-				((grid[i].C2.x == grid[gr].C1.x && grid[i].C2.y == grid[gr].C1.y) &&
-				(grid[i].C1.x == grid[gr].C2.x && grid[i].C1.y == grid[gr].C2.y)))
-				 &&
+				  (grid[i].C2.x == grid[gr].C2.x && grid[i].C2.y == grid[gr].C2.y)) ||
+				 ((grid[i].C2.x == grid[gr].C1.x && grid[i].C2.y == grid[gr].C1.y) &&
+				  (grid[i].C1.x == grid[gr].C2.x && grid[i].C1.y == grid[gr].C2.y)))
+				&&
 				(((grid[i].D1.x == grid[gr].D1.x && grid[i].D1.y == grid[gr].D1.y) &&
-				(grid[i].D2.x == grid[gr].D2.x && grid[i].D2.y == grid[gr].D2.y)) ||
-				((grid[i].D2.x == grid[gr].D1.x && grid[i].D2.y == grid[gr].D1.y) &&
-				(grid[i].D1.x == grid[gr].D2.x && grid[i].D1.y == grid[gr].D2.y)))  ) 
-		{
+				  (grid[i].D2.x == grid[gr].D2.x && grid[i].D2.y == grid[gr].D2.y)) ||
+				 ((grid[i].D2.x == grid[gr].D1.x && grid[i].D2.y == grid[gr].D1.y) &&
+				  (grid[i].D1.x == grid[gr].D2.x && grid[i].D1.y == grid[gr].D2.y)))  ) 
+				  {
 
-			if (grid[i].score >= grid[gr].score) {grid[i].ignore = 1;} else {grid[gr].ignore = 1;}
-		}
+					  if (grid[i].score >= grid[gr].score) {grid[i].ignore = 1;} else {grid[gr].ignore = 1;}
+				  }
 	}
 	assert(prevScore != grid[gr].score);
 }
@@ -923,152 +1038,152 @@ void makeMoveHome(int gr, char wat) {
 	switch (wat) {
 		case 'A':
 			{
-			int xdist = abs(grid[gr].A1.x - 3); xscore = xdist * SCOREA;
-			int ydist = 2;
-			if (blankTop(gr, wat) && blankBottom(gr, wat)) {
-				grid[gr].A1.x = aend[0].x;
-				grid[gr].A1.y = aend[0].y;
-			} else if (inHome(gr, 'a')) {
-				ydist = 1;
-				grid[gr].A1.x = aend[1].x;
-				grid[gr].A1.y = aend[1].y;
-			}
-			yscore = ydist * SCOREA;
+				int xdist = abs(grid[gr].A1.x - 3); xscore = xdist * SCOREA;
+				int ydist = 2;
+				if (blankTop(gr, wat) && blankBottom(gr, wat)) {
+					grid[gr].A1.x = aend[0].x;
+					grid[gr].A1.y = aend[0].y;
+				} else if (inHome(gr, 'a')) {
+					ydist = 1;
+					grid[gr].A1.x = aend[1].x;
+					grid[gr].A1.y = aend[1].y;
+				}
+				yscore = ydist * SCOREA;
 			}
 			break;
 		case 'a':
 			{
-			int xdist = abs(grid[gr].A2.x - 3); xscore = xdist * SCOREA;
-			int ydist = 2;
-			if (blankTop(gr, wat) && blankBottom(gr, wat)) {
-				grid[gr].A2.x = aend[0].x;
-				grid[gr].A2.y = aend[0].y;
-			} else if (inHome(gr, 'A')) {
-				ydist = 1;
-				grid[gr].A2.x = aend[1].x;
-				grid[gr].A2.y = aend[1].y;
-			}
-			yscore = ydist * SCOREA;
+				int xdist = abs(grid[gr].A2.x - 3); xscore = xdist * SCOREA;
+				int ydist = 2;
+				if (blankTop(gr, wat) && blankBottom(gr, wat)) {
+					grid[gr].A2.x = aend[0].x;
+					grid[gr].A2.y = aend[0].y;
+				} else if (inHome(gr, 'A')) {
+					ydist = 1;
+					grid[gr].A2.x = aend[1].x;
+					grid[gr].A2.y = aend[1].y;
+				}
+				yscore = ydist * SCOREA;
 			}
 			break;
 		case 'B':
 			{
-			int xdist = abs(grid[gr].B1.x - 5); xscore = xdist * SCOREB;
-			int ydist = 2;
-			if (blankTop(gr, wat) && blankBottom(gr, wat)) {
-				grid[gr].B1.x = bend[0].x;
-				grid[gr].B1.y = bend[0].y;
-			} else if (inHome(gr, 'b')) {
-				ydist = 1;
-				grid[gr].B1.x = bend[1].x;
-				grid[gr].B1.y = bend[1].y;
-			}
-			yscore = ydist * SCOREB;
+				int xdist = abs(grid[gr].B1.x - 5); xscore = xdist * SCOREB;
+				int ydist = 2;
+				if (blankTop(gr, wat) && blankBottom(gr, wat)) {
+					grid[gr].B1.x = bend[0].x;
+					grid[gr].B1.y = bend[0].y;
+				} else if (inHome(gr, 'b')) {
+					ydist = 1;
+					grid[gr].B1.x = bend[1].x;
+					grid[gr].B1.y = bend[1].y;
+				}
+				yscore = ydist * SCOREB;
 			}
 			break;
 		case 'b':
 			{
-			int xdist = abs(grid[gr].B2.x - 5); xscore = xdist * SCOREB;	
-			int ydist = 2; 
-			if (blankTop(gr, wat) && blankBottom(gr, wat)) {
-				grid[gr].B2.x = bend[0].x;
-				grid[gr].B2.y = bend[0].y;
-			} else if (inHome(gr, 'B')) {
-				ydist = 1;
-				grid[gr].B2.x = bend[1].x;
-				grid[gr].B2.y = bend[1].y;
-			}
-			yscore = ydist * SCOREB;
+				int xdist = abs(grid[gr].B2.x - 5); xscore = xdist * SCOREB;	
+				int ydist = 2; 
+				if (blankTop(gr, wat) && blankBottom(gr, wat)) {
+					grid[gr].B2.x = bend[0].x;
+					grid[gr].B2.y = bend[0].y;
+				} else if (inHome(gr, 'B')) {
+					ydist = 1;
+					grid[gr].B2.x = bend[1].x;
+					grid[gr].B2.y = bend[1].y;
+				}
+				yscore = ydist * SCOREB;
 			}
 			break;
 		case 'C':
 			{
-			int xdist = abs(grid[gr].C1.x - 7); xscore = xdist * SCOREC;	
-			int ydist = 2;
-			if (blankTop(gr, wat) && blankBottom(gr, wat)) {
-				grid[gr].C1.x = cend[0].x;
-				grid[gr].C1.y = cend[0].y;
-			} else if (inHome(gr, 'c')) {
-				ydist = 1;
-				grid[gr].C1.x = cend[1].x;
-				grid[gr].C1.y = cend[1].y;
-			}
-			yscore = ydist * SCOREC;
+				int xdist = abs(grid[gr].C1.x - 7); xscore = xdist * SCOREC;	
+				int ydist = 2;
+				if (blankTop(gr, wat) && blankBottom(gr, wat)) {
+					grid[gr].C1.x = cendC[0].x;
+					grid[gr].C1.y = cendC[0].y;
+				} else if (inHome(gr, 'c')) {
+					ydist = 1;
+					grid[gr].C1.x = cendC[1].x;
+					grid[gr].C1.y = cendC[1].y;
+				}
+				yscore = ydist * SCOREC;
 			}
 			break;
 		case 'c':
 			{
-			int xdist = abs(grid[gr].C2.x - 7); xscore = xdist * SCOREC;
-			int ydist = 2;
-			if (blankTop(gr, wat) && blankBottom(gr, wat)) {
-				grid[gr].C2.x = cend[0].x;
-				grid[gr].C2.y = cend[0].y;
-			} else if (inHome(gr, 'C')) {
-				ydist = 1;
-				grid[gr].C2.x = cend[1].x;
-				grid[gr].C2.y = cend[1].y;
-			}
-			yscore = ydist * SCOREC;
+				int xdist = abs(grid[gr].C2.x - 7); xscore = xdist * SCOREC;
+				int ydist = 2;
+				if (blankTop(gr, wat) && blankBottom(gr, wat)) {
+					grid[gr].C2.x = cendC[0].x;
+					grid[gr].C2.y = cendC[0].y;
+				} else if (inHome(gr, 'C')) {
+					ydist = 1;
+					grid[gr].C2.x = cendC[1].x;
+					grid[gr].C2.y = cendC[1].y;
+				}
+				yscore = ydist * SCOREC;
 			}
 			break;
 		case 'D':
 			{
-			int xdist = abs(grid[gr].D1.x - 9); xscore = xdist * SCORED;	
-			int ydist = 2; 
-			if (blankTop(gr, wat) && blankBottom(gr, wat)) {
-				grid[gr].D1.x = dend[0].x;
-				grid[gr].D1.y = dend[0].y;
-			} else if (inHome(gr, 'd')) {
-				ydist = 1;
-				grid[gr].D1.x = dend[1].x;
-				grid[gr].D1.y = dend[1].y;
-			}
-			yscore = ydist * SCORED;
+				int xdist = abs(grid[gr].D1.x - 9); xscore = xdist * SCORED;	
+				int ydist = 2; 
+				if (blankTop(gr, wat) && blankBottom(gr, wat)) {
+					grid[gr].D1.x = dend[0].x;
+					grid[gr].D1.y = dend[0].y;
+				} else if (inHome(gr, 'd')) {
+					ydist = 1;
+					grid[gr].D1.x = dend[1].x;
+					grid[gr].D1.y = dend[1].y;
+				}
+				yscore = ydist * SCORED;
 			}
 			break;
 		case 'd':
 			{
-			int xdist = abs(grid[gr].D2.x - 9); xscore = xdist * SCORED;
-			int ydist = 2;
-			if (blankTop(gr, wat) && blankBottom(gr, wat)) {
-				grid[gr].D2.x = dend[0].x;
-				grid[gr].D2.y = dend[0].y;
-			} else if (inHome(gr, 'D')) {
-				ydist = 1;
-				grid[gr].D2.x = dend[1].x;
-				grid[gr].D2.y = dend[1].y;
-			}
-			yscore = ydist * SCORED;
+				int xdist = abs(grid[gr].D2.x - 9); xscore = xdist * SCORED;
+				int ydist = 2;
+				if (blankTop(gr, wat) && blankBottom(gr, wat)) {
+					grid[gr].D2.x = dend[0].x;
+					grid[gr].D2.y = dend[0].y;
+				} else if (inHome(gr, 'D')) {
+					ydist = 1;
+					grid[gr].D2.x = dend[1].x;
+					grid[gr].D2.y = dend[1].y;
+				}
+				yscore = ydist * SCORED;
 			}
 			break;
 	}
 	grid[gr].score += xscore + yscore;
 	for (int i = 0; i < numgrids-1; i++) {
 		if (		(((grid[i].A1.x == grid[gr].A1.x && grid[i].A1.y == grid[gr].A1.y) &&
-				(grid[i].A2.x == grid[gr].A2.x && grid[i].A2.y == grid[gr].A2.y)) ||
-				((grid[i].A2.x == grid[gr].A1.x && grid[i].A2.y == grid[gr].A1.y) &&
-				(grid[i].A1.x == grid[gr].A2.x && grid[i].A1.y == grid[gr].A2.y))) 
+						(grid[i].A2.x == grid[gr].A2.x && grid[i].A2.y == grid[gr].A2.y)) ||
+					((grid[i].A2.x == grid[gr].A1.x && grid[i].A2.y == grid[gr].A1.y) &&
+					 (grid[i].A1.x == grid[gr].A2.x && grid[i].A1.y == grid[gr].A2.y))) 
 				&& 
-	
+
 				(((grid[i].B1.x == grid[gr].B1.x && grid[i].B1.y == grid[gr].B1.y) &&
-				(grid[i].B2.x == grid[gr].B2.x && grid[i].B2.y == grid[gr].B2.y)) ||
-				((grid[i].B2.x == grid[gr].B1.x && grid[i].B2.y == grid[gr].B1.y) &&
-				(grid[i].B1.x == grid[gr].B2.x && grid[i].B1.y == grid[gr].B2.y))) 
+				  (grid[i].B2.x == grid[gr].B2.x && grid[i].B2.y == grid[gr].B2.y)) ||
+				 ((grid[i].B2.x == grid[gr].B1.x && grid[i].B2.y == grid[gr].B1.y) &&
+				  (grid[i].B1.x == grid[gr].B2.x && grid[i].B1.y == grid[gr].B2.y))) 
 				&&
 
 				(((grid[i].C1.x == grid[gr].C1.x && grid[i].C1.y == grid[gr].C1.y) &&
-				(grid[i].C2.x == grid[gr].C2.x && grid[i].C2.y == grid[gr].C2.y)) ||
-				((grid[i].C2.x == grid[gr].C1.x && grid[i].C2.y == grid[gr].C1.y) &&
-				(grid[i].C1.x == grid[gr].C2.x && grid[i].C1.y == grid[gr].C2.y)))
-				 &&
+				  (grid[i].C2.x == grid[gr].C2.x && grid[i].C2.y == grid[gr].C2.y)) ||
+				 ((grid[i].C2.x == grid[gr].C1.x && grid[i].C2.y == grid[gr].C1.y) &&
+				  (grid[i].C1.x == grid[gr].C2.x && grid[i].C1.y == grid[gr].C2.y)))
+				&&
 				(((grid[i].D1.x == grid[gr].D1.x && grid[i].D1.y == grid[gr].D1.y) &&
-				(grid[i].D2.x == grid[gr].D2.x && grid[i].D2.y == grid[gr].D2.y)) ||
-				((grid[i].D2.x == grid[gr].D1.x && grid[i].D2.y == grid[gr].D1.y) &&
-				(grid[i].D1.x == grid[gr].D2.x && grid[i].D1.y == grid[gr].D2.y)))  ) 
-		{
+				  (grid[i].D2.x == grid[gr].D2.x && grid[i].D2.y == grid[gr].D2.y)) ||
+				 ((grid[i].D2.x == grid[gr].D1.x && grid[i].D2.y == grid[gr].D1.y) &&
+				  (grid[i].D1.x == grid[gr].D2.x && grid[i].D1.y == grid[gr].D2.y)))  ) 
+				  {
 
-			if (grid[i].score >= grid[gr].score) {grid[i].ignore = 1;} else {grid[gr].ignore = 1;}
-		}
+					  if (grid[i].score >= grid[gr].score) {grid[i].ignore = 1;} else {grid[gr].ignore = 1;}
+				  }
 	}
 	assert(prevScore != grid[gr].score);
 }
@@ -1081,876 +1196,876 @@ int blockedFromHomeCorr(int gr, char wat) {//blocked from going home
 	switch (wat) {
 		case 'A': 
 			{
-			int var_x = grid[gr].A1.x, var_y = grid[gr].A1.y;
-			///if any others are in certain corr places then (also depends on where i am in corr)
-			if (var_x == 1 && var_y == 0) {
-				if ((grid[gr].A2.x == 2 && grid[gr].A2.y == 0) 
-					|| (grid[gr].B1.x == 2 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 2 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 2 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 2 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 2 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 2 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-			} else if (var_x == 2 && var_y == 0) { //cant be blocked
+				int var_x = grid[gr].A1.x, var_y = grid[gr].A1.y;
+				///if any others are in certain corr places then (also depends on where i am in corr)
+				if (var_x == 1 && var_y == 0) {
+					if ((grid[gr].A2.x == 2 && grid[gr].A2.y == 0) 
+							|| (grid[gr].B1.x == 2 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 2 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 2 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 2 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 2 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 2 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+				} else if (var_x == 2 && var_y == 0) { //cant be blocked
 					return 0;
-			} else if (var_x == 4 && var_y == 0) { //cant be blocked
+				} else if (var_x == 4 && var_y == 0) { //cant be blocked
 					return 0;
-			} else if (var_x == 6 && var_y == 0) {
-				if ((grid[gr].A2.x == 4 && grid[gr].A2.y == 0) 
-					|| (grid[gr].B1.x == 4 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 4 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 4 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 4 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 4 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 4 && grid[gr].D2.y == 0)) {
-					return 1;
+				} else if (var_x == 6 && var_y == 0) {
+					if ((grid[gr].A2.x == 4 && grid[gr].A2.y == 0) 
+							|| (grid[gr].B1.x == 4 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 4 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 4 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 4 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 4 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 4 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+				} else if (var_x == 8 && var_y == 0) {
+					if ((grid[gr].A2.x == 4 && grid[gr].A2.y == 0) 
+							|| (grid[gr].B1.x == 4 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 4 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 4 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 4 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 4 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 4 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+					if ((grid[gr].A2.x == 6 && grid[gr].A2.y == 0) 
+							|| (grid[gr].B1.x == 6 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 6 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 6 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 6 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 6 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 6 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+				} else if (var_x == 10 && var_y == 0) {
+					if ((grid[gr].A2.x == 4 && grid[gr].A2.y == 0) 
+							|| (grid[gr].B1.x == 4 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 4 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 4 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 4 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 4 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 4 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+					if ((grid[gr].A2.x == 6 && grid[gr].A2.y == 0) 
+							|| (grid[gr].B1.x == 6 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 6 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 6 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 6 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 6 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 6 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+					if ((grid[gr].A2.x == 8 && grid[gr].A2.y == 0) 
+							|| (grid[gr].B1.x == 8 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 8 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 8 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 8 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 8 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 8 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+				} else if (var_x == 11 && var_y == 0) {
+					if ((grid[gr].A2.x == 4 && grid[gr].A2.y == 0) 
+							|| (grid[gr].B1.x == 4 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 4 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 4 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 4 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 4 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 4 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+					if ((grid[gr].A2.x == 6 && grid[gr].A2.y == 0) 
+							|| (grid[gr].B1.x == 6 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 6 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 6 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 6 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 6 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 6 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+					if ((grid[gr].A2.x == 8 && grid[gr].A2.y == 0) 
+							|| (grid[gr].B1.x == 8 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 8 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 8 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 8 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 8 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 8 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+					if ((grid[gr].A2.x == 10 && grid[gr].A2.y == 0) 
+							|| (grid[gr].B1.x == 10 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 10 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 10 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 10 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 10 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 10 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
 				}
-			} else if (var_x == 8 && var_y == 0) {
-				if ((grid[gr].A2.x == 4 && grid[gr].A2.y == 0) 
-					|| (grid[gr].B1.x == 4 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 4 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 4 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 4 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 4 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 4 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-				if ((grid[gr].A2.x == 6 && grid[gr].A2.y == 0) 
-					|| (grid[gr].B1.x == 6 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 6 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 6 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 6 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 6 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 6 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-			} else if (var_x == 10 && var_y == 0) {
-				if ((grid[gr].A2.x == 4 && grid[gr].A2.y == 0) 
-					|| (grid[gr].B1.x == 4 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 4 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 4 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 4 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 4 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 4 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-				if ((grid[gr].A2.x == 6 && grid[gr].A2.y == 0) 
-					|| (grid[gr].B1.x == 6 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 6 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 6 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 6 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 6 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 6 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-				if ((grid[gr].A2.x == 8 && grid[gr].A2.y == 0) 
-					|| (grid[gr].B1.x == 8 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 8 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 8 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 8 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 8 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 8 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-			} else if (var_x == 11 && var_y == 0) {
-				if ((grid[gr].A2.x == 4 && grid[gr].A2.y == 0) 
-					|| (grid[gr].B1.x == 4 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 4 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 4 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 4 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 4 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 4 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-				if ((grid[gr].A2.x == 6 && grid[gr].A2.y == 0) 
-					|| (grid[gr].B1.x == 6 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 6 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 6 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 6 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 6 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 6 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-				if ((grid[gr].A2.x == 8 && grid[gr].A2.y == 0) 
-					|| (grid[gr].B1.x == 8 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 8 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 8 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 8 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 8 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 8 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-				if ((grid[gr].A2.x == 10 && grid[gr].A2.y == 0) 
-					|| (grid[gr].B1.x == 10 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 10 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 10 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 10 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 10 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 10 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-			}
 			}
 			break;
 		case 'a':
 			{
-			int var_x = grid[gr].A2.x, var_y = grid[gr].A2.y;
-			if (var_x == 1 && var_y == 0) {
-				if ((grid[gr].A1.x == 2 && grid[gr].A1.y == 0) 
-					|| (grid[gr].B1.x == 2 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 2 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 2 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 2 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 2 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 2 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-			} else if (var_x == 2 && var_y == 0) { //cant be blocked
+				int var_x = grid[gr].A2.x, var_y = grid[gr].A2.y;
+				if (var_x == 1 && var_y == 0) {
+					if ((grid[gr].A1.x == 2 && grid[gr].A1.y == 0) 
+							|| (grid[gr].B1.x == 2 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 2 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 2 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 2 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 2 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 2 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+				} else if (var_x == 2 && var_y == 0) { //cant be blocked
 					return 0;
-			} else if (var_x == 4 && var_y == 0) { //cant be blocked
+				} else if (var_x == 4 && var_y == 0) { //cant be blocked
 					return 0;
-			} else if (var_x == 6 && var_y == 0) {
-				if ((grid[gr].A1.x == 4 && grid[gr].A1.y == 0) 
-					|| (grid[gr].B1.x == 4 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 4 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 4 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 4 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 4 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 4 && grid[gr].D2.y == 0)) {
-					return 1;
+				} else if (var_x == 6 && var_y == 0) {
+					if ((grid[gr].A1.x == 4 && grid[gr].A1.y == 0) 
+							|| (grid[gr].B1.x == 4 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 4 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 4 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 4 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 4 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 4 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+				} else if (var_x == 8 && var_y == 0) {
+					if ((grid[gr].A1.x == 4 && grid[gr].A1.y == 0) 
+							|| (grid[gr].B1.x == 4 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 4 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 4 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 4 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 4 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 4 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+					if ((grid[gr].A1.x == 6 && grid[gr].A1.y == 0) 
+							|| (grid[gr].B1.x == 6 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 6 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 6 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 6 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 6 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 6 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+				} else if (var_x == 10 && var_y == 0) {
+					if ((grid[gr].A1.x == 4 && grid[gr].A1.y == 0) 
+							|| (grid[gr].B1.x == 4 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 4 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 4 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 4 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 4 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 4 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+					if ((grid[gr].A1.x == 6 && grid[gr].A1.y == 0) 
+							|| (grid[gr].B1.x == 6 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 6 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 6 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 6 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 6 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 6 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+					if ((grid[gr].A1.x == 8 && grid[gr].A1.y == 0) 
+							|| (grid[gr].B1.x == 8 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 8 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 8 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 8 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 8 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 8 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+				} else if (var_x == 11 && var_y == 0) {
+					if ((grid[gr].A1.x == 4 && grid[gr].A1.y == 0) 
+							|| (grid[gr].B1.x == 4 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 4 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 4 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 4 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 4 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 4 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+					if ((grid[gr].A1.x == 6 && grid[gr].A1.y == 0) 
+							|| (grid[gr].B1.x == 6 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 6 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 6 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 6 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 6 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 6 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+					if ((grid[gr].A1.x == 8 && grid[gr].A1.y == 0) 
+							|| (grid[gr].B1.x == 8 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 8 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 8 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 8 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 8 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 8 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+					if ((grid[gr].A1.x == 10 && grid[gr].A1.y == 0) 
+							|| (grid[gr].B1.x == 10 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 10 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 10 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 10 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 10 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 10 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
 				}
-			} else if (var_x == 8 && var_y == 0) {
-				if ((grid[gr].A1.x == 4 && grid[gr].A1.y == 0) 
-					|| (grid[gr].B1.x == 4 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 4 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 4 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 4 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 4 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 4 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-				if ((grid[gr].A1.x == 6 && grid[gr].A1.y == 0) 
-					|| (grid[gr].B1.x == 6 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 6 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 6 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 6 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 6 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 6 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-			} else if (var_x == 10 && var_y == 0) {
-				if ((grid[gr].A1.x == 4 && grid[gr].A1.y == 0) 
-					|| (grid[gr].B1.x == 4 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 4 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 4 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 4 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 4 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 4 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-				if ((grid[gr].A1.x == 6 && grid[gr].A1.y == 0) 
-					|| (grid[gr].B1.x == 6 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 6 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 6 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 6 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 6 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 6 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-				if ((grid[gr].A1.x == 8 && grid[gr].A1.y == 0) 
-					|| (grid[gr].B1.x == 8 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 8 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 8 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 8 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 8 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 8 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-			} else if (var_x == 11 && var_y == 0) {
-				if ((grid[gr].A1.x == 4 && grid[gr].A1.y == 0) 
-					|| (grid[gr].B1.x == 4 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 4 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 4 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 4 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 4 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 4 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-				if ((grid[gr].A1.x == 6 && grid[gr].A1.y == 0) 
-					|| (grid[gr].B1.x == 6 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 6 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 6 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 6 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 6 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 6 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-				if ((grid[gr].A1.x == 8 && grid[gr].A1.y == 0) 
-					|| (grid[gr].B1.x == 8 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 8 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 8 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 8 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 8 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 8 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-				if ((grid[gr].A1.x == 10 && grid[gr].A1.y == 0) 
-					|| (grid[gr].B1.x == 10 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 10 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 10 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 10 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 10 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 10 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-			}
 			}
 			break;
 		case 'B':
 			{
-			int var_x = grid[gr].B1.x, var_y = grid[gr].B1.y;
-			if (var_x == 1 && var_y == 0) {
-				if ((grid[gr].A1.x == 2 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 2 && grid[gr].A2.y == 0)
-					|| (grid[gr].B2.x == 2 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 2 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 2 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 2 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 2 && grid[gr].D2.y == 0)) {
-					return 1;
+				int var_x = grid[gr].B1.x, var_y = grid[gr].B1.y;
+				if (var_x == 1 && var_y == 0) {
+					if ((grid[gr].A1.x == 2 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 2 && grid[gr].A2.y == 0)
+							|| (grid[gr].B2.x == 2 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 2 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 2 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 2 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 2 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+					if ((grid[gr].A1.x == 4 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 4 && grid[gr].A2.y == 0)
+							|| (grid[gr].B2.x == 4 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 4 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 4 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 4 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 4 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+				} else if (var_x == 2 && var_y == 0) { //cant be blocked
+					if ((grid[gr].A1.x == 4 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 4 && grid[gr].A2.y == 0)
+							|| (grid[gr].B2.x == 4 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 4 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 4 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 4 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 4 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+				} else if (var_x == 4 && var_y == 0) { //cant be blocked
+					return 0;
+				} else if (var_x == 6 && var_y == 0) { //cant be blocked
+					return 0;
+				} else if (var_x == 8 && var_y == 0) {
+					if ((grid[gr].A1.x == 6 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 6 && grid[gr].A2.y == 0)
+							|| (grid[gr].B2.x == 6 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 6 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 6 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 6 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 6 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+				} else if (var_x == 10 && var_y == 0) {
+					if ((grid[gr].A1.x == 6 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 6 && grid[gr].A2.y == 0)
+							|| (grid[gr].B2.x == 6 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 6 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 6 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 6 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 6 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+					if ((grid[gr].A1.x == 8 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 8 && grid[gr].A2.y == 0)
+							|| (grid[gr].B2.x == 8 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 8 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 8 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 8 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 8 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+				} else if (var_x == 11 && var_y == 0) {
+					if ((grid[gr].A1.x == 6 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 6 && grid[gr].A2.y == 0)
+							|| (grid[gr].B2.x == 6 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 6 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 6 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 6 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 6 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+					if ((grid[gr].A1.x == 8 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 8 && grid[gr].A2.y == 0)
+							|| (grid[gr].B2.x == 8 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 8 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 8 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 8 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 8 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+					if ((grid[gr].A1.x == 10 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 10 && grid[gr].A2.y == 0)
+							|| (grid[gr].B2.x == 10 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 10 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 10 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 10 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 10 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
 				}
-				if ((grid[gr].A1.x == 4 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 4 && grid[gr].A2.y == 0)
-					|| (grid[gr].B2.x == 4 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 4 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 4 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 4 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 4 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-			} else if (var_x == 2 && var_y == 0) { //cant be blocked
-				if ((grid[gr].A1.x == 4 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 4 && grid[gr].A2.y == 0)
-					|| (grid[gr].B2.x == 4 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 4 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 4 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 4 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 4 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-			} else if (var_x == 4 && var_y == 0) { //cant be blocked
-				return 0;
-			} else if (var_x == 6 && var_y == 0) { //cant be blocked
-				return 0;
-			} else if (var_x == 8 && var_y == 0) {
-				if ((grid[gr].A1.x == 6 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 6 && grid[gr].A2.y == 0)
-					|| (grid[gr].B2.x == 6 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 6 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 6 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 6 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 6 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-			} else if (var_x == 10 && var_y == 0) {
-				if ((grid[gr].A1.x == 6 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 6 && grid[gr].A2.y == 0)
-					|| (grid[gr].B2.x == 6 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 6 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 6 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 6 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 6 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-				if ((grid[gr].A1.x == 8 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 8 && grid[gr].A2.y == 0)
-					|| (grid[gr].B2.x == 8 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 8 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 8 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 8 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 8 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-			} else if (var_x == 11 && var_y == 0) {
-				if ((grid[gr].A1.x == 6 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 6 && grid[gr].A2.y == 0)
-					|| (grid[gr].B2.x == 6 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 6 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 6 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 6 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 6 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-				if ((grid[gr].A1.x == 8 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 8 && grid[gr].A2.y == 0)
-					|| (grid[gr].B2.x == 8 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 8 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 8 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 8 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 8 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-				if ((grid[gr].A1.x == 10 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 10 && grid[gr].A2.y == 0)
-					|| (grid[gr].B2.x == 10 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 10 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 10 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 10 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 10 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-			}
 			}
 			break;
 		case 'b':
 			{
-			int var_x = grid[gr].B2.x, var_y = grid[gr].B2.y;
-			if (var_x == 1 && var_y == 0) {
-				if ((grid[gr].A1.x == 2 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 2 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 2 && grid[gr].B1.y == 0)
-					|| (grid[gr].C1.x == 2 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 2 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 2 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 2 && grid[gr].D2.y == 0)) {
-					return 1;
+				int var_x = grid[gr].B2.x, var_y = grid[gr].B2.y;
+				if (var_x == 1 && var_y == 0) {
+					if ((grid[gr].A1.x == 2 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 2 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 2 && grid[gr].B1.y == 0)
+							|| (grid[gr].C1.x == 2 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 2 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 2 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 2 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+					if ((grid[gr].A1.x == 4 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 4 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 4 && grid[gr].B1.y == 0)
+							|| (grid[gr].C1.x == 4 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 4 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 4 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 4 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+				} else if (var_x == 2 && var_y == 0) { //cant be blocked
+					if ((grid[gr].A1.x == 4 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 4 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 4 && grid[gr].B1.y == 0)
+							|| (grid[gr].C1.x == 4 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 4 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 4 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 4 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+				} else if (var_x == 4 && var_y == 0) { //cant be blocked
+					return 0;
+				} else if (var_x == 6 && var_y == 0) { //cant be blocked
+					return 0;
+				} else if (var_x == 8 && var_y == 0) {
+					if ((grid[gr].A1.x == 6 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 6 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 6 && grid[gr].B1.y == 0)
+							|| (grid[gr].C1.x == 6 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 6 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 6 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 6 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+				} else if (var_x == 10 && var_y == 0) {
+					if ((grid[gr].A1.x == 6 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 6 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 6 && grid[gr].B1.y == 0)
+							|| (grid[gr].C1.x == 6 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 6 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 6 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 6 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+					if ((grid[gr].A1.x == 8 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 8 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 8 && grid[gr].B1.y == 0)
+							|| (grid[gr].C1.x == 8 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 8 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 8 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 8 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+				} else if (var_x == 11 && var_y == 0) {
+					if ((grid[gr].A1.x == 6 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 6 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 6 && grid[gr].B1.y == 0)
+							|| (grid[gr].C1.x == 6 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 6 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 6 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 6 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+					if ((grid[gr].A1.x == 8 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 8 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 8 && grid[gr].B1.y == 0)
+							|| (grid[gr].C1.x == 8 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 8 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 8 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 8 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+					if ((grid[gr].A1.x == 10 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 10 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 10 && grid[gr].B1.y == 0)
+							|| (grid[gr].C1.x == 10 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 10 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 10 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 10 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
 				}
-				if ((grid[gr].A1.x == 4 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 4 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 4 && grid[gr].B1.y == 0)
-					|| (grid[gr].C1.x == 4 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 4 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 4 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 4 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-			} else if (var_x == 2 && var_y == 0) { //cant be blocked
-				if ((grid[gr].A1.x == 4 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 4 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 4 && grid[gr].B1.y == 0)
-					|| (grid[gr].C1.x == 4 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 4 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 4 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 4 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-			} else if (var_x == 4 && var_y == 0) { //cant be blocked
-				return 0;
-			} else if (var_x == 6 && var_y == 0) { //cant be blocked
-				return 0;
-			} else if (var_x == 8 && var_y == 0) {
-				if ((grid[gr].A1.x == 6 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 6 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 6 && grid[gr].B1.y == 0)
-					|| (grid[gr].C1.x == 6 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 6 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 6 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 6 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-			} else if (var_x == 10 && var_y == 0) {
-				if ((grid[gr].A1.x == 6 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 6 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 6 && grid[gr].B1.y == 0)
-					|| (grid[gr].C1.x == 6 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 6 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 6 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 6 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-				if ((grid[gr].A1.x == 8 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 8 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 8 && grid[gr].B1.y == 0)
-					|| (grid[gr].C1.x == 8 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 8 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 8 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 8 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-			} else if (var_x == 11 && var_y == 0) {
-				if ((grid[gr].A1.x == 6 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 6 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 6 && grid[gr].B1.y == 0)
-					|| (grid[gr].C1.x == 6 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 6 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 6 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 6 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-				if ((grid[gr].A1.x == 8 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 8 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 8 && grid[gr].B1.y == 0)
-					|| (grid[gr].C1.x == 8 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 8 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 8 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 8 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-				if ((grid[gr].A1.x == 10 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 10 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 10 && grid[gr].B1.y == 0)
-					|| (grid[gr].C1.x == 10 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 10 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 10 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 10 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-			}
 			}
 			break;
 		case 'C':
 			{
-			int var_x = grid[gr].C1.x, var_y = grid[gr].C1.y;
-			if (var_x == 1 && var_y == 0) {
-				if ((grid[gr].A1.x == 2 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 2 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 2 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 2 && grid[gr].B2.y == 0)
-					|| (grid[gr].C2.x == 2 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 2 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 2 && grid[gr].D2.y == 0)) {
-					return 1;
+				int var_x = grid[gr].C1.x, var_y = grid[gr].C1.y;
+				if (var_x == 1 && var_y == 0) {
+					if ((grid[gr].A1.x == 2 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 2 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 2 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 2 && grid[gr].B2.y == 0)
+							|| (grid[gr].C2.x == 2 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 2 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 2 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+					if ((grid[gr].A1.x == 4 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 4 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 4 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 4 && grid[gr].B2.y == 0)
+							|| (grid[gr].C2.x == 4 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 4 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 4 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+					if ((grid[gr].A1.x == 6 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 6 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 6 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 6 && grid[gr].B2.y == 0)
+							|| (grid[gr].C2.x == 6 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 6 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 6 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+				} else if (var_x == 2 && var_y == 0) { //cant be blocked
+					if ((grid[gr].A1.x == 4 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 4 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 4 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 4 && grid[gr].B2.y == 0)
+							|| (grid[gr].C2.x == 4 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 4 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 4 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+					if ((grid[gr].A1.x == 6 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 6 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 6 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 6 && grid[gr].B2.y == 0)
+							|| (grid[gr].C2.x == 6 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 6 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 6 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+				} else if (var_x == 4 && var_y == 0) { 
+					if ((grid[gr].A1.x == 6 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 6 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 6 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 6 && grid[gr].B2.y == 0)
+							|| (grid[gr].C2.x == 6 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 6 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 6 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+				} else if (var_x == 6 && var_y == 0) {
+					return 0;
+				} else if (var_x == 8 && var_y == 0) {
+					return 0;
+				} else if (var_x == 10 && var_y == 0) {
+					if ((grid[gr].A1.x == 8 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 8 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 8 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 8 && grid[gr].B2.y == 0)
+							|| (grid[gr].C2.x == 8 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 8 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 8 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+				} else if (var_x == 11 && var_y == 0) {
+					if ((grid[gr].A1.x == 8 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 8 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 8 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 8 && grid[gr].B2.y == 0)
+							|| (grid[gr].C2.x == 8 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 8 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 8 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+					if ((grid[gr].A1.x == 10 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 10 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 10 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 10 && grid[gr].B2.y == 0)
+							|| (grid[gr].C2.x == 10 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 10 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 10 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
 				}
-				if ((grid[gr].A1.x == 4 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 4 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 4 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 4 && grid[gr].B2.y == 0)
-					|| (grid[gr].C2.x == 4 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 4 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 4 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-				if ((grid[gr].A1.x == 6 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 6 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 6 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 6 && grid[gr].B2.y == 0)
-					|| (grid[gr].C2.x == 6 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 6 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 6 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-			} else if (var_x == 2 && var_y == 0) { //cant be blocked
-				if ((grid[gr].A1.x == 4 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 4 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 4 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 4 && grid[gr].B2.y == 0)
-					|| (grid[gr].C2.x == 4 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 4 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 4 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-				if ((grid[gr].A1.x == 6 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 6 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 6 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 6 && grid[gr].B2.y == 0)
-					|| (grid[gr].C2.x == 6 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 6 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 6 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-			} else if (var_x == 4 && var_y == 0) { 
-				if ((grid[gr].A1.x == 6 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 6 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 6 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 6 && grid[gr].B2.y == 0)
-					|| (grid[gr].C2.x == 6 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 6 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 6 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-			} else if (var_x == 6 && var_y == 0) {
-				return 0;
-			} else if (var_x == 8 && var_y == 0) {
-				return 0;
-			} else if (var_x == 10 && var_y == 0) {
-				if ((grid[gr].A1.x == 8 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 8 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 8 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 8 && grid[gr].B2.y == 0)
-					|| (grid[gr].C2.x == 8 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 8 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 8 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-			} else if (var_x == 11 && var_y == 0) {
-				if ((grid[gr].A1.x == 8 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 8 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 8 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 8 && grid[gr].B2.y == 0)
-					|| (grid[gr].C2.x == 8 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 8 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 8 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-				if ((grid[gr].A1.x == 10 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 10 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 10 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 10 && grid[gr].B2.y == 0)
-					|| (grid[gr].C2.x == 10 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 10 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 10 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-			}
 			}
 			break;
 		case 'c':
 			{
-			int var_x = grid[gr].C2.x, var_y = grid[gr].C2.y;
-			if (var_x == 1 && var_y == 0) {
-				if ((grid[gr].A1.x == 2 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 2 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 2 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 2 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 2 && grid[gr].C1.y == 0)
-					|| (grid[gr].D1.x == 2 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 2 && grid[gr].D2.y == 0)) {
-					return 1;
+				int var_x = grid[gr].C2.x, var_y = grid[gr].C2.y;
+				if (var_x == 1 && var_y == 0) {
+					if ((grid[gr].A1.x == 2 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 2 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 2 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 2 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 2 && grid[gr].C1.y == 0)
+							|| (grid[gr].D1.x == 2 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 2 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+					if ((grid[gr].A1.x == 4 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 4 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 4 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 4 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 4 && grid[gr].C1.y == 0)
+							|| (grid[gr].D1.x == 4 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 4 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+					if ((grid[gr].A1.x == 6 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 6 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 6 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 6 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 6 && grid[gr].C1.y == 0)
+							|| (grid[gr].D1.x == 6 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 6 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+				} else if (var_x == 2 && var_y == 0) { //cant be blocked
+					if ((grid[gr].A1.x == 4 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 4 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 4 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 4 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 4 && grid[gr].C1.y == 0)
+							|| (grid[gr].D1.x == 4 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 4 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+					if ((grid[gr].A1.x == 6 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 6 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 6 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 6 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 6 && grid[gr].C1.y == 0)
+							|| (grid[gr].D1.x == 6 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 6 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+				} else if (var_x == 4 && var_y == 0) { 
+					if ((grid[gr].A1.x == 6 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 6 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 6 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 6 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 6 && grid[gr].C1.y == 0)
+							|| (grid[gr].D1.x == 6 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 6 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+				} else if (var_x == 6 && var_y == 0) {
+					return 0;
+				} else if (var_x == 8 && var_y == 0) {
+					return 0;
+				} else if (var_x == 10 && var_y == 0) {
+					if ((grid[gr].A1.x == 8 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 8 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 8 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 8 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 8 && grid[gr].C1.y == 0)
+							|| (grid[gr].D1.x == 8 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 8 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+				} else if (var_x == 11 && var_y == 0) {
+					if ((grid[gr].A1.x == 8 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 8 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 8 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 8 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 8 && grid[gr].C1.y == 0)
+							|| (grid[gr].D1.x == 8 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 8 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+					if ((grid[gr].A1.x == 10 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 10 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 10 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 10 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 10 && grid[gr].C1.y == 0)
+							|| (grid[gr].D1.x == 10 && grid[gr].D1.y == 0)
+							|| (grid[gr].D2.x == 10 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
 				}
-				if ((grid[gr].A1.x == 4 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 4 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 4 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 4 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 4 && grid[gr].C1.y == 0)
-					|| (grid[gr].D1.x == 4 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 4 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-				if ((grid[gr].A1.x == 6 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 6 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 6 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 6 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 6 && grid[gr].C1.y == 0)
-					|| (grid[gr].D1.x == 6 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 6 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-			} else if (var_x == 2 && var_y == 0) { //cant be blocked
-				if ((grid[gr].A1.x == 4 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 4 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 4 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 4 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 4 && grid[gr].C1.y == 0)
-					|| (grid[gr].D1.x == 4 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 4 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-				if ((grid[gr].A1.x == 6 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 6 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 6 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 6 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 6 && grid[gr].C1.y == 0)
-					|| (grid[gr].D1.x == 6 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 6 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-			} else if (var_x == 4 && var_y == 0) { 
-				if ((grid[gr].A1.x == 6 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 6 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 6 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 6 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 6 && grid[gr].C1.y == 0)
-					|| (grid[gr].D1.x == 6 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 6 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-			} else if (var_x == 6 && var_y == 0) {
-				return 0;
-			} else if (var_x == 8 && var_y == 0) {
-				return 0;
-			} else if (var_x == 10 && var_y == 0) {
-				if ((grid[gr].A1.x == 8 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 8 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 8 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 8 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 8 && grid[gr].C1.y == 0)
-					|| (grid[gr].D1.x == 8 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 8 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-			} else if (var_x == 11 && var_y == 0) {
-				if ((grid[gr].A1.x == 8 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 8 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 8 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 8 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 8 && grid[gr].C1.y == 0)
-					|| (grid[gr].D1.x == 8 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 8 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-				if ((grid[gr].A1.x == 10 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 10 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 10 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 10 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 10 && grid[gr].C1.y == 0)
-					|| (grid[gr].D1.x == 10 && grid[gr].D1.y == 0)
-					|| (grid[gr].D2.x == 10 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-			}
 			}
 			break;
 		case 'D':
 			{
-			int var_x = grid[gr].D1.x, var_y = grid[gr].D1.y;
-			if (var_x == 1 && var_y == 0) {
-				if ((grid[gr].A1.x == 2 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 2 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 2 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 2 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 2 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 2 && grid[gr].C2.y == 0)
-					|| (grid[gr].D2.x == 2 && grid[gr].D2.y == 0)) {
-					return 1;
+				int var_x = grid[gr].D1.x, var_y = grid[gr].D1.y;
+				if (var_x == 1 && var_y == 0) {
+					if ((grid[gr].A1.x == 2 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 2 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 2 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 2 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 2 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 2 && grid[gr].C2.y == 0)
+							|| (grid[gr].D2.x == 2 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+					if ((grid[gr].A1.x == 4 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 4 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 4 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 4 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 4 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 4 && grid[gr].C2.y == 0)
+							|| (grid[gr].D2.x == 4 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+					if ((grid[gr].A1.x == 6 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 6 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 6 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 6 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 6 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 6 && grid[gr].C2.y == 0)
+							|| (grid[gr].D2.x == 6 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+					if ((grid[gr].A1.x == 8 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 8 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 8 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 8 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 8 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 8 && grid[gr].C2.y == 0)
+							|| (grid[gr].D2.x == 8 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+				} else if (var_x == 2 && var_y == 0) { //cant be blocked
+					if ((grid[gr].A1.x == 4 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 4 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 4 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 4 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 4 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 4 && grid[gr].C2.y == 0)
+							|| (grid[gr].D2.x == 4 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+					if ((grid[gr].A1.x == 6 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 6 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 6 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 6 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 6 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 6 && grid[gr].C2.y == 0)
+							|| (grid[gr].D2.x == 6 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+					if ((grid[gr].A1.x == 8 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 8 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 8 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 8 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 8 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 8 && grid[gr].C2.y == 0)
+							|| (grid[gr].D2.x == 8 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+				} else if (var_x == 4 && var_y == 0) { 
+					if ((grid[gr].A1.x == 6 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 6 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 6 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 6 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 6 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 6 && grid[gr].C2.y == 0)
+							|| (grid[gr].D2.x == 6 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+					if ((grid[gr].A1.x == 8 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 8 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 8 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 8 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 8 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 8 && grid[gr].C2.y == 0)
+							|| (grid[gr].D2.x == 8 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+				} else if (var_x == 6 && var_y == 0) {
+					if ((grid[gr].A1.x == 8 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 8 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 8 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 8 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 8 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 8 && grid[gr].C2.y == 0)
+							|| (grid[gr].D2.x == 8 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
+				} else if (var_x == 8 && var_y == 0) {
+					return 0;
+				} else if (var_x == 10 && var_y == 0) {
+					return 0;
+				} else if (var_x == 11 && var_y == 0) {
+					if ((grid[gr].A1.x == 10 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 10 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 10 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 10 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 10 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 10 && grid[gr].C2.y == 0)
+							|| (grid[gr].D2.x == 10 && grid[gr].D2.y == 0)) {
+						return 1;
+					}
 				}
-				if ((grid[gr].A1.x == 4 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 4 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 4 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 4 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 4 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 4 && grid[gr].C2.y == 0)
-					|| (grid[gr].D2.x == 4 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-				if ((grid[gr].A1.x == 6 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 6 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 6 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 6 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 6 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 6 && grid[gr].C2.y == 0)
-					|| (grid[gr].D2.x == 6 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-				if ((grid[gr].A1.x == 8 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 8 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 8 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 8 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 8 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 8 && grid[gr].C2.y == 0)
-					|| (grid[gr].D2.x == 8 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-			} else if (var_x == 2 && var_y == 0) { //cant be blocked
-				if ((grid[gr].A1.x == 4 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 4 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 4 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 4 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 4 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 4 && grid[gr].C2.y == 0)
-					|| (grid[gr].D2.x == 4 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-				if ((grid[gr].A1.x == 6 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 6 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 6 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 6 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 6 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 6 && grid[gr].C2.y == 0)
-					|| (grid[gr].D2.x == 6 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-				if ((grid[gr].A1.x == 8 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 8 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 8 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 8 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 8 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 8 && grid[gr].C2.y == 0)
-					|| (grid[gr].D2.x == 8 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-			} else if (var_x == 4 && var_y == 0) { 
-				if ((grid[gr].A1.x == 6 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 6 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 6 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 6 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 6 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 6 && grid[gr].C2.y == 0)
-					|| (grid[gr].D2.x == 6 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-				if ((grid[gr].A1.x == 8 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 8 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 8 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 8 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 8 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 8 && grid[gr].C2.y == 0)
-					|| (grid[gr].D2.x == 8 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-			} else if (var_x == 6 && var_y == 0) {
-				if ((grid[gr].A1.x == 8 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 8 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 8 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 8 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 8 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 8 && grid[gr].C2.y == 0)
-					|| (grid[gr].D2.x == 8 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-			} else if (var_x == 8 && var_y == 0) {
-				return 0;
-			} else if (var_x == 10 && var_y == 0) {
-				return 0;
-			} else if (var_x == 11 && var_y == 0) {
-				if ((grid[gr].A1.x == 10 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 10 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 10 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 10 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 10 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 10 && grid[gr].C2.y == 0)
-					|| (grid[gr].D2.x == 10 && grid[gr].D2.y == 0)) {
-					return 1;
-				}
-			}
 			}
 			break;
 		case 'd':
 			{
-			int var_x = grid[gr].D2.x, var_y = grid[gr].D2.y;
-			if (var_x == 1 && var_y == 0) {
-				if ((grid[gr].A1.x == 2 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 2 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 2 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 2 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 2 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 2 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 2 && grid[gr].D1.y == 0)) {
-					return 1;
+				int var_x = grid[gr].D2.x, var_y = grid[gr].D2.y;
+				if (var_x == 1 && var_y == 0) {
+					if ((grid[gr].A1.x == 2 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 2 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 2 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 2 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 2 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 2 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 2 && grid[gr].D1.y == 0)) {
+						return 1;
+					}
+					if ((grid[gr].A1.x == 4 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 4 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 4 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 4 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 4 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 4 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 4 && grid[gr].D1.y == 0)) {
+						return 1;
+					}
+					if ((grid[gr].A1.x == 6 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 6 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 6 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 6 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 6 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 6 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 6 && grid[gr].D1.y == 0)) {
+						return 1;
+					}
+					if ((grid[gr].A1.x == 8 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 8 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 8 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 8 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 8 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 8 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 8 && grid[gr].D1.y == 0)) {
+						return 1;
+					}
+				} else if (var_x == 2 && var_y == 0) { //cant be blocked
+					if ((grid[gr].A1.x == 4 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 4 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 4 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 4 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 4 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 4 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 4 && grid[gr].D1.y == 0)) {
+						return 1;
+					}
+					if ((grid[gr].A1.x == 6 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 6 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 6 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 6 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 6 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 6 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 6 && grid[gr].D1.y == 0)) {
+						return 1;
+					}
+					if ((grid[gr].A1.x == 8 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 8 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 8 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 8 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 8 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 8 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 8 && grid[gr].D1.y == 0)) {
+						return 1;
+					}
+				} else if (var_x == 4 && var_y == 0) { 
+					if ((grid[gr].A1.x == 6 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 6 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 6 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 6 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 6 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 6 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 6 && grid[gr].D1.y == 0)) {
+						return 1;
+					}
+					if ((grid[gr].A1.x == 8 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 8 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 8 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 8 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 8 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 8 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 8 && grid[gr].D1.y == 0)) {
+						return 1;
+					}
+				} else if (var_x == 6 && var_y == 0) {
+					if ((grid[gr].A1.x == 8 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 8 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 8 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 8 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 8 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 8 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 8 && grid[gr].D1.y == 0)) {
+						return 1;
+					}
+				} else if (var_x == 8 && var_y == 0) {
+					return 0;
+				} else if (var_x == 10 && var_y == 0) {
+					return 0;
+				} else if (var_x == 11 && var_y == 0) {
+					if ((grid[gr].A1.x == 10 && grid[gr].A1.y == 0) 
+							|| (grid[gr].A2.x == 10 && grid[gr].A2.y == 0)
+							|| (grid[gr].B1.x == 10 && grid[gr].B1.y == 0)
+							|| (grid[gr].B2.x == 10 && grid[gr].B2.y == 0)
+							|| (grid[gr].C1.x == 10 && grid[gr].C1.y == 0)
+							|| (grid[gr].C2.x == 10 && grid[gr].C2.y == 0)
+							|| (grid[gr].D1.x == 10 && grid[gr].D1.y == 0)) {
+						return 1;
+					}
 				}
-				if ((grid[gr].A1.x == 4 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 4 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 4 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 4 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 4 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 4 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 4 && grid[gr].D1.y == 0)) {
-					return 1;
-				}
-				if ((grid[gr].A1.x == 6 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 6 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 6 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 6 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 6 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 6 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 6 && grid[gr].D1.y == 0)) {
-					return 1;
-				}
-				if ((grid[gr].A1.x == 8 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 8 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 8 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 8 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 8 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 8 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 8 && grid[gr].D1.y == 0)) {
-					return 1;
-				}
-			} else if (var_x == 2 && var_y == 0) { //cant be blocked
-				if ((grid[gr].A1.x == 4 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 4 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 4 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 4 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 4 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 4 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 4 && grid[gr].D1.y == 0)) {
-					return 1;
-				}
-				if ((grid[gr].A1.x == 6 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 6 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 6 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 6 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 6 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 6 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 6 && grid[gr].D1.y == 0)) {
-					return 1;
-				}
-				if ((grid[gr].A1.x == 8 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 8 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 8 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 8 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 8 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 8 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 8 && grid[gr].D1.y == 0)) {
-					return 1;
-				}
-			} else if (var_x == 4 && var_y == 0) { 
-				if ((grid[gr].A1.x == 6 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 6 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 6 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 6 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 6 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 6 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 6 && grid[gr].D1.y == 0)) {
-					return 1;
-				}
-				if ((grid[gr].A1.x == 8 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 8 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 8 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 8 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 8 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 8 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 8 && grid[gr].D1.y == 0)) {
-					return 1;
-				}
-			} else if (var_x == 6 && var_y == 0) {
-				if ((grid[gr].A1.x == 8 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 8 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 8 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 8 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 8 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 8 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 8 && grid[gr].D1.y == 0)) {
-					return 1;
-				}
-			} else if (var_x == 8 && var_y == 0) {
-				return 0;
-			} else if (var_x == 10 && var_y == 0) {
-				return 0;
-			} else if (var_x == 11 && var_y == 0) {
-				if ((grid[gr].A1.x == 10 && grid[gr].A1.y == 0) 
-					|| (grid[gr].A2.x == 10 && grid[gr].A2.y == 0)
-					|| (grid[gr].B1.x == 10 && grid[gr].B1.y == 0)
-					|| (grid[gr].B2.x == 10 && grid[gr].B2.y == 0)
-					|| (grid[gr].C1.x == 10 && grid[gr].C1.y == 0)
-					|| (grid[gr].C2.x == 10 && grid[gr].C2.y == 0)
-					|| (grid[gr].D1.x == 10 && grid[gr].D1.y == 0)) {
-					return 1;
-				}
-			}
 			}
 			break;
-		}
+	}
 	return 0;
 }
-	
+
 
 int inHome(int gr, char wat) {
 	switch(wat) {
 		case 'A': if ((grid[gr].A1.x == aend[0].x && grid[gr].A1.y == aend[0].y) || ((grid[gr].A1.x == aend[1].x && grid[gr].A1.y == aend[1].y) 
-				&& (grid[gr].A2.x == aend[0].x && grid[gr].A2.y == aend[0].y)) ) {return 1;}
-			break;
+						  && (grid[gr].A2.x == aend[0].x && grid[gr].A2.y == aend[0].y)) ) {return 1;}
+				  break;
 		case 'a': if ((grid[gr].A2.x == aend[0].x && grid[gr].A2.y == aend[0].y) || ((grid[gr].A2.x == aend[1].x && grid[gr].A2.y == aend[1].y)
-				&& (grid[gr].A1.x == aend[0].x && grid[gr].A1.y == aend[0].y)) ) {return 1;}
-			break;
+						  && (grid[gr].A1.x == aend[0].x && grid[gr].A1.y == aend[0].y)) ) {return 1;}
+				  break;
 		case 'B': if ((grid[gr].B1.x == bend[0].x && grid[gr].B1.y == bend[0].y) || ((grid[gr].B1.x == bend[1].x && grid[gr].B1.y == bend[1].y)
-				&& (grid[gr].B2.x == bend[0].x && grid[gr].B2.y == bend[0].y)) ) {return 1;}
-			break;
+						  && (grid[gr].B2.x == bend[0].x && grid[gr].B2.y == bend[0].y)) ) {return 1;}
+				  break;
 		case 'b': if ((grid[gr].B2.x == bend[0].x && grid[gr].B2.y == bend[0].y) || ((grid[gr].B2.x == bend[1].x && grid[gr].B2.y == bend[1].y)
-				&& (grid[gr].B1.x == bend[0].x && grid[gr].B1.y == bend[0].y)) ) {return 1;}
-			break;
-		case 'C': if ((grid[gr].C1.x == cend[0].x && grid[gr].C1.y == cend[0].y) || ((grid[gr].C1.x == cend[1].x && grid[gr].C1.y == cend[1].y)
-				&& (grid[gr].C2.x == cend[0].x && grid[gr].C2.y == cend[0].y)) ) {return 1;}
-			break;
-		case 'c': if ((grid[gr].C2.x == cend[0].x && grid[gr].C2.y == cend[0].y) || ((grid[gr].C2.x == cend[1].x && grid[gr].C2.y == cend[1].y)
-				&& (grid[gr].C1.x == cend[0].x && grid[gr].C1.y == cend[0].y)) ) {return 1;}
-			break;
+						  && (grid[gr].B1.x == bend[0].x && grid[gr].B1.y == bend[0].y)) ) {return 1;}
+				  break;
+		case 'C': if ((grid[gr].C1.x == cendC[0].x && grid[gr].C1.y == cendC[0].y) || ((grid[gr].C1.x == cendC[1].x && grid[gr].C1.y == cendC[1].y)
+						  && (grid[gr].C2.x == cendC[0].x && grid[gr].C2.y == cendC[0].y)) ) {return 1;}
+				  break;
+		case 'c': if ((grid[gr].C2.x == cendC[0].x && grid[gr].C2.y == cendC[0].y) || ((grid[gr].C2.x == cendC[1].x && grid[gr].C2.y == cendC[1].y)
+						  && (grid[gr].C1.x == cendC[0].x && grid[gr].C1.y == cendC[0].y)) ) {return 1;}
+				  break;
 		case 'D': if ((grid[gr].D1.x == dend[0].x && grid[gr].D1.y == dend[0].y) || ((grid[gr].D1.x == dend[1].x && grid[gr].D1.y == dend[1].y)
-				&& (grid[gr].D2.x == dend[0].x && grid[gr].D2.y == dend[0].y)) ) {return 1;}
-			break;
+						  && (grid[gr].D2.x == dend[0].x && grid[gr].D2.y == dend[0].y)) ) {return 1;}
+				  break;
 		case 'd': if ((grid[gr].D2.x == dend[0].x && grid[gr].D2.y == dend[0].y) || ((grid[gr].D2.x == dend[1].x && grid[gr].D2.y == dend[1].y)
-				&& (grid[gr].D1.x == dend[0].x && grid[gr].D1.y == dend[0].y)) ) {return 1;}
-			break;
+						  && (grid[gr].D1.x == dend[0].x && grid[gr].D1.y == dend[0].y)) ) {return 1;}
+				  break;
 	}
 	return 0;
 }
@@ -2051,21 +2166,21 @@ int inHomeOther(int gr, char wat) {
 int inHomeTop(int gr, char wat) {
 	switch(wat) {
 		case 'A': if (grid[gr].A1.x == aend[1].x && grid[gr].A1.y == aend[1].y) {return 1;}
-			break;
+				  break;
 		case 'a': if (grid[gr].A2.x == aend[1].x && grid[gr].A2.y == aend[1].y) {return 1;}
-			break;
+				  break;
 		case 'B': if (grid[gr].B1.x == bend[1].x && grid[gr].B1.y == bend[1].y) {return 1;}
-			break;
+				  break;
 		case 'b': if (grid[gr].B2.x == bend[1].x && grid[gr].B2.y == bend[1].y) {return 1;}
-			break;
-		case 'C': if (grid[gr].C1.x == cend[1].x && grid[gr].C1.y == cend[1].y) {return 1;}
-			break;
-		case 'c': if (grid[gr].C2.x == cend[1].x && grid[gr].C2.y == cend[1].y) {return 1;}
-			break;
+				  break;
+		case 'C': if (grid[gr].C1.x == cendC[1].x && grid[gr].C1.y == cendC[1].y) {return 1;}
+				  break;
+		case 'c': if (grid[gr].C2.x == cendC[1].x && grid[gr].C2.y == cendC[1].y) {return 1;}
+				  break;
 		case 'D': if (grid[gr].D1.x == dend[1].x && grid[gr].D1.y == dend[1].y) {return 1;}
-			break;
+				  break;
 		case 'd': if (grid[gr].D2.x == dend[1].x && grid[gr].D2.y == dend[1].y) {return 1;}
-			break;
+				  break;
 	}
 	return 0;
 }
@@ -2096,14 +2211,14 @@ int blankTop(int gr, char wat) {
 			break;
 		case 'C':
 		case 'c':
-			if (grid[gr].A1.x == cend[1].x && grid[gr].A1.y == cend[1].y) {return 0;}
-			if (grid[gr].A2.x == cend[1].x && grid[gr].A2.y == cend[1].y) {return 0;}
-			if (grid[gr].B1.x == cend[1].x && grid[gr].B1.y == cend[1].y) {return 0;}
-			if (grid[gr].B2.x == cend[1].x && grid[gr].B2.y == cend[1].y) {return 0;}
-			if (grid[gr].C1.x == cend[1].x && grid[gr].C1.y == cend[1].y) {return 0;}
-			if (grid[gr].C2.x == cend[1].x && grid[gr].C2.y == cend[1].y) {return 0;}
-			if (grid[gr].D1.x == cend[1].x && grid[gr].D1.y == cend[1].y) {return 0;}
-			if (grid[gr].D2.x == cend[1].x && grid[gr].D2.y == cend[1].y) {return 0;}
+			if (grid[gr].A1.x == cendC[1].x && grid[gr].A1.y == cendC[1].y) {return 0;}
+			if (grid[gr].A2.x == cendC[1].x && grid[gr].A2.y == cendC[1].y) {return 0;}
+			if (grid[gr].B1.x == cendC[1].x && grid[gr].B1.y == cendC[1].y) {return 0;}
+			if (grid[gr].B2.x == cendC[1].x && grid[gr].B2.y == cendC[1].y) {return 0;}
+			if (grid[gr].C1.x == cendC[1].x && grid[gr].C1.y == cendC[1].y) {return 0;}
+			if (grid[gr].C2.x == cendC[1].x && grid[gr].C2.y == cendC[1].y) {return 0;}
+			if (grid[gr].D1.x == cendC[1].x && grid[gr].D1.y == cendC[1].y) {return 0;}
+			if (grid[gr].D2.x == cendC[1].x && grid[gr].D2.y == cendC[1].y) {return 0;}
 			break;
 		case 'D':
 		case 'd':
@@ -2145,14 +2260,14 @@ int blankBottom(int gr, char wat) {
 			break;
 		case 'C':
 		case 'c':
-			if (grid[gr].A1.x == cend[0].x && grid[gr].A1.y == cend[0].y) {return 0;}
-			if (grid[gr].A2.x == cend[0].x && grid[gr].A2.y == cend[0].y) {return 0;}
-			if (grid[gr].B1.x == cend[0].x && grid[gr].B1.y == cend[0].y) {return 0;}
-			if (grid[gr].B2.x == cend[0].x && grid[gr].B2.y == cend[0].y) {return 0;}
-			if (grid[gr].C1.x == cend[0].x && grid[gr].C1.y == cend[0].y) {return 0;}
-			if (grid[gr].C2.x == cend[0].x && grid[gr].C2.y == cend[0].y) {return 0;}
-			if (grid[gr].D1.x == cend[0].x && grid[gr].D1.y == cend[0].y) {return 0;}
-			if (grid[gr].D2.x == cend[0].x && grid[gr].D2.y == cend[0].y) {return 0;}
+			if (grid[gr].A1.x == cendC[0].x && grid[gr].A1.y == cendC[0].y) {return 0;}
+			if (grid[gr].A2.x == cendC[0].x && grid[gr].A2.y == cendC[0].y) {return 0;}
+			if (grid[gr].B1.x == cendC[0].x && grid[gr].B1.y == cendC[0].y) {return 0;}
+			if (grid[gr].B2.x == cendC[0].x && grid[gr].B2.y == cendC[0].y) {return 0;}
+			if (grid[gr].C1.x == cendC[0].x && grid[gr].C1.y == cendC[0].y) {return 0;}
+			if (grid[gr].C2.x == cendC[0].x && grid[gr].C2.y == cendC[0].y) {return 0;}
+			if (grid[gr].D1.x == cendC[0].x && grid[gr].D1.y == cendC[0].y) {return 0;}
+			if (grid[gr].D2.x == cendC[0].x && grid[gr].D2.y == cendC[0].y) {return 0;}
 			break;
 		case 'D':
 		case 'd':
@@ -2171,21 +2286,21 @@ int blankBottom(int gr, char wat) {
 int inHomeBottom(int gr, char wat) {
 	switch(wat) {
 		case 'A': if (grid[gr].A1.x == aend[0].x && grid[gr].A1.y == aend[0].y) {return 1;}
-			break;
+				  break;
 		case 'a': if (grid[gr].A2.x == aend[0].x && grid[gr].A2.y == aend[0].y) {return 1;}
-			break;
+				  break;
 		case 'B': if (grid[gr].B1.x == bend[0].x && grid[gr].B1.y == bend[0].y) {return 1;}
-			break;
+				  break;
 		case 'b': if (grid[gr].B2.x == bend[0].x && grid[gr].B2.y == bend[0].y) {return 1;}
-			break;
-		case 'C': if (grid[gr].C1.x == cend[0].x && grid[gr].C1.y == cend[0].y) {return 1;}
-			break;
-		case 'c': if (grid[gr].C2.x == cend[0].x && grid[gr].C2.y == cend[0].y) {return 1;}
-			break;
+				  break;
+		case 'C': if (grid[gr].C1.x == cendC[0].x && grid[gr].C1.y == cendC[0].y) {return 1;}
+				  break;
+		case 'c': if (grid[gr].C2.x == cendC[0].x && grid[gr].C2.y == cendC[0].y) {return 1;}
+				  break;
 		case 'D': if (grid[gr].D1.x == dend[0].x && grid[gr].D1.y == dend[0].y) {return 1;}
-			break;
+				  break;
 		case 'd': if (grid[gr].D2.x == dend[0].x && grid[gr].D2.y == dend[0].y) {return 1;}
-			break;
+				  break;
 	}
 	return 0;
 }
@@ -2248,10 +2363,10 @@ int endgame(int gnum, int abcd) {
 		}
 		return found;
 	} else if (abcd == 2) {
-		int size = (int)sizeof(cend)/(int)sizeof(struct pos_s);
+		int size = (int)sizeof(cendC)/(int)sizeof(struct pos_s);
 		int found = 0;
 		for (int i = 0; i < size; i++) {
-			if ((grid[gnum].C1.x == cend[i].x && grid[gnum].C1.y == cend[i].y) || (grid[gnum].C2.x == cend[i].x  && grid[gnum].C2.y == cend[i].y)) {
+			if ((grid[gnum].C1.x == cendC[i].x && grid[gnum].C1.y == cendC[i].y) || (grid[gnum].C2.x == cendC[i].x  && grid[gnum].C2.y == cendC[i].y)) {
 				found = 1;
 			} else {
 				found = 0;
@@ -2272,6 +2387,6 @@ int endgame(int gnum, int abcd) {
 		}
 		return found;
 	}
-	
+
 	return 0;
 }
