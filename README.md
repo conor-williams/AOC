@@ -7,17 +7,16 @@
 		-- 2016 Day 11
 		-- 2019 Day 18
 		-- 2022 Day 22
-	o all years days 1->10 working well, except:
+	o all years days 1--10 working well, except:
 		-- 2017 Day7.2
 		-- 2018 Day 7 1&2
- 	
 	</pre>
- <hr>
+<hr>
 <br>
 	<hr>
  	<h2>Update (08/01/25):</h2>
   	<pre>
-	o all years days 1->10 working well, (except 2017 Day7.2 and 2018 Day 7 1&2)
+	o all years days 1--10 working well, (except 2017 Day7.2 and 2018 Day 7 1&2)
  	o now looking at all day1's 1->25 for every year
   	o part 2's which were broken next
    	o part 2's unfinished after that 
