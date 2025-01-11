@@ -1,6 +1,5 @@
 <p><b>Notes: <i>c.w.</i></b></p>
-<hr>
-<br>
+
 	<hr>
  	<h2>Update (11/01/25):</h2>
   	<pre>
