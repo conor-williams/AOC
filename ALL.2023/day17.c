@@ -91,17 +91,17 @@ int main(int argc, char **argv)
 	printf("end: %c\n", grid[ey][ex]); getchar();
 	printf("start: %c\n", grid[sy][sx]); getchar();
 
-	int minmin = 999999999;
+	int minmin = lenx*leny*9;
 	{
 		minPath = leny*lenx*9;
 		memset(already, 0, sizeof(already));
-		next(sx, sy, ex, ey, - (grid[sy][sx] -48) , 1, 1);
+		next(sx, sy, ex, ey, - (grid[sy][sx] -48) , 1, 0);
 		printf("gone east minPath %d\n", minPath);
 		if (minPath < minmin) {minmin = minPath;}
 
 		//minPath = lenx*leny*9; 
 		memset(already, 0, sizeof(already));
-		next(sx, sy, ex, ey, - (grid[sy][sx] -48) , 2, 1);
+		next(sx, sy, ex, ey, - (grid[sy][sx] -48) , 2, 0);
 		printf("**gone south minPath: %d\n", minPath);
 		if (minPath < minmin) {minmin = minPath;}
 	}
