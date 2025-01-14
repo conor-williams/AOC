@@ -5,7 +5,7 @@
 	o all day 1's for every year working well, except:
 		-- 2016 Day 11
 		-- 2019 Day 18
-		-- 2022 Day 22
+		-- <s>2022 Day 22</s>
 	o all years days 1--10 working well, except:
 		-- 2017 Day 7.2
 		-- <s>2018 Day 7 1&2</s>
