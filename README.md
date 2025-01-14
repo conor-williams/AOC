@@ -1,5 +1,6 @@
-<p><b>Notes: <i>c.w.</i></b>
-<br><h3>Update (11-01-25):</h3><br>
+<h3>Notes: c.w.</h3>
+<br>
+<h3>Update (11-01-25):</h3><br>
    <pre>
 	o all day 1's for every year working well, except:
 		-- 2016 Day 11
@@ -7,7 +8,7 @@
 		-- 2022 Day 22
 	o all years days 1--10 working well, except:
 		-- 2017 Day 7.2
-		-- 2018 Day 7 <s>1</s>&2
+		-- <s>2018 Day 7 1&2</s>
 	</pre>
 <hr>
 <br>
