@@ -72,7 +72,7 @@ int main(int argc, char **argv)
 	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
 	a = fopen(argv[1], "r"); if (a == NULL) {printf("BAD file %s\n", argv[1]); exit(0);}
-	printf("20YY Day 17 Part 1\n"); fflush(stdout);
+	printf("2023 Day 17 Part 1 alternative\n"); fflush(stdout);
 
 	fflush(stdout); int fd = dup(1); close(1);
 	char line1[LINE];

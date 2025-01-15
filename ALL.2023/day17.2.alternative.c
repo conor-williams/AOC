@@ -59,7 +59,7 @@ int main(int argc, char **argv)
 	signal(SIGQUIT, &sigfunc);
 	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 	a = fopen(argv[1], "r"); if (a == NULL) {printf("BAD file %s\n", argv[1]); exit(0);}
-	printf("2024 Day 17 Part 2\n"); fflush(stdout);
+	printf("2023 Day 17 Part 2 alernative\n"); fflush(stdout);
 
 	fflush(stdout); int fd = dup(1); close(1);
 
