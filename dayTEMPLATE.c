@@ -28,7 +28,7 @@ struct hash_function
 {
 size_t operator()(const tuple<int , int , int, int>&x) const
 {
-unsigned int hash = get<0>(x); hash *= 37; hash += get<1>(x); hash *= 27; hash += get<2>(x); hash *= 27; hash += get<3>(x); return hash;
+unsigned int hash = get<0>(x); hash *= 37; hash += get<1>(x); hash *= 37; hash += get<2>(x); hash *= 37; hash += get<3>(x); return hash;
 }
 };
 
