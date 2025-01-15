@@ -88,6 +88,8 @@ while(1) {
 }
 fclose(a);
 
+	printf("not working -- broken\n");
+	exit(0);
 	for (int y = 0; y < leny; y++) {
 		for (int x = 0; x < lenx; x++) {
 			if (grid[y][x] == '@') {
