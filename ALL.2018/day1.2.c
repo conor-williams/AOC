@@ -17,6 +17,7 @@ int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s", argv[1]); fflush(stdin); fflush(stdout);
 
+	printf("SLOW ~30seconds\n");
         a = fopen(argv[1], "r"); printf("2018 Day1.2\n"); fflush(stdin); fflush(stdout);
 
         char line1[1000];

@@ -18,6 +18,7 @@ void printit(char ar1[], int len, int poses[], int posesPos);
 char ar[400000];
 int main(int argc, char **argv)
 {
+	printf("SLOW ~30seconds\n");
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
         FILE * a = fopen(argv[1], "r"); printf("2017 Day14.1\n"); fflush(stdout);
 

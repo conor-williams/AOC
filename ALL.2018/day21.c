@@ -68,12 +68,15 @@ int main(int argc, char **argv)
 {
 //	TimerSet(INTERVAL);
 //	if (argc == 3) {printf("SETTING TIME TO [%d]\n", atoi(argv[2])); TimerSet(atoi(argv[2]));} else { TimerSet(INTERVAL);}
-        printf("\x1b[H");
-        printf("\x1b[%dB", 3);
+        //printf("\x1b[H");
+        //printf("\x1b[%dB", 3);
 
-	if (argc == 3) {printf("REG0: [%4d] -- ", atoi(argv[2])); REG0 = atoi(argv[2]);} else { printf("need REG0\n"); exit(0);}
+	//if (argc == 3) {printf("REG0: [%4d] -- ", atoi(argv[2])); REG0 = atoi(argv[2]);} else { printf("need REG0\n"); exit(0);}
         //printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
-        a = fopen(argv[1], "r");// printf("2018 Day21.1\n"); fflush(stdout);
+        a = fopen(argv[1], "r"); printf("2018 Day21.1\n"); fflush(stdout);
+	printf("broken -- needs a loop\n"); fclose(a); exit(0);
+
+	fflush(stdout); int fd = dup(1); close(1);
 
 	//int numBlanks = 0; int regb[5]; int op, regA, regB, regC; int ans[17][5]; int rega[5]; int times = 0;
 while (1) 
