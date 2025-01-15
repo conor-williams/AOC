@@ -44,6 +44,10 @@ struct tree_s tree[2111];
 void findEnd(char from[]);
 void traverseToBottom4(char from[]);
 
+#include <unistd.h>
+
+#define getchar()
+#define assert(asdf)
 int maxInd = 0;
 void traverseToBottom(char from[], int pospos);
 
@@ -54,7 +58,9 @@ int leny = 0;
 int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
-        FILE * a = fopen(argv[1], "r"); printf("2017 Day9.1\n"); fflush(stdout);
+        FILE * a = fopen(argv[1], "r"); printf("2017 Day7.2\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
 
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 10; j++) {
@@ -175,7 +181,10 @@ fclose(a);
 		printf("****%s\n", tree[maxInd-2].what[i]);
 	}
 
+
 	printf("***tot is ^^ [%llu]\n", tot);
+	fflush(stdout); dup2(fd, 1);
+	printf("broken: not working: not working...\n");
 	return 0;
 }
 
