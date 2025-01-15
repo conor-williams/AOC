@@ -46,12 +46,12 @@ int main(int argc, char **argv)
 	while (1) {
 		fgets(line1, 500, a);
 		if (feof(a)) break;
-		//line1[strlen(line1)-1] = '\0';
+		//line1[(int)strlen(line1)-1] = '\0';
 		//printf("LINE: %s\n", line1);
 		char what[100];
 		if (line1[0] != '\n') {
 			int j = 0;
-			for (int i = 0; i < strlen(line1); i++) {
+			for (int i = 0; i < (int)strlen(line1); i++) {
 				if (line1[i] == ' ' || line1[i] == '\n') {
 					what[j] = '\0';
 					j = 0;
@@ -91,6 +91,8 @@ int main(int argc, char **argv)
 	if (line1[0] != '\0') {leny++;}
 	fclose(a);
 	int tot = 0;
+	int iyr;
+	int eyr;
 	for (int i = 0; i < leny; i++) {
 		if (	people[i].ecl[0] != '\0' &&
 				people[i].byr[0] != '\0' &&
@@ -101,7 +103,7 @@ int main(int argc, char **argv)
 				people[i].hgt[0] != '\0') {
 			int impossible = 0;
 			int byr = atoi(people[i].byr);
-			if (strlen(people[i].byr) == 4 && byr >= 1920 && byr <= 2002) {
+			if ((int)strlen(people[i].byr) == 4 && byr >= 1920 && byr <= 2002) {
 #ifdef _DEBUG_
 				printf("good byr %s\n",  people[i].byr); getchar();
 #endif
@@ -111,8 +113,8 @@ int main(int argc, char **argv)
 #endif
 				impossible = 1; goto end;
 			}
-			int iyr = atoi(people[i].iyr);
-			if (strlen(people[i].iyr) == 4 && iyr >= 2010 && iyr <= 2020) {
+			iyr = atoi(people[i].iyr);
+			if ((int)strlen(people[i].iyr) == 4 && iyr >= 2010 && iyr <= 2020) {
 #ifdef _DEBUG_
 				printf("good iyr %s\n",  people[i].iyr); getchar();
 #endif
@@ -122,8 +124,8 @@ int main(int argc, char **argv)
 #endif
 				impossible = 1; goto end;
 			}
-			int eyr = atoi(people[i].eyr);
-			if (strlen(people[i].eyr) == 4 && eyr >= 2020 && eyr <= 2030) { 
+			eyr = atoi(people[i].eyr);
+			if ((int)strlen(people[i].eyr) == 4 && eyr >= 2020 && eyr <= 2030) { 
 #ifdef _DEBUG_
 				printf("good eyr %s\n",  people[i].eyr); getchar();
 #endif
@@ -133,11 +135,11 @@ int main(int argc, char **argv)
 #endif
 				impossible = 1; goto end;
 			}
-			if ((people[i].hgt[strlen(people[i].hgt) -2] == 'c' &&
-						people[i].hgt[strlen(people[i].hgt) -1] == 'm')  ||  
-					(people[i].hgt[strlen(people[i].hgt) -2] == 'i' && 
-					 people[i].hgt[strlen(people[i].hgt) -1] == 'n') ) {
-				for (int q = 0; q < strlen(people[i].hgt) - 2; q++) {
+			if ((people[i].hgt[(int)strlen(people[i].hgt) -2] == 'c' &&
+						people[i].hgt[(int)strlen(people[i].hgt) -1] == 'm')  ||  
+					(people[i].hgt[(int)strlen(people[i].hgt) -2] == 'i' && 
+					 people[i].hgt[(int)strlen(people[i].hgt) -1] == 'n') ) {
+				for (int q = 0; q < (int)strlen(people[i].hgt) - 2; q++) {
 					if (isdigit((int)people[i].hgt[q])) {
 #ifdef _DEBUG_
 						printf("good hgt 1 %s\n",  people[i].hgt); getchar();
@@ -150,12 +152,12 @@ int main(int argc, char **argv)
 					}
 				}
 				char tmpS[100] = ""; 
-				strncpy(tmpS, people[i].hgt, (int)strlen(people[i].hgt) -2);
+				strncpy(tmpS, people[i].hgt, (int)(int)strlen(people[i].hgt) -2);
 #ifdef _DEBUG_
 				printf("HGT: BEFORE: %s AFTER: %s\n", people[i].hgt, tmpS); 
 #endif
 				int len  = atoi(tmpS);
-				if (people[i].hgt[strlen(people[i].hgt) -2]  == 'c') {
+				if (people[i].hgt[(int)strlen(people[i].hgt) -2]  == 'c') {
 					if (len >= 150 && len <= 193) {
 #ifdef _DEBUG_
 						printf("good hgt 2 %s\n",  people[i].hgt); getchar();
@@ -181,11 +183,11 @@ int main(int argc, char **argv)
 			} else {
 				impossible = 1; goto end;
 			}
-			if (strlen(people[i].hcl) == 7 && people[i].hcl[0] == '#') {
+			if ((int)strlen(people[i].hcl) == 7 && people[i].hcl[0] == '#') {
 #ifdef _DEBUG_
 				printf("good hcl 1 %s\n",  people[i].hcl); getchar();
 #endif
-				for (int q = 1; q < (int)strlen(people[i].hcl); q++) {
+				for (int q = 1; q < (int)(int)strlen(people[i].hcl); q++) {
 					if (isdigit((int)people[i].hcl[q]) || 
 							people[i].hcl[q] == 'a' ||
 							people[i].hcl[q] == 'b' ||
@@ -210,7 +212,7 @@ int main(int argc, char **argv)
 #endif
 				impossible = 1; goto end;
 			}
-			if (strlen(people[i].ecl) == 3 &&
+			if ((int)strlen(people[i].ecl) == 3 &&
 					(
 					 strcmp(people[i].ecl, "amb") == 0 ||
 					 strcmp(people[i].ecl, "blu") == 0 ||
@@ -228,7 +230,7 @@ int main(int argc, char **argv)
 #endif
 				impossible = 1; goto end;
 			}
-			if (strlen(people[i].pid) == 9 &&
+			if ((int)strlen(people[i].pid) == 9 &&
 					isdigit((int)people[i].pid[0]) &&
 					isdigit((int)people[i].pid[1]) &&
 					isdigit((int)people[i].pid[2]) &&

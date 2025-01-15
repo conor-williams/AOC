@@ -49,7 +49,7 @@ while (1) {
 	char what[100];
 	if (line1[0] != '\n') {
 		int j = 0;
-		for (int i = 0; i < strlen(line1); i++) {
+		for (int i = 0; i < (int)strlen(line1); i++) {
 			if (line1[i] == ' ' || line1[i] == '\n') {
 				what[j] = '\0';
 				j = 0;
