@@ -27,8 +27,6 @@ void countthemGroup1(string s1);
 void countthemGroup2(string s1);
 unordered_map <string, vector<string>> mp;
 unordered_map <string, vector<string>> mpBoth;
-unordered_map <string, vector<string>>::iterator itG1;
-
 unordered_map <string, vector<string>> mpBothTmp;
 unordered_map <string, vector<string>> mpBothOrig;
 map <pair<string, string>, int> mpValid;
@@ -54,10 +52,7 @@ void addit(string one, string two);
 int removeRule(string Rone, string Rtwo);
 void checkAnswers();
 clock_t startMain, endMain;
-clock_t startCA, endCA;
 int checkRule(string Rone, string Rtwo);
-unsigned long long TOTnumPossible = 0;
-
 void addit(string one, string two) {
 
 	if (mpBoth.find(one) == mpBoth.end()) {
@@ -75,12 +70,11 @@ void addit(string one, string two) {
 }
 int main(int argc, char **argv)
 {
-	printf("SLOW: MAX:~62 days\n"); fflush(stdout);
-	//clock_t start, end; double cpu_time_used; 
-	//start = clock();
+	clock_t start, end; double cpu_time_used; 
+	start = clock();
 	//DO
-	//end = clock();
-	//cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+	end = clock();
+	cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
 	//printf("        time: %f seconds\n", cpu_time_used);
 
 	//signal(SIGTSTP, &sigfunc);
@@ -88,7 +82,6 @@ int main(int argc, char **argv)
 	//printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
 	a = fopen(argv[1], "r"); if (a == NULL) {printf("BAD file %s\n", argv[1]); exit(0);}
-
 	printf("2023 Day 25 Part 1 (bruteforce)\n"); fflush(stdout);
 
 	//fflush(stdout); int fd = dup(1); close(1);
@@ -121,31 +114,51 @@ int main(int argc, char **argv)
 	for (auto it = mp.begin(); it != mp.end(); it++) {
 		for (auto itv = (*it).second.begin(); itv != (*it).second.end(); itv++) {
 			addit(*itv, (*it).first);
-			mpValid[{(*it).first, (*itv)}] = 1;
 			mpValid[{(*itv), (*it).first}] = 1;
+			mpValid[{(*it).first, (*itv)}] = 1;
 		}
 	}
-	TOTnumPossible = (unsigned long long)pow((int)mpValid.size()/2, 3);
 
 	////////////////////////////
 	mpBothOrig = mpBoth;
+
+	/*
+	countDD = 0;
+	for (auto itxx = mpBoth.begin(); itxx != mpBoth.end(); itxx++) {
+		auto itxy = itxx;
+		itxy++;
+		for (; itxy != mpBoth.end(); itxy++) {
+
+			mpBothTmp = mpBoth;
+			if (checkRule((*itxx).first, (*itxy).first) == 1) {
+				countDD++;
+				if ((countDD % 50) == 0 ) {printf("PRE_check: cur: %d (%d of %d)\n", countDD, (int)distance(mpBoth.begin(), itxx), (int)mpBoth.size());}
+				mpValid[{(*itxx).first, (*itxy).first}] = 1;
+				mpValid[{(*itxy).first, (*itxx).first}] = 1;
+			}
+		}
+	}
+	printf("There are %d valid pairs\n", countDD);
+	*/
 	printf("there are %d valid pairs\n", (int)mpValid.size());
 	printf("Starting main search size:(%d) 4 levels):\n", (int)mpBoth.size());
 	startMain = clock();
-	startCA = clock();
 	{
 		mpBoth = mpBothOrig;
-		//int count = 0;
+		int count = 0;
 		//int sz = (int)mpBoth.size();
 
 		//auto itBegin = mpBoth.begin();;
 		auto itEND = mpBoth.end();;
 		auto itENDLess = mpBoth.end(); //itENDLess--;
-		int dist = 0;
-		if (argc == 3) {dist = atoi(argv[2]);}    
-		itG1 = mpBoth.begin();
-		advance(itG1, dist);
-		for (; itG1 != itENDLess; itG1++) {
+		for (auto itG1 = mpBoth.begin(); itG1 != itENDLess; itG1++) {
+			end = clock();
+			if (count != 0) {
+				cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+				printf("        time: %f seconds\n", cpu_time_used);
+			}
+			//cout << count << " of " << sz << endl;
+			start = clock();
 
 			auto ittmp1 = itG1;
 			auto it1 = itG1;
@@ -192,7 +205,6 @@ int main(int argc, char **argv)
 									if (r2 == 0) {continue;}
 									int r3 = removeRule((*it5).first, (*it6).first);
 									if (r3 == 0) {continue;}
-
 									checkAnswers();
 									//mpBoth = mpBothOrig;
 								}
@@ -208,7 +220,8 @@ int main(int argc, char **argv)
 void checkAnswers() {
 	group1.clear();
 	group2.clear();
-	if (countCCC++ % 60000 == 0) {endCA=clock(); int dist2 = (int)distance(mpBoth.begin(), itG1); printf("In checkAnswers, checked: %d (of %llu) time:%f itG1:%d\n", countCCC, TOTnumPossible, ((double)endCA-startCA)/CLOCKS_PER_SEC, dist2);char tou[100]; sprintf(tou, "touch last.itG1:%d", dist2); system(tou); startCA=clock();}
+	countCCC++;
+	if (countCCC % 10000 == 0) {printf("In checkAnswers, checked: %d (of a lot)\n", countCCC); countCCC=0;}
 	auto it = mpBothTmp.begin();
 	//printf("*it.first.c_str() is %s\n", (*it).first.c_str());
 	group1[(*it).first] = 1;
@@ -230,8 +243,8 @@ void checkAnswers() {
 			double cpu_time_usedMain = ((double) (endMain - startMain)) / CLOCKS_PER_SEC;
 			printf("        time: %f seconds\n", cpu_time_usedMain);
 			printf("**ans: %d\n", (int)((int)group1.size() * (int)group2.size()));
-			exit(0);
 		}
+		exit(0);
 	} 
 
 }
@@ -338,50 +351,3 @@ void countthemGroup1(string s1) {
 		}
 	}	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-   auto mpValidTmp = mpValid;
-   mpValidTmp.clear();
-   for (auto it1 = mpValid.begin(); it1 != mpValid.end(); it1++) {
-   for (auto it2 = mpValid.begin(); it2 != mpValid.end(); it2++) {
-   if (mpValidTmp.find((*it1).first) == mpValidTmp.end()) {
-   if (mpValidTmp.find((*it2).first) == mpValidTmp.end()) {
-   mpValidTmp[(*it1).first] = 1;
-   }
-   }
-
-   }
-   }
-   printf("mpValid.size V mpValidTmp.size() %d V %d 2x=%d\n", (int)mpValid.size(), (int)mpValidTmp.size(), (int)mpValid.size()*2);
-   mpValid = mpValidTmp;
-   */
-/*
-   countDD = 0;
-   for (auto itxx = mpBoth.begin(); itxx != mpBoth.end(); itxx++) {
-   auto itxy = itxx;
-   itxy++;
-   for (; itxy != mpBoth.end(); itxy++) {
-
-   mpBothTmp = mpBoth;
-   if (checkRule((*itxx).first, (*itxy).first) == 1) {
-   countDD++;
-   if ((countDD % 50) == 0 ) {printf("PRE_check: cur: %d (%d of %d)\n", countDD, (int)distance(mpBoth.begin(), itxx), (int)mpBoth.size());}
-   mpValid[{(*itxx).first, (*itxy).first}] = 1;
-   mpValid[{(*itxy).first, (*itxx).first}] = 1;
-   }
-   }
-   }
-   printf("There are %d valid pairs\n", countDD);
-   */
