@@ -82,7 +82,7 @@ int main(int argc, char **argv)
 	memset(blue, '0', sizeof(blue));
 	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-	a = fopen(argv[1], "r"); printf("2022 Day 18 - part 1\n"); fflush(stdout);
+	a = fopen(argv[1], "r"); printf("2022 Day 19 - part 1\n"); fflush(stdout);
 
 	fflush(stdout); int fd = dup(1); close(1);
 	int leny = 0;
