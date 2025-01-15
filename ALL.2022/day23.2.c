@@ -31,7 +31,7 @@ int miny = 99999;
 int maxx = 0;
 int maxy = 0;
 void getBounds();
-int hide = 1;
+int hide = 0;
 void moveNfirst();
 void moveSfirst();
 void moveEfirst();
@@ -46,7 +46,8 @@ int main(int argc, char **argv)
 	signal(SIGTSTP, &sigfunc);
 	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-	a = fopen(argv[1], "r"); printf("2021 Day 23 -- part2 \n"); fflush(stdout);
+	a = fopen(argv[1], "r"); printf("2022 Day 23 -- part2 \n"); fflush(stdout);
+	fflush(stdout); int fd = dup(1); close(1);
 	char line1[LINE];
 	char line2[10000];
 
@@ -84,7 +85,7 @@ int main(int argc, char **argv)
 	printit();
 	getchar();
 
-	int numRounds = 3;
+	int numRounds = 3000;
 	if (argc == 3) {numRounds = atoi(argv[2]);}
 	rounds = 0;
 	setitup(0);
