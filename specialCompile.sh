@@ -14,8 +14,10 @@ while [ $year != 2025 ];  do
 			if [ ! -f day$day.exe ] ; then
 				g++ -Wl,--stack,999777666 -I../../ day$day.c -o day$day -lmbedcrypto
 			fi
-			if [ ! -f day$day.2.exe ]; then
-				g++ -Wl,--stack,999777666 -I../../ day$day.2.c -o day$day.2 -lmbedcrypto
+			if [ $day != 25 ]; then
+				if [ ! -f day$day.2.exe ]; then
+					g++ -Wl,--stack,999777666 -I../../ day$day.2.c -o day$day.2 -lmbedcrypto
+				fi
 			fi
 		fi
 		day=$(( day + 1))
