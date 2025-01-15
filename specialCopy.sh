@@ -19,5 +19,9 @@ while [ $year != 2025 ] ; do
 done
 #what i use to create the input file:
 #rm inps1234.tar.gz
-#find 20* -name i\*.txt -o -name ex\*.txt | tar -rvf inps1234.tar
+#find 20* -name i\*.txt -o -name ex\*.txt | xargs tar -rvf inps1234.tar
 #gzip inps1234.tar
+#
+#
+#=======
+#
