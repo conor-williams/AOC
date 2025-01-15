@@ -59,7 +59,7 @@ while(1)
 
 	//printf("lets, checksum [%s],[%s]\n", lets, checksum);
 	
-	for (int i = 0; i < strlen(lets); i++) {
+	for (int i = 0; i < (int)strlen(lets); i++) {
 		if (islower((int)lets[i])) {
 			FP[posFP] = lets[i];
 			posFP++;
@@ -73,7 +73,7 @@ while(1)
 	}
 	FP[posFP] = '\0';
 	//printf("FP [%s]", FP);
-	char newS[200];
+	char new123S[200];
 	sectorID[pos] = '\0'; int sectorIDI = atoi(sectorID); //printf("  ID: %d ", sectorIDI);
 	int cot = 0;
 	for (int i = 0; i < 26; i++) {
@@ -82,21 +82,21 @@ while(1)
 		
 		for (int j = 0; j < posFP; j++) {
 			if (FP[j] != ' ' && FP[j] != '\0') {
-				char new = ((FP[j] + i -97) % 26) + 97;
-				newS[j] = new;
-				//printf("%c", new);
+				char new123 = ((FP[j] + i -97) % 26) + 97;
+				new123S[j] = new123;
+				//printf("%c", new123);
 			} else if (FP[j] == ' ') {
-				newS[j] = ' ';
+				new123S[j] = ' ';
 				//printf("%c", (char)' ');
 			} else {
-				newS[j] = FP[j];
+				new123S[j] = FP[j];
 			}
 				
 		}
-		newS[posFP] = '\0';
-		char safnewS[200];
-		strcpy(safnewS, newS);
-		char *word1 = strtok(newS, " ");
+		new123S[posFP] = '\0';
+		char safnew123S[200];
+		strcpy(safnew123S, new123S);
+		char *word1 = strtok(new123S, " ");
 		char *word2 = strtok(NULL, " ");
 		char *word3 = strtok(NULL, " ");
 		//if (sectorIDI ==324 && ((word1 != NULL && isitaword((char *)word1)) || (word2 != NULL && isitaword((char*) word2)) || (word3 != NULL && isitaword((char *)word3)))) 
@@ -104,7 +104,7 @@ while(1)
 			dup2(fd, 1);
 			printf("**ans: %d\n", sectorIDI);
 			exit(0);
-			//printf("[%s] \n", safnewS);
+			//printf("[%s] \n", safnew123S);
 			cot = 1;
 		} else {
 			if (i == 25 && cot == 0) {

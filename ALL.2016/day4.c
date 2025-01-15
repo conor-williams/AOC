@@ -37,7 +37,7 @@ while(1)
 	int a2z[26] = {0};
 	sscanf(line1, "%[^\[]\[%[^]]", lets, checksum);
 	printf("lets, checksum [%s],[%s]\n", lets, checksum);
-	for (int i = 0; i < strlen(lets); i++) {
+	for (int i = 0; i < (int)strlen(lets); i++) {
 		if (islower((int)lets[i])) {
 			a2z[(int)lets[i]-97]++;
 		} else if (lets[i] == '-') {
