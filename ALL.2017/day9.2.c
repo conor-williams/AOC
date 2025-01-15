@@ -16,8 +16,8 @@ int inside = 0;
 #undef _DEBUG_
 char line1[SIZE];
 int loop();
-char catchA[200][20];
-int catchAPos;
+char catChA[200][20];
+int catChAPos;
 int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
@@ -44,9 +44,9 @@ while (1)
 	printf("***totG %llu\n", totG); getchar();
 }
 /*
-	printf("catchA (%d):\n", catchAPos);
-	for (int i = 0; i < catchAPos; i++) {
-		printf("	[%s]\n", catchA[i]);
+	printf("catChA (%d):\n", catChAPos);
+	for (int i = 0; i < catChAPos; i++) {
+		printf("	[%s]\n", catChA[i]);
 	}
 */
 	dup2(fd, 1);
@@ -98,11 +98,11 @@ int loop() {
 				printf("!");
 #endif
 				int count = 1;
-				char catch[20];
-				char catch3[18];
-				strcpy(catch3, catch);
-				memset(catch, '\0', 19);
-				sprintf(catch, "%s%c", catch3, '!');
+				char catCh[20];
+				char catCh3[18];
+				strcpy(catCh3, catCh);
+				memset(catCh, '\0', 19);
+				sprintf(catCh, "%s%c", catCh3, '!');
 				do {
 					if (isdigit((int)line1[iX+count]) || isupper((int)line1[iX+count]) || islower((int)line1[iX+count]) || line1[iX+count] == '\"' || line1[iX+count] == ',' || line1[iX+count] == '\'' || line1[iX+count] == '\"') {
 						break;
@@ -111,24 +111,24 @@ int loop() {
 						printf("%c", line1[iX+count]);
 
 #endif
-						char catch2[18];
-						strcpy(catch2, catch);
-						sprintf(catch, "%s%c", catch2, line1[iX+count]);
+						char catCh2[18];
+						strcpy(catCh2, catCh);
+						sprintf(catCh, "%s%c", catCh2, line1[iX+count]);
 					}
 					count++;
 					if (count == 4) {break;}
 					if (line1[iX+count] == '!') { break;}
 					if (iX+count > strlen(line1)) {break;}
 				} while (1);
-				catch[count] = '\0';
+				catCh[count] = '\0';
 				int found = 0;
-				for (int i = 0; i < catchAPos; i++) {
-					if (strcmp(catchA[i], catch) == 0) {
+				for (int i = 0; i < catChAPos; i++) {
+					if (strcmp(catChA[i], catCh) == 0) {
 						found = 1; break;
 					}
 				}
 				if (found == 0) {
-					strcpy(catchA[catchAPos], catch); catchAPos++;	
+					strcpy(catChA[catChAPos], catCh); catChAPos++;	
 				}
 #ifdef _DEBUG_
 				printf("] --- [!");

@@ -14,8 +14,8 @@ int inside = 0;
 #define SIZE 20000
 char line1[SIZE];
 int loop();
-char catchA[200][20];
-int catchAPos;
+char cAtchA[200][20];
+int cAtchAPos;
 int main(int argc, char **argv)
 {
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
@@ -41,9 +41,9 @@ while (1)
 
 	//printf("***tot is ^^ [%llu]\n", tot);
 }
-	printf("catchA (%d):\n", catchAPos);
-	for (int i = 0; i < catchAPos; i++) {
-		printf("	[%s]\n", catchA[i]);
+	printf("cAtchA (%d):\n", cAtchAPos);
+	for (int i = 0; i < cAtchAPos; i++) {
+		printf("	[%s]\n", cAtchA[i]);
 	}
 	dup2(fd, 1);
 	printf("***tot is ^^ [%llu]\n", tot);
@@ -89,36 +89,36 @@ int loop() {
 				printf("neg:[");
 				printf("!");
 				int count = 1;
-				char catch[20];
+				char cAtch[20];
 
-				memset(catch, '\0', 19);
-				char catch2[18];
-				strcpy(catch2, catch);
-				sprintf(catch, "%s%c", catch2, '!');
+				memset(cAtch, '\0', 19);
+				char cAtch2[18];
+				strcpy(cAtch2, cAtch);
+				sprintf(cAtch, "%s%c", cAtch2, '!');
 				
 				do {
 					if (isdigit((int)line1[iX+count]) || isupper((int)line1[iX+count]) || islower((int)line1[iX+count]) || line1[iX+count] == '\"' || line1[iX+count] == ',' || line1[iX+count] == '\'' || line1[iX+count] == '\"') {
 						break;
 					} else {
 						printf("%c", line1[iX+count]);
-						char catch3[18];
-						strcpy(catch3, catch);
-						sprintf(catch, "%s%c", catch3, line1[iX+count]);
+						char cAtch3[18];
+						strcpy(cAtch3, cAtch);
+						sprintf(cAtch, "%s%c", cAtch3, line1[iX+count]);
 					}
 					count++;
 					if (count == 4) {break;}
 					if (line1[iX+count] == '!') { break;}
 					if (iX+count > strlen(line1)) {break;}
 				} while (1);
-				catch[count] = '\0';
+				cAtch[count] = '\0';
 				int found = 0;
-				for (int i = 0; i < catchAPos; i++) {
-					if (strcmp(catchA[i], catch) == 0) {
+				for (int i = 0; i < cAtchAPos; i++) {
+					if (strcmp(cAtchA[i], cAtch) == 0) {
 						found = 1; break;
 					}
 				}
 				if (found == 0) {
-					strcpy(catchA[catchAPos], catch); catchAPos++;	
+					strcpy(cAtchA[cAtchAPos], cAtch); cAtchAPos++;	
 				}
 				printf("] --- [!");
 				count = 1;
