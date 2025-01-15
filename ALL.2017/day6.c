@@ -133,7 +133,7 @@ while (1)
 				printf("thats the end... [%d]", steps);
 				fflush(stdout);
 				dup2(fd, 1);
-				printf("**ans: [ %d ]", steps); exit(0);
+				printf("**ans: [ %d ]\n", steps); exit(0);
 			}
 		}
 	}
