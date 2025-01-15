@@ -20,7 +20,7 @@ int main(int argc, char **argv)
 
         char line1[3000];
 */
-        printf("Day3.2\n"); fflush(stdout);
+        printf("2017 Day3.2\n"); fflush(stdout);
 
 	fflush(stdout); int fd = dup(1); close(1);
 
