@@ -37,7 +37,7 @@ int main(int argc, char **argv)
 	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 	fd = dup(1); close(1);
 	
-	a = fopen(argv[1], "r"); printf("2024 Day 15 Part 1\n"); fflush(stdout);
+	a = fopen(argv[1], "r"); printf("2023 Day 15 Part 2\n"); fflush(stdout);
 	char line1[LINE];
 
 	leny = 0;
