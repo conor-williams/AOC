@@ -14,7 +14,7 @@ using namespace std;
 
 
 int lenx, leny;
-#define DAY "2015 day15 part12\n"
+#define DAY "2015 day15 part2\n"
 #define _DEBUG_
 
 int tot = 0;
