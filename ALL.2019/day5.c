@@ -11,7 +11,7 @@
 using namespace std;
 
 int lenx, leny;
-#define DAY "2019 day5 part2\n"
+#define DAY "2019 day5 part1\n"
 #define _DEBUG_
 #define MAX 2000
 char instruction    [MAX][10];
