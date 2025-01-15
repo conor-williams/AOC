@@ -5,8 +5,11 @@
 #include <math.h>
 #include <string>
 #include <algorithm>
+#include <unistd.h>
 
 using namespace std;
+
+#define getchar()
 
 int lenx, leny;
 #define DAY "2016 day11 part1 \n"
@@ -26,6 +29,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[SIZE];
 	for (int y = 0; y < 4; y++) {
 		for (int x = 0; x < 10; x++) {
@@ -199,6 +203,8 @@ newElev:
 
 	printf("**mycount is %d\n", mycount);
 	printf("***tot %ld END\n", tot); fflush(stdout);
+	dup2(fd, 1);
+	printf("not working... broken todo\n");
 } 
 int notalltop() {
 	int count = 0;

@@ -55,7 +55,8 @@ int main(int argc, char **argv)
 	unsigned long i = 0; 
 	char buf[100];
         num = 0;
-
+	printf("SLOW ~30seconds\n");
+	printf("2016 day5.2\n");
 	fflush(stdout); int fd = dup(1); close(1);
 	int count = 0;
 	char *input = "ojvtpuvg";
