@@ -8,7 +8,7 @@
 
 #define getchar()
 int lenx, leny;
-#define DAY "2022 day2 part1\n"
+#define DAY "2022 day2 part2\n"
 #define _DEBUG_
 long tot;
 int main(int argc, char **argv)
