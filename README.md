@@ -11,6 +11,7 @@
 	o all years days 1--10 working well, except:
 		-- 2017 Day 7.2
 		-- <s>2018 Day 7 1&2</s>
+	   	-- 2022 Day 9.2
 	</pre>
 <hr>
 <br>
