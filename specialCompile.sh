@@ -16,7 +16,7 @@ while [ $year != 2025 ];  do
 			fi
 			if [ $day != 25 ]; then
 				if [ ! -f day$day.2.exe ]; then
-					g++ -Wl,--stack,999777666 -I../../ day$day.2.c -o day$day.2.exe -lmbedcrypto
+					g++ -Wl,--stack,999777666 -I../../ day$day.2.c -o "day$day.2.exe" -lmbedcrypto
 				fi
 			fi
 		fi
