@@ -12,11 +12,11 @@ while [ $year != 2025 ];  do
 		if [ -d $curdir/$year/day$day ]; then
 			cd $curdir/$year/day$day
 			if [ ! -f day$day.exe ] ; then
-				g++ -Wl,--stack,999777666 -I../../ day$day.c -o day$day -lmbedcrypto
+				g++ -Wl,--stack,999777666 -I../../ day$day.c -o day$day.exe -lmbedcrypto
 			fi
 			if [ $day != 25 ]; then
 				if [ ! -f day$day.2.exe ]; then
-					g++ -Wl,--stack,999777666 -I../../ day$day.2.c -o day$day.2 -lmbedcrypto
+					g++ -Wl,--stack,999777666 -I../../ day$day.2.c -o day$day.2.exe -lmbedcrypto
 				fi
 			fi
 		fi
