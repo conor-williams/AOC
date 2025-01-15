@@ -57,9 +57,10 @@ int main(int argc, char **argv)
 		}
 	}
 
-	fflush(stdout); dup2(fd, 1);
-	
 	printf("**maxi is %d tot %lu\n", maxi, tot);
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %lu\n", tot);
+	
 }
 
 void printit() {
