@@ -226,10 +226,9 @@ while (1) {
 
 	dup2(fd, 1);
 	if (mp.find(tofinda) != mp.end()) {
-		printf("here1\n");
 		printf("wire a: [%d]\n", mp[tofinda]);
 	} else {
 		printf("NO A???");
 	}
-	printf("end...\n"); fflush(stdout);
+	//printf("end...\n"); fflush(stdout);
 }

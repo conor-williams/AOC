@@ -77,8 +77,9 @@ while(1) {
 	strcpy(insts[curinst].reg1, reg1);
 	strcpy(insts[curinst].reg2, reg2);
 	strcpy(insts[curinst].reg3, reg3);
+	if (strcmp(reg3, "b") == 0) {printf("gotcha\n");}
 	if (reg3[0] == 'b' && (int)strlen(reg3) == 1) {
-		//printf("here222\n"); getchar();
+		printf("here222\n"); getchar();
 		insts[curinst].num = 46065;
 		
 	} else {
@@ -247,5 +248,5 @@ while (1) {
 	} else {
 		printf("NO A???");
 	}
-	printf("end...\n"); fflush(stdout);
+	//printf("end...\n"); fflush(stdout);
 }
