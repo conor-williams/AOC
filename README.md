@@ -1,13 +1,14 @@
 <h3>Notes: c.w.</h3>
 <br>
-<h3>Update (11::14-01-25):</h3><br>
+<h3>Update (11::16-01-25):</h3><br>
    <pre>
-	o all day 1's for every year working well, except:
-		-- 2016 Day 11
-	   	-- 2018 Day 21
-		-- 2019 Day 18
-		-- <s>2022 Day 22</s>
-	   	-- 2023 Day 22
+	o looking now to tidy part2's (11-24) of every year (16-01-2025)
+	o all <s>day</s>Part 1's for every year working well, except:
+		-- 2016 Day 11,1
+	   	-- 2018 Day 21.1
+		-- 2019 Day 18 part1
+		-- <s>2022 Day 22.1</s>
+	   	-- 2023 Day 22.1
 	o all years days 1--10 working well, except:
 		-- 2017 Day 7.2
 		-- <s>2018 Day 7 1&2</s>
