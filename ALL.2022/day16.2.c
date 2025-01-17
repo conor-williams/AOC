@@ -18,6 +18,10 @@
 #include <thread>
 #include <mutex>
 
+#include <unistd.h>
+
+#define getchar()
+#define assert(asdf)
 int mAAxPath = 0;
 int pos = 0;
 unsigned long long totTime = 0;
@@ -75,8 +79,44 @@ void spawnThread(int n) {
 	}
 }
 
+#include <sys/time.h>
+#include <signal.h>
+
+void TimerSet(int interval) {
+    printf("starting timer\n");
+    struct itimerval it_val;
+
+    it_val.it_value.tv_sec = interval;
+    it_val.it_value.tv_usec = 0;
+    it_val.it_interval.tv_sec = 0;
+    it_val.it_interval.tv_usec = 0;
+
+    if (signal(SIGALRM, TimerStop) == SIG_ERR) {
+        perror("Unable to catch SIGALRM");
+        exit(1);
+    }
+    if (setitimer(ITIMER_REAL, &it_val, NULL) == -1) {
+        perror("error calling setitimer()");
+        exit(1);
+    }
+}
+
+int fd;
+void TimerStop(int signum) {
+
+
+	fflush(stdout); dup2(fd, 1);
+    printf("Timer ran out! Stopping timer\n");
+	FILE *f = fopen("out.tim", "a");
+	fprintf(f, "Timer ran out! Stopping timer timestamp@%s\n", "out.tim");
+	fclose(f);
+    exit(10);
+}
+//main:::if (argc == 3) {printf("SETTING TIME TO [%d]\n", atoi(argv[2])); TimerSet(atoi(argv[2]));}
 int main(int argc, char **argv)
 {
+	//TimerSet(15*60);
+	printf("SLOW ~8mins\n");
 	ex1 = strcmp(argv[1], "ex1.txt") == 0 ? 1 : 0;
 
 	if (ex1 == 1) {
@@ -87,7 +127,9 @@ int main(int argc, char **argv)
 	signal(SIGTSTP, &sigfunc);
 	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-	a = fopen(argv[1], "r"); printf("2022 Day 16 part1 \n"); fflush(stdout);
+	a = fopen(argv[1], "r"); printf("2022 Day 16 part2 \n"); fflush(stdout);
+
+	fflush(stdout); fd = dup(1); close(1);
 	char line1[LINE];
 
 	int leny = 0;
@@ -336,6 +378,9 @@ ag5:
 			//cout << endl <<"ValvsM: "; for (int i = 0; i < (int)valvsM.size(); i++) { cout << valvsM[i] << " "; } cout << endl;
 			cout << "count1: " << count1 << endl;
 			cout << "mAAxPath: " << mAAxPath << endl;
+			
+			fflush(stdout); dup2(fd, 1);
+			printf("**ans: %d\n", mAAxPath);
 		}
 	}
 }
@@ -505,6 +550,7 @@ void next(string abcd, string just)
 	}
 	ind--;
 }
+/*
 void TimerSet(int interval) {
 	//printf("starting timer\n");
 	struct itimerval it_val;
@@ -523,7 +569,9 @@ void TimerSet(int interval) {
 		exit(1);
 	}
 }
+*/
 
+/*
 void TimerStop(int signum) {
 	printf("in TimerStop\n");
 	if (usingFoundIt == 1) {
@@ -557,6 +605,7 @@ void TimerStop(int signum) {
 		}
 	}
 }
+*/
 
 /*
    Valve AA ZERO    has flow rate=0; tunnels lead to valves DD, II, BB

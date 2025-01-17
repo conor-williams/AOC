@@ -41,13 +41,50 @@ int rounds;
 int fd;
 void checkit();
 void sigfunc(int a) { dup2(fd, 1); printf("[[ %s ]] rounds:[[ %d ]]\n", "signal hand..\n", rounds); printf("mx:%d my:%d max:%d maxy:%d\n", minx, miny, maxx, maxy); fd=dup(1); close(1);}
+
+#include <sys/time.h>
+#include <signal.h>
+void TimerStop(int signum);
+void TimerSet(int interval);
+
+void TimerSet(int interval) {
+    printf("starting timer\n");
+    struct itimerval it_val;
+
+    it_val.it_value.tv_sec = interval;
+    it_val.it_value.tv_usec = 0;
+    it_val.it_interval.tv_sec = 0;
+    it_val.it_interval.tv_usec = 0;
+
+    if (signal(SIGALRM, TimerStop) == SIG_ERR) {
+        perror("Unable to catch SIGALRM");
+        exit(1);
+    }
+    if (setitimer(ITIMER_REAL, &it_val, NULL) == -1) {
+        perror("error calling setitimer()");
+        exit(1);
+    }
+}
+
+void TimerStop(int signum) {
+
+	fflush(stdout); dup2(fd, 1);
+    printf("Timer ran out! Stopping timer\n");
+	FILE *f = fopen("out.tim", "a");
+	fprintf(f, "Timer ran out! Stopping timer timestamp@%s\n", "out.tim");
+	fclose(f);
+    exit(10);
+}
+//main:::if (argc == 3) {printf("SETTING TIME TO [%d]\n", atoi(argv[2])); TimerSet(atoi(argv[2]));}
 int main(int argc, char **argv)
 {
+	//TimerSet(55*60);
 	signal(SIGTSTP, &sigfunc);
 	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-	a = fopen(argv[1], "r"); printf("2022 Day 23 -- part2 \n"); fflush(stdout);
-	fflush(stdout); int fd = dup(1); close(1);
+	a = fopen(argv[1], "r"); printf("2022 Day 23 Part2 \n"); fflush(stdout);
+	printf("broken\n"); exit(0);
+	fflush(stdout); fd = dup(1); close(1);
 	char line1[LINE];
 	char line2[10000];
 
@@ -152,9 +189,9 @@ int main(int argc, char **argv)
 		}
 	}
 	if (hide == 1) {
-		dup2(fd, 1);
+		fflush(stdout); dup2(fd, 1);
 	}
-	printf("**ans [[ %d]] \n", count);
+	printf("**ans: %d\n", count);
 }
 void checkit() 
 {
@@ -164,7 +201,7 @@ void checkit()
 	}
 		
 	if (found == 0) {
-		dup2(fd, 1);
+		fflush(stdout); dup2(fd, 1);
 		printf("same round %d\n", rounds); exit(0);
 	}
 }

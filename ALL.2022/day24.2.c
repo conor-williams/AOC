@@ -160,7 +160,7 @@ int main(int argc, char **argv)
 	tot += minPath;
 
 	fflush(stdout); dup2(fd, 1);
-	printf("**ans %d\n", tot);
+	printf("**ans: %d\n", tot);
 
 }
 

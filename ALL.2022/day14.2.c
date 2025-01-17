@@ -52,7 +52,7 @@ int main(int argc, char **argv)
 
 	a = fopen(argv[1], "r"); printf("2022 Day 14 part2\n"); fflush(stdout);
 
-	fflush(stdout); int fd = dup(1); //close(1);
+	fflush(stdout); int fd = dup(1); close(1);
 	char line1[LINE];
 	char l2[LINE];
 
