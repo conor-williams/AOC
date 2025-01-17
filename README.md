@@ -13,7 +13,8 @@
 		-- 2017 Day 7.2
 		-- <s>2018 Day 7 1&2</s>
 	   	-- 2022 Day 9.2
- <h3>Note: (of course you may already know this)</h3>     
+</pre>
+<h3>Note: (of course you may already know this)</h3>     
 <br>if you are not interested in waiting for one to finish
 <br>and you want the system to continue, then use 
 <br>ps and kill (in cygwin, ps,  and maybe ps -ef or ps -aux in linux) eg.:
@@ -34,7 +35,7 @@
 % kill -9 5691
 	       
      (that kills off the slow day14 for example
-
+</pre>
 	<hr>
  	<h2>Update (08-01-25):</h2>
   	<pre>
