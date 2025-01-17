@@ -294,7 +294,7 @@ int machine(int machineNumber, int one) {
 				unsigned long long tot = 0; for (int y = 0; y < SZ; y++) { for (int x = 0; x < SZ; x++) { if (grid[y][x].times >= 1) { tot++; } } } printf("***tot is %llu\n", tot);
 				printf("minx11, maxx11 %d %d, miny11,maxy11 %d,%d\n", minx11, maxx11, miny11, maxy11);
 			
-				dup2(fd, 1);
+				fflush(stdout); dup2(fd, 1);
 				printf("**ans: \n");
 				for (int y = miny11-1; y <= maxy11+1; y++) {
 					for (int x = minx11-1; x<=maxx11+1; x++) {

@@ -8,7 +8,10 @@
 #include <string>
 #include <vector>
 
+#include <unistd.h>
 
+#define getchar()
+#define assert(asdf)
 using namespace std;
 int lenx, leny;
 #define DAY "2019 day12 part2\n"
@@ -38,13 +41,19 @@ struct pos_s posOrig[4];
 
 int main(int argc, char **argv)
 {
-	if (argc < 3) {printf("give a size\n"); exit(0);}
-	SV = atoi(argv[2]);
+	if (argc >= 3) {
+		SV = atoi(argv[2]);
+	} else {
+		SV=20000;
+	}
 	lenx = 0; leny = 0;
 	printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
+	printf("cycles: for the moment check file called out and look for cycles\n");
+
 	FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdout);
 
+	//fflush(stdout); int fd = dup(1); close(1);
 
 	char line1[MAX] = {0};
 	while(1) {
@@ -69,7 +78,9 @@ int main(int argc, char **argv)
 	for (int i = 0; i < leny; i++) {
 		pos[i].first = 0;
 	}
+
 	FILE *b = fopen("out", "w");
+
 	for (int i = 0; i < leny; i++) {
 		char out1[1000];
 		sprintf(out1, "%d,%d,%d,%d,%d,%d  %d pos:(%d)\n", pos[i].x, pos[i].y, pos[i].z, pos[i].vx, pos[i].vy, pos[i].vz, 0, i);
@@ -114,5 +125,6 @@ int main(int argc, char **argv)
 		}
 	}
 
-	fclose(b); printf("FIN to out\n"); exit(0);
+	//fflush(stdout); dup2(fd, 1);
+	fclose(b); printf("manually check the file : out : for cycles\n"); exit(0);
 }

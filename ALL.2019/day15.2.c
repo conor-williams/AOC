@@ -282,8 +282,9 @@ after:
 						}
 					}
 				}
-				dup2(fd, 1);
 				printf("**MAXPATH is %d \n", MAXPATH);
+				fflush(stdout); dup2(fd, 1);
+				printf("**ans: %d \n", MAXPATH);
 				exit(0);
 				//next(SZ/2, SZ/2, 0);
 

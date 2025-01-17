@@ -128,8 +128,9 @@ fclose(a);
 			}
 		}
 	}
-	dup2(fd, 1);
 	printf("**ans is [ %d ]\n", count2);
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans:  %d \n", count2);
 		
 }
 void printitTmp(int depth) {

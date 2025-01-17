@@ -13,7 +13,7 @@
 using namespace std;
 
 int lenx, leny;
-#define DAY "2019 day 19 part2\n"
+#define DAY "2019 day 21 part2\n"
 //#define _DEBUG_
 #undef DEBUG
 #define getchar()
@@ -336,7 +336,7 @@ int machine(int machineNumber, int one) {
 				printf("%c", (char)OUT);
 			} else {
 				printf("OUT outside range... %lld\n", OUT);
-				dup2(fd, 1);
+				fflush(stdout); dup2(fd, 1);
 				printf("**ans: %lld\n", OUT);
 				close(1);
 			}

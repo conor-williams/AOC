@@ -75,8 +75,45 @@ int MOVE = 0;
 deque <char> PATH;
 int pathPOS = 0;
 int fd;
+
+#include <sys/time.h>
+#include <signal.h>
+void TimerStop(int signum);
+void TimerSet(int interval);
+
+void TimerSet(int interval) {
+    printf("starting timer\n");
+    struct itimerval it_val;
+
+    it_val.it_value.tv_sec = interval;
+    it_val.it_value.tv_usec = 0;
+    it_val.it_interval.tv_sec = 0;
+    it_val.it_interval.tv_usec = 0;
+
+    if (signal(SIGALRM, TimerStop) == SIG_ERR) {
+        perror("Unable to catch SIGALRM");
+        exit(1);
+    }
+    if (setitimer(ITIMER_REAL, &it_val, NULL) == -1) {
+        perror("error calling setitimer()");
+        exit(1);
+    }
+}
+
+
+void TimerStop(int signum) {
+
+	fflush(stdout); dup2(fd, 1);
+    printf("Timer ran out! Stopping timer\n");
+	FILE *f = fopen("out.tim", "a");
+	fprintf(f, "Timer ran out! Stopping timer timestamp@%s\n", "out.tim");
+	fclose(f);
+    exit(10);
+}
+//main:::if (argc == 3) {printf("SETTING TIME TO [%d]\n", atoi(argv[2])); TimerSet(atoi(argv[2]));}
 int main(int argc, char **argv)
 {
+	///TimerSet(55*60);
 	printf("SLOW: 2mins\n");
 
 	struct pos_s st = {xCur, yCur, PATH};
@@ -106,8 +143,8 @@ int main(int argc, char **argv)
 	lenx = 0; leny = 0;
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
         FILE * a = fopen(argv[1], "r"); 
-	printf(DAY); fflush(stdin); fflush(stdout);
-	fd = dup(1); close(1);
+	printf(DAY);
+	fflush(stdout); fd = dup(1); close(1);
        
         char line1[MAX];
 	for (int i = 0 ; i < MAX; i++) {
@@ -492,6 +529,7 @@ aft2:
 					printf("\nwahoo wahey ans:\n");
 					unsigned long long ans = (unsigned long long)(lastX-99) * (unsigned long long)10000;
 					ans += fY;
+					dup2(fd,1);
 					printf("\n\nans %llu\n", ans);
 					printf("\nwahoo222 wahey ans:\n");
 					found33 = 1;
@@ -499,8 +537,8 @@ aft2:
 				if (found33 == 1) {
 					unsigned long long ans = (unsigned long long)(lastX-99) * (unsigned long long)10000;
 					ans += fY;
-					dup2(fd, 1);
-					printf("\n\n**ans %llu\n", ans);
+					fflush(stdout); dup2(fd, 1);
+					printf("**ans %llu\n", ans);
 					exit(0);
 				} else if (y99 > TOY) {
 					printf("widen...\n");

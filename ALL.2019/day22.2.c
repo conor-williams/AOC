@@ -117,10 +117,10 @@ fclose(a);
 //	bigint ans2 =  (((((bigint) (((bigint)2020 * increment) + ((bigint)1-increment) *offset))) % ENDL) + (bigint)10*ENDL) %ENDL;
 
 	assert(ans2 < ENDL);
-	dup2(fd, 1);
-	printf("\n\nans: ans2->  ");
+	fflush(stdout); dup2(fd, 1);
+	//printf("\n\nans: ans2->  ");
 	//cout << ans2 << endl;
-	printf("%s\n", ans2.str.c_str());
+	printf("**ans: %s\n", ans2.str.c_str());
 	//exit(0);
 /*
 	runFOR2();

@@ -88,8 +88,45 @@ int MOVE = 0;
 deque <char> PATH;
 int pathPOS = 0;
 int fd;
+
+#include <sys/time.h>
+#include <signal.h>
+void TimerStop(int signum);
+void TimerSet(int interval);
+
+void TimerSet(int interval) {
+    printf("starting timer\n");
+    struct itimerval it_val;
+
+    it_val.it_value.tv_sec = interval;
+    it_val.it_value.tv_usec = 0;
+    it_val.it_interval.tv_sec = 0;
+    it_val.it_interval.tv_usec = 0;
+
+    if (signal(SIGALRM, TimerStop) == SIG_ERR) {
+        perror("Unable to catch SIGALRM");
+        exit(1);
+    }
+    if (setitimer(ITIMER_REAL, &it_val, NULL) == -1) {
+        perror("error calling setitimer()");
+        exit(1);
+    }
+}
+
+
+void TimerStop(int signum) {
+
+	fflush(stdout); dup2(fd, 1);
+    printf("Timer ran out! Stopping timer\n");
+	FILE *f = fopen("out.tim", "a");
+	fprintf(f, "Timer ran out! Stopping timer timestamp@%s\n", "out.tim");
+	fclose(f);
+    exit(10);
+}
+//main:::if (argc == 3) {printf("SETTING TIME TO [%d]\n", atoi(argv[2])); TimerSet(atoi(argv[2]));}
 int main(int argc, char **argv)
 {
+	TimerSet(55*60);
 	pthread_mutex_init(&lock, NULL);
 	time_t rawtime;
 	struct tm *info;
@@ -109,6 +146,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
+	printf("broken\n"); exit(0);
 	fflush(stdout); fd = dup(1); close(1);
         char line1[MAX];
 	for (int i = 0 ; i < MAX; i++) {
@@ -337,8 +375,8 @@ ag2:
 				auto it1 = mp.find(yval);
 				
 				if (it1 != mp.end() && yval != -1) {
-					dup2(fd, 1);
-					printf("ANS is %lld\n", yval); fflush(stdout); exit(0);
+					fflush(stdout); dup2(fd, 1);
+					printf("**ans:  %lld\n", yval); fflush(stdout); exit(0);
 				} else {
 					mp[yval] = 1;
 				}

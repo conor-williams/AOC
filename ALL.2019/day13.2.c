@@ -196,7 +196,7 @@ int machine(int machineNumber, int one) {
 					}
 				}
 				fflush(stdout); dup2(fd, 1);
-				printf("**ans %d\n", maxscore);
+				printf("**ans: %d\n", maxscore);
 				exit(0); }
 		} else { 
 			int err = 0;
