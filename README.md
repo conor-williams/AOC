@@ -14,9 +14,11 @@
 		-- 2017 Day 7.2
 		-- <s>2018 Day 7 1&2</s>
 	   	-- 2022 Day 9.2
-     	o if you are not interested in waiting for one to finish and you want the system to continue, then use ps and kill (in cygwin and maybe ps -ef in linux) eg.:
+     </pre>
+<h3>Note: (of course you may already know this)</h3>     
+if you are not interested in waiting for one to finish and you want the system to continue, then use ps and kill (in cygwin and maybe ps -ef in linux) eg.:
                <hr>
-	       % ps
+	       <pre>	       % ps
 	            PID    PPID    PGID     WINPID   TTY         UID    STIME COMMAND
      5695       1    5695        940  ?         197610 01:04:07 /usr/bin/mintty
      5702    5696    5702       5272  pty0      197610 01:04:11 /usr/bin/ps
@@ -29,7 +31,8 @@
      5686    5668    5668       1792  pty1      197610 01:00:09 /usr/bin/sh
      5691    5687    5668      11772  pty1      197610 01:00:22 /cygdrive/c/Users/conor.williams/Desktop/AOC-main/2016/day14/day14.2
 		% kill -9 5691
-  		</hr>	
+	       </pre>
+		  <hr>	
      (that kills off the slow day14 for example
 
 	</pre>
