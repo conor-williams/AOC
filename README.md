@@ -9,12 +9,13 @@
 		-- 2019 Day 18 part1
 		-- <s>2022 Day 22.1</s>
 	   	-- 2023 Day 22.1
-	o all years days 1--10 working well, except:
+	o all years days 1--10 Part 1&2 working well, except:
 		-- 2017 Day 7.2
 		-- <s>2018 Day 7 1&2</s>
 	   	-- 2022 Day 9.2
 	o Timer begin added to the slow ones so they dont run too long
 	        (but you might not get the answer)
+		(timer length can be changed in code before a compile) TimerSet(Xseconds);
 </pre>
 <h3>Note: (of course you may already know this)</h3>     
 <br>if you are not interested in waiting for one to finish
