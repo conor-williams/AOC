@@ -24,16 +24,54 @@ void tilttowardEast();
 void moveleft(int y, int x);
 void tilttowardWest();
 void someDebug();
+
+#include <sys/time.h>
+#include <signal.h>
+void TimerStop(int signum);
+void TimerSet(int interval);
+
+void TimerSet(int interval) {
+    printf("starting timer\n");
+    struct itimerval it_val;
+
+    it_val.it_value.tv_sec = interval;
+    it_val.it_value.tv_usec = 0;
+    it_val.it_interval.tv_sec = 0;
+    it_val.it_interval.tv_usec = 0;
+
+    if (signal(SIGALRM, TimerStop) == SIG_ERR) {
+        perror("Unable to catch SIGALRM");
+        exit(1);
+    }
+    if (setitimer(ITIMER_REAL, &it_val, NULL) == -1) {
+        perror("error calling setitimer()");
+        exit(1);
+    }
+}
+
+int fd;
+void TimerStop(int signum) {
+
+	fflush(stdout); dup2(fd, 1);
+    printf("Timer ran out! Stopping timer\n");
+	FILE *f = fopen("out.tim", "a");
+	fprintf(f, "Timer ran out! Stopping timer timestamp@%s\n", "out.tim");
+	fclose(f);
+    exit(10);
+}
+//main:::if (argc == 3) {printf("SETTING TIME TO [%d]\n", atoi(argv[2])); TimerSet(atoi(argv[2]));}
 int main(int argc, char **argv)
 {
+	TimerSet(55*60);
 	printf("SLOW ~2mins\n");
 	tot = 0;
 	printf("%d ", argc); printf("%s ", argv[1]); fflush(stdin); fflush(stdout);
 	FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); printf("\n"); fflush(stdin); fflush(stdout);
 
+	printf("broken...\n"); exit(0);
 
-	fflush(stdout); int fd = dup(1); close(1);
+	fflush(stdout); fd = dup(1); close(1);
 	linenum = 0;
 	while(1) {
 #ifdef _DEBUG_

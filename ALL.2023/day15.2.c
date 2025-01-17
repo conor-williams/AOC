@@ -38,6 +38,7 @@ int main(int argc, char **argv)
 	fd = dup(1); close(1);
 	
 	a = fopen(argv[1], "r"); printf("2023 Day 15 Part 2\n"); fflush(stdout);
+	printf("broken...\n"); exit(0);
 	char line1[LINE];
 
 	leny = 0;
@@ -281,8 +282,8 @@ nextMove:
 			}
 		}
 	}
-	dup2(fd, 1);
-	printf("**ans %llu\n", ans);
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %llu\n", ans);
 }
 void copyToGridTmp() {
 	for (int y = 0; y < leny; y++) {

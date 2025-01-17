@@ -29,46 +29,53 @@ int numspawn;
 int main(int argc, char **argv)
 {
 
-        printf("%d\n", argc); printf("%s\n", argv[1]); fflush(stdin); fflush(stdout);
-        a = fopen(argv[1], "r"); 
+	printf("%d\n", argc); printf("%s\n", argv[1]); fflush(stdin); fflush(stdout);
+	a = fopen(argv[1], "r"); 
 	printf(DAY); printf("\n"); fflush(stdin); fflush(stdout);
-        char line1[1000];
 
-leny = 0; lenx = 0;  numspawn = 0;
-{
-	for (int x = 0; x < 132; x++) {
-		for (int y = 0; y < 132; y++) {
-			puzzlealready[y][x] = 0;
+	printf("broken...\n"); exit(0);
+	fflush(stdout); int fd = dup(1); //close(1);
+	char line1[1000];
+
+	leny = 0; lenx = 0;  numspawn = 0;
+	{
+		for (int x = 0; x < 132; x++) {
+			for (int y = 0; y < 132; y++) {
+				puzzlealready[y][x] = 0;
+			}
 		}
 	}
-}
 
-while(1) {
-        fgets(line1, 999, a);
-        if (feof(a)) break;
+	while(1) {
+		fgets(line1, 999, a);
+		if (feof(a)) break;
 #ifdef _DEBUG_
-	printf("LINE: %s", line1); fflush(stdout);
+		printf("LINE: %s", line1); fflush(stdout);
 #endif
-fflush(stdout);
-	line1[strlen(line1) -1] = '\0';
-	strcpy(puzzle[leny], line1);
+		fflush(stdout);
+		line1[strlen(line1) -1] = '\0';
+		strcpy(puzzle[leny], line1);
 #ifdef _DEBUG_ 
-	printf("----------------\n");
+		printf("----------------\n");
 #endif
-	leny++;       
-	
-} lenx = strlen(line1);
-int startx = 0; int starty = 0; gcountO = 0;
-{
-	findstart(&startx, &starty);
-	printpuzzle();
-	puzzle[starty][startx] = '.';
-	nextandcheck(startx, starty, 0);
-	printf("*****gcountO %d\n", gcountO);
+		leny++;       
 
-}
-printpuzzle(puzzle);
-fclose(a);
+	} lenx = strlen(line1);
+	int startx = 0; int starty = 0; gcountO = 0;
+
+	
+	fflush(stdout); dup2(fd, 1);
+	{
+		findstart(&startx, &starty);
+		printpuzzle();
+		puzzle[starty][startx] = '.';
+		nextandcheck(startx, starty, 0);
+		printf("*****gcountO %d\n", gcountO);
+		printf("**ans: %d\n", gcountO);
+
+	}
+	printpuzzle(puzzle);
+	fclose(a);
 }
 void nextandcheck(int startx, int starty, int steps)
 {
