@@ -76,8 +76,9 @@ while (1)
 }
 	printf("coords: n:%d ne:%d nw:%d\n", coords[0], coords[1], coords[2]);
 
-	dup2(fd, 1);
 	printf("***max: %d\n" , max);
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %d\n" , max);
 	
 	//printf("\nEND\n");
 

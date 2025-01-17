@@ -22,22 +22,22 @@ void calcnewxy(int newdir, int x, int y, int *newx, int *newy);
 int fd;
 int main(int argc, char **argv)
 {
-        printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
-        FILE * a = fopen(argv[1], "r"); printf("2017 Day22.2\n"); fflush(stdout);
+	printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
+	FILE * a = fopen(argv[1], "r"); printf("2017 Day22.2\n"); fflush(stdout);
 
 	fflush(stdout); fd = dup(1); close(1); fflush(stdout);
 
-while (1) 
-{
-        fgets(line1, SIZE -1, a);
-	if (feof(a)) break;
- 	line1[strlen(line1)-1] = '\0';
- 	//printf("line1 %s\n", line1);
+	while (1) 
+	{
+		fgets(line1, SIZE -1, a);
+		if (feof(a)) break;
+		line1[strlen(line1)-1] = '\0';
+		//printf("line1 %s\n", line1);
 
-	strcpy(gridtmp[leny], line1);
-	leny++;
-}
-fclose(a);
+		strcpy(gridtmp[leny], line1);
+		leny++;
+	}
+	fclose(a);
 	expandgrid();
 	next(ST, ST, 0);
 
@@ -68,9 +68,9 @@ void expandgrid() {
 		for (int x = stx2; x < 2*ST; x++) {
 			grid[y][x] = '.';
 		}
-		
+
 	}
-	
+
 	//printf("GRID: \n"); for (int y = 0; y < ST*2; y++) { printf("%s\n", grid[y]); } printf("\n"); getchar();
 }
 
@@ -88,11 +88,12 @@ void next(int x, int y, int DIR) {
 		}
 		printf("**mytot = %d\n", mytot);
 
-	fflush(stdout); dup2(fd, 1);
 		printf("**tot = %d\n", tot);
+		fflush(stdout); dup2(fd, 1);
+		printf("**ans: %d\n", tot);
 		exit(0);
 	}
-//	printf("GRID1: \n"); for (int y1 = 0; y1 < ST*2; y1++) { for (int x1 = 0; x1 < ST*2; x1++) { if (y1 == y && x1==x) { printf("S"); } else { printf("%c", grid[y1][x1]); } } printf("\n"); } printf("\n"); getchar();
+	//	printf("GRID1: \n"); for (int y1 = 0; y1 < ST*2; y1++) { for (int x1 = 0; x1 < ST*2; x1++) { if (y1 == y && x1==x) { printf("S"); } else { printf("%c", grid[y1][x1]); } } printf("\n"); } printf("\n"); getchar();
 
 	if (x < 0) {printf("ERR MX\n"); exit(0);}
 	if (y < 0) {printf("ERR MY\n"); exit(0);}
@@ -118,7 +119,7 @@ void next(int x, int y, int DIR) {
 		calcnewxy(newdir, x, y, &newx, &newy);
 	}
 
-		
+
 	next(newx, newy, newdir);
 }
 void calcnewxy(int newdir, int x, int y, int *newx, int *newy) {

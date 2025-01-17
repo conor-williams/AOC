@@ -130,7 +130,7 @@ while (1)
 	printf("groupsPos is %d (plus the 0) (not inc)\n", groupsPos);
 	printf("notfail (with 0) is %d\n", notfail+1);
 	printf("groupsPos is %d (with 0)\n", groupsPos+1);
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("**ans: %d\n", groupsPos+1);
 	return 0;
 }

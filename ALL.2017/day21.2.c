@@ -225,7 +225,7 @@ void s2(char startIn[]) {
 						}
 						printf("sub1 %d\n", sub1);
 					}
-					dup2(fd, 1);
+					fflush(stdout); dup2(fd, 1);
 					printf("***ans: %lld\n", my3); exit(0);
 						
 				default:	

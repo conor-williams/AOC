@@ -61,8 +61,9 @@ fclose(a);
 	}
 	printf("***tot is ^^ [%d]\n", tot);
 
-	fflush(stdout); dup2(fd, 1);
 	printf("**max is %d\n", max);
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %d\n", max);
 }
 int ind = 0;
 void next(int from, int to) {

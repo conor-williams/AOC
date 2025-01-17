@@ -21,23 +21,23 @@ char ANS2[999];
 int indOverall;
 int main(int argc, char **argv)
 {
-        printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
-        FILE * a = fopen(argv[1], "r"); printf("2017 Day19.2\n"); fflush(stdout);
+	printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
+	FILE * a = fopen(argv[1], "r"); printf("2017 Day19.2\n"); fflush(stdout);
 
 	fflush(stdout); int fd = dup(1); close(1);
 
-while (1) 
-{
-        fgets(line1, SIZE -1, a);
-	if (feof(a)) break;
- 	line1[strlen(line1)-1] = '\0';
- 	printf("line1 %s\n", line1);
+	while (1) 
+	{
+		fgets(line1, SIZE -1, a);
+		if (feof(a)) break;
+		line1[strlen(line1)-1] = '\0';
+		printf("line1 %s\n", line1);
 
-	strcpy(grid[leny], line1);
-	leny++;
-	if ((int)strlen(line1) > maxX) {maxX = (int)strlen(line1);}
-}
-fclose(a);
+		strcpy(grid[leny], line1);
+		leny++;
+		if ((int)strlen(line1) > maxX) {maxX = (int)strlen(line1);}
+	}
+	fclose(a);
 
 	int startX; int startY;
 	int y = 0;
@@ -52,10 +52,10 @@ fclose(a);
 	already[startY][startX] = 1;
 	next(startX, startY+1, 'D', startX, startY);
 	printf("**ANS [ %s ] \n", ANS);
-			
-	dup2(fd, 1);
+
+	fflush(stdout); dup2(fd, 1);
 	printf("*ans: %d\n", indOverall);
-return 0;
+	return 0;
 }
 int ind = 0;
 void next(int x, int y, char DIR, int frX, int frY) {
@@ -79,8 +79,8 @@ void next(int x, int y, char DIR, int frX, int frY) {
 			}
 			break;
 		case '+':
-				printf("got plus %c\n", DIR);
-			     if (DIR == 'D' && grid[y][x+1] != ' ') {printf("going R\n"); next(x+1, y, 'R', x, y);}
+			printf("got plus %c\n", DIR);
+			if (DIR == 'D' && grid[y][x+1] != ' ') {printf("going R\n"); next(x+1, y, 'R', x, y);}
 			else if (DIR == 'D' && grid[y][x-1] != ' ') {printf("going L\n"); next(x-1, y, 'L', x, y);}
 			else if (DIR == 'U' && grid[y][x+1] != ' ') {printf("going R\n"); next(x+1, y, 'R', x, y);}
 			else if (DIR == 'U' && grid[y][x-1] != ' ') {printf("going L\n"); next(x-1, y, 'L', x, y);}
@@ -138,7 +138,7 @@ void next(int x, int y, char DIR, int frX, int frY) {
 					next(x+1, y, 'R', x, y);
 				}
 			} else if (DIR == 'L') {
-					printf("g left (let)\n");
+				printf("g left (let)\n");
 				if (x-1 >= 0) {
 					next(x-1, y, 'L', x, y);
 				}
@@ -153,7 +153,7 @@ void next(int x, int y, char DIR, int frX, int frY) {
 					next(x, y+1, 'D', x, y);
 				}
 			}
-				
+
 			break;
 	}
 	ind--;

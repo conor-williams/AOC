@@ -75,8 +75,9 @@ fclose(a);
 		}
 	}
 
-	dup2(fd, 1);
 	printf("**tot is %d\n", tot);
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %d\n", tot);
 	
 }
 

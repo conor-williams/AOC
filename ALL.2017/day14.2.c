@@ -190,7 +190,7 @@ while (1)
 
 	printf("floodGroup %d\n", floodGroup);
 	printf("***floodGroup -1 %d\n", floodGroup-1);
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("**ans: %d\n", floodGroup-1);
 }
 int floodfill(int x, int y, int first) {

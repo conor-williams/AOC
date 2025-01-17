@@ -74,8 +74,9 @@ fset:
 	} while (z < 1000);
 		
 	
-	fflush(stdout); dup2(fd, 1);
 	printf("h is %lld\n", h);
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %lld\n", h);
 
 
 }

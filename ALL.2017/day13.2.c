@@ -63,14 +63,16 @@ while (1)
 			}
 		}
 		if (numClash == 0) {
-			dup2(fd, 1);
 			printf("no clash at del %d\n", delay);
+			fflush(stdout); dup2(fd, 1);
+			printf("**ans: %d\n", delay);
 			exit(0);
 			break;
 			//getchar();
 		}
 		delay++;
 	} while (1);
-	dup2(fd, 1);
 	printf("**tot is %d\n", tot);
+	dup2(fd, 1);
+	printf("**ans: %d\n", tot);
 }
