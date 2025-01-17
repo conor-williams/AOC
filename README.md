@@ -36,7 +36,6 @@
 		  <hr>	
      (that kills off the slow day14 for example
 
-	</pre>
 <hr>
 <br>
 	<hr>
