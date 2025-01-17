@@ -20,7 +20,7 @@
                <hr>
 	       <pre>	       
 % ps
-	            PID    PPID    PGID     WINPID   TTY         UID    STIME COMMAND
+      PID    PPID    PGID     WINPID   TTY         UID    STIME COMMAND
      5695       1    5695        940  ?         197610 01:04:07 /usr/bin/mintty
      5702    5696    5702       5272  pty0      197610 01:04:11 /usr/bin/ps
      1807    1806    1807       1424  pty1      197610 20:31:54 /usr/bin/bash
