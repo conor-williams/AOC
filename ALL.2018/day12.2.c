@@ -60,8 +60,9 @@ int main(int argc, char **argv)
 		tot+= pos;
 	}
 	
-	fflush(stdout); dup2(fd, 1);
 	printf("**tot %llu\n", tot);
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %llu\n", tot);
 	exit(0);
 
 	getchar();

@@ -220,8 +220,9 @@ again44:
 		}
 		if (immCount == 0 || infCount == 0) {
 			printf("game over **tot: %d zz is %d im:%d V inf:%d\n", tot, zz, immCount, infCount);
-			dup2(fd, 1);
 			printf("game over **tot: %d \n", tot);
+			fflush(stdout); dup2(fd, 1);
+			printf("**ans: %d \n", tot);
 			exit(0);
 			if (infCount == 0) {
 				printf("game over FOR GOOD **tot: %d zz is %d im%d V inf%d\n", tot, zz, immCount, infCount);

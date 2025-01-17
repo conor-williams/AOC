@@ -213,9 +213,11 @@ int main(int argc, char **argv)
 		next(1,0, CLI, 8, already, grid);
 
 
-		fflush(stdout); dup2(fd, 1);
 		printf("**minPath %d\n", minPath); 
+		fflush(stdout); dup2(fd, 1);
+		printf("**ans %d\n", minPath); 
 		close(1);
+		exit(0);
 	}
 
 	free(grid); free(already);

@@ -261,8 +261,9 @@ again:
 					printf("ERR\n"); exit(0);
 			}
 		}
-		dup2(fd,1);
 		printf("**regb[0] is %d\n", regb[0]);
+		fflush(stdout); dup2(fd,1);
+		printf("**ans: %d\n", regb[0]);
 		exit(0);
 	}
 }

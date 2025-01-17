@@ -208,8 +208,9 @@ int main(int argc, char **argv)
 			}
 		}
 	}
-	dup2(fd, 1);
 	printf("*** tot (2) is %d\n", tot);
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %d\n", tot);
 	
 }
 void printit2() {

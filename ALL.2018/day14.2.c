@@ -106,11 +106,11 @@ fclose(a);
 
 	fflush(stdout); dup2(fd, 1);
 	if (ans == 1) {
-		printf("ANS1: ");
+		printf("**ans: ");
 		printf("%d\n", (int)strlen(ar)-(int)strlen(end));
 		printf("\n");
 	} else if (ans == 2) {
-		printf("ANS2: ");
+		printf("**ans: ");
 		printf("%d\n", (int)strlen(ar)-(int)strlen(end)-1);
 		printf("\n");
 	}

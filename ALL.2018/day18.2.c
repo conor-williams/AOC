@@ -112,8 +112,9 @@ void giveAns() {
 		}
 	}
 
-	fflush(stdout); dup2(fd, 1);
 	printf("**ansP %d\n", countT*countL);
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %d\n", countT*countL);
 	exit(0);
 }
 void printit() {

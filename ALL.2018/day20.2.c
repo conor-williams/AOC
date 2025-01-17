@@ -94,7 +94,8 @@ int main(int argc, char **argv)
 		}
 	}
 
-	fflush(stdout); dup2(fd, 1);
-	//printf("PART1: ANS: [[[ %d ]]]\n", longest);
+	printf("PART1: ANS: [[[ %d ]]]\n", longest);
 	printf("PART2: ANS: [[[ %d ]]]\n", res);
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans:  %d \n", res);
 }

@@ -102,7 +102,7 @@ int main(int argc, char **argv)
 		elves_hit_start = atoi(argv[2]);
 	}
 	for (ELVES_HIT = elves_hit_start; ELVES_HIT < 35; ELVES_HIT++) {
-		dup2(fd, 1);
+		fflush(stdout); dup2(fd, 1);
 		printf("running with: ELVES_HIT is %d\n", ELVES_HIT);
 		close(1);
 		round123 = 0;
@@ -214,7 +214,7 @@ again3:
 		//printf("round123-1: gs is %d es is %d\n", gsA, esA); printf("UPPING ELVES_HIT was %d\n", ELVES_HIT); getchar();
 		//printf("\x1b[2J");
 		//{printf("\n\n\nELVES_HIT is %d\nOUTCOME: %d \nOUT: %d ROUNDS %d es: %d\n", ELVES_HIT, gsA, gs*round123, round123, gs); getchar();}
-		if (gs == 0 && curnume == numE) {printf("\n\n\nELVES_HIT is %d\nOUTCOME: %d \nOUT: %d ROUNDS %d es: %d\n", ELVES_HIT, esA, es*round123, round123, es); dup2(fd, 1); printf("**ans: %d\n", es*round123); break;} else {dup2(fd, 1); printf("LOSS\n"); close(1);}
+		if (gs == 0 && curnume == numE) {printf("\n\n\nELVES_HIT is %d\nOUTCOME: %d \nOUT: %d ROUNDS %d es: %d\n", ELVES_HIT, esA, es*round123, round123, es); fflush(stdout); dup2(fd, 1); printf("**ans: %d\n", es*round123); break;} else {dup2(fd, 1); printf("LOSS\n"); close(1);}
 	}
 }
 
