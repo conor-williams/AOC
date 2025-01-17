@@ -1,6 +1,7 @@
 <h3>Notes: c.w.</h3>
 <br>
 <h3>Update (11::16-01-25):</h3>
+<pre>
 	o looking now to tidy part2's (11-24) of every year (16-01-2025)
 	o all <s>day</s>Part 1's for every year working well, except:
 		-- 2016 Day 11,1
