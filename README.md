@@ -32,7 +32,7 @@
      5686    5668    5668       1792  pty1      197610 01:00:09 /usr/bin/sh
      5691    5687    5668      11772  pty1      197610 01:00:22 /cygdrive/c/Users/conor.williams/Desktop/AOC-main/2016/day14/day14.2
 % kill -9 5691
-	       </pre>
+	       
 		  <hr>	
      (that kills off the slow day14 for example
 
