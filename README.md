@@ -1,6 +1,6 @@
 <h3>Notes: c.w.</h3>
 <br>
-<h3>Update (11::16-01-25):</h3>
+<h3>Update (11::17-01-25):</h3>
 <pre>
 	o looking now to tidy part2's (11-24) of every year (16-01-2025)
 	o all <s>day</s>Part 1's for every year working well, except:
@@ -37,7 +37,7 @@
      5691    5687    5668      11772  pty1      197610 01:00:22 /cygdrive/c/Users/conor.williams/Desktop/AOC-main/2016/day14/day14.2
 % kill -9 5691
 	       
-     (that kills off the slow day14 for example
+     (that kills off the slow day14 for example)
 </pre>
 	<hr>
  	<h2>Update (08-01-25):</h2>
