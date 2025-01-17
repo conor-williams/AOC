@@ -16,7 +16,7 @@
  <h3>Note: (of course you may already know this)</h3>     
 <br>if you are not interested in waiting for one to finish
 <br>and you want the system to continue, then use 
-<br>ps and kill (in cygwin and maybe ps -ef or ps -aux in linux) eg.:
+<br>ps and kill (in cygwin, ps,  and maybe ps -ef or ps -aux in linux) eg.:
                <hr>
 	       <pre>	       
 % ps
