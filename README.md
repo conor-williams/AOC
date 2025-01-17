@@ -2,6 +2,7 @@
 <br>
 <h3>Update (11::16-01-25):</h3><br>
    <pre>
+
 	o looking now to tidy part2's (11-24) of every year (16-01-2025)
 	o all <s>day</s>Part 1's for every year working well, except:
 		-- 2016 Day 11,1
@@ -13,6 +14,24 @@
 		-- 2017 Day 7.2
 		-- <s>2018 Day 7 1&2</s>
 	   	-- 2022 Day 9.2
+     	o if you are not interested in waiting for one to finish and you want the system to continue, then use ps and kill (in cygwin and maybe ps -ef in linux) eg.:
+               <hr>
+	       % ps
+	            PID    PPID    PGID     WINPID   TTY         UID    STIME COMMAND
+     5695       1    5695        940  ?         197610 01:04:07 /usr/bin/mintty
+     5702    5696    5702       5272  pty0      197610 01:04:11 /usr/bin/ps
+     1807    1806    1807       1424  pty1      197610 20:31:54 /usr/bin/bash
+     5696    5695    5696       4276  pty0      197610 01:04:08 /usr/bin/bash
+     5688    5686    5668       9356  pty1      197610 01:00:09 /usr/bin/tee
+     1806       1    1806       9416  ?         197610 20:31:53 /usr/bin/mintty
+     5687    5686    5668       8968  pty1      197610 01:00:09 /usr/bin/sh
+     5668    1807    5668       8744  pty1      197610 01:00:01 /usr/bin/sh
+     5686    5668    5668       1792  pty1      197610 01:00:09 /usr/bin/sh
+     5691    5687    5668      11772  pty1      197610 01:00:22 /cygdrive/c/Users/conor.williams/Desktop/AOC-main/2016/day14/day14.2
+		% kill -9 5691
+  		</hr>	
+     (that kills off the slow day14 for example
+
 	</pre>
 <hr>
 <br>
