@@ -33,11 +33,8 @@
      5691    5687    5668      11772  pty1      197610 01:00:22 /cygdrive/c/Users/conor.williams/Desktop/AOC-main/2016/day14/day14.2
 % kill -9 5691
 	       
-		  <hr>	
      (that kills off the slow day14 for example
 
-<hr>
-<br>
 	<hr>
  	<h2>Update (08-01-25):</h2>
   	<pre>
