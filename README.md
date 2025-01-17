@@ -1,8 +1,6 @@
 <h3>Notes: c.w.</h3>
 <br>
-<h3>Update (11::16-01-25):</h3><br>
-   <pre>
-
+<h3>Update (11::16-01-25):</h3>
 	o looking now to tidy part2's (11-24) of every year (16-01-2025)
 	o all <s>day</s>Part 1's for every year working well, except:
 		-- 2016 Day 11,1
@@ -14,9 +12,7 @@
 		-- 2017 Day 7.2
 		-- <s>2018 Day 7 1&2</s>
 	   	-- 2022 Day 9.2
-     </pre>
-     <br>
-<h3>Note: (of course you may already know this)</h3>     
+ <h3>Note: (of course you may already know this)</h3>     
 <br>if you are not interested in waiting for one to finish
 <br>and you want the system to continue, then use 
 <br>ps and kill (in cygwin and maybe ps -ef or ps -aux in linux) eg.:
