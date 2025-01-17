@@ -81,8 +81,9 @@ fclose(a);
 	}
 	printf("\n");
 
-	dup2(fd, 1);
 	printf("***tot %ld END\n", tot); fflush(stdout);
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %ld\n", tot); 
 } 
 
 int next(int x, int y, int prev)

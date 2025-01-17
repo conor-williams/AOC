@@ -59,6 +59,7 @@ fclose(a);
 
 	//printf("***tot %ld END\n", tot); fflush(stdout);
 
-	dup2(fd, 1);
 	printf("***reg a %d\n", regs[0]); fflush(stdout);
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %d\n", regs[0]); fflush(stdout);
 } 

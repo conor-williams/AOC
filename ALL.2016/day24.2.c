@@ -18,13 +18,13 @@ long tot;
 #define SIZE 1000000
 
 #ifdef EX1
-	#define GX 11
-	#define GY 5
-	#define NUMS 5
+#define GX 11
+#define GY 5
+#define NUMS 5
 #else
-	#define GX 183
-	#define GY 45
-	#define NUMS 8
+#define GX 183
+#define GY 45
+#define NUMS 8
 #endif
 
 int mymin = 9999;
@@ -39,30 +39,30 @@ int distGrid[NUMS+1][NUMS+1];
 int main(int argc, char **argv)
 {
 	tot = 0;lenx = 0; leny = 0;
-        printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
-        FILE * a = fopen(argv[1], "r"); 
+	printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
+	FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
-       
+
 	fflush(stdout); int fd = dup(1); close(1);
 	for (int y = 0; y < NUMS; y++) {
 		for (int x = 0; x < NUMS; x++) {
 			distGrid[y][x] = -1;
 		}
 	}
-        char line1[SIZE];
-while(1) 
-{
-        fgets(line1, SIZE-1, a);
-        if (feof(a)) break;
-	line1[strlen(line1) -1]='\0';
+	char line1[SIZE];
+	while(1) 
+	{
+		fgets(line1, SIZE-1, a);
+		if (feof(a)) break;
+		line1[strlen(line1) -1]='\0';
 #ifdef _DEBUG_
-//	printf("LINE: %s\n", line1);
+		//	printf("LINE: %s\n", line1);
 #endif
-	strcpy(grid[leny], line1);
+		strcpy(grid[leny], line1);
 
-	leny++;
-}
-fclose(a);
+		leny++;
+	}
+	fclose(a);
 
 	for (int fr = 0; fr < NUMS-1; fr++) {
 		for (int to = fr+1; to < NUMS; to++) {
@@ -88,13 +88,14 @@ fclose(a);
 		if (sumDist < minSumDist) {minSumDist = sumDist;}
 	} while (next_permutation(tosort, tosort+NUMS));
 
-	dup2(fd, 1);
 	printf("***minSumDist %d\n", minSumDist); fflush(stdout);
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %d\n", minSumDist); fflush(stdout);
 	//printf("***tot %ld END\n", tot); fflush(stdout);
 } 
 
 int sDist(int fr, int to) {
-	
+
 	int Gfry, Gfrx, Gtoy, Gtox;
 	for (int y = 0; y < GY; y++) {
 		for (int x = 0; x < GX; x++) {
@@ -110,7 +111,7 @@ next:
 				Gtoy = y; Gtox = x; goto next2;
 			}
 		}
-		
+
 	}
 next2:
 
@@ -121,7 +122,7 @@ next2:
 	}
 	already[Gfry][Gfrx] = 0;
 	mymin = 9999;
-	
+
 	//printf("next: %d %d -> %d %d\n", Gfrx, Gfry, Gtox, Gtoy);
 	next(Gfrx, Gfry, Gtox, Gtoy, 0, 1);
 	return mymin;

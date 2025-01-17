@@ -88,6 +88,7 @@ while(1)
 }
 fclose(a);
 	
-	dup2(fd, 1);
 	printf("***tot %ld END\n", tot); fflush(stdout);
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %ld\n", tot); fflush(stdout);
 } 

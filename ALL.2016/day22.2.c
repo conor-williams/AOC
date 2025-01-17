@@ -195,7 +195,7 @@ int main(int argc, char **argv)
 	printf(DAY); fflush(stdin); fflush(stdout);
 
 	printf("broken..\n"); exit(0);
-	fflush(stdout); fd = dup(1); //close(1);
+	fflush(stdout); fd = dup(1); close(1);
 	char line1[SIZE];
 	int numFS;
 	if (strcmp(argv[1], "ex1.txt") == 0) {
@@ -339,9 +339,10 @@ int main(int argc, char **argv)
 	printf("***tot1 %ld \n", tot1); fflush(stdout);
 	printf("***tot %ld \n", tot); fflush(stdout);
 	printf("mymax: %d\n", mymax);
-	dup2(fd, 1);
 	printf("**minPathLen %d \n", minPathLen); fflush(stdout);
 	printf("ENd...\n");
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %d\n", minPathLen); fflush(stdout);
 } 
 int ind = 0;
 void loop(int sv, int let, int first, int *pathLen, int theEnd, int sX, int sY, int myr, int myrTot) {

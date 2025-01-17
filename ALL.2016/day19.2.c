@@ -81,8 +81,9 @@ while(1)
 		int rem = circle2.size()/2 % 2;
 		rotateClock(rem);
 	}
-	dup2(fd,1);
 	printf("** size: %d -- \n***ANS is %d\n", (int)circle2.size(), (int)circle2.front());
+	fflush(stdout); dup2(fd,1);
+	printf("**ans: %d\n", (int)circle2.front());
 	exit(0);
 	leny++;
 }

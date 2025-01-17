@@ -151,10 +151,11 @@ while(1)
 		mypos++;
 	}
 	if (found == (int)strlen(ans)) {
-		dup2(fd, 1);
-		for (auto it = VLINE.begin(); it != VLINE.end(); it++) { printf("%c", *it); } printf("\n"); getchar();
 		printf("YATZEE\n");
-		exit(0);
+		fflush(stdout); dup2(fd, 1);
+		printf("**ans: ");
+		for (auto it = VLINE.begin(); it != VLINE.end(); it++) { printf("%c", *it); } printf("\n"); getchar();
+		
 		break;
 	}
 	} while (next_permutation(VLINE.begin(), VLINE.end()));

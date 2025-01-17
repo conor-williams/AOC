@@ -3,6 +3,8 @@
 #include <string.h>
 #include <ctype.h>
 #include <math.h>
+#include <sys/time.h>
+#include <signal.h>
 
 #include <unistd.h>
 
@@ -14,6 +16,38 @@
 mbedtls_md5_context ctx;
 #define UPTO 50000
 
+void TimerStop(int signum);
+void TimerSet(int interval);
+
+void TimerSet(int interval) {
+    printf("starting timer\n");
+    struct itimerval it_val;
+
+    it_val.it_value.tv_sec = interval;
+    it_val.it_value.tv_usec = 0;
+    it_val.it_interval.tv_sec = 0;
+    it_val.it_interval.tv_usec = 0;
+
+    if (signal(SIGALRM, TimerStop) == SIG_ERR) {
+        perror("Unable to catch SIGALRM");
+        exit(1);
+    }
+    if (setitimer(ITIMER_REAL, &it_val, NULL) == -1) {
+        perror("error calling setitimer()");
+        exit(1);
+    }
+}
+
+int fd;
+void TimerStop(int signum) {
+
+	fflush(stdout); dup2(fd, 1);
+    printf("Timer ran out! Stopping timer\n");
+	FILE *f = fopen("out.tim", "a");
+	fprintf(f, "Timer ran out! Stopping timer @%s\n", "out.tim");
+	fclose(f);
+    exit(10);
+}
 #define getchar()
 void print_hash(unsigned char hash[16]) {
 	for (int i = 0; i < 16; i++) {
@@ -76,8 +110,10 @@ int compute_md5(const char *input, int timerOn, int pr, int inputPos) {
 int main(int argc, char **argv)
 {
 
+	TimerSet(1200);
+	printf("SLOW ~3mins\n");
 	printf("2016 day14 part 2\n");
-	//fflush(stdout); int fd = dup(1); //close(1);
+	fflush(stdout); fd = dup(1); close(1);
 	for (int i = 0; i < UPTO; i++) {
 		threefive[i].five =0;
 		threefive[i].three =0;
@@ -107,7 +143,8 @@ int main(int argc, char **argv)
 					//printf("gotONE... @ j == %d **i is %d pos: %d\n", j, i, pos); getchar();
 					if (pos == 64) {
 						//printf("gotcha... @ j == %d **i is %d pos: %d\n", j, i, pos); getchar();
-						printf("**ans %d\n", i);
+						fflush(stdout); dup2(fd, 1);
+						printf("**ans: %d\n", i);
 						exit(0);
 					}
 					goto cont;
@@ -118,3 +155,5 @@ cont:
 		continue;
 	}
 }
+
+

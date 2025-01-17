@@ -28,7 +28,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
 
-	fflush(stdout); int fd = dup(1); //close(1);
+	fflush(stdout); int fd = dup(1); close(1);
        
         char line1[SIZE];
 	for (int i = 0; i < 10; i++) {
@@ -87,8 +87,9 @@ fclose(a);
 	} while (1);
 		
 	
-	dup2(fd, 1);
 	printf("***timeAns %d END\n", timeAns); fflush(stdout);
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %d\n", timeAns); fflush(stdout);
 } 
 
 
