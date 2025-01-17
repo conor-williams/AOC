@@ -108,6 +108,7 @@ fclose(a);
 		if (iter3->second.score > maxScore) {maxScore = iter3->second.score;}
 	}
 
-	dup2(fd, 1);
 	printf("***maxScore %d\n", maxScore);
+	fflush(stdout); dup2(fd, 1);
+	printf("***ans: %d\n", maxScore);
 }

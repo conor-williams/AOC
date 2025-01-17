@@ -19,25 +19,25 @@ int lenx, leny;
 int main(int argc, char **argv)
 {
 	lenx = 0; leny = 0;
-        //printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
-        FILE * a = fopen(argv[1], "r"); 
+	//printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
+	FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
 
 	fflush(stdout); int fd = dup(1); close(1);
-       
+
 	char line1[1000];
-while(1) {
-        fgets(line1, 999, a);
-        if (feof(a)) break;
-	line1[strlen(line1) -1]='\0';
-	lenx = strlen(line1);
+	while(1) {
+		fgets(line1, 999, a);
+		if (feof(a)) break;
+		line1[strlen(line1) -1]='\0';
+		lenx = strlen(line1);
 #ifdef _DEBUG_
-	printf("LINE: %s\n", line1);
+		printf("LINE: %s\n", line1);
 #endif
-	buckets[leny] = atoi(line1);
-	leny++;
-}
-fclose(a);
+		buckets[leny] = atoi(line1);
+		leny++;
+	}
+	fclose(a);
 	int ar[100];
 	int vol = 150;
 	int tot = 0;
@@ -66,7 +66,8 @@ fclose(a);
 			}
 		} while (next_permutation(ar, ar+leny));
 	}
-	
-	dup2(fd, 1);
+
 	printf("****tot %d\n", tot);
+	dup2(fd, 1);
+	printf("**ans: %d\n", tot);
 }

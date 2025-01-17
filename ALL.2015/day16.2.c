@@ -121,7 +121,7 @@ fclose(a);
 		if (real1.perfumes == sues[i].perfumes || sues[i].perfumes == -1) { } else {found = 1; continue;}
 
 		printf("**possible Sue is %d --- (%d)\n", i, found);
-		dup2(fd, 1);
+		fflush(stdout); dup2(fd, 1);
 		printf("** ans: %d\n", i);
 	}
 		

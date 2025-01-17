@@ -22,6 +22,7 @@ int main(int argc, char **argv)
 
 	fflush(stdout); int fd = dup(1); close(1);
 
+
 	//char line1[SIZE];
 	char in[] = "hepxcrrq";
 	//	char in[] = "hepxxyzz";
@@ -35,7 +36,7 @@ int main(int argc, char **argv)
 printf("LINE: %s\n", line1);
 #endif
 }
-*/
+	 */
 	//fclose(a);
 
 
@@ -58,16 +59,16 @@ for (int p = (int)'a'; p <= 122; p++) {
 						myIn[6] = r; myIn[7] = q;
 
 						/*printf("%c%c%c%c%c%c%c%c\n", myIn[0], myIn[1], myIn[2], myIn[3],
-								myIn[4], myIn[5], myIn[6], myIn[7]);*/
+						  myIn[4], myIn[5], myIn[6], myIn[7]);*/
 						int foundReq1 = 0;
 						for (int i = 0; i < 8-2; i++) {
 							if (myIn[i]+2 == myIn[i+1]+1 && myIn[i+1]+1 == myIn[i+2]) {
 								/*
-								printf("i is %d\n", i);
-								printf("%d\n", myIn[i]);
-								printf("%d\n", myIn[i+1]);
-								printf("%d\n", myIn[i+2]);
-								*/
+								   printf("i is %d\n", i);
+								   printf("%d\n", myIn[i]);
+								   printf("%d\n", myIn[i+1]);
+								   printf("%d\n", myIn[i+2]);
+								 */
 								foundReq1 = 1; break;
 							}
 						}	
@@ -83,9 +84,10 @@ for (int p = (int)'a'; p <= 122; p++) {
 									if (myIn[i] == myIn[i+1]) {
 										for (int j = i+2; j < 7; j++) {
 											if (myIn[j] == myIn[j+1]) {
-												dup2(fd, 1);
 												if (secondOne == 1) {
 													printf("thats it...\n");
+													fflush(stdout); dup2(fd, 1);
+													printf("**ans: ");
 													printf("%c%c%c%c%c%c%c%c\n", in[0], in[1], p, x, c, r1, r, q);
 													exit(0);
 												} else {

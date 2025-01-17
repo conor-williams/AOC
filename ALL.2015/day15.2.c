@@ -116,6 +116,7 @@ Cinnamon: capacity 2, durability 3, flavor -2, texture -1, calories 3
 		}
 	}
 
-	dup2(fd, 1);
 	printf("***max %llu\n", max); fflush(stdout);
+	dup2(fd, 1);
+	printf("***ans: %llu\n", max); fflush(stdout);
 }

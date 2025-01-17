@@ -17,7 +17,7 @@ int main(int argc, char **argv)
 {
 	printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
 
-	FILE * a = fopen(argv[1], "r"); printf("Day23.2\n"); fflush(stdout);
+	FILE * a = fopen(argv[1], "r"); printf("2015 Day23.2\n"); fflush(stdout);
 
 	fflush(stdout); int fd = dup(1); close(1);
 	char line1[1000];
@@ -55,8 +55,9 @@ int main(int argc, char **argv)
 	 //while
 	
 	printf2("\n* a is %llu\n", regs[0]);
-	dup2(fd, 1);
 	printf2("\n*** b is %llu\n", regs[1]);
+	fflush(stdout); dup2(fd, 1);
+	printf2("\n**ans: %llu\n", regs[1]);
 }
 
 
