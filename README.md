@@ -13,7 +13,7 @@
 		-- 2017 Day 7.2
 		-- <s>2018 Day 7 1&2</s>
 	   	-- 2022 Day 9.2
-	o Timer begin added to the slow ones so they dont run too long
+	o Timer being added to the slow ones so they don't run too long
 	        (but you might not get the answer)
 		(timer length can be changed in code before a compile) TimerSet(Xseconds);
 </pre>
