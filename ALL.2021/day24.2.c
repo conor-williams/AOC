@@ -439,8 +439,9 @@ end:
 		sprintf(ans, "%s%d", anstmp, digit1);
 	}
 
-	dup2(fd, 1);
 	printf("**ans [[ %s ]]\n", ans);
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %s\n", ans);
 	exit(0);
 
 }

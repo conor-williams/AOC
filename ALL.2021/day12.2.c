@@ -26,29 +26,33 @@ int first = 1;
 map <string, int> call;
 int main(int argc, char **argv)
 {
-        signal(SIGTSTP, &sigfunc);
-        printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
+	signal(SIGTSTP, &sigfunc);
+	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-        a = fopen(argv[1], "r"); printf("2021 Day 12 - 1\n"); fflush(stdout);
-        char line1[LINE];
-// XW-ed
-int leny = 0;
-while (1) {
-        fgets(line1, LINE-1, a);
-        if (feof(a)) break;
-        line1[strlen(line1)-1] = '\0';
-        //printf("LINE: %s\n", line1);
-	char one[20], two[20];
-	sscanf(line1, "%[^-]-%[^\0]", one, two);
-	string oneS = one; string twoS = two;
-	cout << oneS << " " << twoS << endl;
-	mp[oneS].push_back(twoS);
-	mp[twoS].push_back(oneS);
-	
-	leny++;
+	a = fopen(argv[1], "r"); printf("2021 Day 12.2\n"); fflush(stdout);
+	printf("broken...\n"); exit(0);
 
-}
-fclose(a);
+	fflush(stdout); int fd = dup(1); close(1);
+
+	char line1[LINE];
+	// XW-ed
+	int leny = 0;
+	while (1) {
+		fgets(line1, LINE-1, a);
+		if (feof(a)) break;
+		line1[strlen(line1)-1] = '\0';
+		//printf("LINE: %s\n", line1);
+		char one[20], two[20];
+		sscanf(line1, "%[^-]-%[^\0]", one, two);
+		string oneS = one; string twoS = two;
+		cout << oneS << " " << twoS << endl;
+		mp[oneS].push_back(twoS);
+		mp[twoS].push_back(oneS);
+
+		leny++;
+
+	}
+	fclose(a);
 
 	for (auto itm = mp.begin(); itm!=mp.end(); itm++) {
 		cout << "mapFirst: " << itm->first << endl;
@@ -66,6 +70,9 @@ fclose(a);
 		cout << it->first << endl;
 	}
 	printf("FIN ** count %d\n", count);
+
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %d\n", count);
 }
 
 int ind = 0;
@@ -81,7 +88,7 @@ void traverse(string st, string en, string called, map<string, int> al, int f1) 
 	}
 
 	cout << "in trav " << st << " -> " << en << " (" << ve.size() << ") " << endl;
-	
+
 	if (st == "end") {
 		cout << "end: " << ind << " -- " << called << endl;
 		if (call.find(called) == call.end()) {
@@ -105,12 +112,12 @@ void traverse(string st, string en, string called, map<string, int> al, int f1) 
 		}
 		if (tmpSt == st) {
 			if (st == "start" || st == "end") {al[st]=1;} else 
-			if (f1 == 0) {
-				al[st] = 1;
-			} else {
-				cout << "did not add " << st << endl;
-				f1 = 0;
-			}
+				if (f1 == 0) {
+					al[st] = 1;
+				} else {
+					cout << "did not add " << st << endl;
+					f1 = 0;
+				}
 		}
 
 	}
