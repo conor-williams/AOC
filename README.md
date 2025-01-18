@@ -2,8 +2,9 @@
 <br>
 <h3>Update (11::17-01-25):</h3>
 <pre>
-	o looking now to tidy part2's (11-24) of every year (16-01-2025)
-Result of Tidy: (+if the file is not present, it has not been attempted)
+	<s>o looking now to tidy part2's (11-24) of every year (16-01-2025) </s>
+	o dup2 needed an fflush -- now no debug -- sorry!
+	o Result of Tidy every year but 2024: (+if the file is not present, it has not been coded )
 	conor.williams@DESKTOP-MM5HH8I ~/AOC-main
 $ cat lool.txt
         2015
