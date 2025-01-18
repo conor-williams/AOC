@@ -312,7 +312,7 @@ again:
 
 	//printf("\n\n\n\n\nnumgrids %d\n", numgrids);
 	printf("\n\n\n\n\n**minScore %d\n", minScore);
-	dup2(fd,1);
+	fflush(stdout); dup2(fd,1);
 	printf("**ans: %d\n", minScore);
 	free(grid);
 }
@@ -833,7 +833,7 @@ int isfree(int gr, int xv) {
 }
 
 void dupGrid(int gr) {
-	//if (numgrids+3000 > MAXNUMGRID) {dup2(fd,1); free(grid);perror("GRID"); printf("numgrids:%d minScore:%d\n", numgrids, minScore); dup2(fd, 1);exit(0);}
+	//if (numgrids+3000 > MAXNUMGRID) {fflush(stdout); dup2(fd,1); free(grid);perror("GRID"); printf("numgrids:%d minScore:%d\n", numgrids, minScore); dup2(fd, 1);exit(0);}
 	grid[numgrids].A1.x = grid[gr].A1.x;
 	grid[numgrids].A1.y = grid[gr].A1.y;
 

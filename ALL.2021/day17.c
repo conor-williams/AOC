@@ -150,7 +150,7 @@ int main(int argc, char **argv)
 			}
 		}
 	}
-	//dup2(fd,1);
+	//fflush(stdout); dup2(fd,1);
 	
 	printf("**maxy is  %d (%d,%d)\n", maxy, maxsvx, maxsvy);
 	fflush(stdout); dup2(fd, 1);
