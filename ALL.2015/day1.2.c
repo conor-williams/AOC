@@ -12,7 +12,7 @@ int main(int argc, char **argv)
 
         FILE * a = fopen(argv[1], "r"); printf("2015 Day1 Part2\n"); fflush(stdin); fflush(stdout);
 
-	fflush(stdout); int fd = dup(1); close(1);
+	fflush(stdout); int fd = dup(1); //close(1);
         char line1[8000];
         fgets(line1, 7999, a);
         fclose(a);
@@ -27,6 +27,6 @@ if (level == -1) {printf("BASEMENT: %d", e); break;}
         }
 	
 	fflush(stdout); dup2(fd, 1);
-	printf("****LEVEL:***** %d\n", level);
+	//printf("****LEVEL:***** %d\n", level);
 
 }
