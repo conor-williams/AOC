@@ -28,9 +28,10 @@ int main(int argc, char **argv)
 	FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); printf("\n"); fflush(stdin); fflush(stdout);
 
-	print("broken..\n"); exit(0);
+	printf("broken..\n"); exit(0);
 	fflush(stdout); int fd = dup(1); close(1);
-	char line[10000000][10000000];
+	//char line[10000000][10000000];
+	char line[1000][1000];
 
 	int linenum = 0;
 	while(1) {
