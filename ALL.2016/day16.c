@@ -73,7 +73,7 @@ again:
 		goto again;
 	}
 		
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("*** cSum %s\n", cSum);
 	exit(0);
 	leny++;

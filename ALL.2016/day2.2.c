@@ -97,6 +97,6 @@ while (1) {
 fclose(a);
 	code[leny] = '\0';
 
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("**ans: %s\n", code);
 }

@@ -83,7 +83,7 @@ while(1)
 			
 		//printf("============NEXT VV----------\n");
 	}
-	//dup2(fd,1);
+	//fflush(stdout); dup2(fd,1);
 	printf("** size: %d -- \n***ANS is %d\n", (int)circle2.size(), (int)circle2.front());
 	leny++;
 }

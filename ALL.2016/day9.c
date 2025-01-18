@@ -81,7 +81,7 @@ int main(int argc, char **argv)
 			//	printf("newLine %s\n", newLine); fflush(stdout);
 			printf("pass %d len(%d)\n", count, (int)strlen(newLine)); fflush(stdout);
 
-			dup2(fd, 1);
+			fflush(stdout); dup2(fd, 1);
 			printf("**ans: %d\n", (int)strlen(newLine)); fflush(stdout);
 			close(1);
 			break;

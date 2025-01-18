@@ -236,7 +236,7 @@ fclose(a);
 				} else if (bots[mBot].Bchip[j] == 17) {
 					found++;
 				}
-				if (found == 2) {dup2(fd, 1); printf("FOUND IT BOT: (%d)\n", bots[mBot].botNum); getchar(); exit(0);}
+				if (found == 2) {fflush(stdout); dup2(fd, 1); printf("FOUND IT BOT: (%d)\n", bots[mBot].botNum); getchar(); exit(0);}
 			}
 		} else {
 			printf("NOT Accessing (%d)\n", bots[mBot].botNum);

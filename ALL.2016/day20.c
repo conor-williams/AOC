@@ -62,13 +62,13 @@ fclose(a);
 			}	
 		}
 		if (found == 0) {
-			dup2(fd, 1);
+			fflush(stdout); dup2(fd, 1);
 			printf("**lowest is %llu\n", i);
 			exit(0);
 		}
 
 	}
 
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("***tot %ld END\n", tot); fflush(stdout);
 } 

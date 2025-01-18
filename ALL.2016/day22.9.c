@@ -316,7 +316,7 @@ printf("end of first part..%d.\n", savesPos);
 			loop(i, 0, 1, &mypathLen, 0, sX, sY, 0, 0);
 		//}
 	}
-	//dup2(fd, 1);
+	//fflush(stdout); dup2(fd, 1);
 	free(savesBEG);
 	printf("tot3 is %ld\n", tot3); getchar(); getchar();
 

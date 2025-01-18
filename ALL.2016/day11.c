@@ -203,7 +203,7 @@ newElev:
 
 	printf("**mycount is %d\n", mycount);
 	printf("***tot %ld END\n", tot); fflush(stdout);
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("not working... broken todo\n");
 } 
 int notalltop() {

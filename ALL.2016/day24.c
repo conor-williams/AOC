@@ -87,7 +87,7 @@ fclose(a);
 		if (sumDist < minSumDist) {minSumDist = sumDist;}
 	} while (next_permutation(tosort, tosort+NUMS));
 
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("***minSumDist %d\n", minSumDist); fflush(stdout);
 	//printf("***tot %ld END\n", tot); fflush(stdout);
 } 

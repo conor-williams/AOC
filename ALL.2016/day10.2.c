@@ -365,7 +365,7 @@ fclose(a);
 		}
 	}
 
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("***mul %d\n", mul);
 	//printf("mul END\n");
     	return 0;

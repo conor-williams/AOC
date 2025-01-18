@@ -65,7 +65,7 @@ while(1)
 	//}
     }
 
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
     printf("VALID %d\n", valid);
     fclose(a);
     return 0;

@@ -112,7 +112,7 @@ void checkWereYouThereBefore(int curx, int cury) {
       for (int e = 0; e < pos; e++) {
 	if (curx == xytracks[e].x && cury == xytracks[e].y) {
 		printf("There before: %d, %d\n", curx, cury);
-		dup2(fd, 1);
+		fflush(stdout); dup2(fd, 1);
 		printf("**ans: %d\n", abs(curx) + abs(cury));
 	        fflush(stdout);
 		exit(0);

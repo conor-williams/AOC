@@ -139,7 +139,7 @@ for (auto it = V.begin(); it != V.end(); it++) { printf("%c", *it); } printf("\n
 	leny++;
 }
 fclose(a);
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("**ans: ");
 	for (auto it = V.begin(); it != V.end(); it++) { printf("%c", *it); } printf("\n");
 

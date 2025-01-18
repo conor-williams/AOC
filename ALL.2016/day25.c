@@ -147,11 +147,11 @@ fclose(a);
 				
 			printf("INVALID.. CONT [%s]\n", instrs[i]);
 		}
-		if (count == 1000) {dup2(fd, 1); printf("i:[%d] is good\n", i); exit(0);} else {/*printf("i:%d bad\n", i);*/}
+		if (count == 1000) {fflush(stdout); dup2(fd, 1); printf("i:[%d] is good\n", i); exit(0);} else {/*printf("i:%d bad\n", i);*/}
 	}
 
 	//printf("***tot %ld END\n", tot); fflush(stdout);
 
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("***reg a %d\n", regs[0]); fflush(stdout);
 } 

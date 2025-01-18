@@ -70,7 +70,7 @@ while(1)
 		else if (line1[ii] == ')') {ignore = 0;continue;}
 		if (ignore == 0) {tot += a[ii];}
 	}
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("**ans: %ld\n", tot);
 	close(1);
 }

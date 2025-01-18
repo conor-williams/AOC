@@ -229,7 +229,7 @@ printf("end of first part...\n");
 			}
 		}
 	}
-	//dup2(fd, 1);
+	//fflush(stdout); dup2(fd, 1);
 	printf("tot3 is %ld\n", tot3); getchar(); getchar();
 
 	printf("**minPathLen %d \n", minPathLen); fflush(stdout);

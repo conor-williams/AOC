@@ -66,7 +66,7 @@ if ((inum = atoi(num)) > 10) {printf("%d\n", inum);}
 printf("pointing: %d\n", pointing);
 printf("N: %d S: %d E: %d W:%d\n", dirE.N, dirE.S, dirE.E, dirE.W);
       printf("****ns: %d ew: %d*****\n", northsouth, eastwest);
-      dup2(fd, 1);
+      fflush(stdout); dup2(fd, 1);
       printf("**ans: %d\n", abs(northsouth) + abs(eastwest));
 
 }

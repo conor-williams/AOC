@@ -76,7 +76,7 @@ while(1)
 		}
 	} while (1);
 end:
-	dup2(fd,1);
+	fflush(stdout); dup2(fd,1);
 	printf("**elfP is %d\n", elfP);
 	exit(0);
 	leny++;

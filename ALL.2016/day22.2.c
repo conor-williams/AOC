@@ -176,7 +176,7 @@ int cpoint(int let, int r, int pathLen, int SAME) {
    }
    */
 void sig_handler(int signum){
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("CONOR ctrl-z minPathLen is:::: %d\n", minPathLen);
 	close(1);
 }
@@ -330,7 +330,7 @@ int main(int argc, char **argv)
 		loop(i, 0, 1, &mypathLen, 0, sX, sY, 0, 0);
 		//}
 	}
-	//dup2(fd, 1);
+	//fflush(stdout); dup2(fd, 1);
 	//free(savesBEG);
 
 	printf("tot3 is %ld\n", tot3); getchar(); getchar();

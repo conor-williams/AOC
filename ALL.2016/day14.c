@@ -75,7 +75,7 @@ int main(int argc, char **argv)
 					if (pos == 64) {
 						//printf("gotcha... @ j == %d **i is %lu pos: %d\n", j, i, pos); getchar();
 						//printf("**** index i is %lu\n", i); getchar();
-						dup2(fd, 1);
+						fflush(stdout); dup2(fd, 1);
 						printf("**ans %lu\n", i);
 						exit(0);
 					} else if (pos == 63) {

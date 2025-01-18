@@ -159,7 +159,7 @@ int main(int argc, char **argv)
 	makemove(0, 1, 0);
 	tot = 0;
 
-	//dup2(fd, 1);
+	//fflush(stdout); dup2(fd, 1);
 	printf("minSteps: [%d] END\n", minSteps);
 	printf("maxc: [%d] END\n", maxc);
 	//printf("count123: [%d] \n", count123);

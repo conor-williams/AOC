@@ -101,7 +101,7 @@ while(1)
 		char *word3 = strtok(NULL, " ");
 		//if (sectorIDI ==324 && ((word1 != NULL && isitaword((char *)word1)) || (word2 != NULL && isitaword((char*) word2)) || (word3 != NULL && isitaword((char *)word3)))) 
 		if ((word1 != NULL && strncasecmp(word1, "north", 5)==0) || (word2 != NULL && strncasecmp(word2, "north", 5)==0) || (word3 != NULL && strncasecmp(word3, "north", 5) == 0))  {
-			dup2(fd, 1);
+			fflush(stdout); dup2(fd, 1);
 			printf("**ans: %d\n", sectorIDI);
 			exit(0);
 			//printf("[%s] \n", safnew123S);
@@ -118,7 +118,7 @@ while(1)
 	printf("am here...\n");
 	
 
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("****tot [%d]\n", tot);
     fclose(a);
 }
