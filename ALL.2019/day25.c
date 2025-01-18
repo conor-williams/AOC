@@ -10,7 +10,7 @@
 using namespace std;
 
 int lenx, leny;
-#define DAY "2019 day 19 part1\n"
+#define DAY "2019 day 25 part1\n"
 //#define _DEBUG_
 #undef DEBUG
 //#define getchar()
@@ -43,6 +43,7 @@ long long  tmpIn[] = {0, 0, 1,  0, 2, 0, 3, 2, 2, 2, -1};
 int main(int argc, char **argv)
 {
 	lenx = 0; leny = 0;
+	printf("THIS IS INTERACTIVE - will mess up the runing use ps and kill\n");
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);

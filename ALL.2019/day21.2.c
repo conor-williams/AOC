@@ -338,7 +338,7 @@ int machine(int machineNumber, int one) {
 				printf("OUT outside range... %lld\n", OUT);
 				fflush(stdout); dup2(fd, 1);
 				printf("**ans: %lld\n", OUT);
-				close(1);
+				exit(0);
 			}
 
 			if (OUT == ';') {
