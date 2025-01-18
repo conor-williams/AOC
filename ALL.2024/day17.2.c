@@ -8,6 +8,10 @@
 #include <signal.h>
 #include <vector>
 
+#include <unistd.h>
+
+#define getchar()
+#define assert(asdf)
 using namespace std;
 FILE *a;
 #define LINE 1000
@@ -46,6 +50,8 @@ int main(int argc, char **argv)
 	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
 	a = fopen(argv[1], "r"); printf("2024 Day 17 Part 2\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
 	char line1[LINE];
 
 	leny = 0;
@@ -186,6 +192,8 @@ int main(int argc, char **argv)
 nextRegA:
 		continue;
 	}
+
+	fflush(stdout); dup2(fd, 1);
 	printf("**ans %lld\n", minzz);
 }
 

@@ -11,6 +11,10 @@
 #include <map>
 
 
+#include <unistd.h>
+
+#define getchar()
+#define assert(asdf)
 /* compile with -Wl,--stack,999777666 */
 using namespace std;
 
@@ -34,11 +38,14 @@ void copyGrid();
 map <long long, long long> mp;
 int main(int argc, char **argv)
 {
+	printf("SLOW ~20seconds\n");
         //signal(SIGTSTP, &sigfunc);
         signal(SIGQUIT, &sigfunc);
         printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
         a = fopen(argv[1], "r"); printf("2024 Day 20 Part 1\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[LINE];
 
 	leny = 0;
@@ -111,6 +118,8 @@ after:
 	for (auto it = mp.begin(); it != mp.end(); it++) {
 		printf("%lld: %lld\n", (*it).first, (*it).second);
 	}
+
+	fflush(stdout); dup2(fd, 1);
 	printf("**ans %lld\n", count);
 		
 }

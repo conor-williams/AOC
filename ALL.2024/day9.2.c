@@ -10,6 +10,10 @@
 #include <string>
 #include <iostream>
 
+#include <unistd.h>
+
+#define getchar()
+#define assert(asdf)
 using namespace std;
 
 FILE *a;
@@ -25,6 +29,8 @@ int main(int argc, char **argv)
         printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
         a = fopen(argv[1], "r"); printf("2024 Day 9 Part 2\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[LINE];
 
 	leny = 0;
@@ -121,5 +127,7 @@ again:
 	//getchar(); for (int i = 0; i < (int)ve.size(); i++) { printf("%d ", ve[i]); } printf("\n");
 		
 	printf("size: %d\n", (int)ve.size());
+
+	fflush(stdout); dup2(fd, 1);
 	printf("**ans %llu\n", ans);
 }

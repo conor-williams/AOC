@@ -13,6 +13,10 @@
 #include <deque>
 #include <map>
 
+#include <unistd.h>
+
+#define getchar()
+#define assert(asdf)
 unsigned long long MINS = (unsigned long long)-1;
 
 using namespace std;
@@ -162,6 +166,8 @@ int main(int argc, char **argv)
 	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
 	a = fopen(argv[1], "r"); printf("2024 Day 21 Part 2\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
 	char line1[LINE];
 
 	leny = 0;
@@ -335,10 +341,14 @@ ne:
 		conans += minLength25 * numbers[i];
 
 	}
-	printf("**ans: ");
-	cout << conans << endl;
-}
 
+	//printf("**ans: ");
+	//cout << conans << endl;
+	
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %llu\n", conans);
+	//cout << conans << endl;
+}
 unsigned long long robotARM(string ans, int robotNum, int reset, char prev) {
 
 	if (robotNum > maxLevelSoFar) {maxLevelSoFar = robotNum;}

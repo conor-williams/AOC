@@ -8,6 +8,10 @@
 #include <signal.h>
 #include <vector>
 
+#include <unistd.h>
+
+#define getchar()
+#define assert(asdf)
 using namespace std;
 FILE *a;
 #define LINE 2000
@@ -35,9 +39,10 @@ int main(int argc, char **argv)
 {
 	signal(SIGTSTP, &sigfunc);
 	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
-	fd = dup(1); close(1);
 	
-	a = fopen(argv[1], "r"); printf("2024 Day 15 Part 1\n"); fflush(stdout);
+	a = fopen(argv[1], "r"); printf("2024 Day 15 Part 2\n"); fflush(stdout);
+
+	fflush(stdout); fd = dup(1); close(1);
 	char line1[LINE];
 
 	leny = 0;

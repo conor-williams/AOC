@@ -11,6 +11,10 @@
 #include <iostream>
 #include <deque>
 
+#include <unistd.h>
+
+#define getchar()
+#define assert(asdf)
 using namespace std;
 
 FILE *a;
@@ -30,7 +34,8 @@ int main(int argc, char **argv)
 	if (argc == 3) {TIMES = atoi(argv[2]);} 
 
         a = fopen(argv[1], "r"); printf("2024 Day 11 Part 1\n"); fflush(stdout);
-	int fd = dup(1); close(1);
+
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[LINE];
 
 	leny = 0;

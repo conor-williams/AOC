@@ -18,6 +18,10 @@
 #include <time.h>
 #include <bits/stdc++.h>
 
+#include <unistd.h>
+
+#define getchar()
+#define assert(asdf)
 /* slowish (sort takes a while) -- need some optims... */
 /* compile with -Wl,--stack,999777666 */
 using namespace std;
@@ -228,10 +232,13 @@ int getPathLength(tuple <int, int, int, int> bla) {
 int main(int argc, char **argv)
 {
 	//signal(SIGTSTP, &sigfunc);
+	printf("SLOW ~25seconds\n");
 	signal(SIGQUIT, &sigfunc);
 	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
 	a = fopen(argv[1], "r"); printf("2024 Day 20 Part 2\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
 	char line1[LINE];
 
 	leny = 0;
@@ -353,6 +360,8 @@ after:
 		}
 	}
 #endif
+
+	fflush(stdout); dup2(fd, 1);
 	printf("**ans %d\n", gcount);
 }
 

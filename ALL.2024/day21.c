@@ -12,6 +12,10 @@
 #include <vector>
 #include <deque>
 
+#include <unistd.h>
+
+#define getchar()
+#define assert(asdf)
 using namespace std;
 
 FILE *a;
@@ -44,13 +48,13 @@ deque <string> veStrRobot2;
 int fd;
 int main(int argc, char **argv)
 {
-	fd = dup(1); close(1);
-	
 	//signal(SIGTSTP, &sigfunc);
 	signal(SIGQUIT, &sigfunc);
 	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
 	a = fopen(argv[1], "r"); printf("2024 Day 21 Part 1\n"); fflush(stdout);
+
+	fflush(stdout); fd = dup(1); close(1);
 	char line1[LINE];
 
 	leny = 0;

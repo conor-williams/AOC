@@ -8,6 +8,10 @@
 #include <vector>
 #include <signal.h>
 
+#include <unistd.h>
+
+#define getchar()
+#define assert(asdf)
 using namespace std;
 
 FILE *a;
@@ -22,7 +26,9 @@ int main(int argc, char **argv)
         signal(SIGTSTP, &sigfunc);
         printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-        a = fopen(argv[1], "r"); printf("2024 Day 2 part1\n"); fflush(stdout);
+        a = fopen(argv[1], "r"); printf("2024 Day 2 part2\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[LINE];
         char line2[LINE];
 
@@ -143,6 +149,8 @@ while (1) {
 	}
 	leny++;
 }
+
+	fflush(stdout); dup2(fd, 1);
 	printf("**ans %lld\n", num);
 fclose(a);
 

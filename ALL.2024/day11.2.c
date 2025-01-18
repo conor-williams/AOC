@@ -13,6 +13,10 @@
 #include <map>
 #include <set>
 
+#include <unistd.h>
+
+#define getchar()
+#define assert(asdf)
 using namespace std;
 
 FILE *a;
@@ -45,6 +49,8 @@ int main(int argc, char **argv)
 	if (argc == 4) {INCR = atoi(argv[3]);} 
 
 	a = fopen(argv[1], "r"); printf("2024 Day 11 Part 2\n"); fflush(stdout);
+	
+	fflush(stdout); int fd = dup(1); close(1);
 	//int fd = dup(1); close(1);
 	char line1[LINE];
 
@@ -69,7 +75,9 @@ int main(int argc, char **argv)
 		printf("doing %s\n", (*it).c_str());
 		doit(*it, INCR, INCR, 1);
 	}
-	printf("**ANS %llu\n", ANS);
+
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %llu\n", ANS);
 
 }
 

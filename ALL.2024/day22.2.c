@@ -15,6 +15,10 @@
 #include <unordered_map>
 #include <time.h>
 
+#include <unistd.h>
+
+#define getchar()
+#define assert(asdf)
 using namespace std;
 
 FILE *a;
@@ -52,6 +56,7 @@ void sigfunc(int a) { printf("[[ %d of %d ]]\n", curInQ, curTot); }
 struct diff_s diffs[3000][2001];
 int main(int argc, char **argv)
 {
+	printf("SLOW ~2minutes\n");
         clock_t start, end; double cpu_time_used;
 
 	if (argc == 3) {TIMES = atoi(argv[2]);}
@@ -60,6 +65,8 @@ int main(int argc, char **argv)
 	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
 	a = fopen(argv[1], "r"); printf("2024 Day 22 Part 2\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
 	char line1[LINE];
 
 	leny = 0;
@@ -169,6 +176,8 @@ next:
 
 	printf("maxtu %d,%d,%d,%d\n", get<0>(maxtu), get<1>(maxtu), get<2>(maxtu), get<3>(maxtu));
 	printf("TIMES: %d\n", TIMES);
+
+	fflush(stdout); dup2(fd, 1);
 	printf("**ans %llu\n", maxSum);
 
 }

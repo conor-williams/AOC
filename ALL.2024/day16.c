@@ -7,6 +7,10 @@
 #include <unistd.h>
 #include <signal.h>
 
+#include <unistd.h>
+
+#define getchar()
+#define assert(asdf)
 FILE *a;
 #define LINE 1000
 //#define getchar()
@@ -23,6 +27,8 @@ int main(int argc, char **argv)
         printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
         a = fopen(argv[1], "r"); printf("2024 Day 16 Part 1\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[LINE];
 
 	leny = 0;
@@ -55,6 +61,8 @@ after:
 	memset(already, 0, sizeof(already));
 	printf("%d,%d -> %d,%d -- lenx:%d leny:%d\n", sx, sy, ex, ey, lenx, leny);
 	next(sx, sy, ex, ey, 0, 1, 1, 0);
+
+	fflush(stdout); dup2(fd, 1);
 	printf("**ans %d\n", minPath);
 }
 

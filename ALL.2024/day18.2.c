@@ -7,6 +7,10 @@
 #include <unistd.h>
 #include <signal.h>
 
+#include <unistd.h>
+
+#define getchar()
+#define assert(asdf)
 FILE *a;
 #define LINE 1000
 //#define getchar()
@@ -36,7 +40,9 @@ int main(int argc, char **argv)
         signal(SIGQUIT, &sigfunc);
         printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-        a = fopen(argv[1], "r"); printf("2024 Day 18 Part 1\n"); fflush(stdout);
+        a = fopen(argv[1], "r"); printf("2024 Day 18 Part 2\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[LINE];
 
 	leny = 0;
@@ -68,6 +74,7 @@ fclose(a);
 		next(0, 0, szlenx-1, szleny-1, 0);
 		if (minPath == minORIG) {
 			printf("kk bad: %d\n", kk);
+			fflush(stdout); dup2(fd, 1);
 			printf("**ans [ %d,%d ]\n", p1.x, p1.y);
 			exit(0);
 		} else {
@@ -75,7 +82,11 @@ fclose(a);
 		}
 	}
 
+	
 	printf("minPath is %d\n", minPath);
+
+	fflush(stdout); dup2(fd, 1);
+	printf("**dummy: %d\n", minPath);
 }
 
 void printit() {

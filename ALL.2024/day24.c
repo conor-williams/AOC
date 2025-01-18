@@ -14,6 +14,10 @@
 #include <set>
 #include <algorithm>
 
+#include <unistd.h>
+
+#define getchar()
+#define assert(asdf)
 using namespace std;
 
 
@@ -46,6 +50,8 @@ int main(int argc, char **argv)
 	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
 	a = fopen(argv[1], "r"); printf("2024 Day 24 Part 1\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
 	char line1[LINE];
 
 	leny = 0;
@@ -134,8 +140,11 @@ restart:
 	char *bla;
 	unsigned long long conved = strtoull(deci.c_str(), &bla, 2);
 
+	
 	cout << deci << endl;
 	cout << "Ans: [ ";
 	cout << conved;
 	cout << " ] " << endl;
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %llu\n", conved);
 }

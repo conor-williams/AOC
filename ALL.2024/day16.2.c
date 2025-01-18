@@ -9,6 +9,10 @@
 #include <vector>
 #include <set>
 
+#include <unistd.h>
+
+#define getchar()
+#define assert(asdf)
 using namespace std;
 
 FILE *a;
@@ -26,10 +30,13 @@ int next2(int x, int y, int ex, int ey, int path, int dir, int prevDir, int step
 set <pair<int, int>> se;
 int main(int argc, char **argv)
 {
+	printf("SLOW ~30seconds\n");
         signal(SIGTSTP, &sigfunc);
         printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-        a = fopen(argv[1], "r"); printf("2024 Day 16 Part 1\n"); fflush(stdout);
+        a = fopen(argv[1], "r"); printf("2024 Day 16 Part 2\n"); fflush(stdout);
+
+	fflush(stdout); int fd = dup(1); close(1);
         char line1[LINE];
 
 	leny = 0;
@@ -67,6 +74,8 @@ after:
 	vector <pair<int, int>> ve;
 	memset(already, 0, sizeof(already));
 	next2(sx, sy, ex, ey, 0, 1, 1, 0, ve);
+
+	fflush(stdout); dup2(fd, 1);
 	printf("**ans %ld\n", se.size()+1);
 	
 }
