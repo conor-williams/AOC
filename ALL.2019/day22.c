@@ -99,7 +99,7 @@ fclose(a);
 	}
 	printf("\n");
 	assert(pos1 == pos2);
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("******** pos1 %d\n", pos1);
 
 }

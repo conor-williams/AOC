@@ -152,7 +152,7 @@ fclose(a);
 		}
 	}
 	printf("\n***maxDetect:%d @ %d, %d\n", maxDetect, maxX, maxY);
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("**ans: %d\n", maxDetect);
 }
 

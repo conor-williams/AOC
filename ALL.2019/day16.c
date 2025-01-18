@@ -74,7 +74,7 @@ while(1) {
 		if (z+1 == 100) {
 			printf("after phase %d, ans is %s\n", z+1, ans); getchar();
 			//printf("FIRST 8: [ ");
-			dup2(fd, 1);
+			fflush(stdout); dup2(fd, 1);
 			printf("**ans: [ ");
 			for (int m = 0; m < 8; m++) {
 				printf("%c", ans[m]);

@@ -377,7 +377,7 @@ fclose(a);
 
 }
 			}	
-			dup2(fd, 1);
+			fflush(stdout); dup2(fd, 1);
 			if (zap > 200) {printf("ANS: %d\n", zapit[200].x*100 + zapit[200].y); getchar(); getchar();}
 			exit(0);
 		}

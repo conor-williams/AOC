@@ -217,7 +217,7 @@ int machine(int machineNumber, int one) {
 	                                output[(machineNumber)%5] = inst[inst[i+1]]; 
 				}
                         }
-			dup2(fd, 1);
+			fflush(stdout); dup2(fd, 1);
 			if (one == 0) {
 				printf("conor OUT: %lld\n", output[(machineNumber+1) % 5]);
 			} else {

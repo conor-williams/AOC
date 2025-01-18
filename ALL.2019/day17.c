@@ -417,7 +417,7 @@ int machine(int machineNumber, int one) {
 			printf("stX, stY %d,%d\n", stX, stY);
 			printf("enX, enY %d,%d\n", enX, enY);
 			printf("**alignment is %d (minus bogie...)\n", alignment);
-			dup2(fd, 1);
+			fflush(stdout); dup2(fd, 1);
 			printf("**ans: %d \n", alignment);
 			exit(0);
 					

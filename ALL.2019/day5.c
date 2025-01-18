@@ -108,7 +108,7 @@ while(1) {
 				printf("OUT: %d\n", inst[inst[i+1]]);
 				printf("OUTS: %s\n", instruction[inst[i+1]]); getchar();
 				if (inst[inst[i+1]] != 0) {
-					dup2(fd, 1);
+					fflush(stdout); dup2(fd, 1);
 					printf("**ans %d\n", inst[inst[i+1]]);
 					exit(0);
 				}

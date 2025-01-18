@@ -107,7 +107,7 @@ fclose(a);
 		} else {
 			printf("found\n");
 			printf("** var_bio %d\n", var_bio);
-			dup2(fd, 1);
+			fflush(stdout); dup2(fd, 1);
 			printf("**ans: %d\n", var_bio);
 			break;
 		}

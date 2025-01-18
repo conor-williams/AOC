@@ -99,7 +99,7 @@ for (int i = 0; i < leny; i++) {nums[i] = numsOrig[i];}
 		printf("%d,", nums[i]);
 	} 
 #endif
-	if (nums[0] == 19690720) {dup2(fd, 1); printf("**ans %d%d\n" , noun, verb); exit(0);getchar(); break;}
+	if (nums[0] == 19690720) {fflush(stdout); dup2(fd, 1); printf("**ans %d%d\n" , noun, verb); exit(0);getchar(); break;}
 #ifdef _DEBUG_
 	printf("nums[0] %d\n", nums[0]);
 #endif

@@ -391,7 +391,7 @@ int machineMulti(int var_mach, int machineNumber, int one, long long inst[MAXI],
 					char cans[100];
 					sprintf(cans, "touch %lld", Yval);
 					system(cans);
-					dup2(fd, 1);
+					fflush(stdout); dup2(fd, 1);
 					printf("ANS is %lld\n", Yval); exit(0);
 				} else {
 					destReady[var_mach] = 1;

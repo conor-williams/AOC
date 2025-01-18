@@ -194,7 +194,7 @@ int traverse2(string tra, string endPoint) {
 	if (endPoint == tra) {
 		tot--; ind--;
 		printf("FOUND endPoint [%s] tot %d \n", endPoint.c_str(), tot); getchar();
-		dup2(fd, 1);
+		fflush(stdout); dup2(fd, 1);
 		printf("**ans: %d \n", tot); getchar();
 		exit(0);
 		return 22;

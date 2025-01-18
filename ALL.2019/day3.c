@@ -49,7 +49,7 @@ void minmanX() {
 				}
 			}
 		}
-		dup2(fd,1);
+		fflush(stdout); dup2(fd,1);
 		printf("min is %d\n", min);
 		exit(0);
 

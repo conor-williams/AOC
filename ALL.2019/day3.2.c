@@ -326,7 +326,7 @@ int main(int argc, char **argv)
 
 	}
 	printf("**min steps wire 1 + wire 2= %d\n", points[posminsum].stepsW1 + points[posminsum].stepsW2);
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("**ans: %d\n", points[posminsum].stepsW1 + points[posminsum].stepsW2);
 	exit(0);
 

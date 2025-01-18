@@ -195,7 +195,7 @@ char reverseInput(char in) {
 }
 void next(int x, int y, int path) {
 	if (x == OXX && y == OXY) {
-		dup2(fd, 1);
+		fflush(stdout); dup2(fd, 1);
 		printf("end reached path is %d\n", path);
 		exit(0);
 	}

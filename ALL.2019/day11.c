@@ -286,7 +286,7 @@ int machine(int machineNumber, int one) {
 			
 			if (one == 1) {printf("here2..outForS: %d.\n", outForS);
 				unsigned long long tot = 0; for (int y = 0; y < SZ; y++) { for (int x = 0; x < SZ; x++) { if (grid[y][x].times >= 1) { tot++; } } } 
-				dup2(fd, 1);	
+				fflush(stdout); dup2(fd, 1);	
 				printf("***tot is %llu\n", tot);
 				exit(0);
 			}

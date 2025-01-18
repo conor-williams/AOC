@@ -106,7 +106,7 @@ while(1) {
 				printf("or is it OUTS: %s\n", instruction[i+1]);
 			} else {
 				printf("OUT: %d\n", inst[inst[i+1]]);
-				dup2(fd, 1);
+				fflush(stdout); dup2(fd, 1);
 				printf("OUTS: %s\n", instruction[inst[i+1]]); getchar();
 				exit(0);
 			}

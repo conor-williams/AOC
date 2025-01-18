@@ -258,6 +258,6 @@ end2:
 	printf("\n");
 	//printf("PHASEMAX:\n"); for (int i = 0; i < 5; i++) { printf("%d ", phaseMAX[i]); } printf("g\n"); //getchar();
 	printf("***OUTPUTMAX: %d\n", outputMAX);
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("***OUTPUTMAX2: %lld\n", outputMAX2);
 }

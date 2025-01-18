@@ -529,7 +529,7 @@ aft2:
 					printf("\nwahoo wahey ans:\n");
 					unsigned long long ans = (unsigned long long)(lastX-99) * (unsigned long long)10000;
 					ans += fY;
-					dup2(fd,1);
+					fflush(stdout); dup2(fd,1);
 					printf("\n\nans %llu\n", ans);
 					printf("\nwahoo222 wahey ans:\n");
 					found33 = 1;

@@ -187,7 +187,7 @@ int machine(int machineNumber, int one) {
 				}
                                 printf("REL OUT: %lld (base: %lld+%lld)\n", inst[relativeBase[machineNumber]+inst[i+1]],
 					relativeBase[machineNumber], inst[i+1]);
-				dup2(fd, 1);
+				fflush(stdout); dup2(fd, 1);
 				printf("**ans: %lld\n", inst[relativeBase[machineNumber]+inst[i+1]]);
 				exit(0);
 #ifdef _DEBUG_
