@@ -78,6 +78,7 @@ void TimerStop(int signum) {
 //main:::if (argc == 3) {printf("SETTING TIME TO [%d]\n", atoi(argv[2])); TimerSet(atoi(argv[2]));}
 int main(int argc, char **argv)
 {
+	printf("SLOW ~21minutes\n");
 	TimerSet(1200);
         printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
         FILE * a = fopen(argv[1], "r"); printf("2017 Day17.2\n"); fflush(stdout);
