@@ -159,7 +159,7 @@ again3:
 	}		
 	
 	if (gs==0 || es == 0) {} else {goto nextmove;}
-	//dup2(fd, 1);
+	//fflush(stdout); dup2(fd, 1);
 	printf("tots: gs is %d es is %d\n", gs, es);
 	int gsA, esA;
 

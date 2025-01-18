@@ -200,14 +200,14 @@ again3:
 		}
 		if (isittheend() == 1) {} else {goto nextmove;}
 		//if (curnume != numE) {printf("lost an Elf -- continue upping ELVES_HIT from %d\n", ELVES_HIT); getchar(); continue;}	
-		//dup2(fd, 1);
+		//fflush(stdout); dup2(fd, 1);
 		printf("tots: gs is %d es is %d\n", gs, es);
 		int gsA;
 
 		gsA = gs *round123;
 		esA = es *round123;
 		printf("round123: gs is %d es is %d\n", gsA, esA);
-		//if (gsA == 0) {dup2(fd, 1); printf("***ans: %d\n" esA); close(1);}
+		//if (gsA == 0) {fflush(stdout); dup2(fd, 1); printf("***ans: %d\n" esA); close(1);}
 		gsA = gs *(round123-1);
 		esA = es *(round123-1);
 

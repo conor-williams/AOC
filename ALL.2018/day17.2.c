@@ -169,7 +169,7 @@ int main(int argc, char **argv)
 		}
 	}
 	printf("hasherr is %d\n", hasherr);
-	//dup2(fd, 1);
+	//fflush(stdout); dup2(fd, 1);
 	grid[sy][sx] = '+';
 	tot = 0;
 	for (int y = miny+8; y <= origMaxy; y++) {

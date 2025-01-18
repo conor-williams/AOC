@@ -112,7 +112,7 @@ fclose(a);
 			}
 			if (regC ==  instREG) {k = regb[instREG];}
 		}
-		dup2(fd, 1);
+		fflush(stdout); dup2(fd, 1);
 		printf("**regb[0] is %d\n", regb[0]);
 		exit(0);
 	}

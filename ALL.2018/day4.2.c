@@ -127,6 +127,6 @@ int main(int argc, char **argv)
 
 		if (max > maxMinuteOverall) {maxMinute = countMinMax; gardaMax = gardaMAP[i].hashnum; maxMinuteOverall = max;}
 	}
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("**ans: %d * %d == %d\n", maxMinute, gardaMax, maxMinute * gardaMax);
 }

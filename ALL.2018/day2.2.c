@@ -43,7 +43,7 @@ while(1) {
 					if (diffs > 1) {break;}
 				}
 				if (diffs == 1) {printf("Line %s V %s INDEX:%d\n", lines[i], lines[j], myindex);
-					dup2(fd, 1);
+					fflush(stdout); dup2(fd, 1);
 					char ans[1000];
 					strcpy(ans, lines[j]);
 					ans[myindex] = ' ';

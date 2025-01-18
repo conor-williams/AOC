@@ -93,7 +93,7 @@ printf("numcoords %d\n", numcoords);
 	printf("%d,%d %d,%d\n", regXmin, regYmin, regXmax, regYmax);
 	printf("%d,%d %d,%d\n", regXmin, regYmin, regXmax, regYmax);
 	printf("area: %f\n", (double)(regXmax - regXmin+1)*(double)(regYmax-regYmin+1)); 
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("**count %d\n", count); getchar();
 	exit(0);
 	int excludeList[1000];

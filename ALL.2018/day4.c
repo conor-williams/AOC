@@ -124,7 +124,7 @@ int main(int argc, char **argv)
 		printf("garda (%4d):%4d is %4d (max times == %4d) (totsleep: %4d) (tothours: %4d)\n", i, gardaMAP[i].hashnum, countMinMax, max, totsleep, gardaPos2[i]);
 		if (totsleep > maxMinutesOverall) {maxMinute = countMinMax; gardaMax = gardaMAP[i].hashnum; maxMinutesOverall = totsleep;}
 	}
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("**ans: %d * %d == %d\n", maxMinute, gardaMax, maxMinute * gardaMax);
 		
 }

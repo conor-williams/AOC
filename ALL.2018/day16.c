@@ -122,7 +122,7 @@ while (1)
 	}	
 	if (strlen(line1) == 0) {
 		numBlanks++;
-		if (numBlanks > 2) {dup2(fd, 1); printf("**tot %d\n", tot); exit(0);}
+		if (numBlanks > 2) {fflush(stdout); dup2(fd, 1); printf("**tot %d\n", tot); exit(0);}
 		continue;
 	}
 	leny++;
