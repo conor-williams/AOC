@@ -132,7 +132,7 @@ int main(int argc, char **argv)
 		compute_md5(out5, 3, 0, i);
 	}
 	
-	system("date");
+	//system("date");
 	//printf("after...\n"); fflush(stdout); 
 	int pos = 0;
 	for (int i = 0; i < UPTO-2000; i++) {

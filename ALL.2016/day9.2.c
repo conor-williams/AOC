@@ -21,7 +21,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
-	fflush(stdout); int fd = dup(1); close(1);
+	fflush(stdout); int fd = dup(1); //close(1);
         char line1[SIZE];
 while(1) 
 {
