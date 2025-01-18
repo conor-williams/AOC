@@ -224,7 +224,7 @@ while (1) {
 }
 	string tofinda = "a";
 
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	if (mp.find(tofinda) != mp.end()) {
 		printf("wire a: [%d]\n", mp[tofinda]);
 	} else {

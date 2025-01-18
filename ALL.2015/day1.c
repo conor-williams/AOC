@@ -25,7 +25,7 @@ int level = 0;
         }
       fclose(a);
       
-      dup2(fd, 1);
+      fflush(stdout); dup2(fd, 1);
       printf("****LEVEL:***** %d\n", level);
 
 }

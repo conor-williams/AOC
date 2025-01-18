@@ -26,7 +26,7 @@ int level = 0;
 if (level == -1) {printf("BASEMENT: %d", e); break;}
         }
 	
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("****LEVEL:***** %d\n", level);
 
 }

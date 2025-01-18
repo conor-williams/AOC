@@ -65,7 +65,7 @@ while(1) {
 		writeit(x, y);
 	}
 
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("***tot %d\n", myxyHousesLen);
 
 fclose(a);

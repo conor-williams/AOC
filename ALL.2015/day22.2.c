@@ -141,7 +141,7 @@ int main(int argc, char **argv)
 		
 
         printf("***minManaSpent: %d\n", minManaSpent);
-	fflush(stdout);	dup2(fd, 1);
+	fflush(stdout);	fflush(stdout); dup2(fd, 1);
         printf("***ans: %d\n", minManaSpent);
 }
 

@@ -51,7 +51,7 @@ int main(int argc, char **argv)
 
 	 //while
 	printf2("*** a is %d\n", regs[0]);
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf2("*** b is %d\n", regs[1]);
 }
 

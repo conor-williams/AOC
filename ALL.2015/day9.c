@@ -104,6 +104,6 @@ fclose(a);
 		
 	} while (next_permutation(citiesI.begin(), citiesI.end()));
 
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("***citydistmin %d\n", min); fflush(stdout);
 }

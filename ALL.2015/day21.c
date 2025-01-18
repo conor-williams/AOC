@@ -131,7 +131,7 @@ int main(int argc, char **argv)
 
         printf("***minPlayerCost: %d\n", minPlayerCost);
         printf("***tot: %d\n", tot);
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("** ans: %d\n", minPlayerCost);
 }
 

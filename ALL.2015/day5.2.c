@@ -71,6 +71,6 @@ printf("nogood: %d\n", nogood);
 }
 fclose(a);
 
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 printf("***count %d\n", count);
 }

@@ -94,6 +94,6 @@ fclose(a);
 		
 	} while (next_permutation(sA, sA+peopleCounter));
 
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("***maxSum %d\n", maxSum); fflush(stdout);
 }

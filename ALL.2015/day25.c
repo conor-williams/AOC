@@ -71,7 +71,7 @@ int main(int argc, char **argv)
 	for (int i = 1; i < mynum; i++) {
 		next = ((next * 252533) % 33554393);
 	}
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("***next: %llu \n", next);
 	
 			

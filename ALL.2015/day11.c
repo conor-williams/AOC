@@ -72,7 +72,7 @@ printf("LINE: %s\n", line1);
 										if (myIn[i] == myIn[i+1]) {
 											for (int j = i+2; j < 7; j++) {
 												if (myIn[j] == myIn[j+1]) {
-													dup2(fd, 1);
+													fflush(stdout); dup2(fd, 1);
 													printf("thats it...: ");
 													printf("%c%c%c%c%c%c%c%c\n", in[0], in[1], p, x, c, r1, r, q);
 

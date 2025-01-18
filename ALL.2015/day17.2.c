@@ -68,6 +68,6 @@ int main(int argc, char **argv)
 	}
 
 	printf("****tot %d\n", tot);
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("**ans: %d\n", tot);
 }

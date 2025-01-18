@@ -124,7 +124,7 @@ int main(int argc, char **argv)
 	} while (gamesPos != 0);
 		
 
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
         printf("***minManaSpent: %d\n", minManaSpent);
 }
 

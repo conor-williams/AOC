@@ -70,6 +70,6 @@ while(1) {
 	}
 	//int tot = 0;
 
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("****tot %d\n", (int)mpStore.size());
 }

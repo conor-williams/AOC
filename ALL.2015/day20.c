@@ -30,7 +30,7 @@ int main(int argc, char **argv)
 		housei++;
 	}
 
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("**ans: %d\n", housei);
 	exit(0);
 

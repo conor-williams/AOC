@@ -87,6 +87,6 @@ int main(int argc, char **argv)
 	pass[8] = '\0';
 
 	//printf("***Password: %s\n", pass);
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("***ans: %s\n", pass123);
 }
