@@ -75,7 +75,7 @@ void addit(string one, string two) {
 }
 int main(int argc, char **argv)
 {
-	printf("SLOW: MAX:~62 days\n"); fflush(stdout);
+	printf("SLOW: MAX:~2180 days\n"); fflush(stdout);
 	//clock_t start, end; double cpu_time_used; 
 	//start = clock();
 	//DO
@@ -127,10 +127,28 @@ int main(int argc, char **argv)
 	}
 	TOTnumPossible = (unsigned long long)pow((int)mpValid.size()/2, 3);
 
+	printf("there are %d valid pairs\n", (int)mpValid.size());
+
+	mpValid.clear();
+	{//trim
+		for (auto it = mpBoth.begin(); it != mpBoth.end(); it++) {
+			if ((*it).second.size() != 1) {
+				for (auto itv = (*it).second.begin(); itv != (*it).second.end(); itv++) {
+					if (mp[(*itv)].size() > 1) {
+						mpValid[{(*it).first, (*itv)}] = 1;
+						mpValid[{(*itv), (*it).first}] = 1;
+					}
+				}
+			}
+		}
+	}
+	TOTnumPossible = (unsigned long long)pow((int)mpValid.size()/2, 3);
 	////////////////////////////
 	mpBothOrig = mpBoth;
-	printf("there are %d valid pairs\n", (int)mpValid.size());
-	printf("Starting main search size:(%d) 4 levels):\n", (int)mpBoth.size());
+	printf("Now there _are_ %d valid pairs\n", ((int)mpValid.size())/2);
+	printf("max time rougly (taking 1 min per 10,000) is: %d days\n",
+			(((TOTnumPossible/10000)/60)/24));
+	printf("Starting main search size:mpBoth.size()(%d)\n", (int)mpBoth.size());
 	startMain = clock();
 	startCA = clock();
 	{
@@ -208,7 +226,7 @@ int main(int argc, char **argv)
 void checkAnswers() {
 	group1.clear();
 	group2.clear();
-	if (countCCC++ % 60000 == 0) {endCA=clock(); int dist2 = (int)distance(mpBoth.begin(), itG1); printf("In checkAnswers, checked: %d (of %llu) time:%f itG1:%d\n", countCCC, TOTnumPossible, ((double)endCA-startCA)/CLOCKS_PER_SEC, dist2);char tou[100]; sprintf(tou, "touch last.itG1:%d", dist2); system(tou); startCA=clock();}
+	if (countCCC++ % 10000 == 0) {endCA=clock(); int dist2 = (int)distance(mpBoth.begin(), itG1); printf("In checkAnswers, checked: %d (of %llu) time:%f itG1:%d\n", countCCC, TOTnumPossible, ((double)endCA-startCA)/CLOCKS_PER_SEC, dist2);char tou[100]; sprintf(tou, "touch last.itG1:%d", dist2); system(tou); startCA=clock();}
 	auto it = mpBothTmp.begin();
 	//printf("*it.first.c_str() is %s\n", (*it).first.c_str());
 	group1[(*it).first] = 1;
