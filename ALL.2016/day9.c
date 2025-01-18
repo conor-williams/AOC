@@ -83,7 +83,6 @@ int main(int argc, char **argv)
 
 			fflush(stdout); dup2(fd, 1);
 			printf("**ans: %d\n", (int)strlen(newLine)); fflush(stdout);
-			close(1);
 			break;
 			count++;
 			strcpy(line1, newLine);

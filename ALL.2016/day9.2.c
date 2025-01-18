@@ -72,7 +72,6 @@ while(1)
 	}
 	fflush(stdout); dup2(fd, 1);
 	printf("**ans: %ld\n", tot);
-	close(1);
 }
 fclose(a);
 
