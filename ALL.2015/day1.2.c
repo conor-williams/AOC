@@ -23,7 +23,7 @@ int level = 0;
         while ((lrrb = line1[e]) != '\0' && lrrb != '\n') {
             if (lrrb == '(') level++; else level--;
             e++;
-if (level == -1) {printf("BASEMENT: %d", e); break;}
+if (level == -1) {printf("BASEMENT: %d\n", e); break;}
         }
 	
 	fflush(stdout); dup2(fd, 1);
