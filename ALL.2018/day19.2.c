@@ -28,6 +28,7 @@ int mycmp(char four[]);
 #define getchar()
 int main(int argc, char **argv)
 {
+	printf("SLOW > XSEC 15mins\n");
 	//printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
 	FILE * a = fopen(argv[1], "r"); printf("2018 Day19.2\n"); fflush(stdout);
 

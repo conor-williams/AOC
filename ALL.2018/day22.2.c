@@ -5,6 +5,7 @@
 #include <math.h>
 
 #include <unistd.h>
+#define perror(asdf)
 
 #define getchar()
 #undef _DEBUG_
@@ -47,7 +48,7 @@ int main(int argc, char **argv)
 	printf("slow ~25 seconds\n");
 	printf("%d", argc); printf("@%s", argv[1]); fflush(stdout);
 	FILE * a = fopen(argv[1], "r"); printf("2018 Day22.2\n"); fflush(stdout);
-	fflush(stdout); int fd = dup(1); close(1);
+	//fflush(stdout); int fd = dup(1); close(1);
 
 	int leny = 0;
 	while (1)
@@ -62,8 +63,8 @@ int main(int argc, char **argv)
 	}
 	fclose(a);
 
-	printf("depth::  %d\n", depth);
-	printf("target:: %d :::: %d\n", tX, tY);
+	//printf("depth::  %d\n", depth);
+	//printf("target:: %d :::: %d\n", tX, tY);
 	fflush(stdout);
 
 	char (*grid)[tX+351] = (char (*)[tX+351])malloc(sizeof(char[tY+350][tX+351]));
@@ -125,7 +126,7 @@ int main(int argc, char **argv)
 		}
 	}
 
-	{printf("here3: ero is %lld\n", ero[0][1]);}
+	//{printf("here3: ero is %lld\n", ero[0][1]);}
 
 	{
 		for (int y = 0; y < tY+350; y++) {
@@ -145,14 +146,14 @@ int main(int argc, char **argv)
 		}
 	}
 
-	printf("after creating grid\n"); fflush(stdout);
+	//printf("after creating grid\n"); fflush(stdout);
 	tot = 0;
-	printf("**tot %lld\n", tot); getchar();
+	//printf("**tot %lld\n", tot); getchar();
 
 	free(geo); free(ero);
 
-	printit(1, 1, grid);
-	printf("Starting out with minPath: %d\n", minPath);
+	//printit(1, 1, grid);
+	//printf("Starting out with minPath: %d\n", minPath);
 	{
 		memset(already, 0, sizeof(*already));
 		/*
@@ -213,11 +214,10 @@ int main(int argc, char **argv)
 		next(1,0, CLI, 8, already, grid);
 
 
-		printf("**minPath %d\n", minPath); 
-		fflush(stdout); dup2(fd, 1);
+		//printf("**minPath %d\n", minPath); 
+		//fflush(stdout); dup2(fd, 1);
 		printf("**ans %d\n", minPath); 
-		close(1);
-		exit(0);
+		//exit(0);
 	}
 
 	free(grid); free(already);
@@ -244,7 +244,7 @@ void next(int x, int y, int tool, int path, struct already_s (*already1)[tX+351]
 		} 
 		if (path < minPath) {
 			minPath = path;
-			printf("min so far is %d\n", minPath); fflush(stdout);
+			//printf("min so far is %d\n", minPath); fflush(stdout);
 		}
 		return;
 	}

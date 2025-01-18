@@ -115,5 +115,4 @@ void play(int players, int lastMarble) {
 	printf("MAX SCORE %llu\n", max);
 	fflush(stdout); dup2(fd, 1);
 	printf("*ans: %llu\n", max);
-	close(1);
 }

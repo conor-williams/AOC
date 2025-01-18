@@ -54,6 +54,7 @@ int main(int argc, char **argv)
 		}
 	}
 
-	fflush(stdout); dup2(fd, 1);
 	printf("**max %lld x1,y1 %d,%d\n", max, x1, y1);
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans %d,%d\n", x1, y1);
 }
