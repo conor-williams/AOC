@@ -129,7 +129,7 @@ int main(int argc, char **argv)
 				for (int y = 0; y < MAX_X; y++) {
 					if (pz[0].puz[y][x] == 'Q') { foundQq = 1; }
 				} }
-			if (foundQq == 0) {printf("thats surely it now...\n"); dup2(fd, 1); printf("**ans: %d\n", ans123); exit(0);}
+			if (foundQq == 0) {printf("thats surely it now...\n"); fflush(stdout); dup2(fd, 1); printf("**ans: %d\n", ans123); exit(0);}
 		}
 
 		for (int k = 0; k < NUM_PUZ - 1; k++) {

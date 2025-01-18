@@ -96,7 +96,7 @@ int main(int argc, char **argv)
 			if (fin == 1) break;
 		}
 		printf("****moves/2 %d\n", moves/2);
-		dup2(fd, 1);
+		fflush(stdout); dup2(fd, 1);
 		printf("**ans: %d\n", moves/2);
 	}
 	//printmaze();
