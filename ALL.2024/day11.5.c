@@ -87,6 +87,6 @@ again:
 		getchar();
 		goto again; 
 	}
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("**ans %d\n", (int)ve.size());
 }

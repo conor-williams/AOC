@@ -748,8 +748,8 @@ ne:
 		conans += minLength25 * (bigint)numbers[i];
 
 }
-//dup2(fd, 1);
-//dup2(fd, 1);
+//fflush(stdout); dup2(fd, 1);
+//fflush(stdout); dup2(fd, 1);
 printf("**ans: ");
 //printf("**ans: %llu\n", conans);
 cout << conans << endl;

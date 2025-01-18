@@ -146,7 +146,7 @@ after:
 
 	sort(maxOldList.begin(), maxOldList.end());
 
-	//dup2(fd, 1);
+	//fflush(stdout); dup2(fd, 1);
 	printf("**ans: [ ");
 	string ans1;
 	for (auto st1: maxOldList) { ans1 += st1 + ","; }
