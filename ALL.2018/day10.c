@@ -6,7 +6,17 @@
 #include <stdbool.h>
 #include <map>
 
+#include <errno.h>
+#include <fcntl.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 #include <unistd.h>
+#include <unistd.h>
+#include <sys/ioctl.h>
+#include <stdio.h>
 
 #define getchar()
 using namespace std;
@@ -31,11 +41,14 @@ struct pos {
 	int ys[UP];
 };
 struct pos posit[500] = {0};
+void curs();
+int termsize (void);
 int main(int argc, char **argv)
 {
 	printf("%d", argc); printf("@%s", argv[1]); fflush(stdout);
 	FILE * a = fopen(argv[1], "r"); printf("2018 Day10.1\n"); fflush(stdout);
 
+	fflush(stdout); int fd = dup(1); close(1);
 	int leny = 0;
 	while (1)
 	{
@@ -49,9 +62,9 @@ int main(int argc, char **argv)
 		if (ret != 4) {printf("ERROR"); exit(0);}
 		x1 = atoi(sx1); vx = atoi(svx);
 		y1 = atoi(sy1); vy = atoi(svy);
-		
+
 		//printf("%d: %d %d, %d %d\n", leny, x1, y1, vx, vy);
-		
+
 		posit[leny].x1 = XAND + ((double)x1*SCALE/(double)X);// printf("x1 is %d\n", posit[leny].x1);
 		posit[leny].y1 = YAND + ((double)y1*SCALE/(double)Y);// printf("y1 is %d\n", posit[leny].y1); //getchar();
 		posit[leny].vx = vx;
@@ -70,7 +83,7 @@ int main(int argc, char **argv)
 	}
 
 
-//	for (int i = 10887; i < UP; i++) {
+	//	for (int i = 10887; i < UP; i++) {
 	map <int, int> countx;
 	int boardCon;
 	for (int i = 0; i < UP; i++) {
@@ -90,7 +103,7 @@ int main(int argc, char **argv)
 			}
 			///printf("\x1b[%dB", posit[z].ys[i]); //printf("%d", posit[z].ys[i]); getchar();
 			///printf("\x1b[%dC#", posit[z].xs[i]);
-//			printf(";%dH#", posit[z].ys[i], posit[z].xs[i]);
+			//			printf(";%dH#", posit[z].ys[i], posit[z].xs[i]);
 		}
 		//printf("BOTTOM? %d:", i);
 		//printf("\x1b[H#");
@@ -111,15 +124,82 @@ after:
 		if (posit[z].ys[boardCon] < minY) {minY = posit[z].ys[boardCon];}
 	}
 	printf("%d,%d -> %d,%d\n", minX, minY, maxX, maxY);
-	printf("\x1b[2J");
+	//curs();
+	//printf("\x1b[2J");
+
+	int ROWS = termsize();
+	printf("ROWS:%d\n", ROWS);
+	int height = maxY - minY;
+	//int width = maxX - minX;
+	int adjusterY = ROWS-height-1;
+	/*
+	{
+		//printf("\x1b[H");
+		//printf("\x1b[%dB", minY+adjusterY-1);
+		//printf("\x1b[%dC#", 0);
+		for (int ii = 0; ii < height+1; ii++) {
+			for (int i = 0; i < width+2; i++) {
+				printf(" "); 
+			}
+			printf("\n");
+		}
+	}
+	*/
+	
+	fflush(stdout); dup2(fd, 1);
+	for (int ii = 0; ii < height+1;ii++) {
+		printf("\n");
+	}
 	for (int z = 0; z < leny; z++) {
 		printf("\x1b[H");
-		printf("\x1b[%dB", posit[z].ys[boardCon]-minY);
+		printf("\x1b[%dB", posit[z].ys[boardCon]-minY+adjusterY);
 		printf("\x1b[%dC#", posit[z].xs[boardCon]-minX);
-		//printf("%d\n", posit[z].ys[boardCon]);
-		//printf("%d\n", posit[z].xs[boardCon]);
 	}
+
 	printf("\n\n\n");
 	//printf("**tot %lu\n", tot);
 }
-			
+
+void curs() {
+	int ttyfd = open ("/dev/tty", O_RDWR);
+	if (ttyfd < 0)
+	{
+		printf ("Cannot open /devv/tty: errno = %d, %s\r\n",
+				errno, strerror (errno));
+		exit (1);
+	}
+
+	write (ttyfd, "\x1B[6n\n", 5);
+
+	unsigned char answer[16];
+	size_t answerlen = 0;
+	while (answerlen < sizeof (answer) - 1 &&
+			read (ttyfd, answer + answerlen, 1) == 1)
+		if (answer [answerlen ++] == 'R') break;
+	answer [answerlen] = '\0';
+
+	printf ("Answerback = \"");
+	//char bla[20] = "";
+	for (size_t i = 0; i < answerlen; ++ i)
+		if (answer [i] < ' ' || '~' < answer [i]) {
+			printf ("\\x%02X", (unsigned char) answer [i]);
+			//sprintf(bla, "%s%02X", bla, (unsigned char)answer[i]);
+		} else {
+			printf ("%c", answer [i]);
+			//sprintf(bla, "%s%02X", bla, (unsigned char)answer[i]);
+		}
+	printf ("\"\r\n");
+	//printf("bla is %s\n", bla);
+
+	return;
+}
+
+int termsize (void)
+{
+	struct winsize w;
+	ioctl(0, TIOCGWINSZ, &w);
+
+	printf ("lines %d\n", w.ws_row);
+	printf ("columns %d\n", w.ws_col);
+	return w.ws_row;
+}
