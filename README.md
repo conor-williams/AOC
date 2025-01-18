@@ -1,10 +1,10 @@
 <h3>Notes: c.w.</h3>
 <br>
-<h3>Update (11::17-01-25):</h3>
+<h3>Update (11::18-01-25):</h3>
 <pre>
 	<s>o looking now to tidy part2's (11-24) of every year (16-01-2025) </s>
 	o dup2 needed an fflush -- now no debug -- sorry!
-	o Result of Tidy every year but 2024: (+if the file is not present, it has not been coded )
+	o Result of Tidy every year <s>but</s> including 2024: (+if the file is not present, it has not been coded )
 	conor.williams@DESKTOP-MM5HH8I ~/AOC-main
 $ cat lool.txt
         2015
@@ -43,7 +43,7 @@ $ cat lool.txt
 		-- 2017 Day 7.2
 		-- <s>2018 Day 7 1&2</s>
 	   	-- 2022 Day 9.2
-	o Timer being added to the slow ones so they don't run too long
+	o Timer being added (an automatic kill, if you will) to the slow ones so they don't run too long
 	        (but you might not get the answer)
 		(timer length can be changed in code before a compile) TimerSet(Xseconds);
 </pre>
