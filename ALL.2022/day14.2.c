@@ -38,7 +38,6 @@ int mainX = 500; int mainY = 0;
 void printit2(int sx, int ex, int sy, int ey);
 void printit3(int x, int y);
 void countit();
-int hide = 0;
 void justCount(); 
 int var_count = 0;
 
@@ -52,7 +51,7 @@ int main(int argc, char **argv)
 
 	a = fopen(argv[1], "r"); printf("2022 Day 14 part2\n"); fflush(stdout);
 
-	fflush(stdout); int fd = dup(1); close(1);
+	//fflush(stdout); int fd = dup(1); //close(1);
 	char line1[LINE];
 	char l2[LINE];
 
@@ -123,7 +122,6 @@ int main(int argc, char **argv)
 	fclose(a);
 
 	//printf("------------------- %d %d %d %d\n", minX, maxX, minY, maxY); getchar();
-	if (hide == 1) { fd = dup(1); close(1); }
 	int count = 0;//, prevCount;
 	leftOrRight(500, 1);
 	//	do {
@@ -155,7 +153,6 @@ int main(int argc, char **argv)
 	//	} while (1);
 
 
-	fflush(stdout); dup2(fd, 1);
 	printf("**ans: %d\n", count);
 }
 
@@ -190,11 +187,9 @@ void countit()
 			}
 		}
 	} 
-	if (hide == 1) {fflush(stdout); dup2(fd, 1);}
 	//printit();
 	printf("**var_count is %d\n", var_count);
 
-	if (hide == 1) {fd = dup(1); close(1);}
 }
 
 int ind = 0;
