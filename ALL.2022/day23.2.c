@@ -40,7 +40,7 @@ void setitup(int reset);
 int rounds;
 int fd;
 void checkit();
-void sigfunc(int a) { dup2(fd, 1); printf("[[ %s ]] rounds:[[ %d ]]\n", "signal hand..\n", rounds); printf("mx:%d my:%d max:%d maxy:%d\n", minx, miny, maxx, maxy); fd=dup(1); close(1);}
+void sigfunc(int a) { fflush(stdout); dup2(fd, 1); printf("[[ %s ]] rounds:[[ %d ]]\n", "signal hand..\n", rounds); printf("mx:%d my:%d max:%d maxy:%d\n", minx, miny, maxx, maxy); fd=dup(1); close(1);}
 
 #include <sys/time.h>
 #include <signal.h>

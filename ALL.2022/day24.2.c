@@ -37,8 +37,8 @@ int dep = 1000;
 int hide = 0;
 int fd;
 int dijk2(int conSX, int conSY, int conEX, int conEY, int mmpp);
-//void sigfunc(int a) { if (count123 % 2 == 0) {dup2(fd,1);}if (hide==1) {dup2(fd, 1);} printf("[[ %s %d]]\n", "signal hand..\n", minPath); if (hide==1) {fd=dup(1); close(1);} }
-//void sigfunc(int a) { dup2(fd,1); printf("in sig\n"); /*fd=dup(1); close(1);*/ count123++; if (count123 % 2 == 0) {dup2(fd,1);} else if (count123 % 2 == 1) {fd=dup(1); close(1);} }
+//void sigfunc(int a) { if (count123 % 2 == 0) {fflush(stdout); dup2(fd,1);}if (hide==1) {dup2(fd, 1);} printf("[[ %s %d]]\n", "signal hand..\n", minPath); if (hide==1) {fd=dup(1); close(1);} }
+//void sigfunc(int a) { fflush(stdout); dup2(fd,1); printf("in sig\n"); /*fd=dup(1); close(1);*/ count123++; if (count123 % 2 == 0) {dup2(fd,1);} else if (count123 % 2 == 1) {fd=dup(1); close(1);} }
 int PASS = 0;
 void sigfunc(int a) { printf("minminPath %d -- cur minPath is %d\n", minPath, minminPath); printf("PASS %d\n", PASS);}
 

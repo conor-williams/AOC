@@ -42,7 +42,7 @@ int main(int argc, char **argv)
 			}
 end:
 			if (found1 == 0) {
-				dup2(fd, 1);
+				fflush(stdout); dup2(fd, 1);
 				printf("ANS: %d\n", i+14);
 				exit(0);
 				goto next;

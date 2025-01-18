@@ -43,6 +43,6 @@ int main(int argc, char **argv)
 		if (numarr[k] > biggest) {biggest = numarr[k];}
 	}
 	printf("***BIG %d\n", biggest);
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("**ans: %d\n", biggest);
 }

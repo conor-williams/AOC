@@ -23,7 +23,7 @@ FILE *a;
 //#define getchar()
 int gPo1 = 0;
 int fd;
-void sigfunc(int a) { dup2(fd, 1); printf("[[ %s ]] %d\n", "signal hand..\n", gPo1); fd=dup(1); close(1); }
+void sigfunc(int a) { fflush(stdout); dup2(fd, 1); printf("[[ %s ]] %d\n", "signal hand..\n", gPo1); fd=dup(1); close(1); }
 
 int sz;
 vector<int> left_rotate(const vector<int>& v);
@@ -131,7 +131,7 @@ int main(int argc, char **argv)
 		for (int kk = 0; kk < sz; kk++) { printf("[%d]", ve3[vePosTmp[kk]]); } printf("\n");getchar();
 	}
 
-	if (hide == 1) {dup2(fd, 1);}
+	if (hide == 1) {fflush(stdout); dup2(fd, 1);}
 	//if (argc != 3) {end = 1000;} else {end = atoi(argv[2]);}
 	int end = 0;
 	int endings[] = {1000, 2000, 3000};

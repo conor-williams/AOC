@@ -190,7 +190,7 @@ void countit()
 			}
 		}
 	} 
-	if (hide == 1) {dup2(fd, 1);}
+	if (hide == 1) {fflush(stdout); dup2(fd, 1);}
 	//printit();
 	printf("**var_count is %d\n", var_count);
 

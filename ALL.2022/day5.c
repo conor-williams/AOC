@@ -79,7 +79,7 @@ int main(int argc, char **argv)
 	}
 
 	fclose(a);
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("**ans:\n");
 	for (int i = 0; i <= maxStacks; i++) {
 		printf("%c", stacks[i][stacksPos[i]-1]);

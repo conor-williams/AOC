@@ -197,7 +197,7 @@ int main(int argc, char **argv)
 		else (assert(i == numPos-1));
 	}
 	if (hide == 1) {
-		dup2(fd, 1);
+		fflush(stdout); dup2(fd, 1);
 	}
 	printit(crx, cry, dir);
 	int posDir = dir;

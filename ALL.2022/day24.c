@@ -33,8 +33,8 @@ int minminPath = 99999;
 int dep = 800;
 int hide = 0;
 int fd;
-//void sigfunc(int a) { if (count123 % 2 == 0) {dup2(fd,1);}if (hide==1) {dup2(fd, 1);} printf("[[ %s %d]]\n", "signal hand..\n", minPath); if (hide==1) {fd=dup(1); close(1);} }
-void sigfunc(int a) { dup2(fd,1); printf("in sig\n"); /*fd=dup(1); close(1);*/ count123++; if (count123 % 2 == 0) {dup2(fd,1);} else if (count123 % 2 == 1) {fd=dup(1); close(1);} }
+//void sigfunc(int a) { if (count123 % 2 == 0) {fflush(stdout); dup2(fd,1);}if (hide==1) {dup2(fd, 1);} printf("[[ %s %d]]\n", "signal hand..\n", minPath); if (hide==1) {fd=dup(1); close(1);} }
+void sigfunc(int a) { fflush(stdout); dup2(fd,1); printf("in sig\n"); /*fd=dup(1); close(1);*/ count123++; if (count123 % 2 == 0) {dup2(fd,1);} else if (count123 % 2 == 1) {fd=dup(1); close(1);} }
 
 struct al_s {
 	int depth;
@@ -151,7 +151,7 @@ int main(int argc, char **argv)
 	   if (strcmp(argv[1], "ext2.txt") == 0) {if (minPath != 23) {printf("ADJ ADJ %d\n", minPath);} minPath = 23; minPathTot = 18+23;}
 	   dikjstra(1, 0, lenx-2, leny-1, minPath);
 
-	   if (hide == 1) {dup2(fd, 1);}
+	   if (hide == 1) {fflush(stdout); dup2(fd, 1);}
 	   */
 	//printf("**ans %d\n", minPathTot);
 
@@ -218,7 +218,7 @@ again:
 					//printf("**minPath %d,%d to: %d,%d is %d\n", cx, cy, ex1, ey1, minPath); //getchar();
 					if (ex1 == conEX && ey1 == conEY) {
 						///minPathTot += minPath;
-						if (hide == 1) {dup2(fd,1); } /*printf("yatzee:: minPath: %d\n", minPath);*/ if (hide == 1) {fd=dup(1); close(1);} getchar();/*return;*/ //goto ag4;
+						if (hide == 1) {fflush(stdout); dup2(fd,1); } /*printf("yatzee:: minPath: %d\n", minPath);*/ if (hide == 1) {fd=dup(1); close(1);} getchar();/*return;*/ //goto ag4;
 						if (minPath < minminPath) {minminPath = minPath;}
 					}
 				}
