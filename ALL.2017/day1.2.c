@@ -51,7 +51,7 @@ int tot = 0;
              bprev = line1[f-forward+1] - '0';
         }
 
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
         printf("******TOT: %d\n", tot*2);
 }
 

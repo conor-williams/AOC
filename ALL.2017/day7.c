@@ -65,13 +65,13 @@ fclose(a);
 			char bottomPrev[50];
 			if (i > 0) {strcpy(bottomPrev, bottom);}
 			next(rules[i].from, weight);
-			if (i > 0) {if (strcmp(bottom, bottomPrev) != 0) {dup2(fd, 1); printf("not found...\n"); exit(0);}}
+			if (i > 0) {if (strcmp(bottom, bottomPrev) != 0) {fflush(stdout); dup2(fd, 1); printf("not found...\n"); exit(0);}}
 			printf("bottom: %s\n", bottom);
 			weight = 0;
 		}
 	}
 	//printf("***tot is ^^ [%llu]\n", tot);
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("**ans: %s\n", bottom);
 	return 0;
 }

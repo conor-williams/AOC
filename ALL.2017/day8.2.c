@@ -91,7 +91,7 @@ while (1)
 		if (iter->second> max) {max = iter->second;}
 	}
 
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	//printf("***max %d\n", max);
 	printf("***interimMax %d\n", interimMax);
 }

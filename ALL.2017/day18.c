@@ -75,7 +75,7 @@ fclose(a);
 		ret = sscanf(inst[i], "rcv %d", &num1);
 		if (ret == 1) {printf("hey rcv");}
 		ret = sscanf(inst[i], "rcv %c", &reg1);
-		if (ret == 1) {if (regs[reg1-97] != 0) {dup2(fd, 1); printf("lastSound: %lld\n", lastSound); exit(0); continue;} else {continue;}}
+		if (ret == 1) {if (regs[reg1-97] != 0) {fflush(stdout); dup2(fd, 1); printf("lastSound: %lld\n", lastSound); exit(0); continue;} else {continue;}}
 
 		ret = sscanf(inst[i], "jgz %d %d", &num1, &num2);
 		if (ret ==2 ) {printf("hey jgz");}

@@ -53,7 +53,7 @@ fclose(a);
 	next(startX, startY+1, 'D', startX, startY);
 			
 	fflush(stdout);
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("**ANS [ %s ] \n", ANS);
 return 0;
 }

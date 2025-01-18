@@ -152,7 +152,7 @@ while (1)
 	}
 	printf("\n**newCount: %d\n", newCount);
 	printf("\nEND\n");
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("**ans: %d\n", newCount);
 
 }

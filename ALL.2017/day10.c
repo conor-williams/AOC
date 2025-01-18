@@ -79,7 +79,7 @@ while (1)
 		printf("skip %d\n", skip);
 	}
 	
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("***mul %d*%d =  %d\n", initial[0], initial[1], initial[0] * initial[1]);
 	printf("\nEND\n");
 

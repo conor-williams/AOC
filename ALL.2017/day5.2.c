@@ -47,7 +47,7 @@ while (1)
 		steps++;
 	}
 
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("***steps is [%d]\n", steps);
 }
 

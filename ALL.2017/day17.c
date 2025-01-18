@@ -72,7 +72,7 @@ while (1)
 		circle2.push_back(i);
 	}
 //for (auto it = circle2.begin(); it != circle2.end(); it++) { printf(" [%d] ", *it); } printf("\n"); getchar();
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("**ans: %d \n", circle2.front());
 
 	return 0;

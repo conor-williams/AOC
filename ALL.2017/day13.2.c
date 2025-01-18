@@ -73,6 +73,6 @@ while (1)
 		delay++;
 	} while (1);
 	printf("**tot is %d\n", tot);
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("**ans: %d\n", tot);
 }

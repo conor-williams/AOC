@@ -49,7 +49,7 @@ while (1)
 		printf("	[%s]\n", catChA[i]);
 	}
 */
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("***totG %llu\n", totG);
 
 }

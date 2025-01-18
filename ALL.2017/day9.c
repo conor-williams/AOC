@@ -45,7 +45,7 @@ while (1)
 	for (int i = 0; i < cAtchAPos; i++) {
 		printf("	[%s]\n", cAtchA[i]);
 	}
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("***tot is ^^ [%llu]\n", tot);
 
 }

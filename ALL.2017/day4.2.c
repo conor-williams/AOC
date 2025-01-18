@@ -87,7 +87,7 @@ end:
 	leny++;
 }
 
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("***valid is [%d]\n", valid);
 }
 

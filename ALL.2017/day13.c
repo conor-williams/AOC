@@ -55,6 +55,6 @@ while (1)
 			}
 		}
 	}
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("**tot is %d\n", tot);
 }

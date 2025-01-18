@@ -110,7 +110,7 @@ while (1)
 	}
 	printf("notfail is (not inc 0)%d\n", notfail);
 	printf("notfail is (inc 0)%d\n", notfail+1);
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("**ans %d\n", notfail+1);
 	return 0;
 }

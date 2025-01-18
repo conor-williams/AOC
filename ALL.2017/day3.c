@@ -85,7 +85,7 @@ int main(int argc, char **argv)
 			}
 		}
 
-		//dup2(fd, 1);
+		//fflush(stdout); dup2(fd, 1);
 		printf("man: %d\n", abs(x1) + abs(y1));
 		//fflush(stdout); close(1);
 		leny++;

@@ -103,7 +103,7 @@ while (1)
 	}
 	printf("\n");
 
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("ANS: ");
 	for (int i = 0; i < 16; i++) {
 		printf("%02x", ans[i]);

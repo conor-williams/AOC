@@ -127,7 +127,7 @@ int main(int argc, char **argv)
 				if (numsMEM[k][j] == numsMEM[numsMEMPos-1][j] && found == 0) {
 					if (j == NUMS-1) {
 						allSame = numsMEMPos -1 - k;
-						dup2(fd, 1);
+						fflush(stdout); dup2(fd, 1);
 						printf("CYCLES %d\n", allSame); getchar();
 						exit(0);
 					}
