@@ -68,6 +68,7 @@ void TimerStop(int signum) {
 //main:::if (argc == 3) {printf("SETTING TIME TO [%d]\n", atoi(argv[2])); TimerSet(atoi(argv[2]));}
 int main(int argc, char **argv)
 {
+	printf("SLOW ~3minutes\n");
 	TimerSet(55*60);
 	myinstarrayLen = 0;
 	tot = 0;lenx = 0; leny = 0;
