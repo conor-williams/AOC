@@ -68,7 +68,7 @@ void TimerStop(int signum) {
 //main:::if (argc == 3) {printf("SETTING TIME TO [%d]\n", atoi(argv[2])); TimerSet(atoi(argv[2]));}
 int main(int argc, char **argv)
 {
-	printf("SLOW ~5minutes\n");
+	printf("SLOW ~Xminutes > 15mins\n");
 	//TimerSet(60*4);
 	printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
 	a = fopen(argv[1], "r"); printf("2022 Day11 part2\n"); fflush(stdout);
