@@ -1,0 +1,4 @@
+#include <unistd.h>
+
+#define getchar()
+#define assert(asdf)
