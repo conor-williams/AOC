@@ -112,7 +112,7 @@ printf("\n");
 		}
 		if (found == 1) {
 			printf("thats all folks - Infinite Loop detected [ %d ]\n", accum); 
-			dup2(fd, 1);
+			fflush(stdout); dup2(fd, 1);
 			printf("**ans: %d\n", accum);exit(0);
 		}
 	}

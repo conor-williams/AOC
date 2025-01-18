@@ -68,7 +68,7 @@ fclose(a);
 			if (watugot[s][c-1] == 1 && watugot[s][c] == 0 && watugot[s][c+1] == 1) {
 				printf("got ya... %d", (s*8)+c);	
 				fflush(stdout);
-				dup2(fd, 1);
+				fflush(stdout); dup2(fd, 1);
 				printf("**ans: %d\n", (s*8)+c);
 				exit(0);
 			}	

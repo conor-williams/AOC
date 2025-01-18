@@ -46,7 +46,7 @@ for (int i = 0; i < pos; i++)
   		printf("Yatzee: %d,%d,%d prod: %d\n", 
 			firstnum, secondnum, thirdnum, 
 			firstnum*secondnum*thirdnum);
-		dup2(fd, 1);
+		fflush(stdout); dup2(fd, 1);
 		printf("**ans: %d\n", firstnum*secondnum*thirdnum);
 		exit(0);
 	   }

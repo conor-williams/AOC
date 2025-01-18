@@ -149,7 +149,7 @@ printf("compare with %d\n", allInst[instNUM].pos);
 			}
 		} else {
 			printf("no infin... **accum %d\n", accum);
-			dup2(fd, 1);
+			fflush(stdout); dup2(fd, 1);
 			printf("**ans %d\n", accum); exit(0);
 		}
 	}

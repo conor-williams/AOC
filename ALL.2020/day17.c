@@ -137,7 +137,7 @@ while (1) {
 		printf("CYCLE %d -- active: %d\n", t, countHash);
 		countANS = countHash;
 	}
-	dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1);
 	printf("**ans: %d\n", countANS);
 
 }
