@@ -96,7 +96,7 @@ rectified soon (update: nearly rectified...) (late december 2024)
 <li>dayX.2.c is part2 of day X </li>
 <li>others are scribbles.. or partials/solns which may not have worked </li>
 <li>a couple need md5 (for cygwin: install <b>mbedtls</b> development (-> libmbedcrypto.a in /lib)) (gcc -lmbedcrypto dayX.c -Wall ) </li>
-<li>you will find dot or heato or sfdp in package graphviz for python (python and graphviz are in cygwin packages) </li>
+<li>you will find dot or <s>h</s>neato or sfdp in package graphviz for python (python and graphviz are in cygwin packages) </li>
 <li> <h2>TODO:</h2></li>
 <s><li>FIXED: a couple need the dictionary of words (for cygwin: install <b>words</b>) </li></s>
 <s><li>FIXED: a couple <s>missing dayX.c and have</s> dayX.2.c (<b><i>todo in 2025</b></i>) </li></s>
