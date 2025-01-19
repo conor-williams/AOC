@@ -17,6 +17,7 @@ $ cat lool.txt
 2017/day16/day16.2.c:   printf("broken...\n"); exit(0);
 2017/day18/day18.2.c:   printf("broken...\n"); exit(0);
         2018
+2018/day19/day19.2.c:   printf("broken\n"); exit(0);	
 2018/day23/day23.2.c:   printf("broken\n"); exit(0);
         2019
 2019/day14/day14.2.c:   printf("broken\n"); exit(0);
@@ -26,6 +27,7 @@ $ cat lool.txt
 2021/day12/day12.2.c:   printf("broken...\n"); exit(0);
         2022
 2022/day23/day23.2.c:   printf("broken\n"); exit(0);
+2022/day11/day11.2.c:   printf("broken\n"); exit(0);
         2023
 2023/day11/day11.2.c:   print("broken..\n"); exit(0);
 2023/day13/day13.2.c:   printf("broken...\n"); exit(0);
