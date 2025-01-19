@@ -74,7 +74,7 @@ int main(int argc, char **argv)
 		printf("**ans: %d\n", gcountO);
 
 	}
-	printpuzzle(puzzle);
+	//printpuzzle(puzzle);
 	fclose(a);
 }
 void nextandcheck(int startx, int starty, int steps)
