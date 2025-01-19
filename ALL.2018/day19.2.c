@@ -32,6 +32,7 @@ int main(int argc, char **argv)
 	//printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
 	FILE * a = fopen(argv[1], "r"); printf("2018 Day19.2\n"); fflush(stdout);
 
+	printf("broken\n"); exit(0);
 	fflush(stdout); int fd = dup(1); close(1);
 	//int numBlanks = 0; int regb[5]; int op, regA, regB, regC; int ans[17][5]; int rega[5]; int times = 0;
 	while (1) 
