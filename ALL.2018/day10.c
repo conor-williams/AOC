@@ -5,6 +5,7 @@
 #include <math.h>
 #include <stdbool.h>
 #include <map>
+#include <assert.h>
 
 #include <errno.h>
 #include <fcntl.h>
@@ -18,6 +19,7 @@
 #include <sys/ioctl.h>
 #include <stdio.h>
 
+#define assert(asdf)
 #define getchar()
 using namespace std;
 
@@ -129,35 +131,40 @@ after:
 
 	int ROWS = termsize();
 	printf("ROWS:%d\n", ROWS);
-	int height = maxY - minY;
-	//int width = maxX - minX;
+	int height = maxY - minY+2;
+	int width = maxX - minX+2;
 	int adjusterY = ROWS-height-1;
-	/*
-	{
-		//printf("\x1b[H");
-		//printf("\x1b[%dB", minY+adjusterY-1);
-		//printf("\x1b[%dC#", 0);
-		for (int ii = 0; ii < height+1; ii++) {
-			for (int i = 0; i < width+2; i++) {
-				printf(" "); 
-			}
-			printf("\n");
+	
+	for (int ii = 0; ii < height+1;ii++) {
+		//printf("\n\n");
+	}
+	//char (*output)[100] = (char (*)[100]) malloc(sizeof(char[height][100]));
+	char (*output)[width+10] = (char (*)[width+10]) malloc(sizeof(char[height+5][width+10]));
+	
+	//printf("height is %d\n", height);
+	for (int y1 = 0; y1 < height; y1++) {
+		for (int x1 = 0; x1 < width; x1++) {
+			//output[y1][x1] = ' ';
+			//printf("%d,%d ", x1, y1);
 		}
 	}
-	*/
+
+	memset (output, ' ', (width+10)*(height+5));
+	assert(output[3][3] == ' ');
+	for (int z = 0; z < leny; z++) {
+		output[posit[z].ys[boardCon]-minY][posit[z].xs[boardCon]-minX] = 'X';
+		assert(posit[z].ys[boardCon]-minY < height+5);
+		assert(posit[z].xs[boardCon]-minX < width+10);
+	}
 	
 	fflush(stdout); dup2(fd, 1);
-	for (int ii = 0; ii < height+1;ii++) {
-		printf("\n");
+	printf("**ans: \n");
+	for (int y = 0; y < height; y++) {
+		output[y][width+1] = '\n';
+		output[y][width+2] = '\0';
+		printf("%s", output[y]);
 	}
-	for (int z = 0; z < leny; z++) {
-		printf("\x1b[H");
-		printf("\x1b[%dB", posit[z].ys[boardCon]-minY+adjusterY);
-		printf("\x1b[%dC#", posit[z].xs[boardCon]-minX);
-	}
-
-	printf("\n\n\n");
-	//printf("**tot %lu\n", tot);
+	free(output);
 }
 
 void curs() {
@@ -203,3 +210,27 @@ int termsize (void)
 	printf ("columns %d\n", w.ws_col);
 	return w.ws_row;
 }
+	/*
+		for (int x =0; x < width; x++) {
+			printf("%c", output[y][x]);
+		}
+		printf("\n");
+	}
+	*/
+	
+
+	//printf("\n\n\n");
+	//printf("**tot %lu\n", tot);
+	/*
+	{
+		//printf("\x1b[H");
+		//printf("\x1b[%dB", minY+adjusterY-1);
+		//printf("\x1b[%dC#", 0);
+		for (int ii = 0; ii < height+1; ii++) {
+			for (int i = 0; i < width+2; i++) {
+				printf(" "); 
+			}
+			printf("\n");
+		}
+	}
+	*/
