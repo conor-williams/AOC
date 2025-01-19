@@ -3,6 +3,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <math.h>
+#include <assert.h>
 
 #include <unistd.h>
 #define perror(asdf)
@@ -45,7 +46,7 @@ void printit(int cX, int cY, char (*gridCopy)[tX+351]);
 int main(int argc, char **argv)
 {
 	printf("compile with gcc\n");
-	printf("slow ~25 seconds\n");
+	printf("SLOW ~2 minutes\n");
 	printf("%d", argc); printf("@%s", argv[1]); fflush(stdout);
 	FILE * a = fopen(argv[1], "r"); printf("2018 Day22.2\n"); fflush(stdout);
 	//fflush(stdout); int fd = dup(1); close(1);
@@ -155,7 +156,17 @@ int main(int argc, char **argv)
 	//printit(1, 1, grid);
 	//printf("Starting out with minPath: %d\n", minPath);
 	{
-		memset(already, 0, sizeof(*already));
+		/*
+		printf("sizeof already is %d\n", (int)sizeof already);
+		printf("sizeof(already) is %d\n", (int)sizeof(already));
+		printf("sizeof(*already) is %d\n", (int)sizeof(*already));
+		printf("sizeof(**already) is %d\n", (int)sizeof(**already));
+		printf("sizeof(struct already_s) is %d\n", (int)sizeof(struct already_s));
+		printf("mul is %d\n", (int)((tX+351)*(tY+350)*sizeof(struct already_s)));
+		*/
+		//assert((sizeof already) == (((tX+351) * (tY+350))*sizeof(struct already_s)));
+		int sz123 = (((tX+351) * (tY+350))*sizeof(struct already_s));
+		memset(already, 0, sz123);
 		/*
 		   for (int y = 0; y < tY+350; y++) {
 		   for (int x = 0; x < tX+351; x++) {
@@ -168,7 +179,7 @@ int main(int argc, char **argv)
 		   already[0][0].path[TOR] = 0;
 		   */
 		next(0,1, TOR, 1, already, grid);
-		memset(already, 0, sizeof(*already));
+		memset(already, 0, sz123);
 		/*
 		   for (int y = 0; y < tY+350; y++) {
 		   for (int x = 0; x < tX+351; x++) {
@@ -184,7 +195,7 @@ int main(int argc, char **argv)
 		   */
 		next(0,1, CLI, 8, already, grid);
 		////////////////////
-		memset(already, 0, sizeof(*already));
+		memset(already, 0, sz123);
 		/*
 		   for (int y = 0; y < tY+350; y++) {
 		   for (int x = 0; x < tX+351; x++) {
@@ -198,7 +209,7 @@ int main(int argc, char **argv)
 		   printf("here3");
 		   */
 		next(1,0, TOR, 1, already, grid);
-		memset(already, 0, sizeof(*already));
+		memset(already, 0, sz123);
 		/*
 		   for (int y = 0; y < tY+350; y++) {
 		   for (int x = 0; x < tX+351; x++) {
