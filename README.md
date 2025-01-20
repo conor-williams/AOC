@@ -1,8 +1,9 @@
-<h2>Notes (this README is a .html file (drag and drop into a browser)) lu:19-01-2025</h2>
+<h2>Notes (this README is a .html file (drag and drop into a browser)) lu:20-01-2025</h2>
 <address><b>conor.williams@gmail.com</b></address><br>
-<h3>Update (11::19-01-25):</h3>
+<h3>Update (11::20-01-25):</h3>
 <pre>
 	o run "sh FIRST.sh" -- it does everything for you
+	o added year and day to input file names and year to c files (no code change just renaming of files)
 	o dup2 needed an fflush -- now no debug -- sorry
 	o if the file is not present, it has not been coded
 	o all <s>day</s>Part 1's for every year working well, except:
