@@ -1,10 +1,9 @@
-<h3>Notes: c.w.</h3>
-<br>
+<h2>Notes (this README is a .html file (drag and drop into a browser)) lu:19-01-2025</h2>
+<address><b>conor.williams@gmail.com</b></address><br>
 <h3>Update (11::19-01-25):</h3>
 <pre>
-	
-	o dup2 needed an fflush -- now no debug -- sorry!
-	o +if the file is not present, it has not been coded
+	o dup2 needed an fflush -- now no debug -- sorry
+	o if the file is not present, it has not been coded
 	o all <s>day</s>Part 1's for every year working well, except:
 		-- 2016 Day 11,1
 	   	-- 2018 Day 21.1
@@ -22,37 +21,33 @@
 	o Result of Tidy every year <s>but</s> including 2024:
 	conor.williams@DESKTOP-MM5HH8I AOC-main
 $ cat lool.txt
-        2015
-2015/day12/day12.2.c:   printf("broken\n"); exit(0);
-2015/day19/day19.2.c:   printf("broken\n"); exit(0);
+	2015
+2015&sol;day12&sol;day12.2.c:   printf("broken\n"); exit(0);
+2015&sol;day19&sol;day19.2.c:   printf("broken\n"); exit(0);
         2016
-2016/day22/day22.2.c:   printf("broken..\n"); exit(0);
+2016&sol;day22&sol;day22.2.c:   printf("broken..\n"); exit(0);
         2017
-2017/day16/day16.2.c:   printf("broken...\n"); exit(0);
-2017/day18/day18.2.c:   printf("broken...\n"); exit(0);
+2017&sol;day16&sol;day16.2.c:   printf("broken...\n"); exit(0);
+2017&sol;day18&sol;day18.2.c:   printf("broken...\n"); exit(0);
         2018
-2018/day19/day19.2.c:   printf("broken\n"); exit(0);	
-2018/day23/day23.2.c:   printf("broken\n"); exit(0);
+2018&sol;day19&sol;day19.2.c:   printf("broken\n"); exit(0);
+2018&sol;day23&sol;day23.2.c:   printf("broken\n"); exit(0);
         2019
-2019/day14/day14.2.c:   printf("broken\n"); exit(0);
-2019/day20/day20.2.c:   printf("broken\n"); exit(0);
-2019/day23/day23.2.c:   printf("broken\n"); exit(0);
+2019&sol;day14&sol;day14.2.c:   printf("broken\n"); exit(0);
+2019&sol;day20&sol;day20.2.c:   printf("broken\n"); exit(0);
+2019&sol;day23&sol;day23.2.c:   printf("broken\n"); exit(0);
         2021
-2021/day12/day12.2.c:   printf("broken...\n"); exit(0);
+2021&sol;day12&sol;day12.2.c:   printf("broken...\n"); exit(0);
         2022
-2022/day23/day23.2.c:   printf("broken\n"); exit(0);
-2022/day11/day11.2.c:   printf("broken\n"); exit(0);
+2022&sol;day23&sol;day23.2.c:   printf("broken\n"); exit(0);
+2022&sol;day11&sol;day11.2.c:   printf("broken\n"); exit(0);
         2023
-2023/day11/day11.2.c:   print("broken..\n"); exit(0);
-2023/day13/day13.2.c:   printf("broken...\n"); exit(0);
-2023/day14/day14.2.c:   printf("broken...\n"); exit(0);
-2023/day15/day15.2.c:   printf("broken...\n"); exit(0);
-2023/day21/day21.2.c:   printf("broken...\n"); exit(0);
-2023/day23/day23.2.c:   printf("broken...\n"); exit(0);
-
-
-
-
+2023&sol;day11&sol;day11.2.c:   print("broken..\n"); exit(0);
+2023&sol;day13&sol;day13.2.c:   printf("broken...\n"); exit(0);
+2023&sol;day14&sol;day14.2.c:   printf("broken...\n"); exit(0);
+2023&sol;day15&sol;day15.2.c:   printf("broken...\n"); exit(0);
+2023&sol;day21&sol;day21.2.c:   printf("broken...\n"); exit(0);
+2023&sol;day23&sol;day23.2.c:   printf("broken...\n"); exit(0);
 </pre>
 <h3>Note: (of course you may already know this)</h3>     
 <br>if you are not interested in waiting for one to finish
@@ -118,7 +113,7 @@ rectified soon (update: nearly rectified...) (late december 2024)
 </ul>
 <br>
 <address><b>conor.williams@gmail.com</b></address><br>
-<font size=1><i>last updated</i>: <b>11/01/2025</b></font>
+
 <br><br>
 <hr>
 <h3>Table of years/days of days which need optimizations or work (todo: ongoing):</h3>
