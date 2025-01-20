@@ -2,6 +2,7 @@
 <address><b>conor.williams@gmail.com</b></address><br>
 <h3>Update (11::19-01-25):</h3>
 <pre>
+	o run "sh FIRST.sh" -- it does everything for you
 	o dup2 needed an fflush -- now no debug -- sorry
 	o if the file is not present, it has not been coded
 	o all <s>day</s>Part 1's for every year working well, except:
@@ -14,7 +15,7 @@
 		-- 2017 Day 7.2
 		-- <s>2018 Day 7 1&2</s>
 	   	-- 2022 Day 9.2
-	o Timer being added (an automatic kill, if you will) to the slow ones so they don't run too long
+	o Timer has been added (an automatic kill, if you will) to the slow ones so they don't run too long
 	        (but you might not get the answer)
 		(timer length can be changed in code before a compile) TimerSet(Xseconds);
      <s>o looking now to tidy part2's (11-24) of every year (16-01-2025) </s>
