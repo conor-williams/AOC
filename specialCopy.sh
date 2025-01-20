@@ -1,3 +1,4 @@
+set -xv
 ###tar -xvzf ins-2015-2024.tar.gz
 #handy for copying over files if you have just unzipped the inp tar file
 year=2015
@@ -5,12 +6,9 @@ day=1
 
 while [ $year != 2025 ] ; do
 	while [ $day != 26 ] ; do
-
-		echo ALL.$year/day$day.c $year/day$day
-		cp ALL.$year/day$day.c $year/day$day
-		echo ALL.$year/day$day.2.c $year/day$day
+		cp ALL.$year/$year.day$day.c $year/day$day
 		if [ $day != 25 ] ; then
-			cp ALL.$year/day$day.2.c $year/day$day
+			cp ALL.$year/$year.day$day.2.c $year/day$day
 		fi
 		day=$(($day+1))
         done
