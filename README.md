@@ -1,3 +1,5 @@
+o sh FIRST.sh
+
 <h2>Notes (this README is a .html file (drag and drop into a browser)) lu:20-01-2025</h2>
 <address><b>conor.williams@gmail.com</b></address><br>
 <h3>Update (11::20-01-25):</h3>
