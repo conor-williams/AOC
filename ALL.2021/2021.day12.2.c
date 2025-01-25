@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <set>
 
 using namespace std;
 
@@ -19,18 +20,19 @@ FILE *a;
 void sigfunc(int a) { printf("[[ %s ]]\n", "signal hand..\n"); }
 
 map <string, vector <string>> mp;
-void traverse(string st, string en, string called, map<string, int> al, int f1);
+void traverse(string st, string en, map<string, int> countSmallLetters, vector <string>path, int anySmallTwo);
 map <string, int> al;
 int count = 0;
 int first = 1;
 map <string, int> call;
+set <string> singleSmalls;
+
 int main(int argc, char **argv)
 {
 	signal(SIGTSTP, &sigfunc);
 	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
 	a = fopen(argv[1], "r"); printf("2021 Day 12.2\n"); fflush(stdout);
-	printf("broken...\n"); exit(0);
 
 	fflush(stdout); int fd = dup(1); close(1);
 
@@ -54,21 +56,41 @@ int main(int argc, char **argv)
 	}
 	fclose(a);
 
-	for (auto itm = mp.begin(); itm!=mp.end(); itm++) {
+	/*
+	for (auto itm = mp.begin(); itm != mp.end(); itm++) {
 		cout << "mapFirst: " << itm->first << endl;
 		for (auto itv = itm->second.begin(); itv != itm->second.end(); itv++) {
 			cout << *itv << " " ;
 		}
 		cout << endl;
 	}
+	*/
 
-	//al["start"] = 1; al["end"] = 1;
-	int f1 = 1;
-	traverse("start", "end", "start", al, f1);
-	cout << "call 1 size: " << call.size() << endl;
-	for (auto it = call.begin(); it != call.end(); it++) {
-		cout << it->first << endl;
+	count = 0;
+	map <string, int> countSmallLetters;
+	vector <string> path;
+	/*
+	for (auto xx = mp.begin(); xx != mp.end(); xx++) {
+		if ((int)mp[(*xx).first].size() == 1 && islower((int)(*xx).first[0])
+				&& (*xx).first != "start" && (*xx).first != "end") {
+			vector <string> veX = mp[(*xx).first];
+			string wat = veX.back();
+			if (islower(wat[0])) {
+				singleSmalls.insert((*xx).first);
+			}
+		}
+
 	}
+	*/
+
+	for (auto itm = mp.begin(); itm != mp.end(); itm++) {
+		if ((*itm).first == "start") {
+			for (auto itv = itm->second.begin(); itv != itm->second.end(); itv++) {
+				traverse((*itv), "end", countSmallLetters, path, 0);
+			}
+		}
+	}
+
 	printf("FIN ** count %d\n", count);
 
 	fflush(stdout); dup2(fd, 1);
@@ -76,53 +98,46 @@ int main(int argc, char **argv)
 }
 
 int ind = 0;
-void traverse(string st, string en, string called, map<string, int> al, int f1) {
+void traverse(string cur, string en, map<string, int> countSmalls, vector <string> path, int anySmallTwo) {
 	ind++;
-	vector <string> ve = mp[st];
-	if (st == "start" && first == 1) {
-		//cout << "in trav " << st << " -> " << en << " (" << ve.size() << ") " << endl;
-		first = 0;
-	} else if (st == "start" && first == 0) {
-		ind--;
+	if (cur == "start") {
 		return;
 	}
 
-	cout << "in trav " << st << " -> " << en << " (" << ve.size() << ") " << endl;
+	if (cur == en) {
+		count++;
+		for (auto path1: path) {
+			cout << path1 << " ";
+		}
+		cout << endl;
+		return;
+	}
 
-	if (st == "end") {
-		cout << "end: " << ind << " -- " << called << endl;
-		if (call.find(called) == call.end()) {
-			cout << "END: " << called << endl;
-			call[called] = 1;
-			count++;
+	if (islower((int)cur[0]) && cur != "start" && cur != en) {
+		countSmalls[cur]++;
+				
+		if (countSmalls[cur] > 2) {return;}
+		if (countSmalls[cur] == 2 && anySmallTwo == 1) {return;}
+		if (countSmalls[cur] == 2 && anySmallTwo == 0) {anySmallTwo = 1;}
+
+		
+		/*
+		if (singleSmalls.find(cur) == singleSmalls.end()) {
+			if (countSmalls[cur] > 2) {
+				return;
+			}
 		} else {
-			//al.clear(); 
+			if (countSmalls[cur] > 1) {
+				return;
+			}
 		}
-		ind--;
-		return;
+		*/
 	}
-	if (al.find(st) != al.end()) {
-		printf("already.%s..\n", st.c_str());
-		ind--;
-		return;
-	} else {
-		string tmpSt = st;
-		for (int i = 0; i < (int)tmpSt.length(); i++) {
-			tmpSt[i] = tolower(st[i]);
-		}
-		if (tmpSt == st) {
-			if (st == "start" || st == "end") {al[st]=1;} else 
-				if (f1 == 0) {
-					al[st] = 1;
-				} else {
-					cout << "did not add " << st << endl;
-					f1 = 0;
-				}
-		}
-
-	}
+	
+	path.push_back(cur);
+	vector <string> ve = mp[cur];
 	for (auto itv = ve.begin(); itv != ve.end(); itv++) {
-		traverse(*itv, en, called + " " + *itv, al, f1);	
+		traverse(*itv, en, countSmalls, path, anySmallTwo);
 	}
 	ind--;
 }
