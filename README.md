@@ -5,6 +5,8 @@ o ps and kill are your friend
 <address><b>conor.williams@gmail.com</b></address><br>
 <h3>Update (11::20-01-25):</h3>
 <pre>
+	o length of filename getting you down? use ln and stop getting down (e.g.):
+	         ln -s 2020.day20.i1.txt i1.txt
 	o run "sh FIRST.sh" -- it does everything for you
 	o added year and day to input file names and year to c files (no code change just renaming of files)
 	o dup2 needed an fflush -- now no debug -- sorry
