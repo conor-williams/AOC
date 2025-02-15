@@ -7,10 +7,8 @@
 #include <map>
 #include <assert.h>
 #include <string>
-
 #include <unistd.h>
 
-#define getchar()
 using namespace std;
 
 int lenx, leny;
@@ -20,7 +18,7 @@ int lenx, leny;
 char grid[SZ][SZ];
 #define lAL 150
 int already[lAL+1][SZ][SZ];
-//compile: -Wl,--stack,999777666
+
 #define getchar()
 void ne(int x, int y, int eX, int eY, int path, int numAl);
 void getsecond(char one1, char two1, int px1, int py1, int inside);
@@ -37,65 +35,30 @@ struct to_s {
 map <pair<int, int>, struct to_s> mp;
 map <string, int> mpLets;
 
-#include <sys/time.h>
-#include <signal.h>
-void TimerStop(int signum);
-void TimerSet(int interval);
-
-void TimerSet(int interval) {
-    printf("starting timer\n");
-    struct itimerval it_val;
-
-    it_val.it_value.tv_sec = interval;
-    it_val.it_value.tv_usec = 0;
-    it_val.it_interval.tv_sec = 0;
-    it_val.it_interval.tv_usec = 0;
-
-    if (signal(SIGALRM, TimerStop) == SIG_ERR) {
-        perror("Unable to catch SIGALRM");
-        exit(1);
-    }
-    if (setitimer(ITIMER_REAL, &it_val, NULL) == -1) {
-        perror("error calling setitimer()");
-        exit(1);
-    }
-}
-
-int fd;
-void TimerStop(int signum) {
-
-	fflush(stdout); dup2(fd, 1);
-    printf("Timer ran out! Stopping timer\n");
-	FILE *f = fopen("out.tim", "a");
-	fprintf(f, "Timer ran out! Stopping timer timestamp@%s\n", "out.tim");
-	fclose(f);
-    exit(10);
-}
-//main:::if (argc == 3) {printf("SETTING TIME TO [%d]\n", atoi(argv[2])); TimerSet(atoi(argv[2]));}
 int main(int argc, char **argv)
 {
-	TimerSet(55*60);
 	signal(SIGTSTP, signal_hand);
 	lenx = 0; leny = 0;
-        printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
-        FILE * a = fopen(argv[1], "r"); 
+	printf("SLOW ~38seconds\n");
+	printf("widen stack -Wl,--stack,999777666\n");
+	//printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
+	FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); 
-	printf("broken\n"); exit(0);
-       
-	fflush(stdout); fd = dup(1); close(1);
-        char line1[SZ];
-while(1) {
-        fgets(line1, SZ-1, a);
-        if (feof(a)) break;
-	line1[strlen(line1) -1]='\0';
+	int fd = dup(1); close(1);
+
+	char line1[SZ];
+	while(1) {
+		fgets(line1, SZ-1, a);
+		if (feof(a)) break;
+		line1[strlen(line1) -1]='\0';
 #ifdef _DEBUG_
-	printf("LINE: %s getchar\n", line1); getchar();
+		printf("LINE: %s getchar\n", line1); getchar();
 #endif
-	strcpy(grid[leny], line1);
-	leny++;
-}
-lenx = (int)strlen(line1);
-fclose(a);
+		strcpy(grid[leny], line1);
+		leny++;
+	}
+	lenx = (int)strlen(line1);
+	fclose(a);
 
 
 
@@ -165,9 +128,8 @@ fclose(a);
 	int path = 0;
 	printf("%d,%d -> %d,%d\n", stX, stY, endX, endY);
 	ne(stX, stY, endX, endY, path, lAL/2);
-
 	printf("**minPath: %d\n", minPath);
-	fflush(stdout); dup2(fd, 1);
+	fflush(stdout); dup2(fd, 1); 
 	printf("**ans: %d\n", minPath);
 }
 void ne(int x, int y, int eX, int eY, int path, int ind) {
@@ -192,7 +154,7 @@ void ne(int x, int y, int eX, int eY, int path, int ind) {
 			ind--;
 		}
 		if (ind < 0 || ind >= lAL) {return;}
-		 /*printf("newx,newy %d,%d\n", x, y);*/
+		/*printf("newx,newy %d,%d\n", x, y);*/
 		if (ind == lAL/2 && iter->second.in == 2) {
 			return;
 		}
@@ -227,7 +189,7 @@ void getsecond(char one1, char two1, int px1, int py1, int inside) {
 				}
 			} else if ((isupper(grid[y][x])) && (isupper(grid[y][x+1]))) {
 				fc2 = grid[y][x]; sc2 = grid[y][x+1];
-//2 is outside // 1 is inside				
+				//2 is outside // 1 is inside				
 				if (fc2 == one1 && sc2 == two1) {
 					if (x+2 == lenx)  {
 						posX2 = x-1; posY2 = y; in = 2;
@@ -246,16 +208,16 @@ void getsecond(char one1, char two1, int px1, int py1, int inside) {
 end:
 	struct to_s to1;
 	struct to_s to2; 
-/*
-	if (in == 1) {
-		to2.in = 2;
-		to1.in = 1;
-	} else if (in == 2) {
-		to2.in = 1;
-		to1.in = 2;
-	}
-	assert(inside != in);
-*/
+	/*
+	   if (in == 1) {
+	   to2.in = 2;
+	   to1.in = 1;
+	   } else if (in == 2) {
+	   to2.in = 1;
+	   to1.in = 2;
+	   }
+	   assert(inside != in);
+	   */
 	to1.x = px1; to1.y = py1; to1.in = inside;
 
 	to2.x = posX2; to2.y = posY2; to2.in = in;
