@@ -39,3 +39,5 @@ cdandcompile "2023/day14/" "day14.2.c"
 cdandcompile "2023/day15/" "day15.2.c" 
 cdandcompile "2023/day21/" "day21.2.c" 
 cdandcompile "2023/day23/" "day23.2.c" 
+
+#$ stdbuf -e0 -i0 -o 0 sh runem.sh >  var_out.txt 2>&1
