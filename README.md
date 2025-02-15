@@ -16,7 +16,7 @@ o ps and kill are your friend
 	   	-- 2018 Day 21.1
 		-- 2019 Day 18 part1
 		-- <s>2022 Day 22.1</s>
-	   	-- 2023 Day 22.1
+	   	-- <s>2023 Day 22.1</s>
 	o all years days 1--10 Part 1&2 working well, except:
 		-- 2017 Day 7.2
 		-- <s>2018 Day 7 1&2</s>
