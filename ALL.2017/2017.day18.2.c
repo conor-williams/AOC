@@ -6,6 +6,9 @@
 #include <deque>
 #include <unistd.h>
 #include <pthread.h>
+#include <signal.h>
+#include <sys/time.h>
+#include <unistd.h>
 
 using namespace std;
 struct send_s {
@@ -26,18 +29,35 @@ deque<struct send_s> Q1;
 
 void *program0(void *); void *program1(void *);
 pthread_mutex_t lock;
+#define getchar()
 
-void sig_handler(int signum){
-	printf("CONOR ctrl-z sendCount is:: %lld\n", sendCount); getchar();
-}
-
-#include <sys/time.h>
-#include <signal.h>
 void TimerStop(int signum);
 void TimerSet(int interval);
 
+#define INTERVAL 12 
+
+void TimerStop(int signum);
+void TimerSet(int interval);
+FILE *a;
+int REG0 = 0;
+
+void sig_handler(int signum){
+        printf("CONOR ctrl-z sendCount is:: %lld\n", sendCount); getchar();
+}
+int fd;
+
+void TimerStop(int signum) {
+        //printf("\x1b[H");
+        //printf("\x1b[%dB", 4);
+        //printf("Timer ran out! Stopping timer %d\n", REG0);
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %lld\n", sendCount);
+        fclose(a);
+	exit(0);
+}
+
 void TimerSet(int interval) {
-    printf("starting timer\n");
+    //printf("starting timer\n");
     struct itimerval it_val;
 
     it_val.it_value.tv_sec = interval;
@@ -56,39 +76,27 @@ void TimerSet(int interval) {
 }
 
 
-int fd;
-void TimerStop(int signum) {
-
-	fflush(stdout); dup2(fd, 1);
-    printf("Timer ran out! Stopping timer\n");
-	FILE *f = fopen("out.tim", "a");
-	fprintf(f, "Timer ran out! Stopping timer timestamp@%s\n", "out.tim");
-	fclose(f);
-    exit(10);
-}
-//main:::if (argc == 3) {printf("SETTING TIME TO [%d]\n", atoi(argv[2])); TimerSet(atoi(argv[2]));}
 int leny = 0;
 int main(int argc, char **argv)
 {
-	TimerSet(1200);
-	signal(SIGTSTP, sig_handler);
-	printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
-	FILE * a = fopen(argv[1], "r"); printf("2017 Day18.2\n"); fflush(stdout);
+        signal(SIGTSTP, sig_handler);
+        //printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
+        FILE * a = fopen(argv[1], "r"); printf("2017 Day18.2\n"); fflush(stdout);
+	printf("SLOW ~30seconds\n");
+	TimerSet(28);
+	fd = dup(1); close(1);	
 
-	printf("broken...\n"); exit(0);
-	fflush(stdout); fd = dup(1); close(1);
+while (1) 
+{
+        fgets(line1, SIZE -1, a);
+	if (feof(a)) break;
+ 	line1[strlen(line1)-1] = '\0';
+ 	printf("line1 %s\n", line1);
 
-	while (1) 
-	{
-		fgets(line1, SIZE -1, a);
-		if (feof(a)) break;
-		line1[strlen(line1)-1] = '\0';
-		printf("line1 %s\n", line1);
-
-		strcpy(inst[leny], line1);	
-		leny++;
-	}
-	fclose(a);
+	strcpy(inst[leny], line1);	
+	leny++;
+}
+fclose(a);
 
 	pthread_t tid0;
 	pthread_t tid1;
@@ -106,9 +114,6 @@ int main(int argc, char **argv)
 	pthread_join(tid1, NULL);
 	//printf("after thread");
 	printf("sendCount here here here is [ %lld ]\n", sendCount);
-
-	fflush(stdout); fflush(stdout); dup2(fd, 1);
-	printf("**ans: %lld\n", sendCount);
 	return 0;
 }
 void *program1(void *x) {
@@ -172,7 +177,7 @@ void *program1(void *x) {
 			pthread_mutex_lock(&lock);
 			waiting1 = 0;
 			pthread_mutex_unlock(&lock);
-			sleep(0.44);
+				sleep(0.44);
 
 			pthread_mutex_lock(&lock);
 			struct send_s myrcv1;
@@ -206,7 +211,7 @@ void *program0(void *y) {
 			struct send_s send;
 			send.sendCount = mySendCount;
 			send.lastSound = lastSound;
-			Q0.push_back(send); 
+		        Q0.push_back(send); 
 			mySendCount++;
 			pthread_mutex_unlock(&lock); continue;}
 		ret = sscanf(inst[i], "snd %c", &reg1);
@@ -249,7 +254,7 @@ void *program0(void *y) {
 			pthread_mutex_lock(&lock);
 			waiting0 = 0;
 			pthread_mutex_unlock(&lock);
-			sleep(0.001);
+				sleep(0.001);
 
 			struct send_s myrcv0;
 			myrcv0 = Q1.front();
