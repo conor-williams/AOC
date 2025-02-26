@@ -46,7 +46,7 @@ $ cat lool.txt
         2021
 <s>2021&sol;day12&sol;day12.2.c:   printf("broken...\n"); exit(0);</s>
         2022
-2022&sol;day11&sol;day11.2.c:   printf("broken\n"); exit(0);
+<s>2022&sol;day11&sol;day11.2.c:   printf("broken\n"); exit(0);</s>
 <s>2022&sol;day23&sol;day23.2.c:   printf("broken\n"); exit(0);</s>
         2023
 <s>2023&sol;day11&sol;day11.2.c:   print("broken..\n"); exit(0);</s>
