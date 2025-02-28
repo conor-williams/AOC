@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <signal.h>
 #include <time.h>
+#include <sys/resource.h>
 
 #include <unistd.h>
 ///#define assert(asf)
@@ -45,6 +46,11 @@ int leny;
 
 int main(int argc, char **argv)
 {
+	struct rlimit limit;
+        getrlimit (RLIMIT_STACK, &limit);
+        printf ("\nStack Limit = %ld and %ld max\n", limit.rlim_cur, limit.rlim_max);
+        //if (limit.rlim_cur < 900000000) {printf("need to widen stack with -Wl,--stack,999777666\n"); exit(10);}
+
 	clock_t start, end; double cpu_time_used; 
 	start = clock();
 	//DO
