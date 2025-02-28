@@ -1,0 +1,782 @@
+mkdir gqlg
+mkdir hchrwstr
+mkdir lswlpt
+truncate -s 189381 mzsnhlf
+mkdir plmdrbn
+mkdir rjwmjd
+mkdir stqq
+truncate -s 93174 zfn
+mkdir zjhqnlrr
+mkdir zssdlnc
+cd gqlg
+truncate -s 187654 cfrdsjf
+truncate -s 100589 ntvmgbw
+truncate -s 46922 zcmfcjhf.tzw
+cd ..
+cd hchrwstr
+truncate -s 227766 cljjlcp.pjh
+truncate -s 102770 rdbrcf.pjl
+truncate -s 9887 rfnjn.lqn
+mkdir rzsrp
+mkdir shlhgj
+mkdir slwwgc
+cd rzsrp
+mkdir rzsrp
+cd rzsrp
+mkdir dvzvmsjz
+truncate -s 208001 tnflwcsn
+mkdir zfn
+cd dvzvmsjz
+truncate -s 149823 hvgbhm.zsc
+cd ..
+cd zfn
+truncate -s 292424 gqlg.tzc
+cd ..
+cd ..
+cd ..
+cd shlhgj
+truncate -s 61753 fzpzwjdt.jvl
+truncate -s 195204 jjhc.tzr
+truncate -s 288094 zcmfcjhf.tzw
+cd ..
+cd slwwgc
+truncate -s 118185 jjhc.tzr
+truncate -s 291916 jwnw.wqv
+truncate -s 116377 ptlz
+truncate -s 300849 pzjpw.hwg
+truncate -s 28679 zfn.grz
+cd ..
+cd ..
+cd lswlpt
+truncate -s 124160 dbnlt.rqz
+truncate -s 154412 sfd
+cd ..
+cd plmdrbn
+mkdir fmzjhrq
+truncate -s 224144 rlc.qns
+truncate -s 2985 zcmfcjhf.tzw
+cd fmzjhrq
+truncate -s 9749 lqj.szc
+mkdir rrjjsvm
+cd rrjjsvm
+truncate -s 66652 zcmfcjhf.tzw
+cd ..
+cd ..
+cd ..
+cd rjwmjd
+mkdir twcrf
+truncate -s 125294 zpfws.ctc
+mkdir zwmmrqj
+cd twcrf
+truncate -s 229364 tnflwcsn
+truncate -s 262716 zcmfcjhf.tzw
+cd ..
+cd zwmmrqj
+truncate -s 11466 gqlg.ftg
+truncate -s 220272 lflcgss.jrm
+truncate -s 79574 tnflwcsn
+cd ..
+cd ..
+cd stqq
+truncate -s 185160 cwjqldbf.cnm
+truncate -s 266439 dpg.pwn
+mkdir hpgbcvtb
+truncate -s 139357 jvps
+mkdir llbthqc
+truncate -s 250148 mctn.dqw
+mkdir rzsrp
+truncate -s 22196 tnflwcsn
+mkdir whmdbn
+cd hpgbcvtb
+truncate -s 231579 fvjjtd.wdb
+truncate -s 168118 gjdtscqs
+truncate -s 113434 ldbqbg
+mkdir mqjfvg
+truncate -s 182214 nnnr
+truncate -s 112389 pqqdt.wnn
+cd mqjfvg
+truncate -s 170328 gqlg.jjc
+cd ..
+cd ..
+cd llbthqc
+truncate -s 25611 bftwd.qrr
+truncate -s 91550 tnflwcsn
+cd ..
+cd rzsrp
+truncate -s 272315 wrsfh.pzd
+truncate -s 123877 zcmfcjhf.tzw
+cd ..
+cd whmdbn
+truncate -s 29628 jjhc.tzr
+truncate -s 65193 mrhb
+cd ..
+cd ..
+cd zjhqnlrr
+mkdir bzzvj
+mkdir ddzmvh
+mkdir dsjd
+truncate -s 180806 fqz.dch
+mkdir nnzvl
+truncate -s 109161 rptmqt
+truncate -s 6463 rzsrp.sjf
+truncate -s 111549 rzsrp.wwz
+truncate -s 241532 zfn
+cd bzzvj
+truncate -s 278759 gqlg.nsn
+truncate -s 174223 mvggzqrq
+truncate -s 156518 tnflwcsn
+mkdir wjtlg
+mkdir zfn
+cd wjtlg
+truncate -s 52198 fvqbtm.tch
+truncate -s 44881 tnflwcsn
+cd ..
+cd zfn
+truncate -s 22926 tnflwcsn
+cd ..
+cd ..
+cd ddzmvh
+mkdir cpvfln
+truncate -s 180764 gqlg.bjq
+mkdir hgrnmh
+truncate -s 186254 hgrnmh.tpr
+mkdir hjpgf
+mkdir mghmb
+mkdir pvdwhmcr
+truncate -s 256578 rzsrp
+truncate -s 269955 shlhgj
+truncate -s 172163 vrr.nnm
+cd cpvfln
+truncate -s 87025 hgrnmh.lvr
+truncate -s 187453 rwmq.dph
+mkdir sthhc
+cd sthhc
+truncate -s 289580 fdzwmfnf
+truncate -s 57504 hgrnmh.vqj
+truncate -s 277639 mzcfchr.mch
+mkdir slsj
+mkdir vsvvprg
+truncate -s 94836 zqglfrl
+cd slsj
+truncate -s 178013 hdjgtqt
+cd ..
+cd vsvvprg
+truncate -s 102783 fvqbtm.tch
+cd ..
+cd ..
+cd ..
+cd hgrnmh
+mkdir mrnmbbt
+truncate -s 240216 rzsrp.nfg
+cd mrnmbbt
+truncate -s 245579 gqlg
+cd ..
+cd ..
+cd hjpgf
+truncate -s 257544 cjfd.wdq
+truncate -s 296077 jjhc.tzr
+truncate -s 195752 zcmfcjhf.tzw
+cd ..
+cd mghmb
+mkdir bgrcsdc
+mkdir btjq
+mkdir gqlg
+mkdir gtwdqw
+mkdir hgrnmh
+mkdir jts
+mkdir jvp
+mkdir jvrjcv
+truncate -s 206272 pgf.rgj
+truncate -s 130746 tnflwcsn
+truncate -s 256698 zfn.dhl
+cd bgrcsdc
+truncate -s 235762 lflcgss.jrm
+cd ..
+cd btjq
+mkdir bvrcqb
+mkdir drslln
+mkdir dwzpblb
+mkdir gqlg
+mkdir hgrnmh
+mkdir hvb
+mkdir rqtc
+mkdir vsdz
+mkdir wrnftqh
+cd bvrcqb
+truncate -s 51508 gjjg.msw
+mkdir gqlg
+truncate -s 13206 pdwn
+truncate -s 10427 vbw
+truncate -s 6909 zfn.ztq
+cd gqlg
+truncate -s 20816 cmgcvlh.mzs
+truncate -s 10358 fvqbtm.tch
+truncate -s 215142 rzsrp.dns
+truncate -s 192153 wdjdppzm
+cd ..
+cd ..
+cd drslln
+truncate -s 258102 tnflwcsn
+cd ..
+cd dwzpblb
+truncate -s 302466 fvqbtm.tch
+cd ..
+cd gqlg
+mkdir hnr
+mkdir mdzdht
+cd hnr
+mkdir fjd
+truncate -s 159298 fvqbtm.tch
+truncate -s 46324 gchdll.nrm
+truncate -s 287907 lflcgss.jrm
+mkdir mqp
+truncate -s 140272 twdff
+truncate -s 47399 zfn
+cd fjd
+truncate -s 227109 fvqbtm.tch
+truncate -s 223413 wdsfwwwm.rmd
+cd ..
+cd mqp
+mkdir rzsrp
+cd rzsrp
+mkdir pgwng
+cd pgwng
+truncate -s 218271 hgrnmh.gnf
+cd ..
+cd ..
+cd ..
+cd ..
+cd mdzdht
+mkdir gqlg
+mkdir tvd
+cd gqlg
+mkdir gfjqbdp
+truncate -s 108335 jjhc.tzr
+cd gfjqbdp
+truncate -s 143536 fzvn.jtv
+cd ..
+cd ..
+cd tvd
+truncate -s 238491 wsjmrlqv.bwb
+cd ..
+cd ..
+cd ..
+cd hgrnmh
+truncate -s 265289 lflcgss.jrm
+truncate -s 111283 thb
+cd ..
+cd hvb
+mkdir hgrnmh
+mkdir smmwg
+cd hgrnmh
+mkdir wpvssts
+truncate -s 84939 zcmfcjhf.tzw
+cd wpvssts
+truncate -s 305634 whcmr
+cd ..
+cd ..
+cd smmwg
+truncate -s 36722 cvdbwg.rll
+truncate -s 16840 nnhbcbwz
+mkdir rzsrp
+truncate -s 9405 zfn.jzr
+cd rzsrp
+mkdir fzsngr
+cd fzsngr
+truncate -s 142687 zcmfcjhf.tzw
+cd ..
+cd ..
+cd ..
+cd ..
+cd rqtc
+mkdir pbzhfsg
+mkdir rzsrp
+mkdir shlhgj
+cd pbzhfsg
+truncate -s 41865 hpshz.sdf
+cd ..
+cd rzsrp
+mkdir gqlg
+mkdir mbsjjzft
+cd gqlg
+mkdir gqlg
+mkdir nvjqp
+cd gqlg
+truncate -s 21860 tnflwcsn
+cd ..
+cd nvjqp
+mkdir gcq
+cd gcq
+mkdir mslhm
+mkdir rzsrp
+cd mslhm
+truncate -s 41304 rpgvllw.zfj
+cd ..
+cd rzsrp
+truncate -s 290199 ddsnt
+cd ..
+cd ..
+cd ..
+cd ..
+cd mbsjjzft
+truncate -s 47727 ggpmg.pps
+mkdir stgszvmj
+truncate -s 275954 tnflwcsn
+truncate -s 248613 vbgnwh.sjz
+cd stgszvmj
+mkdir dthcrbmr
+mkdir shlhgj
+truncate -s 206580 zcmfcjhf.tzw
+mkdir zfn
+cd dthcrbmr
+mkdir lhp
+mkdir npf
+mkdir qbgrjr
+cd lhp
+truncate -s 37925 hgrnmh.lvm
+cd ..
+cd npf
+truncate -s 77162 bqvd
+cd ..
+cd qbgrjr
+truncate -s 48767 fvqbtm.tch
+cd ..
+cd ..
+cd shlhgj
+mkdir wtlngn
+truncate -s 35422 zfn
+cd wtlngn
+mkdir gqlg
+cd gqlg
+truncate -s 64761 fwtqw
+cd ..
+cd ..
+cd ..
+cd zfn
+truncate -s 47247 dmlr.flv
+truncate -s 259570 htvn.rbz
+truncate -s 149238 qrdw
+cd ..
+cd ..
+cd ..
+cd ..
+cd shlhgj
+mkdir cjmv
+mkdir tns
+cd cjmv
+truncate -s 140919 jjhc.tzr
+cd ..
+cd tns
+truncate -s 248127 fvqbtm.tch
+truncate -s 216202 pwg
+mkdir qhhtgsvz
+cd qhhtgsvz
+truncate -s 68979 fvqbtm.tch
+cd ..
+cd ..
+cd ..
+cd ..
+cd vsdz
+truncate -s 224491 hgrnmh
+mkdir jsrqjjtc
+mkdir shlhgj
+truncate -s 123062 zfn.gss
+cd jsrqjjtc
+truncate -s 245991 phc
+cd ..
+cd shlhgj
+truncate -s 284208 ctwmwlp.lnm
+truncate -s 11067 vwsrmlf.dvz
+cd ..
+cd ..
+cd wrnftqh
+truncate -s 237658 lldrh
+truncate -s 14804 nszc.wdf
+cd ..
+cd ..
+cd gqlg
+truncate -s 211474 jjhc.tzr
+cd ..
+cd gtwdqw
+truncate -s 92613 fvqbtm.tch
+truncate -s 206813 ppzhmnb.grd
+cd ..
+cd hgrnmh
+truncate -s 249351 bftm
+cd ..
+cd jts
+truncate -s 132190 gqlg.vnn
+truncate -s 208091 ldnq
+truncate -s 202593 zcmfcjhf.tzw
+cd ..
+cd jvp
+truncate -s 258220 lflcgss.jrm
+cd ..
+cd jvrjcv
+truncate -s 20148 dzzlwp.bdj
+truncate -s 289774 hgrnmh.bvc
+truncate -s 296981 jwscd.cvj
+truncate -s 16617 tbnwvcl.tlv
+cd ..
+cd ..
+cd pvdwhmcr
+mkdir bhmmsbmb
+mkdir bjwbvcq
+mkdir hgrnmh
+mkdir ltvtrtth
+mkdir prtqcb
+mkdir rmn
+mkdir shlhgj
+mkdir tmzcmb
+mkdir vlbqvps
+mkdir wmmfp
+cd bhmmsbmb
+mkdir nccjwf
+cd nccjwf
+mkdir drwhjfjn
+truncate -s 206638 lflcgss.jrm
+cd drwhjfjn
+truncate -s 291772 zcmfcjhf.tzw
+cd ..
+cd ..
+cd ..
+cd bjwbvcq
+mkdir zfn
+cd zfn
+truncate -s 303808 wrbldbd
+cd ..
+cd ..
+cd hgrnmh
+truncate -s 142765 fvqbtm.tch
+truncate -s 159497 scqf.scf
+truncate -s 270819 zcmfcjhf.tzw
+cd ..
+cd ltvtrtth
+mkdir fwtwqvn
+truncate -s 156894 jnmqdq.zgp
+truncate -s 297860 lflcgss.jrm
+mkdir mcgcc
+mkdir zfn
+truncate -s 179328 zfn.vnn
+mkdir zzsnz
+cd fwtwqvn
+mkdir rqndc
+mkdir rzsrp
+truncate -s 124999 rzsrp.tvr
+mkdir shlhgj
+cd rqndc
+truncate -s 45124 zrcv
+cd ..
+cd rzsrp
+truncate -s 74041 rzsrp
+cd ..
+cd shlhgj
+truncate -s 117219 qptfpz.cgc
+truncate -s 281188 shlhgj.bhd
+truncate -s 121750 sptql
+truncate -s 173637 vqp.dbs
+cd ..
+cd ..
+cd mcgcc
+truncate -s 18295 gqlg
+mkdir ngvwhnvf
+truncate -s 177283 rjsrn.rlq
+truncate -s 54239 rzsrp.tfq
+cd ngvwhnvf
+truncate -s 207616 jjhc.tzr
+cd ..
+cd ..
+cd zfn
+mkdir cwzbljh
+cd cwzbljh
+truncate -s 134952 hmchpgn.nwf
+cd ..
+cd ..
+cd zzsnz
+truncate -s 273014 shlhgj.pls
+cd ..
+cd ..
+cd prtqcb
+mkdir dtr
+mkdir rzsrp
+truncate -s 199012 tnflwcsn
+cd dtr
+mkdir gqlg
+mkdir grwpbs
+mkdir hgrnmh
+truncate -s 115701 lflcgss.jrm
+truncate -s 247838 tnflwcsn
+truncate -s 268721 zcmfcjhf.tzw
+truncate -s 15320 zwcd.dqb
+cd gqlg
+truncate -s 285009 jjhc.tzr
+truncate -s 125691 nhnlcjjt.zlj
+truncate -s 54424 rzsrp.rll
+cd ..
+cd grwpbs
+truncate -s 59390 rzsrp.cms
+cd ..
+cd hgrnmh
+truncate -s 185747 lvtnqqdh.nzq
+cd ..
+cd ..
+cd rzsrp
+truncate -s 268631 hvvpfd.smn
+truncate -s 263890 tcrctpb.pcc
+cd ..
+cd ..
+cd rmn
+mkdir gtnvc
+truncate -s 205894 hqb.fwh
+truncate -s 280887 lvvmjb.scj
+mkdir rsnqlfsz
+cd gtnvc
+truncate -s 28523 jjhc.tzr
+cd ..
+cd rsnqlfsz
+mkdir hgrnmh
+mkdir nsfhtthc
+cd hgrnmh
+truncate -s 183216 fvqbtm.tch
+cd ..
+cd nsfhtthc
+truncate -s 284747 jspmbh.rvh
+cd ..
+cd ..
+cd ..
+cd shlhgj
+truncate -s 144391 dzf
+mkdir lrths
+truncate -s 178083 nhlmsd.mnc
+mkdir rwn
+truncate -s 173833 shlhgj.qss
+truncate -s 39183 tnflwcsn
+truncate -s 125029 zfn.hjr
+cd lrths
+mkdir hgrnmh
+mkdir pfc
+truncate -s 86563 rzsrp.gbc
+truncate -s 280631 tmhnc.hmc
+truncate -s 28181 ttsnjc.rhm
+truncate -s 98060 vdmr.czg
+mkdir vlshvmvj
+mkdir wsn
+truncate -s 210337 zfn.pqp
+cd hgrnmh
+mkdir mvrlcvj
+cd mvrlcvj
+truncate -s 121034 vssbr.qjm
+cd ..
+cd ..
+cd pfc
+mkdir gqlg
+cd gqlg
+truncate -s 305519 hdhn.wds
+cd ..
+cd ..
+cd vlshvmvj
+truncate -s 56641 lflcgss.jrm
+truncate -s 29190 rzsrp.vsh
+truncate -s 36663 zcmfcjhf.tzw
+cd ..
+cd wsn
+truncate -s 137307 gmdfbfjf.crs
+mkdir hgtqj
+truncate -s 297924 lflcgss.jrm
+mkdir shlhgj
+cd hgtqj
+truncate -s 214202 qnlszftb.bzg
+cd ..
+cd shlhgj
+mkdir pmldlbbh
+cd pmldlbbh
+truncate -s 263722 zwfptl.wsh
+cd ..
+cd ..
+cd ..
+cd ..
+cd rwn
+truncate -s 279589 ttqg.qct
+cd ..
+cd ..
+cd tmzcmb
+truncate -s 138557 jjhc.tzr
+cd ..
+cd vlbqvps
+mkdir nmfnf
+truncate -s 123659 rzsrp
+cd nmfnf
+mkdir jhpnd
+truncate -s 50537 trzvzvgz.bqp
+truncate -s 41828 vps
+truncate -s 195245 wlwt.ftj
+cd jhpnd
+truncate -s 257519 shlhgj.fwz
+truncate -s 32963 wzmbdtz
+cd ..
+cd ..
+cd ..
+cd wmmfp
+truncate -s 94749 lflcgss.jrm
+cd ..
+cd ..
+cd ..
+cd dsjd
+truncate -s 284923 bjvwg.phz
+mkdir bwjp
+mkdir gqlg
+mkdir hgrnmh
+truncate -s 8771 jjhc.tzr
+mkdir jntt
+truncate -s 271995 qbtn.vps
+truncate -s 299501 shlhgj.crl
+mkdir vmph
+mkdir zvg
+cd bwjp
+truncate -s 117739 vtrg
+cd ..
+cd gqlg
+mkdir dwhr
+truncate -s 159876 hgrnmh.jvw
+mkdir rzsrp
+cd dwhr
+truncate -s 193289 gqlg
+truncate -s 171323 lflcgss.jrm
+cd ..
+cd rzsrp
+mkdir pmsgd
+cd pmsgd
+truncate -s 12648 lflcgss.jrm
+mkdir wbppspwq
+cd wbppspwq
+truncate -s 38834 tnflwcsn
+cd ..
+cd ..
+cd ..
+cd ..
+cd hgrnmh
+truncate -s 76649 cfdcbvdl.gfs
+truncate -s 257249 gmmzf
+truncate -s 83045 lhrtfcz
+cd ..
+cd jntt
+truncate -s 286866 lhqvt.lst
+cd ..
+cd vmph
+mkdir fnvpsr
+mkdir gfnvsznj
+truncate -s 19765 zcmfcjhf.tzw
+truncate -s 204319 zzsnj.dcp
+cd fnvpsr
+mkdir flz
+truncate -s 173924 fvqbtm.tch
+truncate -s 248297 mjrhs.scq
+mkdir rzsrp
+truncate -s 130580 zfn
+cd flz
+truncate -s 106168 brsgg
+cd ..
+cd rzsrp
+truncate -s 221882 hgrnmh.nsl
+mkdir smd
+cd smd
+mkdir drsld
+truncate -s 131686 fvqbtm.tch
+mkdir gqlg
+truncate -s 288283 hcw
+cd drsld
+truncate -s 85885 zfn.wdf
+cd ..
+cd gqlg
+truncate -s 8466 dzjtj.zbc
+cd ..
+cd ..
+cd ..
+cd ..
+cd gfnvsznj
+mkdir fqb
+truncate -s 265075 gqlg
+mkdir hdhmbtj
+truncate -s 74385 hpz
+mkdir lzdq
+mkdir rlvqmwv
+mkdir rzsrp
+cd fqb
+truncate -s 55182 ccjgpg
+truncate -s 245930 ppdgwcm.zfb
+truncate -s 164364 sgtgqdn.tfp
+cd ..
+cd hdhmbtj
+mkdir gqlg
+truncate -s 68609 jjhc.tzr
+mkdir rzsrp
+mkdir vrmrnt
+truncate -s 66988 zcmfcjhf.tzw
+cd gqlg
+truncate -s 156776 tnflwcsn
+mkdir vdcbg
+cd vdcbg
+truncate -s 261780 lflcgss.jrm
+cd ..
+cd ..
+cd rzsrp
+truncate -s 27818 zfn
+cd ..
+cd vrmrnt
+truncate -s 273664 msmzfnj.llc
+truncate -s 145156 svzmwnrq.chh
+cd ..
+cd ..
+cd lzdq
+truncate -s 214363 fms
+truncate -s 190021 lfzcgh.dsq
+truncate -s 21357 qtvvmj.zqw
+cd ..
+cd rlvqmwv
+mkdir gqlg
+truncate -s 198296 gqlg.sdz
+truncate -s 842 gshcswc.dcb
+mkdir shlhgj
+truncate -s 199828 snng
+cd gqlg
+truncate -s 183087 zfn.nsj
+cd ..
+cd shlhgj
+truncate -s 73040 tzgjrqmb
+cd ..
+cd ..
+cd rzsrp
+truncate -s 229576 vtftgng.wfz
+cd ..
+cd ..
+cd ..
+cd zvg
+truncate -s 85701 shlhgj.dvf
+cd ..
+cd ..
+cd nnzvl
+mkdir wwzsf
+cd wwzsf
+truncate -s 105177 tvbdz
+cd ..
+cd ..
+cd ..
+cd zssdlnc
+mkdir nfgh
+truncate -s 166004 twdcrh.zld
+mkdir zfn
+cd nfgh
+truncate -s 102281 fvqbtm.tch
+cd ..
+cd zfn
+mkdir fbmww
+mkdir jsst
+truncate -s 206602 shlhgj.cln
+cd fbmww
+truncate -s 179734 fll
+cd ..
+cd jsst
+mkdir flp
+cd flp
+truncate -s 32274 gctgt.stn
+truncate -s 67650 ggvj.bwz
