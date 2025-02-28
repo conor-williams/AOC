@@ -8,23 +8,21 @@
 #include <unistd.h>
 #include <algorithm>
 #include <vector>
+#include <sys/resource.h>
 
 #include <limits.h>
 #include <stdint.h>
 
-#include <unistd.h>
-//compile: -Wl,--stack,999777666
-#define getchar()
 using namespace std;
 int watch = 0;
 int mycount = 0;
-int fd;
+
 #define getchar()
 #undef _DEBUG_
 //int path = 0;
 int minPathLen;
 int lenx, leny;
-#define DAY "2016 day22 part2 \n"
+#define DAY "2016 day22 part2\n"
 #define _DEBUG_
 long tot;
 long tot1;
@@ -132,70 +130,29 @@ int cpoint(int let, int r, int pathLen, int SAME) {
 		return checkpointPos;
 	} 
 }
-/*
-   int cpoint(int let, int r, int pathLen, int SAME) {
-   if (checkpointPos >= 3500) {printf("ERROR cpoint\n"); exit(0);}
-
-   int found = 0;
-   int usepos = 0;
-   for (int i = 0; i < checkpointPos; i++) {
-
-   int found1 = 0;
-   for (int y = 0; y <= MAXY; y++) {
-   for (int x = 0; x <= MAXX; x++) {
-   if (checkpoint[i][y][x].used == grid[y][x].used && checkpoint[i][y][x].avail == grid[y][x].avail) {
-   found1++;
-   }
-   }
-   }	
-   if (found1 == MAXX*MAXY) {
-   if (cp[i].sX == xtraBEG[let][r].sX && cp[i].sY == xtraBEG[let][r].sY && cp[i].x  == xtraBEG[let][r].x && cp[i].y  == xtraBEG[let][r].y && cp[i].pathLen  == pathLen) {
-   printf("here1...\n");
-   usepos = i;
-   found = 1; break;
-   }
-   }
-
-   }
-   if (found == 0) {
-   for (int y = 0; y <= MAXY; y++) {
-   for (int x = 0; x <= MAXX; x++) {
-   checkpoint[checkpointPos][y][x] = grid[y][x];
-   }
-   }
-   cp[checkpointPos].sX = xtraBEG[let][r].sX;
-   cp[checkpointPos].sY = xtraBEG[let][r].sY;
-   cp[checkpointPos].x  = xtraBEG[let][r].x;
-   cp[checkpointPos].y  = xtraBEG[let][r].y;
-   cp[checkpointPos].pathLen  = pathLen;
-   checkpointPos++;
-   return checkpointPos;
-   } else {
-   return usepos;
-   } 
-   }
-   */
 void sig_handler(int signum){
-	fflush(stdout); dup2(fd, 1);
 	printf("CONOR ctrl-z minPathLen is:::: %d\n", minPathLen);
-	close(1);
 }
+int fd;
 int main(int argc, char **argv)
 {
+	struct rlimit limit;
+	getrlimit (RLIMIT_STACK, &limit);
+	printf ("\nStack Limit = %ld and %ld max\n", limit.rlim_cur, limit.rlim_max);
+	if (limit.rlim_cur < 900000000) {printf("need to widen stack with -Wl,--stack,999777666\n"); exit(10);}
 	//signal(SIGILL, sig_handler);
 	//signal(SIGKILL, sig_handler);
-	signal(SIGQUIT, sig_handler);
-	//signal(SIGTSTP, sig_handler);
+	//signal(SIGQUIT, sig_handler);
+	signal(SIGTSTP, sig_handler);
 	//savesBEG = (char (*)[1800][1800])malloc(901*sizeof(*savesBEG));
 	//if (savesBEG == NULL) { printf("NO MEM\n"); exit(0); }
 
 	tot = 0;lenx = 0; leny = 0;
-	printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
+	//printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
 	FILE * a = fopen(argv[1], "r"); 
-	printf(DAY); fflush(stdin); fflush(stdout);
+	printf(DAY);
+	fd = dup(1); close(1);
 
-	printf("broken..\n"); exit(0);
-	fflush(stdout); fd = dup(1); close(1);
 	char line1[SIZE];
 	int numFS;
 	if (strcmp(argv[1], "ex1.txt") == 0) {
@@ -205,7 +162,6 @@ int main(int argc, char **argv)
 		strcpy(goal, "/dev/grid/node-x32-y0");
 		//MAXX = 32; MAXY = 29;
 	}
-	//int fd = dup(1); close(1);
 	for (int y = 0; y <= MAXY; y++) {
 		for (int x = 0; x <= MAXX; x++) {
 			already[y][x] = -1;	
@@ -287,12 +243,24 @@ int main(int argc, char **argv)
 	}
 
 	printf("end of first part..\n"); 
+	getchar();
 
 	long tot3 = 0;
 	minPathLen = 9999;
 	for (int i = 0; i < savesPos; i++) {
-		for (int y5 = 0; y5 <= MAXY; y5++) { for (int x5 = 0; x5 <= MAXX; x5++) { grid[y5][x5] = gridOrig[y5][x5]; } }
-		for (int y = 0; y <= MAXY; y++)    { for (int x = 0; x <= MAXX; x++)    { already[y][x] = -1;} }
+		for (int y5 = 0; y5 <= MAXY; y5++) {
+			for (int x5 = 0; x5 <= MAXX; x5++) {
+				grid[y5][x5] = gridOrig[y5][x5];
+			}
+		}
+		/*
+		for (int y = 0; y <= MAXY; y++) {
+			for (int x = 0; x <= MAXX; x++) {
+				already[y][x] = -1;
+			}
+	       	}
+		*/
+		memset(already, -1, sizeof(already));
 		if ((int)strlen(saves[i]) > mymax) {mymax = (int)strlen(saves[i]);}
 	}
 	int start; int end;
@@ -312,37 +280,35 @@ int main(int argc, char **argv)
 	for (int i = 0; i < savesPos; i++) {
 		if ((int)strlen(saves[i]) > max) {max = (int)strlen(saves[i]);}
 	}
+	printf("main loop getchar\n"); getchar();
 	for (int i = start; i < end; i++) {/*so far37*/
-		/*if (i % 10 == 0) */{printf("savesPos %d of %d (minPathLen %d)\n", i, savesPos, minPathLen);}
+		if (i % 10 == 0) {printf("savesPos %d of %d (minPathLen %d)\n", i, savesPos, minPathLen);}
 		for (int y5 = 0; y5 <= MAXY; y5++) { for (int x5 = 0; x5 <= MAXX; x5++) { grid[y5][x5] = gridOrig[y5][x5]; } }
-		for (int y = 0; y <= MAXY; y++)    { for (int x = 0; x <= MAXX; x++)    { already[y][x] = -1;} }
-		//printf("here %d  [%s]\n", i, saves[i]); getchar();
+		//for (int y = 0; y <= MAXY; y++)    { for (int x = 0; x <= MAXX; x++)    { already[y][x] = -1;} }
+		memset(already, -1, sizeof(already));
 
 		for (int i = 0; i < 2000; i++) {savesBEGPos[i] = 0;}
-		//////////////////////
-		//if  (strcmp("LL", saves[i]) != 0) {continue;}
 		checkpointPos = 0;
 		int sX = MAXX; int sY = 0;
-		//for (int j = 0; j < (int)strlen(saves[i]); j++) {
-		//printf("(minPathLen: %d) HERE (%d of %d ) charPos: (%d of %d)\n", minPathLen, i, savesPos, j, (int)strlen(saves[i]));
-		printf("saves[%d]: [%s]\n", i, saves[i]);
-		int mypathLen = 0;
-		loop(i, 0, 1, &mypathLen, 0, sX, sY, 0, 0);
-		//}
-	}
-	//fflush(stdout); dup2(fd, 1);
-	//free(savesBEG);
 
+		printf("saves[%d]: [%s]\n", i, saves[i]);
+		int myPathLen = 0;
+		loop(i, 0, 1, &myPathLen, 0, sX, sY, 0, 0);
+		printf("after loop, myPathLen is %d\n", myPathLen);
+		printf("after loop, minPathLen is %d\n", minPathLen);
+		
+		getchar();
+	}
+	//dup2(fd, 1);
+	//free(savesBEG);
 	printf("tot3 is %ld\n", tot3); getchar(); getchar();
 
+	printf("**minPathLen %d \n", minPathLen); fflush(stdout);
 	printf("***pathsNUM %d \n", pathsNUM); fflush(stdout);
 	printf("***tot1 %ld \n", tot1); fflush(stdout);
 	printf("***tot %ld \n", tot); fflush(stdout);
 	printf("mymax: %d\n", mymax);
-	printf("**minPathLen %d \n", minPathLen); fflush(stdout);
 	printf("ENd...\n");
-	fflush(stdout); dup2(fd, 1);
-	printf("**ans: %d\n", minPathLen); fflush(stdout);
 } 
 int ind = 0;
 void loop(int sv, int let, int first, int *pathLen, int theEnd, int sX, int sY, int myr, int myrTot) {
@@ -400,7 +366,11 @@ void loop(int sv, int let, int first, int *pathLen, int theEnd, int sX, int sY, 
 				) {check[newR] = cpoint(let, newR, *pathLen, 0); loop(sv, let+1, 2, pathLen, (let+1)==(int)(strlen(saves[sv])-1), sX, sY, newR, savesBEGPos[let]);} else {printf("greater\n");}}
 		if (ret == 2) {
 			if (*pathLen+(int)strlen(saves[sv]) < minPathLen) {minPathLen = *pathLen+(int)strlen(saves[sv]);}
+
 			printf("path is [%d]  minPathLen [%d]\n", *pathLen+(int)strlen(saves[sv]), minPathLen);
+			fflush(stdout); dup2(fd, 1); 
+			printf("**ans: %d\n", minPathLen);
+			exit(0);
 			//			if ((*pathLen + (int)strlen(saves[sv])) < minPathLen) {minPathLen = *pathLen+(int)strlen(saves[sv]);}
 		}
 
@@ -491,7 +461,6 @@ next:
 }
 void nextBEG(int x, int y, int steps, char DIR, int frX, int frY, int DTX, int DTY, int igx, int igy, int vx1, int vy1, int letpos, int sX, int sY, int frslotX, int frslotY, int toslotX, int toslotY, char path[]) {
 
-	if (steps >= minPathLen) {return;}
 	//printf("in nextBEG");
 	if (x == frslotX && y == frslotY) {/*printf("IGNORING %d %d\n", igx, igy); getchar(); */return;}
 	if (x == igx && y == igy) {/*printf("IGNORING %d %d\n", igx, igy); getchar(); */return;}
@@ -562,23 +531,12 @@ int carryitout(int myp, int letpos, int *pathLen1, int theEnd, int *sX, int *sY)
 					myX--;
 					break;
 			}
-			//printf("already P path %d %d (my)\n", myX, myY);
-			//printf("already P path %d %d (prev)\n", prevx, prevy);
-			//printf("current sX sY is %d %d\n", *sX, *sY);
-			//if (prevx == *sX && prevy == *sY) {printf("**already\n"); return 0;}
-			//if (myX == *sX && myY == *sY) {printf("**already\n"); return 0;}
 			if (myX == xtraBEG[letpos][z].frslotX && myY == xtraBEG[letpos][z].frslotY) {/*printf("**alaready\n");*/ return 0;}
-			//printf("myX: %d myY: %d\n", myX, myY); //getchar();
-			//printf("prevx2: %d prevy2: %d\n", prevx2, prevy2); getchar();
-			//printf("avail:[%d][%d] %d V used[%d][%d] : %d\n", prevy, prevx, grid[prevy][prevx].avail, myY, myX, grid[myY][myX].used);
 			if (grid[prevy][prevx].avail >= grid[myY][myX].used) {
-				//printf("(not end)BEFORE:\n");for (int y6 = 0; y6 <= MAXY; y6++) { for (int x6 = 0; x6 <= MAXX; x6++) { printf(" %d/%d", grid[y6][x6].used, grid[y6][x6].size); } printf("\n"); }
 				grid[prevy][prevx].avail -= grid[myY][myX].used;
 				grid[prevy][prevx].used  += grid[myY][myX].used;
 				grid[myY][myX].avail = grid[myY][myX].size;
 				grid[myY][myX].used = 0;
-				//printf("grid[myY][myX] is %d zerop (myX:%d) (myY:%d)\n", grid[myY][myX].used, myX, myY); getchar();
-				//printf("(not end)AFTER:\n"); for (int y6 = 0; y6 <= MAXY; y6++) { for (int x6 = 0; x6 <= MAXX; x6++) { printf(" %d/%d", grid[y6][x6].used, grid[y6][x6].size); } printf("\n"); }
 				(*pathLen1) = *pathLen1 + 1;
 
 			} else {
@@ -590,20 +548,13 @@ int carryitout(int myp, int letpos, int *pathLen1, int theEnd, int *sX, int *sY)
 			int myfrslotY = xtraBEG[letpos][z].toslotY; int myfrslotX = xtraBEG[letpos][z].toslotX;
 			int mytoslotY = xtraBEG[letpos][z].frslotY; int mytoslotX = xtraBEG[letpos][z].frslotX;
 
-			//int mysY = xtraBEG[letpos][z].y; int mysX = xtraBEG[letpos][z].x;
-			//printf("(end BEFORE)\n"); for (int y6 = 0; y6 <= MAXY; y6++) { for (int x6 = 0; x6 <= MAXX; x6++) { printf(" %d/%d", grid[y6][x6].used, grid[y6][x6].size); } printf("\n"); }
-
 			grid[myfrslotY][mytoslotX].avail -= grid[mytoslotY][mytoslotX].used;
 			grid[myfrslotY][myfrslotX].used  += grid[mytoslotY][mytoslotX].used;
 			grid[mytoslotY][mytoslotX].avail = grid[mytoslotY][mytoslotX].size;
 			grid[mytoslotY][mytoslotX].used = 0;
-			//printf("(end)slot over:\n "); for (int y6 = 0; y6 <= MAXY; y6++) { for (int x6 = 0; x6 <= MAXX; x6++) { printf(" %d/%d", grid[y6][x6].used, grid[y6][x6].size); } printf("\n"); }
+
 			pathsNUM++;
-			//printf("path good ** setting sX sY to %d %d:\n", sX, sY); getchar();
-			//if (xtraBEG[letpos][z].x == 0 && xtraBEG[letpos][z].y == 0 && ((sX == 0 && sY == 1) || (sX==1 && sY==0))) {
-			//printf("\nCONxy(%d %d) sXY(%d %d) x1y1 (%d %d) G(%d %d)\n", xtraBEG[letpos][z].x, xtraBEG[letpos][z].y, xtraBEG[letpos][z].sX, xtraBEG[letpos][z].sY, xtraBEG[letpos][z].x1, xtraBEG[letpos][z].y1, *sX, *sY); getchar();
-			if (theEnd) {// && ((xtraBEG[letpos][z].sX == 1 && xtraBEG[letpos][z].sY == 0) || (xtraBEG[letpos][z].sX == 0 && xtraBEG[letpos][z].sY == 1))) {
-				     //printf("(end end)thats the end:::\n"); for (int y6 = 0; y6 <= MAXY; y6++) { for (int x6 = 0; x6 <= MAXX; x6++) { printf(" %d/%d", grid[y6][x6].used, grid[y6][x6].size); } printf("\n"); } getchar();
+			if (theEnd) {
 				xtraBEG[letpos][z].sX = xtraBEG[letpos][z].x;
 				xtraBEG[letpos][z].sY = xtraBEG[letpos][z].y;
 				*sX = xtraBEG[letpos][z].x;
@@ -615,75 +566,110 @@ int carryitout(int myp, int letpos, int *pathLen1, int theEnd, int *sX, int *sY)
 			*sX = xtraBEG[letpos][z].x;
 			*sY = xtraBEG[letpos][z].y;
 			return 1;
-			} else {
-				//printf("ret zero from carryitout\n");
-				return 0;
-			}
+		} else {
+			//printf("ret zero from carryitout\n");
+			return 0;
 		}
-		return 0;
-		}
-		void savepathBEG(char path[], int x1, int y1, int letpos, int x, int y, int sX, int sY, int frslotX, int frslotY, int toslotX, int toslotY) {
-			//printf("savespathBEG: [%s]\n", path);
-			int found = 1;
-			string pa = path;
-			if (find(savesBEG[letpos].begin(), savesBEG[letpos].end(), pa) == savesBEG[letpos].end()) {
-				found = 0;
-			}
-			/*
-			   for (int i = 0; i < savesBEGPos[letpos]; i++) {
-			   if (strcmp(savesBEG[letpos][i], path) == 0) {
-			   found = 1; break;
-			   }
-			   }
-			   */
-			if (found == 0) {
-				if (savesBEGPos[letpos] >= 1800) {printf("ERROR too large...\n"); watch = 1;}
-				xtraBEG[letpos][savesBEGPos[letpos]].frslotY = frslotY;
-				xtraBEG[letpos][savesBEGPos[letpos]].toslotY = toslotY;
-				xtraBEG[letpos][savesBEGPos[letpos]].frslotX = frslotX;
-				xtraBEG[letpos][savesBEGPos[letpos]].toslotX = toslotX;
-				xtraBEG[letpos][savesBEGPos[letpos]].sX = sX;
-				xtraBEG[letpos][savesBEGPos[letpos]].sY = sY;
-				xtraBEG[letpos][savesBEGPos[letpos]].x = x;
-				xtraBEG[letpos][savesBEGPos[letpos]].y = y;
-				xtraBEG[letpos][savesBEGPos[letpos]].x1 = x1;
-				xtraBEG[letpos][savesBEGPos[letpos]].y1 = y1;
-				savesBEG[letpos].insert(savesBEG[letpos].begin(), pa);
-				//strcpy(savesBEG[letpos][savesBEGPos[letpos]], path); if (watch == 0) {savesBEGPos[letpos]++;mycount++;} else if (watch == 1) {mycount++;}
-				savesBEGPos[letpos]++;
-			}
-		}
+	}
+	return 0;
+}
+void savepathBEG(char path[], int x1, int y1, int letpos, int x, int y, int sX, int sY, int frslotX, int frslotY, int toslotX, int toslotY) {
+	int found = 1;
+	string pa = path;
+	if (find(savesBEG[letpos].begin(), savesBEG[letpos].end(), pa) == savesBEG[letpos].end()) {
+		found = 0;
+	}
 
-		void savepath(char path[]) {
-			int found = 0;
-			for (int i = 0; i < savesPos; i++) {
-				if (strcmp(saves[i], path) == 0) {
-					found = 1; break;
-				}
-			}
-			if (found == 0) { strcpy(saves[savesPos], path); savesPos++;}
+	if (found == 0) {
+		if (savesBEGPos[letpos] >= 1800) {printf("ERROR too large...\n"); watch = 1;}
+		xtraBEG[letpos][savesBEGPos[letpos]].frslotY = frslotY;
+		xtraBEG[letpos][savesBEGPos[letpos]].toslotY = toslotY;
+		xtraBEG[letpos][savesBEGPos[letpos]].frslotX = frslotX;
+		xtraBEG[letpos][savesBEGPos[letpos]].toslotX = toslotX;
+		xtraBEG[letpos][savesBEGPos[letpos]].sX = sX;
+		xtraBEG[letpos][savesBEGPos[letpos]].sY = sY;
+		xtraBEG[letpos][savesBEGPos[letpos]].x = x;
+		xtraBEG[letpos][savesBEGPos[letpos]].y = y;
+		xtraBEG[letpos][savesBEGPos[letpos]].x1 = x1;
+		xtraBEG[letpos][savesBEGPos[letpos]].y1 = y1;
+		savesBEG[letpos].insert(savesBEG[letpos].begin(), pa);
+		//strcpy(savesBEG[letpos][savesBEGPos[letpos]], path); if (watch == 0) {savesBEGPos[letpos]++;mycount++;} else if (watch == 1) {mycount++;}
+		savesBEGPos[letpos]++;
+	}
+}
+
+void savepath(char path[]) {
+	int found = 0;
+	for (int i = 0; i < savesPos; i++) {
+		if (strcmp(saves[i], path) == 0) {
+			found = 1; break;
 		}
+	}
+	if (found == 0) { strcpy(saves[savesPos], path); savesPos++;}
+}
 
 
-		void next(int x, int y, int steps, char DIR, int frX, int frY, char path[]) {
+void next(int x, int y, int steps, char DIR, int frX, int frY, char path[]) {
 
-			//if (steps > minPathLen) {return;}
-			if (x == 0 && y == 0) {/*printf("reached end steps %d, %s\n", steps, path); */savepath(path);tot++; return;}
-			if (grid[y][x].size >= grid[frY][frX].used && (steps < already[y][x]  || already[y][x] == -1)) {
-				///printf("already[y][x] %d steps %d\n", already[y][x], steps);
-				already[y][x] = steps;
-				//printf("pot yes %c\n", DIR);
-				char newpath[1800];
-				sprintf(newpath, "%s%c", path, 'U');
-				if (y-1 >= 0)    {next(x, y-1, steps+1, 'U', x, y, newpath);}
-				sprintf(newpath, "%s%c", path, 'R');
-				if (x+1 <= MAXX) {next(x+1, y, steps+1, 'R', x, y, newpath);}
-				sprintf(newpath, "%s%c", path, 'D');
-				if (y+1 <= MAXY) {next(x, y+1, steps+1, 'D', x, y, newpath);}
-				sprintf(newpath, "%s%c", path, 'L');
-				if (x-1 >= 0)    {next(x-1, y, steps+1, 'L', x, y, newpath);}
-			} else {
-				return;
-			}
-		}
+	if (x == 0 && y == 0) {/*printf("reached end steps %d, %s\n", steps, path); */ savepath(path);tot++; return;}
+	if (grid[y][x].size >= grid[frY][frX].used && (steps < already[y][x]  || already[y][x] == -1)) {
+		///printf("already[y][x] %d steps %d\n", already[y][x], steps);
+		already[y][x] = steps;
+		//printf("pot yes %c\n", DIR);
+		char newpath[1800];
+		sprintf(newpath, "%s%c", path, 'U');
+		if (y-1 >= 0)    {next(x, y-1, steps+1, 'U', x, y, newpath);}
+		sprintf(newpath, "%s%c", path, 'R');
+		if (x+1 <= MAXX) {next(x+1, y, steps+1, 'R', x, y, newpath);}
+		sprintf(newpath, "%s%c", path, 'D');
+		if (y+1 <= MAXY) {next(x, y+1, steps+1, 'D', x, y, newpath);}
+		sprintf(newpath, "%s%c", path, 'L');
+		if (x-1 >= 0)    {next(x-1, y, steps+1, 'L', x, y, newpath);}
+	} else {
+		return;
+	}
+}
 
+/*
+   int cpoint(int let, int r, int pathLen, int SAME) {
+   if (checkpointPos >= 3500) {printf("ERROR cpoint\n"); exit(0);}
+
+   int found = 0;
+   int usepos = 0;
+   for (int i = 0; i < checkpointPos; i++) {
+
+   int found1 = 0;
+   for (int y = 0; y <= MAXY; y++) {
+   for (int x = 0; x <= MAXX; x++) {
+   if (checkpoint[i][y][x].used == grid[y][x].used && checkpoint[i][y][x].avail == grid[y][x].avail) {
+   found1++;
+   }
+   }
+   }	
+   if (found1 == MAXX*MAXY) {
+   if (cp[i].sX == xtraBEG[let][r].sX && cp[i].sY == xtraBEG[let][r].sY && cp[i].x  == xtraBEG[let][r].x && cp[i].y  == xtraBEG[let][r].y && cp[i].pathLen  == pathLen) {
+   printf("here1...\n");
+   usepos = i;
+   found = 1; break;
+   }
+   }
+
+   }
+   if (found == 0) {
+   for (int y = 0; y <= MAXY; y++) {
+   for (int x = 0; x <= MAXX; x++) {
+   checkpoint[checkpointPos][y][x] = grid[y][x];
+   }
+   }
+   cp[checkpointPos].sX = xtraBEG[let][r].sX;
+   cp[checkpointPos].sY = xtraBEG[let][r].sY;
+   cp[checkpointPos].x  = xtraBEG[let][r].x;
+   cp[checkpointPos].y  = xtraBEG[let][r].y;
+   cp[checkpointPos].pathLen  = pathLen;
+   checkpointPos++;
+   return checkpointPos;
+   } else {
+   return usepos;
+   } 
+   }
+   */
