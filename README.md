@@ -30,7 +30,7 @@ o ps and kill are your friend
 $ cat lool.txt
 	2015
 <s>2015&sol;day12&sol;day12.2.c:   printf("broken\n"); exit(0);</s>
-2015&sol;day19&sol;day19.2.c:   printf("broken\n"); exit(0);
+<s>2015&sol;day19&sol;day19.2.c:   printf("broken\n"); exit(0);</s>
         2016
 2016&sol;day22&sol;day22.2.c:   printf("broken..\n"); exit(0);
         2017
