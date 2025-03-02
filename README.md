@@ -34,7 +34,7 @@ $ cat lool.txt
         2016
 <s>2016&sol;day22&sol;day22.2.c:   printf("broken..\n"); exit(0);</s>
         2017
-2017&sol;day16&sol;day16.2.c:   printf("broken...\n"); exit(0);
+2017&sol;day16&sol;day16.2.c:   printf("broken...\n"); exit(0); (MANUAL CYCLE DETECTION)
 <s>2017&sol;day18&sol;day18.2.c:   printf("broken...\n"); exit(0);</s>
         2018
 2018&sol;day19&sol;day19.2.c:   printf("broken\n"); exit(0);
