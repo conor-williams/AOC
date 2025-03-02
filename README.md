@@ -38,7 +38,7 @@ $ cat lool.txt
 <s>2017&sol;day18&sol;day18.2.c:   printf("broken...\n"); exit(0);</s>
         2018
 2018&sol;day19&sol;day19.2.c:   printf("broken\n"); ex<s>it(0); (R</s>UNNING CURRENTLY ~2hours??)
-2018&sol;day23&sol;day23.2.c:   printf("broken\n"); exit(0);
+2018&sol;day23&sol;day23.2.c:   printf("broken\n"); exit(<s>0</s>); (Running... (nanobots ~2.5hours??)
         2019
 <s>2019&sol;day14&sol;day14.2.c:   printf("broken\n"); exit(0);</s>
 <s>2019&sol;day20&sol;day20.2.c:   printf("broken\n"); exit(0);</s>
