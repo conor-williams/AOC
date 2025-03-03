@@ -17,6 +17,7 @@
 #include <signal.h>
 #include <unistd.h>
 
+#define getchar()
 
 void TimerStop(int signum);
 void TimerSet(int interval);
@@ -29,30 +30,30 @@ FILE *a;
 int REG0 = 0;
 
 void TimerStop(int signum) {
-        printf("\x1b[H");
-        printf("\x1b[%dB", 4);
-        printf("Timer ran out! Stopping timer %d\n", REG0);
-        fclose(a);
+	printf("\x1b[H");
+	printf("\x1b[%dB", 4);
+	printf("Timer ran out! Stopping timer %d\n", REG0);
+	fclose(a);
 	exit(10);
 }
 
 void TimerSet(int interval) {
-    //printf("starting timer\n");
-    struct itimerval it_val;
+	//printf("starting timer\n");
+	struct itimerval it_val;
 
-    it_val.it_value.tv_sec = interval;
-    it_val.it_value.tv_usec = 0;
-    it_val.it_interval.tv_sec = 0;
-    it_val.it_interval.tv_usec = 0;
+	it_val.it_value.tv_sec = interval;
+	it_val.it_value.tv_usec = 0;
+	it_val.it_interval.tv_sec = 0;
+	it_val.it_interval.tv_usec = 0;
 
-    if (signal(SIGALRM, TimerStop) == SIG_ERR) {
-        perror("Unable to catch SIGALRM");
-        exit(1);
-    }
-    if (setitimer(ITIMER_REAL, &it_val, NULL) == -1) {
-        perror("error calling setitimer()");
-        exit(1);
-    }
+	if (signal(SIGALRM, TimerStop) == SIG_ERR) {
+		perror("Unable to catch SIGALRM");
+		exit(1);
+	}
+	if (setitimer(ITIMER_REAL, &it_val, NULL) == -1) {
+		perror("error calling setitimer()");
+		exit(1);
+	}
 }
 
 
@@ -66,33 +67,22 @@ int instNum =0;
 int mycmp(char four[]);
 int main(int argc, char **argv)
 {
-//	TimerSet(INTERVAL);
-//	if (argc == 3) {printf("SETTING TIME TO [%d]\n", atoi(argv[2])); TimerSet(atoi(argv[2]));} else { TimerSet(INTERVAL);}
-        //printf("\x1b[H");
-        //printf("\x1b[%dB", 3);
+	a = fopen(argv[1], "r"); printf("2018 Day21.1\n"); fflush(stdout);
+	int fd = dup(1); close(1);
 
-	//if (argc == 3) {printf("REG0: [%4d] -- ", atoi(argv[2])); REG0 = atoi(argv[2]);} else { printf("need REG0\n"); exit(0);}
-        //printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
-        a = fopen(argv[1], "r"); printf("2018 Day21.1\n"); fflush(stdout);
-	printf("broken -- needs a loop\n"); fclose(a); exit(0);
+	while (1) 
+	{
+		fgets(line1, SIZE -1, a);
+		if (feof(a)) break;
+		line1[(int)strlen(line1)-1] = '\0';
+		//printf("line1 %s\n", line1);
+		strcpy(instr[instNum++], line1);
 
-	fflush(stdout); int fd = dup(1); close(1);
+		leny++;
+	}
+	fclose(a);
 
-	//int numBlanks = 0; int regb[5]; int op, regA, regB, regC; int ans[17][5]; int rega[5]; int times = 0;
-while (1) 
-{
-        fgets(line1, SIZE -1, a);
-	if (feof(a)) break;
- 	line1[(int)strlen(line1)-1] = '\0';
- 	//printf("line1 %s\n", line1);
-	//printf("line1:::: %s\n", line1);
-	strcpy(instr[instNum++], line1);
-		
-	leny++;
-}
-fclose(a);
-	//printf("\n"); printf("here1\n"); fflush(stdout);
-
+	for (REG0 = 6482000; REG0 < 6500000; REG0++) 
 	{
 		int instREG;
 		int ret1 = sscanf(instr[0], "#ip %d", &instREG);
@@ -106,11 +96,9 @@ fclose(a);
 		long long regb[10] = {0};
 		int regA, regB, regC, in;
 		regb[0] = REG0;
-	//	printf("regb[0] is %d\n", regb);
 		long long count = -1;
 		for (int k = 0; k < instNum; k++) {	
 			count++;
-			//printf("%s\n", instr[k]); fflush(stdout);
 			char four[10];
 			int ret = sscanf(instr[k], "%s %d %d %d", four, &regA, &regB, &regC);
 			if (ret == 4) { in = mycmp(four); }
@@ -170,14 +158,15 @@ fclose(a);
 					printf("ERR\n"); exit(0);
 			}
 			if (regC ==  instREG) {k = regb[instREG];}
+			if (count > 2000) {break;}
 		}
-		//printf("**regb[0] is %d\n", regb[0]);
-        	printf("\x1b[H");
-	        printf("\x1b[%dB", 5);
+		if (count < 2000) {break;} else {continue;}
 		printf("**REG0: ((((%d)))) count is %lld\n", REG0, count);
 	}
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %d\n", REG0);
 }
-	
+
 int mycmp(char four[]) {
 	if (strcmp(four, "addr") == 0) {return 9;}
 	else if (strcmp(four, "addi") == 0) {return 11;}
