@@ -5,16 +5,16 @@ o ps and kill are your friend
 <address><b>conor.williams@gmail.com</b></address><br>
 <h3>Update (11::20-01-25):</h3>
 <pre>
+	o run "sh FIRST.sh" -- it does everything for you
 	o length of filename getting you down? use ln and stop getting down (e.g.):
 	         ln -s 2020.day20.i1.txt i1.txt
-	o run "sh FIRST.sh" -- it does everything for you
 	o added year and day to input file names and year to c files (no code change just renaming of files)
 	o dup2 needed an fflush -- now no debug -- sorry
 	o if the file is not present, it has not been coded
-	o all <s>day</s>Part 1's for every year working well, except:
+	o all <s></s>Part 1's for every year working well, except:
 		-- 2016 Day 11,1
 	   	-- 2018 Day 21.1
-		-- 2019 Day 18 part1
+		-- <s>2019 Day 18 part1</s>
 		-- <s>2022 Day 22.1</s>
 	   	-- <s>2023 Day 22.1</s>
 	o all years days 1--10 Part 1&2 working well, except:
