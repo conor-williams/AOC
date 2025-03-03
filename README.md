@@ -1,9 +1,9 @@
 o sh FIRST.sh
 o ps and kill are your friend
 
-<h2>Notes (this README is a .html file (drag and drop into a browser)) lu:29-01-2025</h2>
+<h2>Notes (this README is a .html file (drag and drop into a browser)) lu:3-03-2025</h2>
 <address><b>conor.williams@gmail.com</b></address><br>
-<h3>Update (11::20-01-25):</h3>
+<h3>Update (11::20-03-25):</h3>
 <pre>
 	o run "sh FIRST.sh" -- it does everything for you
 	o length of filename getting you down? use ln and stop getting down (e.g.):
