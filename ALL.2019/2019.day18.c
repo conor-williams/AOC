@@ -8,10 +8,8 @@
 #include <string>
 #include <iostream>
 #include <signal.h>
-
 #include <unistd.h>
 
-#define getchar()
 using namespace std;
 
 int lenx, leny;
@@ -41,9 +39,12 @@ struct letters_s {
 	int path;
 	int ignore;
 };
+int fd;
 void signal_handler(int x) {
+	fflush(stdout); dup2(fd, 1); 
 	printf("signal_handler: -- var_minPathLen:(%d) var_last3:[[%s]]\n",
-		var_minPathLen, var_last3);
+			var_minPathLen, var_last3);
+	close(1);
 }
 map <pair<char, char>, int> mplen;
 map <pair<char, char>, string> mppat;
@@ -66,30 +67,30 @@ void process(int ig, struct letters_s letters[], char upto[], int uptoPos, int v
 int minPath;
 int main(int argc, char **argv)
 {
-	signal(SIGTSTP, &signal_handler);
+	signal(SIGQUIT, &signal_handler);
 	lenx = 0; leny = 0;
-        printf("%d ", argc); printf("%s", argv[1]);
-        FILE * a = fopen(argv[1], "r"); 
+	//printf("%d ", argc); printf("%s", argv[1]);
+	FILE * a = fopen(argv[1], "r"); 
 	printf(DAY);
+	printf("SLOW ~1hour maybe 2\n");
 	if (argc == 3) {printf("setting MAX to %d\n", atoi(argv[2])); var_minPathLen = atoi(argv[2]);}
-       
-        char line1[IN];
 
-while(1) {
-        fgets(line1, IN-1, a);
-        if (feof(a)) break;
-	line1[strlen(line1) -1]='\0';
-	lenx = strlen(line1);
+	fd = dup(1); close(1);
+	char line1[IN];
+
+	while(1) {
+		fgets(line1, IN-1, a);
+		if (feof(a)) break;
+		line1[strlen(line1) -1]='\0';
+		lenx = strlen(line1);
 #ifdef _DEBUG_
-	printf("LINE: %s getchar\n", line1); getchar();
+		printf("LINE: %s getchar\n", line1); getchar();
 #endif
-	strcpy(grid[leny], line1);
-	leny++;
-}
-fclose(a);
+		strcpy(grid[leny], line1);
+		leny++;
+	}
+	fclose(a);
 
-	printf("not working -- broken\n");
-	exit(0);
 	for (int y = 0; y < leny; y++) {
 		for (int x = 0; x < lenx; x++) {
 			if (grid[y][x] == '@') {
@@ -97,7 +98,7 @@ fclose(a);
 			}
 		}
 	}
-			
+
 	numlets = 0;
 	for (int i = 0; i < 26; i++) {
 		for (int y = 0; y < leny; y++) {
@@ -114,7 +115,7 @@ cont:
 	}
 
 	printf("numlets is %d\n", numlets); getchar();
-				
+
 	for (int i = 0; i < numlets; i++) {
 		char frm = letters[i].letkey;
 		for (int y = 0; y < leny; y++) {
@@ -180,7 +181,7 @@ cont:
 		mppat.insert({{'@', letters[i].letkey}, mine}); 
 		mppat.insert({{letters[i].letlock, '@'}, mine}); 
 		mppat.insert({{'@', letters[i].letlock}, mine}); 
-			
+
 		mppat2.insert({{letters[i].letkey, '@'}, path2}); 
 		mppat2.insert({{'@', letters[i].letkey}, path2}); 
 		mppat2.insert({{letters[i].letlock, '@'}, path2}); 
@@ -193,7 +194,7 @@ cont:
 			if (i == j) {continue;}
 			for (int y = 0; y < leny; y++) { for (int x = 0; x < lenx; x++) { already[y][x] = -1; } }
 			minPath = 99999;
-		
+
 			char pat[10000];
 			neBlocked(letters[i].keyx, letters[i].keyy, letters[j].keyx, letters[j].keyy, 0, pat); 
 			//printf("minpa before %s minPath is %d\n", minpa, minPath); getchar();
@@ -223,7 +224,7 @@ cont:
 			mppat.insert({{letters[i].letlock, letters[j].letlock}, mine}); 
 			mppat.insert({{letters[j].letkey, letters[i].letkey}, mine}); 
 			mppat.insert({{letters[j].letlock, letters[i].letlock}, mine}); 
-			
+
 			mppat2.insert({{letters[i].letkey, letters[j].letkey}, path2}); 
 			mppat2.insert({{letters[i].letlock, letters[j].letlock}, path2}); 
 			mppat2.insert({{letters[j].letkey, letters[i].letkey}, path2}); 
@@ -234,7 +235,8 @@ cont:
 	int uptoPos = 0;
 	int var_len = 0;
 	process(-1, letters, upto, uptoPos, var_len);
-	
+
+	fflush(stdout); dup2(fd, 1);
 	printf("** ans %d (%s)\n", var_minPathLen, minminP);
 	getchar();
 
@@ -257,7 +259,7 @@ int calcLen(char var_newup[27]) {
 int ind = 0;
 void process(int ig, struct letters_s letters[], char upto[], int uptoPos, int var_len1) {
 	ind++;
-	
+
 	if (ind == 2) {printf("ig is %d, upto is %s uptoPos is %d\n", ig, upto, uptoPos);getchar();}
 	if (ig != -1) {
 		//for (int i = 0; i < ind; i++) {printf("  ");} printf("p:%c\n", letters[ig].letlock);
@@ -292,11 +294,11 @@ again:
 			path2 = mppat2[{upto[uptoPos-1], letters[i].letlock}];
 		}
 		//cout << "***path2 is: " << path2 << " " << letters[i].intval << endl;
-		
+
 		int found = 0;
 		for (int k = 0; k < numlets; k++) {
 			if (k == i) {continue;}
-                	if (letters[k].ignore == 1) {continue;}
+			if (letters[k].ignore == 1) {continue;}
 			if (path2[letters[k].intval] == '1') {
 				found++; goto after;
 			}
@@ -338,7 +340,7 @@ after:
 			uptos[z][uptoPos] = letters[igs[z]].letlock;
 			uptos[z][uptoPos+1] = '\0';
 			process(igs[z], let2ormore[z], uptos[z], uptoPos+1, var_len1);
-				
+
 		}
 	}
 	ind--;
@@ -347,7 +349,7 @@ void neBlocked(int x, int y, int endx, int endy, int path, char pa[PALEN]) {
 	if (x == endx && y == endy) {
 		pa[path] = '\0';
 		//printf("dest reached... path is %d pa is %s\n", path, pa);
-//		if (path < minPath) {strcpy(minpa, pa); minPath = path; letters[let].path = path;}
+		//		if (path < minPath) {strcpy(minpa, pa); minPath = path; letters[let].path = path;}
 		if (path < minPath) {strcpy(minpa, pa); minPath = path; }
 		return;
 	}
