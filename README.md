@@ -12,7 +12,7 @@ o ps and kill are your friend
 	o dup2 needed an fflush -- now no debug -- sorry
 	o if the file is not present, it has not been coded
 	o all <s></s>Part 1's for every year working well, except:
-		-- 2016 Day 11,1
+		-- 2016 Day 11,1 *current
 	   	-- <s>2018 Day 21.1</s>
 		-- <s>2019 Day 18 part1</S> *
 		-- <s>2022 Day 22.1</s>
@@ -20,7 +20,7 @@ o ps and kill are your friend
 	o all years days 1--10 Part 1&2 working well, except:
 		-- <s>2017 Day 7.2</s>
 		-- <s>2018 Day 7 1&2</s>
-	   	-- 2022 Day 9.2
+	   	-- 2022 Day 9.2 *lot of work...
 	o Timer has been added (an automatic kill, if you will) to the slow ones so they don't run too long
 	        (but you might not get the answer)
 		(timer length can be changed in code before a compile) TimerSet(Xseconds);
