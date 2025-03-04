@@ -3,10 +3,8 @@
 #include <string.h>
 #include <ctype.h>
 #include <math.h>
-
 #include <unistd.h>
 
-#define getchar()
 #define DAY "2023 Day14 Part2"
 
 char line1[1000];
@@ -24,54 +22,15 @@ void tilttowardEast();
 void moveleft(int y, int x);
 void tilttowardWest();
 void someDebug();
-
-#include <sys/time.h>
-#include <signal.h>
-void TimerStop(int signum);
-void TimerSet(int interval);
-
-void TimerSet(int interval) {
-    printf("starting timer\n");
-    struct itimerval it_val;
-
-    it_val.it_value.tv_sec = interval;
-    it_val.it_value.tv_usec = 0;
-    it_val.it_interval.tv_sec = 0;
-    it_val.it_interval.tv_usec = 0;
-
-    if (signal(SIGALRM, TimerStop) == SIG_ERR) {
-        perror("Unable to catch SIGALRM");
-        exit(1);
-    }
-    if (setitimer(ITIMER_REAL, &it_val, NULL) == -1) {
-        perror("error calling setitimer()");
-        exit(1);
-    }
-}
-
-int fd;
-void TimerStop(int signum) {
-
-	fflush(stdout); dup2(fd, 1);
-    printf("Timer ran out! Stopping timer\n");
-	FILE *f = fopen("out.tim", "a");
-	fprintf(f, "Timer ran out! Stopping timer timestamp@%s\n", "out.tim");
-	fclose(f);
-    exit(10);
-}
-//main:::if (argc == 3) {printf("SETTING TIME TO [%d]\n", atoi(argv[2])); TimerSet(atoi(argv[2]));}
+#define CYCLES 5000
+int nums[CYCLES];
 int main(int argc, char **argv)
 {
-	TimerSet(55*60);
-	printf("SLOW ~2mins\n");
 	tot = 0;
-	printf("%d ", argc); printf("%s ", argv[1]); fflush(stdin); fflush(stdout);
 	FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); printf("\n"); fflush(stdin); fflush(stdout);
+	int fd = dup(1); close(1);
 
-	printf("broken...\n"); exit(0);
-
-	fflush(stdout); fd = dup(1); close(1);
 	linenum = 0;
 	while(1) {
 #ifdef _DEBUG_
@@ -97,16 +56,64 @@ int main(int argc, char **argv)
 	{
 		someDebug();
 	}
-#define CYCLES 1000000000
-	for (int i = 0; i< CYCLES;i++)
+	//do once first 
+
+	printf("-----------------\n");
+
+	int cycleAt;
+	int ss;
+	for (int i = 0; i< CYCLES; i++)
 	{
 		tilttowardNorth();
 		tilttowardWest();
 		tilttowardSouth();
 		tilttowardEast();
+
+		int newtot = 0;
+		for (int x = 0; x < (int)strlen(line[0]); x++) {
+			for (int y=0; y < linenum; y++) {
+				if (line[y][x] == 'O') {
+					newtot += linenum -y;
+				}
+			}
+		}
+		//printf("%d\n", newtot);
+		nums[i] = newtot;
+		if (i > 1000) {
+			if (nums[i] == nums[1000]) {
+				cycleAt = i-1000;
+				printf("cycle of %d\n", i-1000);
+				break;
+			}
+		}
 	}
+	int ii;
+	for (ii = 0; ii < 1000+cycleAt-1; ii++) {
+		int found = 0;
+		for (int jj = 0; jj < 1000+cycleAt; jj++) {
+			if (ii == jj) {continue;}
+			if (nums[ii] == nums[jj] && nums[ii] == nums[ii+cycleAt]) {
+				printf("found start %d\n", nums[ii]);
+				found = 1;
+			}
+		}
+		if (found == 1) {ss = ii; break;}
+	}
+
+	printf("ss is %d\n", ss);
+
+	//cycles 42 start 52 pos 24 + 52
+	int pos = (int) ((unsigned long long)(1000000000-ss-1) % cycleAt);
+	printf("pos is %d\n", pos);
+	printf("nums[ss+pos-1] %d\n", nums[ss+(pos-1)]);
+	printf("nums[ss+pos] %d\n", nums[ss+pos]);
+	printf("nums[ss+pos+1] %d\n", nums[ss+(pos+1)]);
+	dup2(fd, 1); 
+	printf("**ans: %d\n", nums[ss+pos]);
+	/*
+	printf("-----------------\n");
 	{
-		printpuzzle(linenum);
+		//printpuzzle(linenum);
 	}
 	for (int x = 0; x < (int)strlen(line[0]); x++) {
 		for (int y=0; y < linenum; y++) {
@@ -119,9 +126,7 @@ int main(int argc, char **argv)
 	{
 		someDebug();
 	}
-
-	fflush(stdout); dup2(fd, 1);
-	printf("**ans: %ld\n", tot);
+	*/
 }
 void tilttowardWest()
 {
