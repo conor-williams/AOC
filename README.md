@@ -64,7 +64,7 @@ $ cat ki.lo.txt
         2016
 <s>2016&sol;day22&sol;day22.2.c:   printf("broken..\n"); exit(0);</s>
         2017
-<s>2017&sol;day16&sol;day16.2.c:   printf("broken...\n"); exit(0); (MANUAL CYCLE DETECTION)</s>
+<s>2017&sol;day16&sol;day16.2.c:   printf("broken...\n"); exit(0); (MANUAL CYCLE DETECTION -> auto)</s>
 <s>2017&sol;day18&sol;day18.2.c:   printf("broken...\n"); exit(0);</s>
         2018
 2018&sol;day19&sol;day19.2.c:   printf("broken\n"); ex<s>it(0); (R</s>UNNING CURRENTLY ~2hours??)
@@ -82,7 +82,7 @@ $ cat ki.lo.txt
         2023
 <s>2023&sol;day11&sol;day11.2.c:   print("broken..\n"); exit(0); (work from the right m1)</s>
 <s>2023&sol;day13&sol;day13.2.c:   printf("broken...\n"); exit(0);</s>
-2023&sol;day14&sol;day14.2.c:   printf("broken...\n"); exit(0); (MANUAL CYCLE DETECTION)
+<s>2023&sol;day14&sol;day14.2.c:   printf("broken...\n"); exit(0); (MANUAL CYCLE DETECTION -> auto)</s>
 <s>2023&sol;day15&sol;day15.2.c:   printf("broken...\n"); exit(0);</s>
 2023&sol;day21&sol;day21.2.c:   printf("broken...\n"); exit(0); (DIAMOND CYCLE DETECTION)
 2023&sol;day23&sol;day23.2.c:   printf("broken...\n"); exit(0); (longest path 141*141 **current)
