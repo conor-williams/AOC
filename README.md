@@ -85,7 +85,7 @@ $ cat lool.txt
 2023&sol;day14&sol;day14.2.c:   printf("broken...\n"); exit(0); (MANUAL CYCLE DETECTION)
 <s>2023&sol;day15&sol;day15.2.c:   printf("broken...\n"); exit(0);</s>
 2023&sol;day21&sol;day21.2.c:   printf("broken...\n"); exit(0); (DIAMOND CYCLE DETECTION)
-2023&sol;day23&sol;day23.2.c:   printf("broken...\n"); exit(0); (longest path 141*141)
+2023&sol;day23&sol;day23.2.c:   printf("broken...\n"); exit(0); (longest path 141*141 **current)
 </pre>
 <h3>Note: (of course you may already know this)</h3>     
 <br>if you are not interested in waiting for one to finish
