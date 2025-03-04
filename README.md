@@ -4,6 +4,35 @@ o ps and kill are your friend
 <object type="text/html" data="unfin.txt"></object> 
 <h2>Notes (this README is a .html file (drag and drop into a browser)) lu:3-03-2025</h2>
 <address><b>conor.williams@gmail.com</b></address><br>
+<h3>Update (04-03-25):</h3>
+<pre>
+<h2>New todos to finish off unfinished as per Feb 2025 (plus a few stragglers )</h2>
+
+<h3>YEAR: 2022</h3>
+2022 day  9 part 2  |  2022 day 13 part 2
+2022 day 15 part 2  |  2022 day 17 part 2
+2022 day 18 part 2  |  2022 day 21 part 2
+2022 day 22 part 2
+
+<h3>YEAR: 2021</h3>
+<s>2021 day 11 part 2</s>  |  <s>2021 day 12 part 2</s>
+2021 day 14 part 2  |  <s>2021 day 15 part 2</s>
+2021 day 16 part 2  |  2021 day 18 part 2
+2021 day 21 part 2  |  2021 day 22 part 2
+2021 day 23 part 2
+
+<h3>YEAR: 202<font color = red>0</font></h3>
+<s>2020 day 12 part 2</s>  |  <s>2020 day 13 part 2</s>
+2020 day 14 part 2  |  2020 day 15 part 2
+2020 day 16 part 2  |  2020 day 17 part 2
+2020 day 18 part 2  |  2020 day 19 part 2
+<s>2020 day 20 part 2</s>  |  2020 day 21 part 2
+2020 day 22 part 2  |  2020 day 23 part 2
+2020 day 24 part 2
+</pre>
+
+</pre>
+
 <h3>Update (11::20-03-25):</h3>
 <pre>
 	o run "sh FIRST.sh" -- it does everything for you
