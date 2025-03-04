@@ -41,6 +41,7 @@ $ cat lool.txt
 2018&sol;day23&sol;day23.2.c:   printf("broken\n"); exit(<s>0</s>); (Running... (nanobots ~2.5hours??)
         2019
 <s>2019&sol;day14&sol;day14.2.c:   printf("broken\n"); exit(0);</s>
+2019&sol;day18&sol;day18.2.c:   printf("BROKEN\n"); exit(0); *
 <s>2019&sol;day20&sol;day20.2.c:   printf("broken\n"); exit(0);</s>
 2019&sol;day23&sol;day23.2.c:   printf("broken\n"); exi<s>t(0); </s>(NETWORKING TRICKY USING TIMERS todo(2x-1 = idle)
         2021
