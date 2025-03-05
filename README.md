@@ -38,6 +38,8 @@ o ps and kill are your friend
 	o run "sh FIRST.sh" -- it does everything for you
 	o length of filename getting you down? use ln and stop getting down (e.g.):
 	         ln -s 2020.day20.i1.txt i1.txt
+	o to speed up a process $ renice --priority -19 -p XYZ 
+		where XYZ is the number from the run... (ps on most flvs of Un*X)
 	o added year and day to input file names and year to c files (no code change just renaming of files)
 	o dup2 needed an fflush -- now no debug -- sorry
 	o if the file is not present, it has not been coded
