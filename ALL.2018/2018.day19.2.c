@@ -1,181 +1,278 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-#include <math.h>
-
-#include <unistd.h>
-
 #define getchar()
-#define assert(asdf)
-int tot = 0;
-#define SIZE 500
-char line1[SIZE];
-int leny = 0;
 
-char instr[1000][25];
-int instNum =0;
-struct insstt_s {
-	char four[10];
-	int regA;
-	int regB;
-	int regC;
-	int ret;
-	int in;
-};
-struct insstt_s insstt[40];
-int mycmp(char four[]);
-#define getchar()
-int main(int argc, char **argv)
-{
-	printf("SLOW > XSEC 15mins or more\n");
-	//printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
-	FILE * a = fopen(argv[1], "r"); printf("2018 Day19.2\n"); fflush(stdout);
+unsigned long long regb[10] = {0};
+//
+//unsigned long long z1 = 10551350;
+//unsigned long long z1 = 10551355;
+//unsigned long long z1 = 100000000000;
+void printit();
+void getLIM();
+unsigned long long LIM;
+int main(void) {
+	printf("2018 day19 part2\n");
+	getLIM();
+	//printf("**LIM is %llu\n", LIM);
+	unsigned long long tot = 0;
+	for (unsigned long long z = 1; z <= LIM; z++) {
+		if (LIM % z == 0) {
+			tot = z + tot;
+			//printf("%llu * %llu\n", z, z1/z);
+		}
 
-	printf("broken\n"); exit(0);
-	fflush(stdout); int fd = dup(1); close(1);
-	//int numBlanks = 0; int regb[5]; int op, regA, regB, regC; int ans[17][5]; int rega[5]; int times = 0;
-	while (1) 
-	{
-		fgets(line1, SIZE -1, a);
-		if (feof(a)) break;
-		line1[(int)strlen(line1)-1] = '\0';
-		//printf("line1 %s\n", line1);
-		//printf("line1:::: %s\n", line1);
-		strcpy(instr[instNum++], line1);
-
-		leny++;
 	}
-	fclose(a);
-	printf("\n");
-	//printf("here1\n"); fflush(stdout);
-
-	{
-		int instREG;
-		int ret1 = sscanf(instr[0], "#ip %d", &instREG);
-		if (ret1 == 1) {
-			for (int z = 0; z < instNum-1; z++) {
-				strcpy(instr[z], instr[z+1]);
-			}
-			instNum--;
-		}
-
-		{//build up insstt
-			for (int k = 0; k < instNum; k++) {	
-				char four[10];
-				int regA, regB, regC;
-				int ret = sscanf(instr[k], "%s %d %d %d", four, &regA, &regB, &regC);
-				strcpy(insstt[k].four, four);
-				insstt[k].regA = regA;
-				insstt[k].regB = regB;
-				insstt[k].regC = regC;
-				insstt[k].ret = ret;
-				insstt[k].in = -1;
-				if (ret == 4) {
-					insstt[k].in = mycmp(insstt[k].four);
-				}
-
-			}
-		}
-		long long regb[10] = {0};
-		int regA, regB, regC;
-		regb[0] = 1; //part2 change
-			     //printf("instNum is %d\n", instNum); getchar();
-
-		for (int k = regb[instREG]; k < instNum; k++) {	
-			//printf("%s\n", instr[k]); fflush(stdout); getchar();
-			//char four[10];
-			//int ret = sscanf(instr[k], "%s %d %d %d", four, &regA, &regB, &regC);
-			regA = insstt[k].regA;
-			regB = insstt[k].regB;
-			regC = insstt[k].regC;
-			//strcpy(four, instt[k].four);
-			//in = -1;
-			//if (insstt[k].ret == 4) { in = mycmp(insstt[k].four); }
-			//in = insstt[k].in;
-			regb[instREG] = k;
-			//printf("inst: %d (%d %d %d)\n", in, regA, regB, regC); fflush(stdout); 
-
-			if (insstt[k].in != -1) {
-				switch(insstt[k].in) {
-					case 9: //addr
-						regb[regC] = regb[regA] + regb[regB];
-						break;
-					case 11: //addi
-						regb[regC] = regb[regA] + regB;
-						//printf("addi regb[regC] is %d\n", regb[regC]);
-						break;
-					case 15: //mulr
-						regb[regC] = regb[regA] * regb[regB];
-						break;
-					case 7: //muli
-						regb[regC] = regb[regA] * regB;
-						break;
-					case 5: //banr
-						regb[regC] = regb[regA] & regb[regB];
-						break;
-					case 1: //bani
-						regb[regC] = regb[regA] & regB;
-						break;
-					case 6: //borr
-						regb[regC] = regb[regA] | regb[regB];
-						break;
-					case 3: //bori
-						regb[regC] = regb[regA] | regB;
-						break;
-					case 8: //setr
-						regb[regC] = regb[regA];
-						break;
-					case 2: //seti
-						regb[regC] = regA;
-						break;
-					case 12: //gtir
-						if (regA > regb[regB]) {regb[regC] = 1;} else {regb[regC] = 0;}
-						break;
-					case 14: //gtir
-						if (regb[regA] > regB) {regb[regC] = 1;} else {regb[regC] = 0;}
-						break;
-					case 13: //gtrr
-						if (regb[regA] > regb[regB]) {regb[regC] = 1;} else {regb[regC] = 0;}
-						break;
-					case 4: //eqir
-						if (regA == regb[regB]) {regb[regC] = 1;} else {regb[regC] = 0;}
-						break;
-					case 0:
-						if (regb[regA] == regB) {regb[regC] = 1;} else {regb[regC] = 0;}
-						break;
-					case 10:
-						if (regb[regA] == regb[regB]) {regb[regC] = 1;} else {regb[regC] = 0;}
-						break;
-					default:
-						printf("ERR\n"); exit(0);
-				}
-			}
-			if (regC ==  instREG) {k = regb[instREG];}
-		}
-		printf("**regb[0] is %lld\n", regb[0]);
-		fflush(stdout); dup2(fd, 1);
-		printf("**ans: %lld\n", regb[0]);
-		exit(0);
-	}
+	printf("**ans: %llu\n", tot);
 }
 
-int mycmp(char four[]) {
-	if (strcmp(four, "addr") == 0) {return 9;}
-	else if (strcmp(four, "addi") == 0) {return 11;}
-	else if (strcmp(four, "mulr") == 0) {return 15;}
-	else if (strcmp(four, "muli") == 0) {return 7;}
-	else if (strcmp(four, "banr") == 0) {return 5;}
-	else if (strcmp(four, "bani") == 0) {return 1;}
-	else if (strcmp(four, "borr") == 0) {return 6;}
-	else if (strcmp(four, "bori") == 0) {return 3;}
-	else if (strcmp(four, "setr") == 0) {return 8;}
-	else if (strcmp(four, "seti") == 0) {return 2;}
-	else if (strcmp(four, "gtir") == 0) {return 12;}
-	else if (strcmp(four, "gtri") == 0) {return 14;}
-	else if (strcmp(four, "gtrr") == 0) {return 13;}
-	else if (strcmp(four, "eqir") == 0) {return 4;}
-	else if (strcmp(four, "eqri") == 0) {return 0;}
-	else if (strcmp(four, "eqrr") == 0) {return 10;}
-	else {printf("ERR\n"); exit(0);}
+
+void getLIM() {
+
+unsigned long long regb[10] = {0};
+
+//int times = 1;
+int ti = 0;
+//	int fd = dup(1); close(1);
+static void *array[] = { &&zero, &&one,&&two,&&three, &&four, &&five, &&six, &&seven,&&eight, &&nine, &&ten, &&eleven, &&twelve, &&thirteen,&&fourteen, &&fifteen, &&sixteen, &&seventeen, &&eighteen, &&nineteen, &&twenty, &&twentyone, &&twentytwo, &&twentythree, &&twentyfour, &&twentyfive, &&twentysix, &&twentyseven, &&twentyeight, &&twentynine, &&thirty, &&thirtyone, &&thirtytwo, &&thirtythree, &&thirtyfour, &&thirtyfive, &&thirtysix};
+
+regb[0] = 1;
+zero:
+//printf("addi 1 16 1\n"); getchar();
+regb[1] = regb[1] + 16;
+regb[1] = regb[1]+1;
+printit();
+if (regb[1] <= 36) { goto *array[regb[1]]; } else {goto thirtysix;}
+one:
+//printf("here at 1:: "); fflush(stdout);
+//printf("seti 1 8 2\n"); getchar();
+regb[2] = 1;
+regb[1] = regb[1]+1;
+two:
+//printf("here at 2:: "); fflush(stdout);
+//printf("seti 1 5 4\n"); getchar();
+regb[4] = 1;
+regb[1] = regb[1]+1;
+three:
+//printf("here at 3"); fflush(stdout);
+//printf("mulr 2 4 3\n"); getchar();
+regb[3] = regb[2] * regb[4];
+regb[1] = regb[1]+1;
+printit();
+four:
+//printf("here at 4"); fflush(stdout);
+//printf("eqrr 3 5 3\n"); getchar();
+if (regb[3] == regb[5]) {LIM = regb[4]; return ; printf("%llu * %llu (%d)\n", regb[2], regb[4], ti);ti++; regb[3] = 1;} else {regb[3] = 0;}
+
+//printf("** regb[4] is %llu\n", regb[4]); //exit(0);
+regb[1] = regb[1]+1;
+five:
+//printf("here at 5:: "); fflush(stdout);
+//printf("addr 3 1 1\n"); getchar();
+regb[1] = regb[3] + regb[1];
+regb[1] = regb[1]+1;
+printit();
+if (regb[1] <= 36) { goto *array[regb[1]]; } else {goto thirtysix;}
+six:
+//printf("here at 6:: "); fflush(stdout);
+//printf("addi 1 1 1\n"); getchar();
+regb[1] = regb[1] + 1;
+regb[1] = regb[1]+1;
+if (regb[1] <= 36) {
+goto *array[regb[1]]; } else {goto thirtysix;}
+seven:
+printf("here at 7"); fflush(stdout);
+//printf("addr 2 0 0 --- regb[2] + regb[0] is regb[0]\n"); getchar();
+//if (regb[0] < 10551340) { regb[0] = 10551340; } else { regb[0]++;	}
+//regb[0] = 10551350;
+printf("BEF regb[0] + regb[2] %llu + %llu -- ", regb[2], regb[0]);
+regb[0] = regb[2] + regb[0];
+regb[1] = regb[1]+1;
+printf(" AFT -> %llu\n", regb[0]);
+eight:
+//printf("here at 8::: "); fflush(stdout);
+//printf("addi 4 1 4\n"); getchar();
+//CONOR1
+/*
+	if (regb[4] < LIM) {
+		regb[4] = LIM;
+	} else if (regb[4] >= LIM) {
+		regb[4] = regb[4] + 1;
+	}
+*/
+regb[4] = regb[4] + 1;
+regb[1] = regb[1]+1;
+nine:
+//printf("here at 9"); fflush(stdout);
+//printf("gtrr 4 5 3\n"); getchar();
+if (regb[4] > regb[5]) {regb[3] = 1;} else {regb[3] = 0;}
+regb[1] = regb[1]+1;
+ten:
+//printf("here at 10:: "); fflush(stdout);
+//printf("addr 1 3 1\n"); getchar();
+regb[1] = regb[1] + regb[3];
+regb[1] = regb[1]+1;
+printit();
+if (regb[1] <= 36) { goto *array[regb[1]]; } else {goto thirtysix;}
+eleven:
+//printf("here at 11:: "); fflush(stdout);
+//printf("seti 2 8 1\n"); getchar();
+regb[1] = 2;
+regb[1] = regb[1]+1;
+printit();
+if (regb[1] <= 36) { goto *array[regb[1]]; } else {goto thirtysix;}
+twelve:
+//printf("here at 12:: "); fflush(stdout);
+//printf("addi 2 1 2\n"); getchar();
+//if (regb[2] < 10550339) { regb[2] = 10550339; } else { regb[2]++; }
+//CONOR2
+/*
+	if (regb[2] < LIM) {
+		regb[2] = LIM;
+	} else if (regb[2] >= LIM) {
+		regb[2] = regb[2] + 1;
+	}
+*/
+regb[2] = regb[2]+1;
+regb[1] = regb[1]+1;
+thirteen:
+//printf("here at 13:: "); fflush(stdout);
+//printf("gtrr 2 5 3\n"); getchar();
+if (regb[2] > regb[5]) {regb[3] = 1;} else {regb[3] = 0;}
+regb[1] = regb[1]+1;
+fourteen:
+//printf("here at 14:: "); fflush(stdout);
+//printf("addr 3 1 1\n"); getchar();
+regb[1] = regb[3] + regb[1];
+regb[1] = regb[1]+1;
+printit();
+if (regb[1] <= 36) { goto *array[regb[1]]; } else {goto thirtysix;}
+fifteen:
+//printf("here at 15:: "); fflush(stdout);
+//printf("seti 1 8 1\n"); getchar();
+regb[1] = 1;
+regb[1] = regb[1]+1;
+printit();
+if (regb[1] <= 36) { goto *array[regb[1]]; } else {goto thirtysix;}
+sixteen:
+//printf("here at 16:: "); fflush(stdout);
+//printf("mulr 1 1 1\n"); getchar();
+//printf("BEFORE %llu = %llu * %llu\n", regb[1] *regb[1], regb[1], regb[1]);
+regb[1] = regb[1] * regb[1];
+//printf("AFTER %llu \n", regb[1]);
+regb[1] = regb[1]+1;
+printit();
+if (regb[1] <= 36) { goto *array[regb[1]]; } else {goto thirtysix;}
+seventeen:
+//printf("here at 17:: "); fflush(stdout); 
+//printf("addi 5 2 5\n"); getchar();
+regb[5] = regb[5] + 2;
+regb[1] = regb[1]+1;
+eighteen:
+//printf("here at 18:: "); fflush(stdout);
+//printf("mulr 5 5 5\n"); getchar();
+regb[5] = regb[5] * regb[5];
+regb[1] = regb[1]+1;
+nineteen:
+//printf("here at 19"); fflush(stdout);
+//printf("mulr 1 5 5\n"); getchar();
+regb[5] = regb[1] * regb[5];
+regb[1] = regb[1]+1;
+twenty:
+//printf("here at 20"); fflush(stdout);
+//printf("muli 5 11 5\n"); getchar();
+regb[5] = regb[5] * 11;
+regb[1] = regb[1]+1;
+twentyone:
+//printf("here at 21"); fflush(stdout);
+//printf("addi 3 5 3\n"); getchar();
+regb[3] = regb[3] + 5;
+regb[1] = regb[1]+1;
+twentytwo:
+//printf("here at 22"); fflush(stdout);
+//printf("mulr 3 1 3\n"); getchar();
+regb[3] = regb[3] * regb[1];
+regb[1] = regb[1]+1;
+twentythree:
+//printf("here at 23"); fflush(stdout);
+//printf("addi 3 4 3\n"); getchar();
+regb[3] = regb[3] + 4;
+regb[1] = regb[1]+1;
+twentyfour:
+//printf("here at 24"); fflush(stdout);
+//printf("addr 5 3 5\n"); getchar();
+regb[5] = regb[5] + regb[3];
+regb[1] = regb[1]+1;
+twentyfive:
+//printf("here at 25:: "); fflush(stdout);
+//printf("addr 1 0 1 == regb[1] + regb[0] = regb[1]\n"); getchar();
+regb[1] = regb[1] + regb[0];
+regb[1] = regb[1]+1;
+printit();
+if (regb[1] <= 36) { goto *array[regb[1]]; } else {goto thirtysix;}
+twentysix:
+//printf("here at 26:: "); fflush(stdout);
+//printf("seti 0 7 1\n"); getchar();
+regb[1] = 0;
+regb[1] = regb[1]+1;
+printit();
+if (regb[1] <= 36) { goto *array[regb[1]]; } else {goto thirtysix;}
+twentyseven:
+//printf("here at 27"); fflush(stdout);
+//printf("setr 1 1 3\n"); getchar();
+regb[3] = regb[1];
+regb[1] = regb[1]+1;
+twentyeight:
+//printf("here at 28"); fflush(stdout);
+//printf("mulr 3 1 3\n"); getchar();
+regb[3] = regb[3] * regb[1];
+regb[1] = regb[1]+1;
+twentynine:
+//printf("here at 29"); fflush(stdout);
+//printf("addr 1 3 3\n"); getchar();
+regb[3] = regb[1] + regb[3];
+regb[1] = regb[1]+1;
+thirty:
+//printf("here at 30"); fflush(stdout);
+//printf("mulr:: 1 3 3\n"); getchar();
+//printf("mulr %llu * %llu \n", regb[1], regb[3]); getchar();
+regb[3] = regb[1] * regb[3];
+regb[1] = regb[1]+1;
+thirtyone:
+//printf("here at 31"); fflush(stdout);
+//muli 3 14 3
+//printf("muli:: %llu * %d\n", regb[3], 14); getchar();
+regb[3] = regb[3] * 14;
+regb[1] = regb[1]+1;
+thirtytwo:
+//printf("here at 32"); fflush(stdout);
+//printf("mulr 3 1 3\n"); getchar();
+regb[3] = regb[3] * regb[1];
+regb[1] = regb[1]+1;
+thirtythree:
+//printf("here at 33"); fflush(stdout);
+//printf("addr 5 3 5\n"); getchar();
+regb[5] = regb[5] + regb[3];
+regb[1] = regb[1]+1;
+thirtyfour:
+//printf("here at 34"); fflush(stdout);
+//printf("seti 0 9 0 === regb zero to zero\n"); getchar();
+regb[0] = 0;
+regb[1] = regb[1]+1;
+thirtyfive:
+//printf("here at 35:: "); fflush(stdout);
+//printf("seti 0 0 1\n"); getchar();
+regb[1] = 0;
+regb[1] = regb[1]+1;
+printit();
+if (regb[1] <= 36) { goto *array[regb[1]]; } else {goto thirtysix;}
+thirtysix:
+//printf("here at 36"); fflush(stdout);
+
+//dup2(fd, 1);
+printf("regb[0] is %llu\n", regb[0]); fflush(stdout);
+}
+
+void printit() {
+	return;
+	printf("%llu [[%llu]] %llu %llu %llu %llu\n", regb[0], regb[1], regb[2], regb[3], regb[4], regb[5]); getchar();
 }
