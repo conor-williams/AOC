@@ -10,10 +10,10 @@
 #include <unistd.h>
 #include <time.h>
 #include <map>
+#include <sys/time.h>
+#include <signal.h>
+#include <vector>
 
-#include <unistd.h>
-
-#define getchar()
 using namespace std;
 
 
@@ -22,12 +22,12 @@ int lenx, leny;
 #undef _DEBUG_
 //#define _DEBUG_
 #define getchar()
-int numSteps = 0;
 #define MAX 9000
 #define MAXI 4000
 int instTOT = 0;
 #define NM 51
-
+int GOglobal = 0;
+int allbooted = 0;
 long long inst[NM+1][MAXI];
 long long instOrig[MAXI];
 char instruction[NM+1][MAXI][40];
@@ -41,6 +41,8 @@ int finished[NM+1][6] = {0};
 int inputCounters[NM+1][6] = {0};
 int phase[] = {1,1,1,1,1,-1};
 int machine(int var_mach, int machineNumber, int one);
+//void callMachine255();
+void *callMachine255(void *);
 
 char myInput;
 char reverseInput(char in);
@@ -50,15 +52,22 @@ int OXX, OXY;
 long long Xval50 = -22, Yval50 = -22;
 long long prevXval50, prevYval50;
 pthread_mutex_t lock;
+pthread_mutex_t lock2[100];
+pthread_mutex_t lock3;
+pthread_mutex_t lock4;
 map <long long, int> mp;
 int destReady[NM+1];
 int booting[NM+1];
 int watch[NM+1];
 deque<long long> Q[NM+1];
+deque<long long> Qtmp[NM+1];
+vector <long long> QX;
+vector <long long> QY;
+int QidleCount[NM+1];
 void *callMachine(void *threadid);
 int machineMulti(int var_mach, int machineNumber, int one, long long inst[MAXI], char instruction[MAXI][40],
-	long long output[6], int times[6], int finished[6], int inputCounters[6], long long saveInst[6][MAXI],
-	long long nextInst[6], long long relativeBase[6]);
+		long long output[6], int times[6], int finished[6], int inputCounters[6], long long saveInst[6][MAXI],
+		long long nextInst[6], long long relativeBase[6]);
 ////////////////////////day23
 //char tmpIn[] = {'3','3','3','1','2'};
 long long  tmpIn[] = {0, 0, 1,  0, 2, 0, 3, 2, 2, 2, -1};
@@ -74,7 +83,7 @@ int yCur = 0;
 int xCur = 0;
 int already[SY][SX];
 int MAXPATH = 0;
-
+int BOOTED[50] = {0};
 struct pos_s {
 	//char dir;
 	int x;
@@ -89,45 +98,46 @@ deque <char> PATH;
 int pathPOS = 0;
 int fd;
 
-#include <sys/time.h>
-#include <signal.h>
-void TimerStop(int signum);
 void TimerSet(int interval);
-
+void TimerStop(int signum);
 void TimerSet(int interval) {
-    printf("starting timer\n");
-    struct itimerval it_val;
+	printf("starting timer\n");
+	struct itimerval it_val;
 
-    it_val.it_value.tv_sec = interval;
-    it_val.it_value.tv_usec = 0;
-    it_val.it_interval.tv_sec = 0;
-    it_val.it_interval.tv_usec = 0;
+	it_val.it_value.tv_sec = interval;
+	it_val.it_value.tv_usec = 0;
+	it_val.it_interval.tv_sec = 0;
+	it_val.it_interval.tv_usec = 0;
 
-    if (signal(SIGALRM, TimerStop) == SIG_ERR) {
-        perror("Unable to catch SIGALRM");
-        exit(1);
-    }
-    if (setitimer(ITIMER_REAL, &it_val, NULL) == -1) {
-        perror("error calling setitimer()");
-        exit(1);
-    }
+	if (signal(SIGALRM, TimerStop) == SIG_ERR) {
+		perror("Unable to catch SIGALRM");
+		exit(1);
+	}
+	if (setitimer(ITIMER_REAL, &it_val, NULL) == -1) {
+		perror("error calling setitimer()");
+		exit(1);
+	}
 }
-
 
 void TimerStop(int signum) {
 
-	fflush(stdout); dup2(fd, 1);
-    printf("Timer ran out! Stopping timer\n");
+	printf("Timer ran out! Stopping timer\n");
 	FILE *f = fopen("out.tim", "a");
 	fprintf(f, "Timer ran out! Stopping timer timestamp@%s\n", "out.tim");
 	fclose(f);
-    exit(10);
+	exit(10);
 }
-//main:::if (argc == 3) {printf("SETTING TIME TO [%d]\n", atoi(argv[2])); TimerSet(atoi(argv[2]));}
 int main(int argc, char **argv)
 {
-	TimerSet(55*60);
+	//TimerSet(60*2);
+	printf(DAY); fflush(stdin); fflush(stdout);
+	fflush(stdout); fd = dup(1); close(1); 
 	pthread_mutex_init(&lock, NULL);
+	pthread_mutex_init(&lock3, NULL);
+	pthread_mutex_init(&lock4, NULL);
+	for (int i  = 0; i < 50; i++) {
+		pthread_mutex_init(&lock2[i], NULL);
+	}
 	time_t rawtime;
 	struct tm *info;
 	time( &rawtime );
@@ -138,45 +148,41 @@ int main(int argc, char **argv)
 		booting[i] = 1;
 		watch[i] = 0;
 	}
-	
+
 	struct pos_s st = {xCur, yCur, PATH};
-	
+
 	lenx = 0; leny = 0;
-        printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
-        FILE * a = fopen(argv[1], "r"); 
-	printf(DAY); fflush(stdin); fflush(stdout);
-       
-	printf("broken\n"); exit(0);
-	fflush(stdout); fd = dup(1); close(1);
-        char line1[MAX];
+	//printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
+	FILE * a = fopen(argv[1], "r"); 
+	char line1[MAX];
 	for (int i = 0 ; i < MAX; i++) {
 		inst[0][i] = 0;
 	}
 
 	int newStart = 0;
 	int pos = 0;
-while(1) {
-        fgets(line1, MAX-1, a);
-        if (feof(a)) break;
-	line1[strlen(line1) -1]='\0';
-	lenx = strlen(line1);
+	while(1) {
+		fgets(line1, MAX-1, a);
+		if (feof(a)) break;
+		line1[strlen(line1) -1]='\0';
+		lenx = strlen(line1);
 #ifdef _DEBUG_
-	//printf("LINE: %s getchar\n", line1); getchar();
+		//printf("LINE: %s getchar\n", line1); getchar();
 #endif
-	for (int i = 0; i < (int)strlen(line1); i++) {
-		if (line1[i] == ',') {
-			instruction[0][newStart][pos] = '\0';
-			instructionOrig[newStart][pos] = '\0';
-			newStart++;
-			pos = 0;
-		} else {
-			instruction[0][newStart][pos] = line1[i];
-			instructionOrig[newStart][pos] = line1[i];
-			pos++;
+		for (int i = 0; i < (int)strlen(line1); i++) {
+			if (line1[i] == ',') {
+				instruction[0][newStart][pos] = '\0';
+				instructionOrig[newStart][pos] = '\0';
+				newStart++;
+				pos = 0;
+			} else {
+				instruction[0][newStart][pos] = line1[i];
+				instructionOrig[newStart][pos] = line1[i];
+				pos++;
+			}
 		}
+		leny++;
 	}
-	leny++;
-}
 	fclose(a);
 	newStart++;
 	instruction[0][newStart][pos] = '\0';
@@ -186,8 +192,8 @@ while(1) {
 			strcpy(instruction[k][j], instruction[0][j]);
 		}
 	}
-		
-//RErestart:
+
+	//RErestart:
 	for (int k = 0; k < NM; k++) {
 		for (int i = 0; i < 6; i++) {
 			output[k][i] = 0;
@@ -206,7 +212,7 @@ while(1) {
 			}
 		}
 	}
-	
+
 	for (int i = 0; i < newStart; i++) {
 		strcpy(instruction[0][i], instructionOrig[i]);
 	}
@@ -215,9 +221,9 @@ while(1) {
 		inst[0][i] = strtoul(instruction[0][i], &stop, 10);
 #ifdef _DEBUG_
 		if (inst[0][i] < 0) {
-		//	printf("%lld\n", inst[0][i]); getchar();
+			//	printf("%lld\n", inst[0][i]); getchar();
 		} else {
-		//	printf("%lld\n", inst[0][i]);
+			//	printf("%lld\n", inst[0][i]);
 		}
 #endif
 	}
@@ -246,15 +252,25 @@ while(1) {
 
 	pthread_t threads[NM+2];
 	int rc;
-	
+
 	for (long i = 0; i < NM; i++) {
-		rc = pthread_create(&threads[i], NULL, callMachine, (void *) i);
+		if (i < 50) {      rc = pthread_create(&threads[i], NULL, callMachine, (void *) i);usleep(10);}
+		else if (i == 50) {rc = pthread_create(&threads[i], NULL, callMachine255, (void *) i);}
+		//if (i == 50) {sleep(1);} //else {usleep(i);}
 		if (rc) {printf("ERR creating thread %d\n", rc); exit(-1);}
 	}
+	//usleep(6000000);
+	//GOglobal = 1;
 
-	for (int i = 0; i < NM; i++) {
+	for (int i = 0; i <NM; i++) {
 		pthread_join(threads[i], NULL);
 	}
+
+	/*
+	   getchar();
+	   callMachine((void *)50);
+
+*/
 	printf("AFTER\n");
 	getchar();
 	printf("AM I EXITTING HERE\n");
@@ -262,294 +278,317 @@ while(1) {
 
 }
 
+pthread_mutex_t lock1 = PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t cond1 = PTHREAD_COND_INITIALIZER;
+
+void *callMachine255(void *threadid) {
+	//void callMachine255() {
+	map <long long, char> already;
+	srand(time(NULL));
+	sleep(1);
+	for (int i = 0; i < 50; i++) {
+		if (BOOTED[i] != 1) {i=-1;/*usleep(30);*/}
+	}
+	long long watX, watY, prevY=-55;
+	vector <long long> QXprev;
+	vector <long long> QYprev;
+	while (1) {
+		while (QX.empty() || QY.empty()) {
+			//sleep(1);
+			usleep(30);
+			printf("%d Q50.size() QX.size() %d QY.size() %d\n", (int)Q[50].size(), (int)QX.size(), (int)QY.size());
+			printf("QX or QY empty... continue sleep\n");
+			//Q[0].push_back(rand()%20000);
+			//Q[0].push_back(rand()%20000);
+			continue;
+		}
+		while (QX.size() == QXprev.size() && QY.size() == QYprev.size()) {
+			//sleep(1);
+			usleep(30);
+			printf("same size....\n");
+		}
+		QXprev = QX; QYprev = QY;
+
+		printf("doing check...\n");
+		for (int i = 0; i < 50; i++) {
+			if (QidleCount[i] < 5) {i=-1;}
+		}
+
+		printf("after check...\n");
+		for (int i = 0; i < 50; i++) {
+			QidleCount[i] = 0;
+		}
+		printf("set to zero... check...\n");
+
+		printf("pushing %lld %lld\n", watX, watY);
+
+		printf("all the X QS\n");
+		printf("............\n");
+		for (auto one: QX) {
+			printf("%lld ", one);
+		}
+		printf("all the Y QS\n");
+		for (auto two: QY) {
+			printf("%lld ", two);
+		}
+		printf("........press return....\n");
+		//fgetc(stdin);
+
+		//sleep(1);
+		pthread_mutex_lock(&lock3);
+		printf("pushing %lld %lld\n", watX = QX.back(), watY = QY.back());
+		pthread_mutex_unlock(&lock3);
+		if  (prevY == watY && prevY != -1) {fflush(stdout); dup2(fd, 1); printf("**ans: %lld\n", watY); exit(0);}
+		prevY = watY;
+		pthread_mutex_lock(&lock);
+		pthread_mutex_lock(&lock3);
+		Q[0].push_back(watX);
+		Q[0].push_back(watY);
+		pthread_mutex_unlock(&lock3);
+		pthread_mutex_unlock(&lock);
+		usleep(300);
+
+	}
+}
 void *callMachine(void *threadid) {
 	int one = 1;
 	long tid = (long)threadid;
-	
-/*
-        for (int i = 0; i < 5; i++) {
-               output[tid][i] = 0;
-               nextInst[tid][i] = 0;
-               times[tid][i] = 0;
-               finished[tid][i] = 0;
-               inputCounters[tid][i] = 0;
-        }
-        for (int j = 0; j < 5; j++) {
-               for (int i = 0; i < instTOT; i++) {
-                        saveInst[tid][j][i] = instOrig[i];
-                }
-        }
-*/
-	
-again:
+	//while (GOglobal != 1) {usleep(200);}
+	printf("here1... %ld\n", tid);
+
+	//again:
 	int ret = machineMulti(tid, 0, one, inst[tid], instruction[tid], output[tid], times[tid],
-		finished[tid], inputCounters[tid], saveInst[tid], nextInst[tid], relativeBase[tid]);
+			finished[tid], inputCounters[tid], saveInst[tid], nextInst[tid], relativeBase[tid]);
 	printf("AFTER machineMulti\n"); fflush(stdout); getchar();
 
 
 	if (ret != 34) {printf("ret not 34 (%d)\n", ret);}
-	goto again;
+	//goto again;
 	return NULL;
 }
 
 int machineMulti(int var_mach, int machineNumber, int one, long long inst[MAXI], char instruction[MAXI][40],
-	long long output[6], int times[6], int finished[6], int inputCounters[6], long long saveInst[6][MAXI], 
-	long long nextInst[6], long long relativeBase[6]) {
-		if (finished[machineNumber] == 1) { printf("return 22\n"); return 22;}
-		long long input[10];	
+		long long output[6], int times[6], int finished[6], int inputCounters[6], long long saveInst[6][MAXI], 
+		long long nextInst[6], long long relativeBase[6]) {
+	if (finished[machineNumber] == 1) { printf("return 22\n"); return 22;}
+	//long long input[10];	
 
-		//for (int i = 0; i < instTOT; i++) { inst[i] = saveInst[machineNumber][i]; }
+	QidleCount[var_mach] = 0;
+	printf("var_mach is %d\n", var_mach);
+	int inputCounter = inputCounters[machineNumber];
 
-		int inputCounter = inputCounters[machineNumber];
+	if (machineNumber == 0 && times[machineNumber] == 0) {
+		//input[1] = 1; 
+		//input[0] = phase[machineNumber];
+	} else {
+		//input[1] = output[machineNumber];
+		//input[0] = phase[machineNumber];
+	}
 
-		if (machineNumber == 0 && times[machineNumber] == 0) {
-			//input[1] = 1; 
-			//input[0] = phase[machineNumber];
-		} else {
-			//input[1] = output[machineNumber];
-			//input[0] = phase[machineNumber];
-		}
- 
 	long long QNUM = 0;
 	int bootit2 = var_mach;
+	//usleep(100);
+	usleep(300);
+	//if (var_mach != 50) {usleep(1000);}
 	if (var_mach == 50) {bootit2 = 255;}
+	//if (allbooted != 1) {bootit2 = 255;}
+	//while (!allbooted) {usleep(300);}
+
+
+	//long long xval, yval;
+	long long Yval;
+	long long Xval;
+
 	for (int i = nextInst[machineNumber]; i < instTOT; i++) {
 #ifdef _DEBUG_
-                printf("\nNEW NEW NEW:::"); fflush(stdout);
-                printf("POS InstNUM: (%d) ", i); fflush(stdout);
-                printf(" is [%lld] ", inst[i]); fflush(stdout); //getchar();
+		printf("\nNEW NEW NEW:::"); fflush(stdout);
+		printf("POS InstNUM: (%d) ", i); fflush(stdout);
+		printf(" is [%lld] ", inst[i]); fflush(stdout); //getchar();
 #endif
 
+		// 3 is a read 4 is a write...
+		// 3 is a receive 4 is a send...
 		int myINST = inst[i] % 100;
 		if (myINST == 3) {
-			//{printf("got a 3 (THREAD: %d) \n", var_mach);}
-#ifdef _DEBUG_
-#endif
-			//printf("myInput is [%c]\n", myInput); printf("%d,%d \n", xCur, yCur);// getchar();
-			if (var_mach == 50) {
-ag2:
-				printf("here1.ag2:..\n");
-				for (int z = 0; z < 50; z++) {
-					if (!Q[z].empty()) {
-						printf("Qs not empty...\n");
-						usleep(200);
-						z = -1; continue;
-					}
-				}
-
-				for (int z = 0; z < 50; z++) {
-					if (!Q[z].empty()) {
-						printf("Q2s not empty...\n");
-						usleep(200);
-						z = -1; continue;
-					}
-				}
-				if (Xval50 == -22 || Yval50 == -22) {
-					printf("-22 x 2 is empty\n");
-					usleep(100);
-					goto ag2;
-				}
-
-				for (int z = 0; z < 50; z++) {
-					if (!Q[z].empty()) {
-						printf("Q3s not empty...\n");
-						usleep(200);
-						z = -1; continue;
-					}
-					usleep(50);
-				}
-
-				usleep(2500);
-				pthread_mutex_lock(&lock);
-				if (Xval50 == -22 || Yval50 == -22) {
-					pthread_mutex_unlock(&lock);
-					goto ag2;
-				}
-				long long xval = Xval50;
-				long long yval = Yval50;
-				Xval50 = -22;
-				Yval50 = -22;
-				pthread_mutex_unlock(&lock);
-
-				printf("Yval is %lld\n", yval);
-				auto it1 = mp.find(yval);
-				
-				if (it1 != mp.end() && yval != -1) {
-					fflush(stdout); dup2(fd, 1);
-					printf("**ans:  %lld\n", yval); fflush(stdout); exit(0);
-				} else {
-					mp[yval] = 1;
-				}
-				if (xval != -1 && yval != -1) {
-					Q[0].push_back(xval);
-					Q[0].push_back(yval); //Yval
-				}
-				usleep(300);
-				goto ag2;
-			}
-			if (bootit2 == 50 || bootit2 == 255 || var_mach == 255 || var_mach == 50) {
-				printf("should not be here\n"); fflush(stdout); exit(0);
-			}
-                        if (inst[i] > 200) {
-				//inst[relativeBase[machineNumber]+inst[i+1]] = input[inputCounter];
+			//READ OR RECEIVE
+			if (inst[i] > 200) {
 				if (booting[var_mach] == 1) {
-					printf("booting %d\n", var_mach);
+					printf("***booting %d\n", var_mach);
 					inst[relativeBase[machineNumber]+inst[i+1]] = bootit2;
-				} else if (Q[var_mach].empty()) {
-					//printf("Q is empty\n");
-					inst[relativeBase[machineNumber]+inst[i+1]] = -1;
-					usleep(30);
+					BOOTED[var_mach] = 1;
+					printf("BOOTED %d\n", var_mach);
+					for (int i = 0; i < 50; i++) {
+						if (BOOTED[i] != 1) {i=-1;usleep(20);}
+					}
+					//sleep(1);
+					usleep(300);
 				} else {
-					//printf("Q not empty\n");
-					inst[relativeBase[machineNumber]+inst[i+1]] = Q[var_mach].front();
-					//printf("recv %lld\n", Q[var_mach].front()); getchar();
-					Q[var_mach].pop_front();
-					usleep(40);
+					pthread_mutex_lock(&lock);
+					int qsize = Q[var_mach].size();
+					pthread_mutex_unlock(&lock);
+					if (qsize == 0) {
+						inst[relativeBase[machineNumber]+inst[i+1]] = -1;
+					} else {
+						pthread_mutex_lock(&lock);
+						inst[relativeBase[machineNumber]+inst[i+1]] = Q[var_mach].front();
+						Q[var_mach].pop_front();
+						pthread_mutex_unlock(&lock);
+					}
 				}
-					
 			} else {
-				///input[inputCounter] = (long long)(myInput - 48);
-				//inst[inst[i+1]] = input[inputCounter];
 				if (booting[var_mach] == 1) {
-					printf("booting %d\n", var_mach);
+					printf("**booting %d\n", var_mach);
 					inst[inst[i+1]] = bootit2;
-				} else if (Q[var_mach].empty()) {
-					//printf("Q is empty\n");
-					inst[inst[i+1]] = -1;
-					usleep(30);
+					BOOTED[var_mach] = 1;
+					for (int i = 0; i < 50; i++) {
+						if (BOOTED[i] != 1) {i=-1;usleep(30);}
+					}
+					usleep(300);
+					//sleep(1);
 				} else {
-					//printf("Q not empty\n");
-					//printf("recv %lld\n", Q[var_mach].front()); getchar();
+					pthread_mutex_lock(&lock);
+					int qsize = Q[var_mach].size();
+					pthread_mutex_unlock(&lock);
+					if (qsize == 0) {
+						pthread_mutex_lock(&lock);
+						QidleCount[var_mach]++;
+						pthread_mutex_unlock(&lock);
+						inst[inst[i+1]] = -1;
+					} else {
+						pthread_mutex_lock(&lock);
+						QidleCount[var_mach] = 0;
+						pthread_mutex_unlock(&lock);
 
-					inst[inst[i+1]] = Q[var_mach].front();
-					Q[var_mach].pop_front();
-					usleep(40);
+						pthread_mutex_lock(&lock);
+						inst[inst[i+1]] = Q[var_mach].front();
+						Q[var_mach].pop_front();
+						pthread_mutex_unlock(&lock);
+					}
 				}
 			}
-			//if (inputCounter != 1) { inputCounter++; }
-
 			i++; 
-			//printf("leaving 3 (input)... mach [[ %d ]]\n", var_mach); fflush(stdout); 
-			getchar();
 			if (booting[var_mach] == 1) {
 				booting[var_mach] = 0;
 			}
+//end3:
+			continue;
 		} else if (myINST == 4) {
-			//printf("here5...\n"); fflush(stdout);
-                        //{printf("got a 4 look@ %lld contains %lld\n", inst[i+1], inst[inst[i+1]]); fflush(stdout);}
-#ifdef _DEBUG_
-#endif
-			//OUT 0 == Wall 1 == OK 2==OX
-			numSteps++;
+			//WRITE OR SEND
 			long long OUT;
-                        if (inst[i] > 200) {
-				input[1] = inst[relativeBase[machineNumber]+inst[i+1]];
+
+			if (inst[i] > 200) {
+				//input[1] = inst[relativeBase[machineNumber]+inst[i+1]];
 				if (one == 0) {
-	                                output[(machineNumber+1)%5] = inst[relativeBase[machineNumber]+inst[i+1]]; 
+					output[(machineNumber+1)%5] = inst[relativeBase[machineNumber]+inst[i+1]];
 				} else if (one == 1) {
-	                                output[(machineNumber)%5] = inst[relativeBase[machineNumber]+inst[i+1]]; 
+					output[(machineNumber)%5] = inst[relativeBase[machineNumber]+inst[i+1]]; 
 				}
 				OUT =  inst[relativeBase[machineNumber]+inst[i+1]];
-
+				if (OUT == 255) {printf("got a 255\n");}
 #ifdef _DEBUG_
-                                printf("REL OUT: %lld (base: %lld+%lld)\n", inst[relativeBase[machineNumber]+inst[i+1]],
-					relativeBase[machineNumber], inst[i+1]);
+				printf("REL OUT: %lld (base: %lld+%lld)\n", inst[relativeBase[machineNumber]+inst[i+1]],
+						relativeBase[machineNumber], inst[i+1]);
 #endif
-                        } else if (inst[i] > 100) {
-                                printf("or is it OUT: %lld\n", inst[i+1]);
+			} else if (inst[i] > 100) {
+				printf("or is it OUT: %lld\n", inst[i+1]);
 #ifdef _DEBUG_
-                                printf("or is it OUTS: %s\n", instruction[i+1]);
+				printf("or is it OUTS: %s\n", instruction[i+1]);
 #endif
-				input[1] = inst[i+1];
+				///input[1] = inst[i+1];
 				if (one == 0) {
-	                                output[(machineNumber+1)%5] = inst[i+1]; 
+					output[(machineNumber+1)%5] = inst[i+1]; 
 				} else if (one == 1) {
-	                                output[(machineNumber)%5] = inst[i+1]; 
+					output[(machineNumber)%5] = inst[i+1]; 
 				}
-				OUT = inst[i+1];
-                        } else {
+				OUT =  inst[i+1];
+				if (OUT == 255) {printf("got a 255\n");}
+			} else {
 #ifdef _DEBUG_
-                                printf("OUT: %lld\n", inst[inst[i+1]]); 
-                                printf("OUTS: %s\n", instruction[inst[i+1]]);
+				printf("OUT: %lld\n", inst[inst[i+1]]); 
+				printf("OUTS: %s\n", instruction[inst[i+1]]);
 #endif
-				input[1] = inst[inst[i+1]];
+				////input[1] = inst[inst[i+1]];
 				if (one == 0) {
-                                	output[(machineNumber+1)%5] = inst[inst[i+1]]; 
+					output[(machineNumber+1)%5] = inst[inst[i+1]]; 
 				} else if (one == 1) {
-	                                output[(machineNumber)%5] = inst[inst[i+1]]; 
+					output[(machineNumber)%5] = inst[inst[i+1]]; 
 				}
 				OUT = inst[inst[i+1]];
-                        }
+				if (OUT == 255) {printf("got a 255\n");}
+			}
 			struct pos_s pos1;
 
-			if (destReady[var_mach] == 1) {
-				//printf("got a 0-50 (maybe 255) dest addr..[[[[%lld]]\n", OUT);
-				//if (OUT < 0 || OUT > 49) {printf("OUT is %lld\n", OUT);}
-				watch[var_mach] = 0;
-				if (OUT == 255) {pthread_mutex_lock(&lock); QNUM = 50;}
-				else {QNUM = OUT;}
-				///if (OUT == 255) {time_t rawtime; struct tm *info; time (&rawtime); info = localtime(&rawtime); printf("%s\n", asctime(info)); watch[var_mach] = 1; /*printf("the next Y is the ANS\n");*/}
-				destReady[var_mach]++;
-				getchar();
-			} else if (destReady[var_mach] == 2) {
-				long long Xval = OUT;
-				//printf("got a Xval %lld\n", Xval);
-				destReady[var_mach]++;
+			pthread_mutex_lock(&lock4);
+			int dReady = destReady[var_mach];
+			pthread_mutex_unlock(&lock4);
+
+			if (dReady == 1) {
+				dReady++;
+				if (OUT == 255) {QNUM = 50;} else {QNUM = OUT;}
+			} else if (dReady == 2) {
+				dReady++;
+				Xval = OUT;
 				if (QNUM < 50) {
-					Q[QNUM].push_back(Xval);
+					printf("sending %lld to Q:%lld\n", Xval, QNUM);
 				} else if (QNUM == 50) {
-					//printf("Xval for Q 50 is %lld\n", Xval);
-					//Q[50].push_back(Xval);
-					prevXval50 = Xval50;
-					Xval50 = OUT;
-					usleep(30);
+					pthread_mutex_lock(&lock3);
+					QX.push_back(OUT);
+					pthread_mutex_unlock(&lock3);
+					printf("Xval for Q 50 is %lld\n", Xval);
 				}
-			} else if (destReady[var_mach] == 3) {
-				long long Yval = OUT;
-				destReady[var_mach] = 1;
-				if (QNUM == 50) {
-					prevYval50 = Yval50;
-					Yval50 = OUT;
-					if (Yval50 == -1) {
-						Xval50 = prevXval50;
-						Yval50 = prevYval50;
+			} else if (dReady == 3) {
+				dReady = 1;
+				Yval = OUT;
+				if (QNUM < 50) {
+					if (OUT == -1) {printf("STRANGE -1\n");}
+					printf("send %lld to Q:%lld\n", Yval, QNUM);
+
+					pthread_mutex_lock(&lock);
+					if (Yval != -1) {
+						Q[QNUM].push_back(Xval);
+						Q[QNUM].push_back(Yval);
 					}
 					pthread_mutex_unlock(&lock);
-				} else {
-					if (OUT == -1) {printf("STRANGE -1\n");}
-					Q[QNUM].push_back(Yval);
+					//usleep(30);
+				} else if (QNUM == 50) {
+					if (Yval != -1) {
+						pthread_mutex_lock(&lock3);
+						QY.push_back(Yval);
+						pthread_mutex_unlock(&lock3);
+					}
+					printf("Yval for Q 50 is %lld..\n", Yval);
 				}
 			} else {
-				printf("CONORUNK OUT %lld destReady[%d] is %d\n", OUT, var_mach, destReady[var_mach]); //exit(0);
+				printf("CONORUNK OUT %lld destReady[%d] is %d\n", OUT, var_mach, dReady); 
 			}
 
-	
+			pthread_mutex_lock(&lock4);
+			destReady[var_mach] = dReady;
+			pthread_mutex_unlock(&lock4);
+
 			for (int i = 0; i < instTOT; i++) {
 				saveInst[machineNumber][i] = inst[i];
 			}
 			nextInst[machineNumber] = i+2;
 			times[machineNumber]++;
 			inputCounters[machineNumber] = inputCounter;
-			//printf("return 34\n");
-			//return 34;
-                        i++;
+			i++;
 		} else if (myINST == 99) {
-			printf("GOT QUIT 99\n"); //in = 1; 
+			printf("GOT QUIT 99\n"); 
 #ifdef _DEBUG_
-#endif
-#ifdef _DEBUG_
-	printf("INSTS:\n");
-	for (int i = 0; i < instTOT; i++) {
-		printf("%lld ", inst[i]);
+			printf("INSTS:\n");
+			for (int i = 0; i < instTOT; i++) {
+				printf("%lld ", inst[i]);
 
-	}
-	printf("\n");
+			}
+			printf("\n");
 #endif
 			finished[machineNumber] = 1;
-			
+
 
 			printf("got a 99\n"); fflush(stdout);
 			getchar();
+			return (0);
 			//exit(0);
 
 			if (machineNumber == 4) {printf("return 33\n"); return 33;} else if (machineNumber == 0 && one == 1) {printf("return 33\n"); return 33;} else {printf("return 22"); return 22;}
@@ -574,27 +613,27 @@ ag2:
 			printf("NOW: %s\n", tmp2); 
 #endif
 			long long val1, val2, ans;
-			
+
 			if (tmp2[1] == '0') {
 
-val1 = inst[inst[i+1]]; 
+				val1 = inst[inst[i+1]]; 
 #ifdef _DEBUG_
-			printf("(pos0) val1 %lld\n", inst[inst[i+1]]);
+				printf("(pos0) val1 %lld\n", inst[inst[i+1]]);
 #endif
-}
+			}
 			else if (tmp2[1] == '1') {
 
 
-val1 = inst[i+1];
+				val1 = inst[i+1];
 #ifdef _DEBUG_
-			printf("(Npos1) val1 %lld\n", val1);
+				printf("(Npos1) val1 %lld\n", val1);
 #endif
-} 
+			} 
 			else if (tmp2[1] == '2') {val1 = inst[relativeBase[machineNumber]+inst[i+1]];
 #ifdef _DEBUG_
 				printf("(Rpos1) val1 %lld\n", val1);
 #endif
-} 
+			} 
 			else { printf("HERE"); getchar(); val1 = inst[i+1]; /*val2 = inst[i+2]; goto clear;*/}
 
 			if (myINST != 9) {
@@ -611,12 +650,12 @@ val1 = inst[i+1];
 					printf("(Rpos2) val2 %lld\n", val2);
 #endif
 				} else { printf("HERE2"); getchar(); val2 = inst[i+2];}
-	                } else {
+			} else {
 #ifdef _DEBUG_
 				printf("GOT A NINE\n");
 #endif
 			}
-	
+
 			if (myINST == 2) {
 #ifdef _DEBUG_
 				printf("%lld **** %lld\n", val1, val2);
@@ -631,7 +670,7 @@ val1 = inst[i+1];
 #ifdef _DEBUG_
 				//for (int i = 0; i < instTOT; i++) {
 				//	printf("%lld,", inst[i]);
-			//	} printf("\n");
+				//	} printf("\n");
 				printf("val1 is %lld\n", val1); 
 #endif
 				if (val1 != 0) {
@@ -643,18 +682,18 @@ val1 = inst[i+1];
 #ifdef _DEBUG_
 					printf("ZNOJUMP (%lld)\n", val1);
 #endif
-				err = 1;} 
+					err = 1;} 
 			} else if (myINST == 6) {
 				if (val1 == 0) {
 #ifdef _DEBUG_
 					printf("ZERO: JUMP to (%lld)\n", val2);
 #endif
-					 i = val2-1; err = 2;
+					i = val2-1; err = 2;
 				} else {
 #ifdef _DEBUG_
 					printf("NONZ NOJMP (%lld)\n", val1);
 #endif
-					 err = 1;}
+					err = 1;}
 			} else if (myINST == 7) {
 				if (val1 < val2) {ans = 1;} else {ans = 0;}
 #ifdef _DEBUG_
@@ -698,3 +737,172 @@ val1 = inst[i+1];
 	return 10;
 }
 
+//printf("ever here...\n"); exit(0);
+
+/*
+   pthread_mutex_lock(&lock);
+   if (Xval50 == -22 || Yval50 == -22) {
+   pthread_mutex_unlock(&lock);
+   goto ag2;
+   }
+   */
+/*
+   if (var_mach == 50) {
+   printf("never here\n"); exit(0);
+//fgetc(stdin);
+if (QY.size() == 0) { i++; goto end3;}
+if (QY.back() == -1 && QY.size() == 1) {printf("only -1\n"); i++; goto end3;}
+usleep(300);
+vector <int> lower;
+ag2:
+usleep(30);
+for (int z = 0; z < 50; z++) {
+Qtmp[z] = Q[z];
+}
+int found = 0;
+for (int z = 0; z < 50; z++) {
+if (Q[var_mach].size() == 0) {found = 1; continue;}
+if (Q[var_mach].back() != -1) {usleep(30); found = 1;}
+}
+if (found == 1) {usleep(300); printf("goto ag2\n"); goto ag2;}
+sleep(1);
+int found2 = 0;
+for (int z = 0; z < 50; z++) {
+usleep(30);
+if (Qtmp[z].size() == Q[z].size() && Q[z].back() == -1) {
+} else {
+found2 = 1;
+}
+}
+if (found2 == 1) {printf("goto ag2\n"); goto ag2;}
+
+for (int z = 0; z < 50; z++) {
+if (find(lower.begin(), lower.end(), z) == lower.end() &&
+QidleCount[z] <= 3) {
+found = 1;
+} else {
+lower.push_back(z);
+QidleCount[z] = 0;
+}
+usleep(40);
+}
+if (found == 1) {usleep(30); goto ag2;}
+lower.clear();
+
+while (1) {
+//printf("Xval50 --- Yval50 %lld %lld\n", Xval50, Yval50);
+//usleep(20);
+if (Xval50 == -22) {continue;}
+if (Yval50 == -22) {continue;}
+else if (Xval50 ==  -1) {continue;}
+else if (Yval50 ==  -1) {continue;}
+else {break;}
+}
+while (Xval50 == -22 && Yval50 == -22) {
+//
+//if (Xval50 == 0) {continue;}
+//if (Yval50 == 0) {continue;}
+if (Xval50 == -1) {continue;}
+if (Yval50 == -1) {continue;}
+printf("-22... ");
+usleep(20);
+}
+//prevXval50 = Xval50;
+//prevYval50 = Xval50;
+//yval = Yval50;
+//xval = Xval50;
+
+Xval50 = -22; Yval50 = -22;
+
+printf("Yval is %lld\n", yval);
+xval = QX.at(0);
+for (auto it = QY.rbegin(); it != QY.rend(); it++) {
+if (*it != -1) {yval = *it;}
+}
+
+auto it1 = mp.find(yval);
+
+if (it1 != mp.end() && yval != -1) {
+	printf("ANS is %lld\n", yval); fflush(stdout);
+
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %lld\n", yval);	
+	exit(0);
+} else {
+	mp[yval] = 1;
+}
+
+printf("about to push_back... xval:%lld yval:%lld fgetc\n", xval, yval); //fgetc(stdin);
+
+printf("all the X QS\n");
+printf("............\n");
+for (auto one: QX) {
+	printf("%lld ", one);
+}
+printf("all the Y QS\n");
+for (auto two: QY) {
+	printf("%lld ", two);
+}
+printf("............\n");
+//fgetc(stdin);
+Q[0].push_back(QX.back());
+Q[0].push_back(QY.back());
+if (xval != -1 && yval != -1) {
+	printf("pushing xval yval.. %lld %lld.\n", xval, yval);
+	Q[0].push_back(xval);
+	Q[0].push_back(yval);
+} else {
+	printf("*****Xval50 %lld Yval50 %lld\n", Xval50, Yval50);
+}
+usleep(20);
+i++;
+goto end3;
+//goto ag2;
+}
+*/
+//Yval = -22;
+/*
+   if (Yval50 == -1) {
+
+   printf("iiinnn ssseeeenddddd all the X QS\n");
+   printf("............\n");
+   for (auto one: QX) {
+   printf("%lld ", one);
+   }
+   printf("\niiiinnnn seeendddd all the Y QS\n");
+   for (auto two: QY) {
+   printf("%lld ", two);
+   }
+   printf("............\n");
+
+   printf("Yval50 is %lld (m1\n", Yval50);
+//Xval50 = prevXval50;
+//Yval50 = prevYval50;
+//QY.push_back(OUT);
+} else {
+QY.push_back(OUT);
+}
+//pthread_mutex_unlock(&lock);
+*/
+		/*
+		   if (already.find(watY) == already.end()) {
+		   already[watY] = '1';
+		   } else {
+		   printf("**ans: %lld\n", watY);
+		   exit(0);
+		   }
+		   */
+		/*
+		   for (int i = 0; i < 50; i++) {
+		   if (Q[i].size() != 0) {printf("strange..%d.\n", i); exit(0);}
+		   }
+		   */
+		//for (int i = 0; i < 50; i++)  { QidleCount[i] = 0; }
+					/*
+					   pthread_mutex_lock(&lock);
+					   if (Xval != -1) {
+					   Q[QNUM].push_back(Xval);
+					   }
+					   pthread_mutex_unlock(&lock);
+					   usleep(30);
+					   */
