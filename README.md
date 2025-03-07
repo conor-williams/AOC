@@ -83,6 +83,7 @@ $ cat ki.lo.txt
 <s>2022&sol;day23&sol;day23.2.c:   printf("broken\n"); exit(0);</s>
         2023
 <s>2023&sol;day11&sol;day11.2.c:   print("broken..\n"); exit(0); (work from the right m1)</s>
+2023&sol;day12&sol;day12.2.c:   print("broken..\n"); exit(0); (hash dot x5 problems #.####??..)
 <s>2023&sol;day13&sol;day13.2.c:   printf("broken...\n"); exit(0);</s>
 <s>2023&sol;day14&sol;day14.2.c:   printf("broken...\n"); exit(0); (MANUAL CYCLE DETECTION -> </s> auto)
 <s>2023&sol;day15&sol;day15.2.c:   printf("broken...\n"); exit(0);</s>
