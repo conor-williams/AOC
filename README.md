@@ -39,10 +39,12 @@ o ps and kill are your friend
 	o length of filename getting you down? use ln and stop getting down (e.g.):
 	         ln -s 2020.day20.i1.txt i1.txt
 	o to speed up a process $ renice --priority -19 -p XYZ 
+	                        $ renice -n -19 -p XYZ
+	                        $ renice -n -19 XYZ
 		where XYZ is the number from the run... (ps on most flvs of Un*X)
 	o added year and day to input file names and year to c files (no code change just renaming of files)
-	o dup2 needed an fflush -- now no debug -- sorry
-	o if the file is not present, it has not been coded
+	o dup2 needed an fflush -- now no debug -- sorry (ps: remove/comment close(1)<b>;</b> after dup(fd)<b>;</b> for debug if there is debug it will appear + recompile)
+	o if the file is not present, it has not been coded (see above new unfinished list for those years/parts that are left + a couple below 2016.day11.1 2022.day92.2)
 	o all <s></s>Part 1's for every year working well, except:
 		-- 2016 Day 11,1 *current
 	   	-- <s>2018 Day 21.1</s>
