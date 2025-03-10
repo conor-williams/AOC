@@ -50,7 +50,7 @@ o ps and kill are your friend
 	o all <s></s>Part 1's for every year working well, except:
 		-- 2016 Day 11,1 *current
 	   	-- <s>2018 Day 21.1</s>
-		-- <s>2019 Day 18 part1</S> *
+		-- <s>2019 Day 1</S>8 part1 *
 		-- <s>2022 Day 22.1</s>
 	   	-- <s>2023 Day 22.1</s>
 	o all years days 1--10 Part 1&2 working well, except:
