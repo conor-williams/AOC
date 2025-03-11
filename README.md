@@ -33,8 +33,20 @@ o ps and kill are your friend
 2020 day 24 part 2
 </pre>
 
+<h3>stragglers (mentioned elsewhere) (updated 031125 GMT:23hours47mins) </h3>
+<pre><h4>2016</h4>
+   day 11.1
+day 11.2
+  <h4>2022</h4>
+	day 09.2
+<h4>2023</h4>
+	day12.2
+	day21.2
+	<h4>2019</h4>
+    day 18.1
+     day 18.2
 </pre>
-
+     
 <h3>Update (11::20-03-25):</h3>
 <pre>
 	o run "sh FIRST.sh" -- it does everything for you
