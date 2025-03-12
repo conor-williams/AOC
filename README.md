@@ -25,7 +25,7 @@ o ps and kill are your friend
 
 <h3>YEAR: 202<font color = red>0</font></h3>
 <s>2020 day 12 part 2</s>  |  <s>2020 day 13 part 2</s>
-2020 day 14 part 2  |  2020 day 15 part 2
+2020 day 14 part 2  |  <s>2020 day 15 part 2</s>
 2020 day 16 part 2  |  2020 day 17 part 2
 2020 day 18 part 2  |  2020 day 19 part 2
 <s>2020 day 20 part 2</s>  |  2020 day 21 part 2
