@@ -92,6 +92,8 @@ int main(int argc, char **argv)
 	end = clock();
 	cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
 	printf("        time: %f seconds\n", cpu_time_used);
+	// printf("time: %f\n",  ((double) (end - start)) / CLOCKS_PER_SEC);
+
 
 	//signal(SIGTSTP, &sigfunc);
 	signal(SIGQUIT, &sigfunc);
