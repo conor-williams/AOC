@@ -2,7 +2,7 @@ o sh FIRST.sh
 o ps and kill are your friend
 <embed src=unfin.txt>
 <object type="text/html" data="unfin.txt"></object> 
-<h2>Notes (this README is a .html file (drag and drop into a browser)) lu:3-07-2025</h2>
+<h2>Notes (this README is a .html file (drag and drop into a browser)) lu:3-13-2025</h2>
 <address><b>conor.williams@gmail.com</b></address><br>
 <h3>Update (04-03-25):</h3>
 <pre>
@@ -12,7 +12,7 @@ o ps and kill are your friend
 
 <h3>YEAR: 2022</h3>
 2022 day  9 part 2  |  2022 day 13 part 2
-2022 day 15 part 2  |  2022 day 17 part 2
+<s>2022 day 15 part 2  |  2022 day 17 part 2</s>
 2022 day 18 part 2  |  2022 day 21 part 2
 2022 day 22 part 2
 
