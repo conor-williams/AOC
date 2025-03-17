@@ -57,7 +57,7 @@ day 11.2
 	                        $ renice -n -19 XYZ
 		where XYZ is the number from the run... (ps on most flvs of Un*X)
 	o added year and day to input file names and year to c files (no code change just renaming of files)
-	o dup2 needed an fflush -- now no debug -- sorry (ps: remove/comment close(1)<b>;</b> after dup(fd)<b>;</b> for debug if there is debug it will appear + recompile)
+	o dup2 needed an fflush -- now no debug -- sorry (ps: remove/comment close(1)<b>;</b> after fd = dup(1); (cor)<b>;</b> for debug if there is debug it will appear + recompile)
 	o if the file is not present, it has not been coded (see above new unfinished list for those years/parts that are left + a couple below 2016.day11.1 2022.day92.2)
 	o all <s></s>Part 1's for every year working well, except:
 		-- 2016 Day 11,1 *current
