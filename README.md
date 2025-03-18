@@ -40,7 +40,7 @@ day 11.2
   <h4>2022</h4>
 	day 09.2
 <h4>2023</h4>
-	day12.2
+	<s>day12.2</s>
 	day21.2
 	<h4>2019</h4>
     day 18.1
@@ -99,7 +99,7 @@ $ cat gi.lo.txt
 <s>2022&sol;day23&sol;day23.2.c:   printf("broken\n"); exit(0);</s>
         2023
 <s>2023&sol;day11&sol;day11.2.c:   print("broken..\n"); exit(0); (work from the right m1)</s>
-2023&sol;day12&sol;day12.2.c:   print("broken..\n"); exit(0); (hash dot x5 problems #.####??..)
+<s>2023&sol;day12&sol;day12.2.c:   print("broken..\n"); exit(0); (hash dot x5 problems #.####??..)</s>
 <s>2023&sol;day13&sol;day13.2.c:   printf("broken...\n"); exit(0);</s>
 <s>2023&sol;day14&sol;day14.2.c:   printf("broken...\n"); exit(0); (MANUAL CYCLE DETECTION -> </s> auto)
 <s>2023&sol;day15&sol;day15.2.c:   printf("broken...\n"); exit(0);</s>
@@ -234,7 +234,7 @@ rectified soon (update: nearly rectified...) (late december 2024)
 				<td>day21.2</td><td>day22.2</td><td>day23</td><td>day24</td></tr>
 	<tr><td><b>2022</b></td><td>day9.2</td><td>day13.2</td><td>day15.2</td><td>day17.2</td><td>day18.2</td><td>day21.2</td>
 				<td>day22.2</td><td>day25.1 (java)</td></tr>
-	<tr><td><b>2023</b></td><td>day12.2</td></tr>
+	<tr><td><s><b>2023</b></td><td>day12.2</td></s></tr>
 	<tr><td><b>2024</b></td><td>FIN</td></tr>
 </table>
 
