@@ -44,7 +44,7 @@ day 11.2
 	day21.2
 	<h4>2019</h4>
     day 18.1
-     day 18.2
+     day 18.2 (COMING TONIGHT -- was erroneously using a modified input file -- (just grabbing l.o.t.n- fixed)
 </pre>
      
 <h3>Update (11::20-03-25):</h3>
