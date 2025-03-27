@@ -7,43 +7,42 @@ o ps and kill are your friend
 <h3>Update (04-03-25):</h3>
 <pre>
 <h2>New todos to finish off unfinished as per Feb 2025 (plus a few stragglers )</h2>
-<h3>YEAR: 2016</h3>
-2022 day 11 part 2
-
 <h3>YEAR: 2022</h3>
-2022 day  9 part 2  |  2022 day 13 part 2
-<s>2022 day 15 part 2  |  2022 day 17 part 2</s>
-<s>2022 day 18 part 2</s>  |  2022 day 21 part 2
-2022 day 22 part 2
+ 2022 day  9 part 2  |  2022 day 13 part 2
+ <s>2022 day 15 part 2  |  2022 day 17 part 2</s>
+ <s>2022 day 18 part 2</s>  |  2022 day 21 part 2
+ 2022 day 22 part 2
 
 <h3>YEAR: 2021</h3>
-<s>2021 day 11 part 2</s>  |  <s>2021 day 12 part 2</s>
-2021 day 14 part 2  |  <s>2021 day 15 part 2</s>
-2021 day 16 part 2  |  <s>2021 day 18 part 2</s>
-2021 day 21 part 2  |  2021 day 22 part 2
-2021 day 23 part 2
+ <s>2021 day 11 part 2</s>  |  <s>2021 day 12 part 2</s>
+ 2021 day 14 part 2  |  <s>2021 day 15 part 2</s>
+ 2021 day 16 part 2  |  <s>2021 day 18 part 2</s>
+ 2021 day 21 part 2  |  2021 day 22 part 2
+ 2021 day 23 part 2
 
 <h3>YEAR: 202<font color = red>0</font></h3>
-<s>2020 day 12 part 2</s>  |  <s>2020 day 13 part 2</s>
-2020 day 14 part 2  |  <s>2020 day 15 part 2</s>
-2020 day 16 part 2  |  2020 day 17 part 2
-2020 day 18 part 2  |  2020 day 19 part 2
-<s>2020 day 20 part 2</s>  |  2020 day 21 part 2
-2020 day 22 part 2  |  2020 day 23 part 2
-<s>2020 day 24 part 2</s>
+ <s>2020 day 12 part 2</s>  |  <s>2020 day 13 part 2</s>
+ 2020 day 14 part 2  |  <s>2020 day 15 part 2</s>
+ 2020 day 16 part 2  |  2020 day 17 part 2
+ 2020 day 18 part 2  |  2020 day 19 part 2
+ <s>2020 day 20 part 2</s>  |  2020 day 21 part 2
+ 2020 day 22 part 2  |  2020 day 23 part 2
+ <s>2020 day 24 part 2</s>
+<h3>YEAR: 2016</h3>
+ 2016 day 11 part 2
 </pre>
 
 <h3>stragglers (mentioned elsewhere) (updated 031125 GMT:23hours47mins) </h3>
 <pre>	
- <h4>2016</h4>
+ <h5>2016</h5>
    day 11.1
    day 11.2
- <h4>2019</h4>
+ <h5>2019</h5>
     <s>day 18.1</s>
-    <s>day 18.2</s> <s><u>(COMING TONIGHT -- was erroneously using a modified input file -- (just grabbing l.o.t.n- fixed)</s></s>u>	
- <h4>2022</h4>
+    <s>day 18.2</s> <s><u>(COMING TONIGHT -- was erroneously using a modified input file -- (just grabbing l.o.t.n- fixed)</s><u>	
+ <h5>2022</h5>
     day 09.2
- <h4>2023</h4>
+ <h5>2023</h5>
     <s>day12.2</s>
     day21.2
 </pre>
@@ -61,7 +60,7 @@ o ps and kill are your friend
 	o dup2 needed an fflush -- now no debug -- sorry (ps: remove/comment close(1)<b>;</b> after fd = dup(1); (cor)<b>;</b> for debug if there is debug it will appear + recompile)
 	o if the file is not present, it has not been coded (see above new unfinished list for those years/parts that are left + a couple below 2016.day11.1 2022.day92.2)
 	o all <s></s>Part 1's for every year working well, except:
-		-- 2016 Day 11,1 *current
+		-- 2016 Day 11,1 
 	   	-- <s>2018 Day 21.1</s>
 		-- <s>2019 Day 18 part1 </s>
 		-- <s>2022 Day 22.1</s>
