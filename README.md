@@ -28,8 +28,7 @@ o ps and kill are your friend
  <s>2020 day 20 part 2</s>  |  2020 day 21 part 2
  2020 day 22 part 2  |  2020 day 23 part 2
  <s>2020 day 24 part 2</s>
-<h3>YEAR: 2016</h3>
- 2016 day 11 part 2
+<s>YEAR: 2016- 2016 day 11 part 2</s> moved_to stragglers
 </pre>
 
 <h3>stragglers (mentioned elsewhere) (updated 031125 GMT:23hours47mins) </h3>
