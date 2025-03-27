@@ -34,17 +34,18 @@ o ps and kill are your friend
 </pre>
 
 <h3>stragglers (mentioned elsewhere) (updated 031125 GMT:23hours47mins) </h3>
-<pre><h4>2016</h4>
+<pre>	
+ <h4>2016</h4>
    day 11.1
-day 11.2
-  <h4>2022</h4>
-	day 09.2
-<h4>2023</h4>
-	<s>day12.2</s>
-	day21.2
-	<h4>2019</h4>
+   day 11.2
+ <h4>2019</h4>
     <s>day 18.1</s>
-     day 18.2 (COMING TONIGHT -- was erroneously using a modified input file -- (just grabbing l.o.t.n- fixed)
+    <s>day 18.2</s> <s><u>(COMING TONIGHT -- was erroneously using a modified input file -- (just grabbing l.o.t.n- fixed)</s></s>u>	
+ <h4>2022</h4>
+    day 09.2
+ <h4>2023</h4>
+    <s>day12.2</s>
+    day21.2
 </pre>
      
 <h3>Update (11::20-03-25):</h3>
