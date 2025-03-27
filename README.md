@@ -63,7 +63,7 @@ o ps and kill are your friend
 	o all <s></s>Part 1's for every year working well, except:
 		-- 2016 Day 11,1 *current
 	   	-- <s>2018 Day 21.1</s>
-		-- <s>2019 Day 1</S>8 part1 *
+		-- <s>2019 Day 18 part1 </s>
 		-- <s>2022 Day 22.1</s>
 	   	-- <s>2023 Day 22.1</s>
 	o all years days 1--10 Part 1&2 working well, except:
@@ -90,7 +90,7 @@ $ cat gi.lo.txt
 <s>2018&sol;day23&sol;day23.2.c:   printf("broken\n"); exit(<s>0</s>); (Running... (nanobots ~2.5hours??)_</s><b>6mins</b>
         2019
 <s>2019&sol;day14&sol;day14.2.c:   printf("broken\n"); exit(0);</s>
-2019&sol;day18&sol;day18.2.c:   printf("BROKEN\n"); exit(0); ( *google maps )
+<s>2019&sol;day18&sol;day18.2.c:   printf("broken\n"); exit(0); </s> ( google maps )
 <s>2019&sol;day20&sol;day20.2.c:   printf("broken\n"); exit(0);</s>
 <s>2019&sol;day23&sol;day23.2.c:   printf("broken\n"); exi<s>t(0); </s>(NETWORKING TRiC<font color=red>k</font>Y USING TIMERS todo(2xRead==-1 -> idle)</s>
         2021
@@ -105,7 +105,7 @@ $ cat gi.lo.txt
 <s>2023&sol;day14&sol;day14.2.c:   printf("broken...\n"); exit(0); (MANUAL CYCLE DETECTION -> </s> auto)
 <s>2023&sol;day15&sol;day15.2.c:   printf("broken...\n"); exit(0);</s>
 2023&sol;day21&sol;day21.2.c:   printf("broken...\n"); exit(0); (DIAMOND CYCLE DETECTION)
-<s>2023&sol;day23&sol;day23.2.c:   printf("broken...\n"); exit(0); (longest path 141*141 **current</s>)
+<s>2023&sol;day23&sol;day23.2.c:   printf("broken...\n"); exit(0); (longest path 141*141 </s>)
 </pre>
 <h3>Note: (of course you may already know this)</h3>     
 <br>if you are not interested in waiting for one to finish
@@ -199,7 +199,7 @@ rectified soon (update: nearly rectified...) (late december 2024)
 	<tr><td><b>2016</b></td><td>day 11</td></tr>
 	<tr><td><b>2017</b></td><td>day7.2</td></td><td>day11</td><td>day20.2</td></tr>
 	<tr><td><b>2018</b></td><td>day7</td><td>day9.2</td><td>day15</td><td>day21</td><td>day22.2</td><td>day23.2</td></tr>
-	<tr><td><b>2019</b></td><td>day17.2</td><td>day18</td></tr>
+	<tr><td><b>2019</b></td><td>day17.2</td><td><s>day18</s></td></tr>
 	<tr><td><b>2020</b></td><td></td></tr>
 	<tr><td><b>2021</b></td><td></td></tr>
 	<tr><td><b>2022</b></td><td>day25.1(written in java)</td></tr>
