@@ -43,7 +43,7 @@ day 11.2
 	<s>day12.2</s>
 	day21.2
 	<h4>2019</h4>
-    day 18.1
+    <s>day 18.1</s>
      day 18.2 (COMING TONIGHT -- was erroneously using a modified input file -- (just grabbing l.o.t.n- fixed)
 </pre>
      
