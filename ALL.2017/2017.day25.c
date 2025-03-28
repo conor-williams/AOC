@@ -91,5 +91,5 @@ fclose(a);
 	}
 
 	fflush(stdout); dup2(fd, 1);
-	printf("**checksum: %ld ", sum);
+	printf("**checksum: %ld\n", sum);
 }
