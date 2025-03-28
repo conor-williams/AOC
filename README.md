@@ -237,7 +237,8 @@ rectified soon (update: nearly rectified...) (late december 2024)
 	<tr><td><s><b>2023</b></td><td>day12.2</td></s></tr>
 	<tr><td><b>2024</b></td><td>FIN</td></tr>
 </table>
-
-t-33 03042025
-t-0 03192025 w.h.buckos
+<hr>
+t-33 03042025<br>
+t-0 03192025 w.h.buckos<br>
+<p></p>
 t+2 == 2 &#47;c.will51
