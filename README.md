@@ -172,6 +172,7 @@ rectified soon (update: nearly rectified...) (late december 2024)
 
 <br><br>
 <hr>
+<h2>NOTE To Self: update below tables (28032025 todo)</h2>
 <h3>Table of years/days of days which need optimizations or work (todo: ongoing):</h3>
 <table> 
 	<tr><td><b>2015</b></td><td>day10</td><td>day12</td><td>day19.2</td><td>day20</td><td>day24</td></tr>
