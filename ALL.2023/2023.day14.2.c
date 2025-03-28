@@ -108,7 +108,7 @@ int main(int argc, char **argv)
 	printf("nums[ss+pos-1] %d\n", nums[ss+(pos-1)]);
 	printf("nums[ss+pos] %d\n", nums[ss+pos]);
 	printf("nums[ss+pos+1] %d\n", nums[ss+(pos+1)]);
-	dup2(fd, 1); 
+	fflush(stdout); dup2(fd, 1); 
 	printf("**ans: %d\n", nums[ss+pos]);
 	/*
 	printf("-----------------\n");

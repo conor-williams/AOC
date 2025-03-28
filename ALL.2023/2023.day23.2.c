@@ -277,7 +277,7 @@ int main(int argc, char **argv)
 	printf("**correctP (END REACHED) myMAX3 is %d\n", myMAX3);
 	printf("leny is %d\n", leny);
 	printf("lenx is %d\n", lenx);
-	dup2(fd, 1); 
+	fflush(stdout); dup2(fd, 1); 
 	printf("**ans: %d\n", myMAX2);
 }
 void nextX(int w, int from, int to, struct mybool bef, int myfrom, int myto)
