@@ -38,7 +38,7 @@ o ps and kill are your friend
    <s>day 11.2</s>
  <h5>2019</h5>
     <s>day 18.1</s>
-    <s>day 18.2</s> <s><u>(COMING TONIGHT -- was erroneously using a modified input file -- (just grabbing l.o.t.n- fixed)</s><u>	
+    <s>day 18.2</s> <s><u>(COMING TONIGHT -- was erroneously using a modified input file -- (just grabbing l.o.t.n- fixed)</u></s>	
  <h5>2022</h5>
     day 09.2
  <h5>2023</h5>
