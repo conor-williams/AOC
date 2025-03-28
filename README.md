@@ -2,7 +2,7 @@ o sh FIRST.sh
 o ps and kill are your friend
 <embed src=unfin.txt>
 <object type="text/html" data="unfin.txt"></object> 
-<h2>Notes (this README is a .html file (drag and drop into a browser)) lu:3-13-2025</h2>
+<h2>Notes (this README is a .html file (drag and drop into a browser)) lu:28-03-2025</h2>
 <address><b>conor.williams@gmail.com</b></address><br>
 <h3>Update (04-03-25):</h3>
 <pre>
@@ -28,14 +28,14 @@ o ps and kill are your friend
  <s>2020 day 20 part 2</s>  |  2020 day 21 part 2
  2020 day 22 part 2  |  2020 day 23 part 2
  <s>2020 day 24 part 2</s>
-<s>YEAR: 2016- 2016 day 11 part 2</s> moved_to stragglers
+<!-- <s>YEAR: 2016- 2016 day 11 part 2</s> moved_to stragglers -->
 </pre>
 
-<h3>stragglers (mentioned elsewhere) (updated 031125 GMT:23hours47mins) </h3>
+<h3>stragglers (mentioned elsewhere) (updated 032825 GMT:13hours19mins) </h3>
 <pre>	
  <h5>2016</h5>
-   day 11.1
-   day 11.2
+   <s>day 11.1</s>
+   <s>day 11.2</s>
  <h5>2019</h5>
     <s>day 18.1</s>
     <s>day 18.2</s> <s><u>(COMING TONIGHT -- was erroneously using a modified input file -- (just grabbing l.o.t.n- fixed)</s><u>	
