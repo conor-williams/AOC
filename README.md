@@ -4,6 +4,14 @@ o ps and kill are your friend
 <object type="text/html" data="unfin.txt"></object> 
 <h2>Notes (this README is a .html file (drag and drop into a browser)) lu:28-03-2025</h2>
 <address><b>conor.williams@gmail.com</b></address><br>
+<h3>Update (28-03-25):</h3>
+<pre>
+<h2>Reared (check 2015-2019 inclusive)</h2>
+2018.21.2 (upper limit looper)
+2019.12.2 (cycles)
+2019.14.2 (V.SLOW)
+2019.17.2 (should be there...)
+</pre>
 <h3>Update (04-03-25):</h3>
 <pre>
 <h2>New todos to finish off unfinished as per Feb 2025 (plus a few stragglers )</h2>
