@@ -59,7 +59,7 @@ o ps and kill are your friend
 	o dup2 needed an fflush -- now no debug -- sorry (ps: remove/comment close(1)<b>;</b> after fd = dup(1); (cor)<b>;</b> for debug if there is debug it will appear + recompile)
 	o if the file is not present, it has not been coded (see above new unfinished list for those years/parts that are left + a couple below 2016.day11.1 2022.day92.2)
 	o all <s></s>Part 1's for every year working well, except:
-		-- 2016 Day 11,1 
+		-- <s>2016 Day 11,1 </s>
 	   	-- <s>2018 Day 21.1</s>
 		-- <s>2019 Day 18 part1 </s>
 		-- <s>2022 Day 22.1</s>
@@ -74,14 +74,14 @@ o ps and kill are your friend
      <s>o looking now to tidy part2's (11-24) of every year (16-01-2025) </s>
 	o Result of Tidy every year <s>but</s> including 2024:
 	conor.williams@DESKTOP-MM5HH8I AOC-main
-$ cat gi.lo.txt
+$ cat pi.lo.txt
 	2015
 <s>2015&sol;day12&sol;day12.2.c:   printf("broken\n"); exit(0);</s>
 <s>2015&sol;day19&sol;day19.2.c:   printf("broken\n"); exit(0);</s>
         2016
 <s>2016&sol;day22&sol;day22.2.c:   printf("broken..\n"); exit(0);</s>
         2017
-<s>2017&sol;day16&sol;day16.2.c:   printf("broken...\n"); exit(0); (MANUAL CYCLE DETECTION -> </s> auto)
+<s>2017&sol;day16&sol;day16.2.c:   printf("broken...\n"); exit(0); (MANUAL CYCLE DETECTION -> </s> <!--auto)-->
 <s>2017&sol;day18&sol;day18.2.c:   printf("broken...\n"); exit(0);</s>
         2018
 <s>2018&sol;day19&sol;day19.2.c:   printf("broken\n"); ex<s>it(0); (R</s>UNNING CURRENTLY ~2hours (overnight x 2)??)(s</s>ub 760ms)
