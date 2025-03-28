@@ -8,6 +8,7 @@
 #include <assert.h>
 #include <string>
 #include <unistd.h>
+#include <sys/resource.h>
 
 using namespace std;
 
@@ -40,10 +41,17 @@ int main(int argc, char **argv)
 	signal(SIGTSTP, signal_hand);
 	lenx = 0; leny = 0;
 	printf("SLOW ~38seconds\n");
-	printf("widen stack -Wl,--stack,999777666\n");
+
+	struct rlimit limit;
+        getrlimit (RLIMIT_STACK, &limit);
+        printf ("\nStack Limit = %ld and %ld max\n", limit.rlim_cur, limit.rlim_max);
+        if (limit.rlim_cur < 900000000) {printf("need to widen stack with -Wl,--stack,999777666\n"); exit(10);}
+
+
+	//printf("widen stack -Wl,--stack,999777666\n");
 	//printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
 	FILE * a = fopen(argv[1], "r"); 
-	printf(DAY); 
+	printf(DAY); fflush(stdout);
 	int fd = dup(1); close(1);
 
 	char line1[SZ];
