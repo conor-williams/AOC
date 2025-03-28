@@ -25,7 +25,7 @@ while [ $year != 2025 ];  do
 	day=1
 	year=$((year + 1))
 done
-cd 2018/day15
+cd $curdir/2018/day15
 gcc -Wl,--stack,999777666 -I../../ 2018.day15.c -o "2018.day15.exe" -lmbedcrypto
 gcc -Wl,--stack,999777666 -I../../ 2018.day15.2.c -o "2018.day15.2.exe" -lmbedcrypto
 cd $curdir
