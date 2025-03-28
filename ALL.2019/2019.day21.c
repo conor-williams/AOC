@@ -13,7 +13,7 @@ using namespace std;
 #define getchar()
 
 int lenx, leny;
-#define DAY "2019 day 19 part1\n"
+#define DAY "2019 day 21 part1\n"
 //#define _DEBUG_
 #undef DEBUG
 #define getchar()
