@@ -10,7 +10,7 @@ o ps and kill are your friend
 2018.21.2 (upper limit looper)
 2019.12.2 (cycles)
 2019.14.2 (V.SLOW)
-2019.17.2 (should be there...)
+<s>2019.17.2 (should be there...)</s>
 2021.23.2 (V.SLOW)
 2023.19.2 (Missing - ratings)
 <s>2023.20.2 (missing - pulsing - needs lcm)</s>
