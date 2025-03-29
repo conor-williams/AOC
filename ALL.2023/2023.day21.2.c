@@ -12,7 +12,7 @@
 #include <unistd.h>
 int leny;
 int lenx;
-#define DAY "2023 Day21 Part1"
+#define DAY "2023 Day21 Part2"
 
 char puzzle[132][132];
 int puzzlealready[132][132];
@@ -29,7 +29,6 @@ int numspawn;
 int main(int argc, char **argv)
 {
 
-	printf("%d\n", argc); printf("%s\n", argv[1]); fflush(stdin); fflush(stdout);
 	a = fopen(argv[1], "r"); 
 	printf(DAY); printf("\n"); fflush(stdin); fflush(stdout);
 

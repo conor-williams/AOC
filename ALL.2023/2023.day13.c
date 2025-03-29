@@ -26,7 +26,7 @@ int linenum;
 int main(int argc, char **argv)
 {
 	newpuzzle = 0;
-	printf("args: %d ", argc); printf("file: %s ", argv[1]); fflush(stdin); fflush(stdout);
+	//printf("args: %d ", argc); printf("file: %s ", argv[1]); fflush(stdin); fflush(stdout);
 	FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); printf("\n"); fflush(stdin); fflush(stdout);
 
