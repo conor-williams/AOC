@@ -44,7 +44,7 @@ o ps and kill are your friend
 <s>2021.23.1 (V.SLOW +1hour)</s> speedy (< 1600 ms)
 	2022
 <s>2022.9.2 (known unfinished -- not in the new section as below 10)</s>
-2022.22.1 (known unfin... j.v -> c++ converter)
+2022.25.1 (known unfin... j.v -> c++ converter (didnt work cleanly))
 	2023
 <s>2023.19.2 (Missing - ratings V.SLOW +1hour) (*file with no dup ^ as:  2023.day19.2.<s>cc</s> 24 hours minimum)</s>--speedy sub 260ms
 <s>2023.20.2 (missing - pulsing - needs lcm)</s>
