@@ -10,6 +10,7 @@
 #include <cstdlib>
 #include <cctype>
 #include <cmath>
+#include <regex>
 
 using namespace std;
 
@@ -21,6 +22,10 @@ string read_puzzle(const string &filename) {
 	ostringstream oss;
 	oss << f.rdbuf();
 	string content = oss.str();
+	//printf("content before: %s\n", content.c_str());
+	regex var_regex("C###\n");
+	content = regex_replace(content, var_regex, "C###\n  #D#C#B#A#\n  #D#B#A#C#\n");
+	//printf("content after: %s\n", content.c_str());
 	string result;
 	for (char c : content) {
 		if (c == 'A' || c == 'B' || c == 'C' || c == 'D' || c == '.')
@@ -183,7 +188,7 @@ int solve(const string &puzzle_input) {
 }
 
 int main(int argc, char **argv) {
-	printf("2021 day23 Part1\n");
+	printf("2021 day23 Part2\n");
 #ifdef _ACCOLADE_
 	printf("Gravitar64 on reddit + codeconvert.ai\n");
 #endif
