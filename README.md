@@ -13,11 +13,11 @@ o ps and kill are your friend
 2019.14.2 (V.SLOW +1hour)
 <s>2019.17.2 (should be there...)</s>
 2021.23.2 (V.SLOW +1hour)
-2022.9.2 (known unfinished -- not in the new section as below 10)
+<s>2022.9.2 (known unfinished -- not in the new section as below 10)</s>
 2022.22.1 (known unfin... j.v -> c++ converter)
 2023.19.2 (Missing - ratings V.SLOW +1hour) (*file with no dup ^ as:  2023.day19.2.<s>cc</s> 24 hours minimum)
 <s>2023.20.2 (missing - pulsing - needs lcm)</s>
-2023.21.2 (known - broken)
+<s>2023.21.2 (known - broken)</s>
 <s>2023.22.2 (missing - soon)</s>
 
 </pre>
@@ -259,4 +259,4 @@ t-33 03042025<br>
 t-0 03192025 w.h.buckos<br>
 <p></p>
 t+2 == 2 &#47;c.<b><i>w</i>i<i>l</i>l51</b>.
-<br>t+25 (tot) 030925
+<br>t+23 (tot) 030925
