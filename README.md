@@ -7,6 +7,7 @@ o ps and kill are your friend
 <h3>Update (28-03-25):</h3>
 <pre>
 <h2><s>Reared</s>Nigglers (check 2015-2024 inclusive)</h2>
+2016.20.2 (V.SLWO +1hour)
 2018.21.2 (upper limit looper)
 2019.12.2 (cycles)
 2019.14.2 (V.SLOW +1hour)
