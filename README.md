@@ -4,31 +4,9 @@ o ps and kill are your friend
 <object type="text/html" data="unfin.txt"></object> 
 <h2>Notes (this README is a .html file (drag and drop into a browser)) lu:29-03-2025 @16:49</h2>
 <address><b>conor.williams@gmail.com</b></address><br>
-<h3>Update (28-03-25):</h3>
-<pre>
-<h3><s>Reared</s>Nigglers (check 2015-2024 inclusive)</h3>
-	2016
-<s>2016.20.2 (V.SLOW +1hour)</s> speedy (consistently < 60milliseconds)
-	2018
-<s>2018.21.2 (upper limit looper)</s> sub 110ms
-	2019
-<s>2019.12.2 (cycles)</s> sub 2500 m.s
-<s>2019.14.2 (V.SLOW +1hour)</s> speedy (< 120 ms)
-<s>2019.17.2 (should be there...)</s>
-	2021
-<s>2021.23.1 (V.SLOW +1hour)</s> speedy (< 1600 ms)
-	2022
-<s>2022.9.2 (known unfinished -- not in the new section as below 10)</s>
-2022.22.1 (known unfin... j.v -> c++ converter)
-	2023
-<s>2023.19.2 (Missing - ratings V.SLOW +1hour) (*file with no dup ^ as:  2023.day19.2.<s>cc</s> 24 hours minimum)</s>--speedy sub 260ms
-<s>2023.20.2 (missing - pulsing - needs lcm)</s>
-<s>2023.21.2 (known - broken)</s>
-<s>2023.22.2 (missing - soon)</s>
-</pre>
 <h3>Update (04-03-25):</h3>
 <pre>
-<h3>New todos to finish off unfinished as per Feb 2025 (plus a few <s>stragglers</s>nigglers above )</h3>
+<h3>New todos to finish off unfinished as per Feb 2025 (lu:2903) (plus a few <s>stragglersnigglers above&47;below</s> )</h3>
 <!--<h3>YEAR: 2022</h3>-->	year: 2022
                      |  2022 day 13 part 2
  <s>2022 day 15 part 2  |  2022 day 17 part 2</s>
@@ -51,7 +29,30 @@ o ps and kill are your friend
 <!-- <s>YEAR: 2016- 2016 day 11 part 2</s> moved_to stragglers -->
 </pre>
 
-<h3>straggle<s>rs (mentioned elsewhere) (updated 032825 GMT:13hours19mins)</s> wahoo (finished this list)</h3>
+<h3><s>Update (28-03-25 </s>lu0329):</h3>
+<pre>
+<s><h3><s>Reared</s>Nigglers (check 2015-2024 inclusive) a.fin</h3></s>
+	2016
+<s>2016.20.2 (V.SLOW +1hour)</s> speedy (consistently < 60milliseconds)
+	2018
+<s>2018.21.2 (upper limit looper)</s> sub 110ms
+	2019
+<s>2019.12.2 (cycles)</s> sub 2500 m.s
+<s>2019.14.2 (V.SLOW +1hour)</s> speedy (< 120 ms)
+<s>2019.17.2 (should be there...)</s>
+	2021
+<s>2021.23.1 (V.SLOW +1hour)</s> speedy (< 1600 ms)
+	2022
+<s>2022.9.2 (known unfinished -- not in the new section as below 10)</s>
+2022.22.1 (known unfin... j.v -> c++ converter)
+	2023
+<s>2023.19.2 (Missing - ratings V.SLOW +1hour) (*file with no dup ^ as:  2023.day19.2.<s>cc</s> 24 hours minimum)</s>--speedy sub 260ms
+<s>2023.20.2 (missing - pulsing - needs lcm)</s>
+<s>2023.21.2 (known - broken)</s>
+<s>2023.22.2 (missing - soon)</s>
+</pre>
+
+<s><h3>straggle<s>rs (mentioned elsewhere) (updated 032825 GMT:13hours19mins)</s> w</s>ahoo (finished this list)</h3>
 <pre>	
  2016
    <s>day 11.1</s>
@@ -66,7 +67,7 @@ o ps and kill are your friend
     <s>day21.2</s>
 </pre>
      
-<h3>Update (11::20-03-25) <s>wh</s>:</h3>
+<s><h3>Update (11::20-03-25) <s>wh lu290325</s>:</h3></s>
 <pre>
 	o run "sh FIRST.sh" -- it does everything for you
 	o length of filename getting you down? use ln and stop getting down (e.g.):
