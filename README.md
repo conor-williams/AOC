@@ -9,11 +9,11 @@ o ps and kill are your friend
 <h2><s>Reared</s>Nigglers (check 2015-2024 inclusive)</h2>
 2018.21.2 (upper limit looper)
 2019.12.2 (cycles)
-2019.14.2 (V.SLOW)
+2019.14.2 (V.SLOW +1hour)
 <s>2019.17.2 (should be there...)</s>
-2021.23.2 (V.SLOW)
+2021.23.2 (V.SLOW +1hour)
 2022.9.2 (known unfinished -- not in the new section as below 10)
-2023.19.2 (Missing - ratings) *
+2023.19.2 (Missing - ratings V.SLOW+1hour) *
 <s>2023.20.2 (missing - pulsing - needs lcm)</s>
 2023.21.2 (known - broken)
 <s>2023.22.2 (missing - soon)</s>
