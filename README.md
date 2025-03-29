@@ -16,8 +16,8 @@ o ps and kill are your friend
  <s>2021 day 11 part 2</s>  |  <s>2021 day 12 part 2</s>
  2021 day 14 part 2  |  <s>2021 day 15 part 2</s>
  2021 day 16 part 2  |  <s>2021 day 18 part 2</s>
- <s>2021 day 21 part 2</s>  |  2021 day 22 part 2
- 2021 day 23 part 2
+ 2021 day 21 part 2  |  2021 day 22 part 2
+ <s>2021 day 23 part 2</s>
 <!--<h3>YEAR: 202<font color = red>0</font></h3>-->	year: 2020
  <s>2020 day 12 part 2</s>  |  <s>2020 day 13 part 2</s>
  2020 day 14 part 2  |  <s>2020 day 15 part 2</s>
