@@ -1,241 +1,142 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-#include <math.h>
-#include <map>
-#include <string>
 #include <iostream>
-#include <assert.h>
-#include <algorithm>
+#include <fstream>
+#include <sstream>
+#include <vector>
+#include <string>
+#include <map>
+#include <cmath>
 #include <unistd.h>
-#include <sys/time.h>
 
 using namespace std;
-unsigned long long onetrill = 1000000000000llu;
-#define getchar()
-int lenx, leny;
-#define DAY "2019 day14 part2\n"
-#define _DEBUG_
-struct got_s {
-	unsigned long long fuel;
-	unsigned long long mytot;
-};
-#define GOTCHA 6000
-struct got_s got[GOTCHA];
+vector<string> data1;
+long long calculate_ore(long long amount_fuel);
 
-struct Fnode {
-	char to[100];
-	double toCost;
-	char from[300][100];
-	double fromCost[300];
-	double oreSize;
-	double rhsSize;
-	int numNodes;
-};
-
-map<string, struct Fnode> mp;
-int search(char *start, double startCost, char *end);
-map <string, double> mpingred;
-map <string, double> mpspare;
-
-//#define arLIM 1000000
-map <map <string, double>, int> arspare;
-
-
-unsigned long long oreore;
-unsigned long long mytot;
-void signal_handler(void *v) {
-	printf ("oreore %llu mytot %llu\n", oreore, mytot);
-}
-#define SIZEL 400
+//ta:Diderikdm
 int fd;
-int main(int argc, char **argv)
-{
-	clock_t start, end; double cpu_time_used;
-	start = clock();
-	//DO
-	end = clock();
-
-	lenx = 0; leny = 0;
-	//printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
-	FILE * a = fopen(argv[1], "r"); 
-	printf(DAY); fflush(stdout);
-	printf("SLOW ~3hours\n");
-	fd = dup(1); fflush(stdout); close(1);
-
-	char line1[SIZEL];
-
-	//2 JNLZG => 7 SJTKF
-	while(1) {
-		fgets(line1, SIZEL-1, a);
-		if (feof(a)) break;
-		line1[strlen(line1) -1]='\0';
-#ifdef _DEBUG_
-		printf("LINE: [%s]\n", line1);
+int main(int argc, char **argv) {
+	printf("2019 Day14 part2\n");
+	//part 1: 1046184
+#ifdef _ACCOLADE_
+	printf("ta Diderikdm on reddit + codeconvert.ai - 1 hour manipulation (float)\n");
 #endif
-		char f[300]; char t[100]; int toCost;
-		sscanf(line1, "%[^=]=> %d %s", f, &toCost, t);
-
-		string tS = t;
-		//string fS = f;
-
-		cout << "tS: " << tS << endl;
-		if (mp.find(tS) == mp.end()) { 
-			struct Fnode n;
-			strcpy(n.to, t);
-			n.toCost = 1; //1;// toCost;
-			n.rhsSize = toCost;
-			n.numNodes = 0;
-			char *first = strtok(f, ",\0");
-			do {
-				double cost; char wat[100];
-				sscanf(first, "%lf %s", &cost, wat);
-				strcpy(n.from[n.numNodes], wat);
-				if (strcmp(wat, "ORE") == 0) {n.oreSize = cost;}
-				n.fromCost[n.numNodes] = cost/toCost; ////toCost;
-								      //printf("writing to node: %lf %s\n", n.fromCost[n.numNodes], n.from[n.numNodes]);
-				n.numNodes++;
-			} while ((first = strtok(NULL, ",\0")) != NULL);
-
-			mp.insert({tS, n});
-		} else {
-			printf("already there ERROR\n"); exit(0);
-		}
-
-		leny++;
+	if (argc < 2) {printf("ERR args file\n"); exit(0);}
+	fflush(stdout); fd = dup(1); close(1);
+	ifstream infile(argv[1]);
+	string line;
+	while(getline(infile, line)) {
+		data1.push_back(line);
 	}
-	fclose(a);
-	printf("mp.size is %d\n", (int)mp.size()); getchar();
+
+	long long one_fuel = calculate_ore(1);
+	cout << one_fuel << endl;
+
+	//part 2: 1639374
+	unsigned long long x = 1000000000000ULL / one_fuel;
+	printf("x is %llu\n", x);
+	unsigned long long y = calculate_ore(x);
+	printf("y is %llu\n", y);
+	double part = (double)(1000000000000ULL / (double)y);
+	printf("part is %f\n", part);
+	unsigned long long final_result = x * part;
+	printf("final_result %llu\n", final_result);
+	cout << final_result << endl;
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %lld\n", final_result);
+	/////////////////////// (pyt...)
+	///	print(int(int(1000000000000 / one_fuel)*(1000000000000 / calculate_ore(int(1000000000000 / one_fuel)))))
+	///	print(int(1000000000000 / one_fuel))
+	///	print(calculate_ore(int(1000000000000 / one_fuel)))
+	///////////////////////
 
 
-	int SIZE = mp["FUEL"].numNodes;
-/*
-	for (auto iter2 = mp.begin(); iter2 != mp.end(); iter2++) {
-		if (strcmp(iter2->first.c_str(), "FUEL") == 0) {
-			SIZE = iter2->second.numNodes;
-		}
-	}
-*/
-
-#ifdef _EX1_
-	printf("not compiled with _I1_\n");
-#else
-	printf("compiled with _I1_\n");
-	int list2[] = {0, 1, 2, 3, 5, 4, 6, 7};
-#endif
-
-	oreore = 0;
-	mytot = 0;
-
-	int fuel = 0;
-	auto iter2 = mp.find("FUEL");
-	int gotcha = 0;
-	do {
-		mpingred.clear(); //mpspare.clear();
-		for (int i = 0; i < SIZE; i++) {
-#ifdef _I1_
-			search(iter2->second.from[list2[i]], iter2->second.fromCost[list2[i]], (char *)"ORE");
-#else
-			search(iter2->second.from[i], iter2->second.fromCost[i], (char *)"ORE");
-#endif
-		}
-
-		mytot += mpingred["ORE"];
-		oreore = mpingred["ORE"];
-		fuel++;
-
-/*
-		auto it3 = arspare.find(mpspare);
-		if (it3 != arspare.end()) {
-			if (gotcha == 0) {printf("gotcha FIRST: %d at pos %d\n", (int)it3->second, fuel); fflush(stdout);}
-			got[gotcha].fuel = fuel;
-			got[gotcha].mytot = mytot;
-			gotcha++;
-			if (gotcha == GOTCHA) { goto after;}
-		}
-		if (fuel < GOTCHA * 3) { arspare.insert({mpspare, fuel});}
-*/
-		if (fuel % 10000 == 0) {
-			end = clock();	
-			cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
-			printf("        time: %f seconds\n", cpu_time_used);
-			start = clock();
-			
-			printf("fuel : %d\n", fuel);}
-	} while (mytot < onetrill);
-
-after:
-	if (gotcha != GOTCHA) {
-		if (mytot > onetrill) {
-			printf("**ans is (no cycle(minus)) fuel: %d\n", fuel-1);
-			fflush(stdout); dup2(fd, 1);
-			printf("**ans: %d\n", fuel-1);
-			exit(0);
-		} else {
-			printf("ans is (no cycle()) fuel: %d\n", fuel);
-		}
-		exit(0);
-	}
-	printf("ans?? -- %llu \n", (unsigned long long)fuel * (onetrill / mytot));
-
-	unsigned long long max = 0;
-	for (int i = 0; i < GOTCHA; i++) {
-		if (got[i].fuel *(onetrill) / got[i].mytot > max) {
-			max = got[i].fuel *onetrill / got[i].mytot;}
-	}
-	printf("** max %llu \n", max);
-}
-
-
-int ind = 0;
-int search(char *start, double startCost, char *end) {
-	ind++;
-	{
-		auto iter2 = mp.find(start);
-		//for (int q = 0; q < ind; q++) {printf("  ");} printf("in search... RHS: %s %lf\n", iter2->first.c_str(), iter2->second.rhsSize);
-
-		int k; double spare;
-		if (mpspare.find(iter2->second.to) == mpspare.end()) {
-			spare = 0;
-		} else {
-			spare = mpspare[iter2->second.to];
-		}
-
-		//for (int q = 0; q < ind; q++) {printf("  ");} printf("**spare before: %lf for (%s)\n", spare, iter2->second.to); 
-#define LOOP 100000
-		for (k = 0; k < LOOP; k++) {
-			//for (int q = 0; q < ind; q++) {printf("  ");} printf("k is %d, startCost %lf V %lf\n", k,  startCost, (k*iter2->second.rhsSize)+spare);
-			if (startCost <= (k*iter2->second.rhsSize)+spare) {
-				mpspare[iter2->second.to] = ((k*iter2->second.rhsSize)+spare) - startCost;
-				//for (int q = 0; q < ind; q++) {printf("  ");} printf("k is %d spare == %lf for (%s)\n", k, mpspare[iter2->second.to], iter2->second.to);
-				break;
-			}
-		}
-		if (k == LOOP) {perror("LOOP overspill ERR\n"); exit(0);}
-
-		for (int i = 0; i < iter2->second.numNodes; i++) {
-			mpingred[iter2->second.to] += (k*iter2->second.rhsSize);
-			if (strcmp(iter2->second.from[i], end) == 0) {
-				mpingred[iter2->second.from[i]] += (k*iter2->second.oreSize);
-			} else {
-				search(iter2->second.from[i], (k*iter2->second.fromCost[i]*iter2->second.rhsSize), end);
-			}
-		}
-	}
-	ind--;
 	return 0;
 }
 
-/*
-   double mytot2 = 0;
-   for (auto iter4 = mpingred.begin(); iter4 != mpingred.end(); iter4++) {
-//printf("**%s %lf\n", iter4->first.c_str(), iter4->second);
-if (strcmp(mp[iter4->first.c_str()].from[0], "ORE") == 0) {
-//printf("USING: %s %lf\n", iter4->first.c_str(), iter4->second);
-mytot2 += (iter4->second * mp[iter4->first].oreSize)/ mp[iter4->first].rhsSize ;
+long long calculate_ore(long long amount_fuel) {
+
+	vector<vector<string>> needed;
+	vector<string> result;
+	map<string, long long> ing;
+	map<string, long long> ing_plus;
+	ing["ORE"] = 1;
+	ing_plus["ORE"] = 0;
+
+	for (auto &e : data1) {
+		// Split line "e" into "need" and "res"
+		size_t pos = e.find(" => ");
+		string need = e.substr(0, pos);
+		string res = e.substr(pos + 4);
+		// Split "need" by ", "
+		vector<string> parts;
+		size_t start = 0;
+		size_t pos_comma = need.find(", ");
+		while (pos_comma != string::npos) {
+			parts.push_back(need.substr(start, pos_comma - start));
+			start = pos_comma + 2;
+			pos_comma = need.find(", ", start);
+		}
+		parts.push_back(need.substr(start));
+		needed.push_back(parts);
+
+		// Split "res" by " " into amount and ingr
+		size_t pos_space = res.find(" ");
+		string amount_str = res.substr(0, pos_space);
+		string ingr_name = res.substr(pos_space + 1);
+		result.push_back(ingr_name);
+		ing[ingr_name] = stoll(amount_str);
+		ing_plus[ingr_name] = 0;
+	}
+
+	vector<string> chain;
+	vector<long long> chain_needed;
+	vector<int> chain_levelsdeep;
+	chain.push_back("FUEL");
+	chain_needed.push_back(amount_fuel);
+	chain_levelsdeep.push_back(1);
+
+	int e_index = 0;
+	while (e_index < chain.size()) {
+		int levelsdeep = chain_levelsdeep[e_index] + 1;
+		for (size_t i = 0; i < result.size(); i++) {
+			if (result[i] == chain[e_index]) {
+				for (int j = needed[i].size() - 1; j >= 0; j--) {
+					// Split needed[i][j] by " " to get need_amount and need_what
+					string g = needed[i][j];
+					size_t pos_space = g.find(" ");
+					string need_amount_str = g.substr(0, pos_space);
+					string need_what = g.substr(pos_space + 1);
+					chain.insert(chain.begin() + e_index + 1, need_what);
+					chain_needed.insert(chain_needed.begin() + e_index + 1, stoll(need_amount_str));
+					chain_levelsdeep.insert(chain_levelsdeep.begin() + e_index + 1, levelsdeep);
+				}
+			}
+		}
+		e_index++;
+	}
+
+	long long ore_total = 0;
+	int p = 1;
+	while (p < chain.size()) {
+		int key = 0;
+		int q = 0;
+		while (q < p) {
+			if (chain_levelsdeep[q] < chain_levelsdeep[p]) {
+				key = q;
+			}
+			q++;
+		}
+		if (chain[p] != "ORE") {
+			long long factor = chain_needed[key] / ing[chain[key]];
+			long long amountneeded_raw = (chain_needed[p] * factor) - ing_plus[chain[p]];
+			long long amountneeded = ((long long)ceil((double)amountneeded_raw / ing[chain[p]])) * ing[chain[p]];
+			chain_needed[p] = amountneeded;
+			ing_plus[chain[p]] = amountneeded - amountneeded_raw;
+		} else {
+			long long factor = chain_needed[key] / ing[chain[key]];
+			ore_total += chain_needed[p] * factor;
+		}
+		p++;
+	}
+	return ore_total;
 }
-}
-//printf("** mytot2 [[ %lf ]]\n", mytot2);
-assert (mytot2 == mytot);
- */
+
