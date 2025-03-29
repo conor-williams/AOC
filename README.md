@@ -2,42 +2,45 @@ o sh FIRST.sh
 o ps and kill are your friend
 <embed src=unfin.txt>
 <object type="text/html" data="unfin.txt"></object> 
-<h2>Notes (this README is a .html file (drag and drop into a browser)) lu:28-03-2025</h2>
+<h2>Notes (this README is a .html file (drag and drop into a browser)) lu:29-03-2025 @16:49</h2>
 <address><b>conor.williams@gmail.com</b></address><br>
 <h3>Update (28-03-25):</h3>
 <pre>
-<h2><s>Reared</s>Nigglers (check 2015-2024 inclusive)</h2>
+<h3><s>Reared</s>Nigglers (check 2015-2024 inclusive)</h3>
+	2016
 2016.20.2 (V.SLOW +1hour)
+	2018
 2018.21.2 (upper limit looper)
+	2019
 2019.12.2 (cycles)
 2019.14.2 (V.SLOW +1hour)
 <s>2019.17.2 (should be there...)</s>
+	2021
 2021.23.2 (V.SLOW +1hour)
+	2022
 <s>2022.9.2 (known unfinished -- not in the new section as below 10)</s>
 2022.22.1 (known unfin... j.v -> c++ converter)
+	2023
 2023.19.2 (Missing - ratings V.SLOW +1hour) (*file with no dup ^ as:  2023.day19.2.<s>cc</s> 24 hours minimum)
 <s>2023.20.2 (missing - pulsing - needs lcm)</s>
 <s>2023.21.2 (known - broken)</s>
 <s>2023.22.2 (missing - soon)</s>
-
 </pre>
 <h3>Update (04-03-25):</h3>
 <pre>
-<h2>New todos to finish off unfinished as per Feb 2025 (plus a few <s>stragglers</s>nigglers above )</h2>
-<h3>YEAR: 2022</h3>
+<h3>New todos to finish off unfinished as per Feb 2025 (plus a few <s>stragglers</s>nigglers above )</h3>
+<!--<h3>YEAR: 2022</h3>-->	year: 2022
                      |  2022 day 13 part 2
  <s>2022 day 15 part 2  |  2022 day 17 part 2</s>
  <s>2022 day 18 part 2</s>  |  2022 day 21 part 2
  2022 day 22 part 2  
-
-<h3>YEAR: 2021</h3>
+<!--<h3>YEAR: 2021</h3>-->	year: 2021
  <s>2021 day 11 part 2</s>  |  <s>2021 day 12 part 2</s>
  2021 day 14 part 2  |  <s>2021 day 15 part 2</s>
  2021 day 16 part 2  |  <s>2021 day 18 part 2</s>
  2021 day 21 part 2  |  2021 day 22 part 2
  2021 day 23 part 2
-
-<h3>YEAR: 202<font color = red>0</font></h3>
+<!--<h3>YEAR: 202<font color = red>0</font></h3>-->	year: 2020
  <s>2020 day 12 part 2</s>  |  <s>2020 day 13 part 2</s>
  2020 day 14 part 2  |  <s>2020 day 15 part 2</s>
  2020 day 16 part 2  |  2020 day 17 part 2
@@ -50,20 +53,20 @@ o ps and kill are your friend
 
 <h3>straggle<s>rs (mentioned elsewhere) (updated 032825 GMT:13hours19mins)</s> wahoo (finished this list)</h3>
 <pre>	
- <h5>2016</h5>
+ 2016
    <s>day 11.1</s>
    <s>day 11.2</s>
- <h5>2019</h5>
+ 2019
     <s>day 18.1</s>
     <s>day 18.2</s> <s><u>(COMING TONIGHT -- was erroneously using a modified input file -- (just grabbing l.o.t.n- fixed)</u></s>	
- <h5>2022</h5>
+ 2022
     <s>day 09.2</s>
- <h5>2023</h5>
+ 2023
     <s>day12.2</s>
     <s>day21.2</s>
 </pre>
      
-<h3>Update (11::20-03-25):</h3>
+<h3>Update (11::20-03-25) <s>wh</s>:</h3>
 <pre>
 	o run "sh FIRST.sh" -- it does everything for you
 	o length of filename getting you down? use ln and stop getting down (e.g.):
