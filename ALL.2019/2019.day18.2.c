@@ -131,7 +131,7 @@ int main(int argc, char **argv) {
 		q.pop();
 
 		if (keys == allkeys) {
-			printf("**ans: %d", d);
+			printf("**ans: %d\n", d);
 			break;
 		}
 
