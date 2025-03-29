@@ -14,10 +14,12 @@ o ps and kill are your friend
 <s>2019.17.2 (should be there...)</s>
 2021.23.2 (V.SLOW +1hour)
 2022.9.2 (known unfinished -- not in the new section as below 10)
+2022.22.1 (known unfin... j.v -> c++ converter)
 2023.19.2 (Missing - ratings V.SLOW+1hour) *
 <s>2023.20.2 (missing - pulsing - needs lcm)</s>
 2023.21.2 (known - broken)
 <s>2023.22.2 (missing - soon)</s>
+
 </pre>
 <h3>Update (04-03-25):</h3>
 <pre>
@@ -26,7 +28,7 @@ o ps and kill are your friend
                      |  2022 day 13 part 2
  <s>2022 day 15 part 2  |  2022 day 17 part 2</s>
  <s>2022 day 18 part 2</s>  |  2022 day 21 part 2
- 2022 day 22 part 2
+ 2022 day 22 part 2  
 
 <h3>YEAR: 2021</h3>
  <s>2021 day 11 part 2</s>  |  <s>2021 day 12 part 2</s>
