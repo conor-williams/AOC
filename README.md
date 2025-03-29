@@ -23,7 +23,7 @@ o ps and kill are your friend
 </pre>
 <h3>Update (04-03-25):</h3>
 <pre>
-<h2>New todos to finish off unfinished as per Feb 2025 (plus a few stragglers )</h2>
+<h2>New todos to finish off unfinished as per Feb 2025 (plus a few <s>stragglers</s>nigglers above )</h2>
 <h3>YEAR: 2022</h3>
                      |  2022 day 13 part 2
  <s>2022 day 15 part 2  |  2022 day 17 part 2</s>
