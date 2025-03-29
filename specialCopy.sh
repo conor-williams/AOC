@@ -7,6 +7,7 @@ day=1
 while [ $year != 2025 ] ; do
 	while [ $day != 26 ] ; do
 		cp ALL.$year/$year.day$day.c $year/day$day
+  		cp ALL.$year/$year.day$day.* $year/day$day
 		if [ $day != 25 ] ; then
 			cp ALL.$year/$year.day$day.2.c $year/day$day
 		fi
