@@ -94,7 +94,7 @@ o ps and kill are your friend
      <s>o looking now to tidy part2's (11-24) of every year (16-01-2025) </s>
 	o Result of Tidy every year <s>but</s> including 2024:
 	conor.williams@DESKTOP-MM5HH8I AOC-main
-$ <s>c</s>a<s>t ei.lo.txt </s>(all done 29/03/2025 mothers day @16:28 (note(wahoo) to self clock>tonight)
+$ <s>c</s>a<s>t ei.lo.txt </s>(all done (this listv) 29/03/2025 mothers day @16:28 (note(wahoo) to self clock>tonight)
 	2015
 <s>2015&sol;day12&sol;day12.2.c:   printf("broken\n"); exit(0);</s>
 <s>2015&sol;day19&sol;day19.2.c:   printf("broken\n"); exit(0);</s>
