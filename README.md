@@ -8,20 +8,20 @@ o ps and kill are your friend
 <pre>
 <h3><s>Reared</s>Nigglers (check 2015-2024 inclusive)</h3>
 	2016
-2016.20.2 (V.SLOW +1hour)
+<s>2016.20.2 (V.SLOW +1hour)</s> speedy (consistently < 60milliseconds)
 	2018
 2018.21.2 (upper limit looper)
 	2019
 2019.12.2 (cycles)
-2019.14.2 (V.SLOW +1hour)
+<s>2019.14.2 (V.SLOW +1hour)</s> speedy (< 120 ms)
 <s>2019.17.2 (should be there...)</s>
 	2021
-2021.23.2 (V.SLOW +1hour)
+<s>2021.23.1 (V.SLOW +1hour)</s> speedy (< 1600 ms)
 	2022
 <s>2022.9.2 (known unfinished -- not in the new section as below 10)</s>
 2022.22.1 (known unfin... j.v -> c++ converter)
 	2023
-2023.19.2 (Missing - ratings V.SLOW +1hour) (*file with no dup ^ as:  2023.day19.2.<s>cc</s> 24 hours minimum)
+<s>2023.19.2 (Missing - ratings V.SLOW +1hour) (*file with no dup ^ as:  2023.day19.2.<s>cc</s> 24 hours minimum)</s>--speedy sub 260ms
 <s>2023.20.2 (missing - pulsing - needs lcm)</s>
 <s>2023.21.2 (known - broken)</s>
 <s>2023.22.2 (missing - soon)</s>
@@ -38,7 +38,7 @@ o ps and kill are your friend
  <s>2021 day 11 part 2</s>  |  <s>2021 day 12 part 2</s>
  2021 day 14 part 2  |  <s>2021 day 15 part 2</s>
  2021 day 16 part 2  |  <s>2021 day 18 part 2</s>
- 2021 day 21 part 2  |  2021 day 22 part 2
+ <s>2021 day 21 part 2</s>  |  2021 day 22 part 2
  2021 day 23 part 2
 <!--<h3>YEAR: 202<font color = red>0</font></h3>-->	year: 2020
  <s>2020 day 12 part 2</s>  |  <s>2020 day 13 part 2</s>
