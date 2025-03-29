@@ -6,12 +6,16 @@ o ps and kill are your friend
 <address><b>conor.williams@gmail.com</b></address><br>
 <h3>Update (28-03-25):</h3>
 <pre>
-<h2><s>Reared</s>Nigglers (check 2015-2019 inclusive)</h2>
+<h2><s>Reared</s>Nigglers (check 2015-2024 inclusive)</h2>
 2018.21.2 (upper limit looper)
 2019.12.2 (cycles)
 2019.14.2 (V.SLOW)
 2019.17.2 (should be there...)
 2021.23.2 (V.SLOW)
+2023.19.2 (Missing - ratings)
+2023.20.2 (missing - pulsing)
+2023.21.2 (known - broken)
+2023.22.2 (missing - soon)
 </pre>
 <h3>Update (04-03-25):</h3>
 <pre>
