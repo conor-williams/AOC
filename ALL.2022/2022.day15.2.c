@@ -85,7 +85,7 @@ int main(int argc, char **argv)
 #ifdef _EX1_
 	printf("compiled with _EX1_\n");
 #endif
-	a = fopen(argv[1], "r"); printf("2021 Day 15-2\n"); fflush(stdout);
+	a = fopen(argv[1], "r"); printf("2022 Day 15-2\n"); fflush(stdout);
 	printf("SLOW ~1minute and change\n");
 	fd = dup(1); close(1);
 	char line1[LINE];
