@@ -48,7 +48,7 @@ o ps and kill are your friend
 <!-- <s>YEAR: 2016- 2016 day 11 part 2</s> moved_to stragglers -->
 </pre>
 
-<h3>stragglers (mentioned elsewhere) (updated 032825 GMT:13hours19mins) </h3>
+<h3>straggle<s>rs (mentioned elsewhere) (updated 032825 GMT:13hours19mins)</s> wahoo (finished this list)</h3>
 <pre>	
  <h5>2016</h5>
    <s>day 11.1</s>
@@ -57,10 +57,10 @@ o ps and kill are your friend
     <s>day 18.1</s>
     <s>day 18.2</s> <s><u>(COMING TONIGHT -- was erroneously using a modified input file -- (just grabbing l.o.t.n- fixed)</u></s>	
  <h5>2022</h5>
-    day 09.2
+    <s>day 09.2</s>
  <h5>2023</h5>
     <s>day12.2</s>
-    day21.2
+    <s>day21.2</s>
 </pre>
      
 <h3>Update (11::20-03-25):</h3>
@@ -84,14 +84,14 @@ o ps and kill are your friend
 	o all years days 1--10 Part 1&2 working well, except:
 		-- <s>2017 Day 7.2</s>
 		-- <s>2018 Day 7 1&2</s>
-	   	-- 2022 Day 9.2 *lot of work...
+	   	-- <s>2022 Day 9.2 *lot of work.ahem..</s>
 	o Timer has been added (an automatic kill, if you will) to the slow ones so they don't run too long
 	        (but you might not get the answer)
 		(timer length can be changed in code before a compile) TimerSet(Xseconds);
      <s>o looking now to tidy part2's (11-24) of every year (16-01-2025) </s>
 	o Result of Tidy every year <s>but</s> including 2024:
 	conor.williams@DESKTOP-MM5HH8I AOC-main
-$ cat pi.lo.txt
+$ <s>c</s>a<s>t ei.lo.txt </s>(all done 29/03/2025 mothers day @16:28 (note(wahoo) to self clock>tonight)
 	2015
 <s>2015&sol;day12&sol;day12.2.c:   printf("broken\n"); exit(0);</s>
 <s>2015&sol;day19&sol;day19.2.c:   printf("broken\n"); exit(0);</s>
@@ -119,7 +119,7 @@ $ cat pi.lo.txt
 <s>2023&sol;day13&sol;day13.2.c:   printf("broken...\n"); exit(0);</s>
 <s>2023&sol;day14&sol;day14.2.c:   printf("broken...\n"); exit(0); (MANUAL CYCLE DETECTION -> </s> auto)
 <s>2023&sol;day15&sol;day15.2.c:   printf("broken...\n"); exit(0);</s>
-2023&sol;day21&sol;day21.2.c:   printf("broken...\n"); exit(0); (DIAMOND CYCLE DETECTION)
+<s>2023&sol;day21&sol;day21.2.c:   printf("broken...\n"); exit(0); (DIAMOND CYCLE DETECTION)</s>
 <s>2023&sol;day23&sol;day23.2.c:   printf("broken...\n"); exit(0); (longest path 141*141 </s>)
 </pre>
 <h3>Note: (of course you may already know this)</h3>     
