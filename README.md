@@ -10,9 +10,9 @@ o ps and kill are your friend
 	2016
 <s>2016.20.2 (V.SLOW +1hour)</s> speedy (consistently < 60milliseconds)
 	2018
-2018.21.2 (upper limit looper)
+<s>2018.21.2 (upper limit looper)</s> sub 110ms
 	2019
-2019.12.2 (cycles)
+<s>2019.12.2 (cycles)</s> sub 2500 m.s
 <s>2019.14.2 (V.SLOW +1hour)</s> speedy (< 120 ms)
 <s>2019.17.2 (should be there...)</s>
 	2021
