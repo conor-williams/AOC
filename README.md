@@ -12,6 +12,7 @@ o ps and kill are your friend
 2019.14.2 (V.SLOW)
 <s>2019.17.2 (should be there...)</s>
 2021.23.2 (V.SLOW)
+2022.9.2 (known unfinished -- not in the new section as below 10)
 2023.19.2 (Missing - ratings) *
 <s>2023.20.2 (missing - pulsing - needs lcm)</s>
 2023.21.2 (known - broken)
