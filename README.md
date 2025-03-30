@@ -30,9 +30,14 @@ o ps and kill are your friend
 <!-- <s>YEAR: 2016- 2016 day 11 part 2</s> moved_to stragglers -->
 </pre>
 
-<h3>Update (30-03-2025)</h3>
+<h3>Update (30-03-2025 lu30)</h3>
 <pre>
-   Slows above 5 minutes t.b.f soon (n2s: list here)<br>
+   Slows above 5 minutes t.b.f soon <s>(n2s: list here)</s><br>
+	2016.day23.2 35 minutes
+ 	2017.day17.2 -21 minutes
+	2018.day11.2   7 minutes
+ 	2020.day13.2   15 minutes
+  	2022.day19.2    34 minutes
 </pre>
 
 <s><h3><s>Reared</s>Nigglers (check 2015-2024 inclusive) <s>a.</s>fin (lu0330)</h3></s>
