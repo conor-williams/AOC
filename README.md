@@ -29,7 +29,13 @@ o ps and kill are your friend
  <s>2020 day 24 part 2</s>
 <!-- <s>YEAR: 2016- 2016 day 11 part 2</s> moved_to stragglers -->
 </pre>
-
+<h3>specials</h3>
+<pre>
+2019.day25 is interactive  (dungeons and dragons -- could be automated but. (int 2019/day25 directory..)
+2022.day7.X uses unix scripts..(simulation of a hard drive). (maybe a todo -> c 2025)
+2023.day25 is manual use of graphics (python dot etc...) (nodes in a kindof graph) see readme on how: 2023.day25.readme.txt (have to run scripts)
+2024.day24.2 is manual use of graphics (python dot etc...) (44 bit half adder kinda microchip) see readme on how: 2024.day24.2.readme.txt (have to run scripts)
+</pre>
 <s><h3>Update (30-03-2025 lu30)</h3></s>
 <pre>
   NOT Finished this list:  Slows above ~5 minutes t.b.f soon (n2s: list here)<br>
@@ -43,9 +49,13 @@ o ps and kill are your friend
 	<s>2023.day22.2      60 minutes</s> 2500ms
 	2016 Day 14.2          3 minutes
 	2017 Day 20.2          3 minutes
-	2018 Day 23.2          5 mins 50
+	2018 Day 23.2          5 mins 50 seconds
 	2019 Day 14.1          5 mins
 	2020 Day 20.2          3 mins
+	2022 Day 20.2          3 mins
+	2022 Day 23.2        4.5 mins
+	2023 Day 16.2          3 mins
+	
 </pre>
 
 <s><h3><s>Reared</s>Nigglers (check 2015-2024 inclusive) <s>a.</s>fin (lu0330)</h3></s></s>
