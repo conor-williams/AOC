@@ -184,10 +184,10 @@ $ <s>c</s>a<s>t ei.lo.txt </s>(all done (this listv) 29/03/2025 mothers day @16:
 	<hr>
  	<h2>Update (08-01-25):</h2>
   	<pre>
-	o all years days 1--10 Parts 1&2 working well, (except 2017 Day7.2 and 2018 Day 7 1&2)
+	o all years days 1--10 Parts 1&2 working well,<s> (except 2017 Day7.2 and 2018 Day 7 1&2)</s>
  	o now looking at all <s>day</s>Part1's 1->25 for every year
   	o part 2's which were broken next
-   	o part 2's unfinished after that 
+   	o part 2's unfinished after that - todo over 3 weeks lu:3003 (eoa)
 	</pre>
 	<hr>
 <br>
