@@ -1,7 +1,7 @@
-#o sh FIRST.sh
+o sh FIRST.sh
 o ps and kill are your friend
-<embed src=unfin.txt>
-<object type="text/html" data="unfin.txt"></object> 
+<!-- <embed src=unfin.txt> -->
+<!-- <object type="text/html" data="unfin.txt"></object> -->
 <h2>Notes (this README is a .html file (drag and drop into a browser)) lu:30-03-2025 @20:23</h2>
 <address><b>conor.williams@gmail.com</b></address><br>
 
