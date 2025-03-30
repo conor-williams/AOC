@@ -40,7 +40,7 @@ o ps and kill are your friend
   	2022.day19.2    34 minutes
 </pre>
 
-<s><h3><s>Reared</s>Nigglers (check 2015-2024 inclusive) <s>a.</s>fin (lu0330)</h3></s>
+<s><h3><s>Reared</s>Nigglers (check 2015-2024 inclusive) <s>a.</s>fin (lu0330)</h3></s></s>
 <pre>
 	2016
 <s>2016.20.2 (V.SLOW +1hour)</s> speedy (consistently < 60milliseconds)
@@ -62,7 +62,7 @@ o ps and kill are your friend
 <s>2023.22.2 (missing - soon)</s>
 </pre>
 
-<s><h3>straggle<s>rs (mentioned elsewhere) (updated 032825 GMT:13hours19mins)</s> <s>w</s>ahoo (finished this list)</h3>
+<s><h3>straggle<s>rs (mentioned elsewhere) (updated 032825 GMT:13hours19mins)</s> <s>w</s>ahoo (finished this list)</h3></s>
 <pre>	
  2016
    <s>day 11.1</s>
