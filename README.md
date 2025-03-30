@@ -1,5 +1,10 @@
+o green button Code -> Download Zip
+o unzip AOC-main.zip 
+o unzip is a cygwin package
 o sh FIRST.sh
-o ps and kill are your friend
+o ps and kill are your friend, not so much now
+o runtime ~1.25 hours
+
 <!-- <embed src=unfin.txt> -->
 <!-- <object type="text/html" data="unfin.txt"></object> -->
 <h2>Notes (this README is a .html file (drag and drop into a browser)) lu:30-03-2025 @20:23</h2>
