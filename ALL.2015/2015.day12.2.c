@@ -46,11 +46,11 @@ int leny;
 
 int main(int argc, char **argv)
 {
-	clock_t start, end; double cpu_time_used; 
-	start = clock();
+	//clock_t start, end; //double cpu_time_used; 
+	//start = clock();
 	//DO
-	end = clock();
-	cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+	///end = clock();
+	//cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
 	//printf("        time: %f seconds\n", cpu_time_used);
 
 	//signal(SIGTSTP, &sigfunc);
@@ -64,6 +64,7 @@ int main(int argc, char **argv)
 	char line1[LINE];
 
 	leny = 0;
+	int tot;
 	while (1) {
 		fgets(line1, LINE-1, a);
 		if (feof(a)) break;
@@ -110,7 +111,7 @@ int main(int argc, char **argv)
 		//getchar();
 		printf("ss: %s\n", ss.c_str());
 
-		int tot = 0;
+		tot = 0;
 		strcpy(line1, ss.c_str());
 		char line2[LINE];
 		
@@ -126,15 +127,18 @@ int main(int argc, char **argv)
 			} while ((fir = strtok(NULL, ",")) != NULL);
 		}
 		//printf("l2: %s\n", line2);
-		fflush(stdout); dup2(fd, 1);
-		printf("**ans: %d\n", tot);
-		close(1); 
+		break;
+		//fflush(stdout); dup2(fd, 1);
+		//printf("**ans: %d\n", tot);
 		//printf("tot for this line %d\n", tot);
 
 		//printf("ss: %s\n", ss.c_str());
 		
 	}
 	fclose(a);
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %d\n", tot);
+	fflush(stdout);
 
 }
 int findCurlToTheLeft(string &ss1, int rPos) {
