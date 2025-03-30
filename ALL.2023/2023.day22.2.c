@@ -1,453 +1,199 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-#include <math.h>
-#include <time.h>
-#include <map>
-#include <unistd.h>
+//vss2sn
+#include <algorithm>
+#include <cmath>
+#include <fstream>
+#include <iostream>
+#include <numeric>
+#include <queue> 
+#include <stack>
+#include <string>
+#include <unordered_set>
+#include <vector>
+#include <regex>
+#include <cassert>
+#include <unordered_map>
+#include <array>
 
 using namespace std;
-
-int leny;
-int printit();
-int printitOrig();
-struct brick {
-	int IfromX;
-	int IfromY;
-	int IfromZ;
-	int ItoX;
-	int ItoY;
-	int ItoZ;
-/////////////
-	char fromX[10];
-	char fromY[10];
-	char toX[10];
-	char toY[10];
+struct Brick {
+	array<int, 3> start {0,0,0};
+	array<int, 3> end {0,0,0};
+	int id = 0;
+	bool operator == (const Brick& b) const {
+		return b.start == start && b.end == end;
+	}
 };
-#define getchar()
-#define mX  40
-#define mY  40
-#define mZ  1300
-int wall[mZ][mY][mX];
-int wallOrig[mZ][mY][mX];
-struct brick bricks[mZ];
-int maxX = 0, maxY=0, maxZ=0;
-int main (int argc, char **argv)
-{
-        //printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
 
-	printf("SLOW ~1hour\n");
-        FILE * a = fopen(argv[1], "r"); printf("2023 Day22.2\n"); fflush(stdout);
-	int fd = dup(1); close(1);
-        char line1[1000];
-	leny = 0;
-	for (int x=0; x<=mX; x++) { for (int y=0; y<=mY; y++) { for (int z=0; z<=mZ; z++) {
-				wall[z][y][x] = 0;
-				wallOrig[z][y][x] = 0;
-			} } }
-        while (1) {
-		fgets(line1, 999, a); if (feof(a)) {break;}
-		line1[strlen(line1) -1] = '\0';
-		printf("line1 %s -- ", line1); 
-		sscanf(line1, "%[^,],%[^,],%d~%[^,],%[^,],%d", bricks[leny].fromX, bricks[leny].fromY, &bricks[leny].IfromZ, bricks[leny].toX, bricks[leny].toY, &bricks[leny].ItoZ); 
-		bricks[leny].IfromX = atoi(bricks[leny].fromX);	
-		bricks[leny].IfromY = atoi(bricks[leny].fromY);	
-		bricks[leny].ItoX = atoi(bricks[leny].toX);	
-		bricks[leny].ItoY = atoi(bricks[leny].toY);	
-		printf("Brick[%d] = [%d],[%d],[%d] -> [%d],[%d],[%d]  \n", leny,
-			bricks[leny].IfromX, bricks[leny].IfromY, bricks[leny].IfromZ,
-			bricks[leny].ItoX, bricks[leny].ItoY, bricks[leny].ItoZ);
-		//printf("     getchar\n"); getchar();
-		leny++;
-	} //while
-	fclose(a);
-
-	printf("\n-----------------------------------\n");	
-	for (int i = 0; i < leny; i++) {
-		if (bricks[i].ItoZ > maxZ) {maxZ = bricks[i].ItoZ;}
-		if (bricks[i].IfromZ > maxZ) {maxZ = bricks[i].IfromZ;}
-	}
-	for (int i = 0; i < leny; i++) {
-		if (bricks[i].ItoY > maxY) {maxY = bricks[i].ItoY;}
-		if (bricks[i].IfromY > maxY) {maxY = bricks[i].IfromY;}
-	}
-	for (int i = 0; i < leny; i++) {
-		if (bricks[i].ItoX > maxX) {maxX = bricks[i].ItoX;}
-		if (bricks[i].IfromX > maxX) {maxX = bricks[i].IfromX;}
-	}
-	printf("\nmaxX,Y,Z: %d %d %d\n", maxX, maxY, maxZ); //getchar();
-	printf("\n-----------------------------------\n");	
-
-	int maxBrickNum = 0;
-	for (int i = 0; i < leny; i++) {
-		if (bricks[i].ItoX < bricks[i].IfromX) {printf("ERRORX getchar\n"); getchar();}
-		for (int x = bricks[i].IfromX; x <= bricks[i].ItoX; x++) {
-			if (bricks[i].ItoY < bricks[i].IfromY) {printf("ERRORY getchar\n"); getchar();}
-			for (int y = bricks[i].IfromY; y <= bricks[i].ItoY; y++) {
-				if (bricks[i].ItoZ < bricks[i].IfromZ) {printf("ERRORZ getchar\n"); getchar();}
-				for (int z = bricks[i].IfromZ; z <= bricks[i].ItoZ; z++) {
-					wall[z][y][x] = i+1;
-					maxBrickNum = i+1;
-				}
-			}
-		}
-	}
-	//printit(); 
-	printf("maxbricknum is %d\n", maxBrickNum);
-/////////////////////////after Q it//////////////
-for (int q = 0; q < 1000; q++) {
-	int bT[mZ]; int bTi;
-//	printf("q is %d\n", q); getchar();
-	for (int z = 2; z <= maxZ; z++) {
-		bTi = 0;
-		for (int y = 0; y <= maxY; y++) {
-			for (int x = 0; x <= maxX; x++) {
-				if (wall[z][y][x] != 0) {
-					int end = bTi;
-					int found = 0;
-					for (int r = 0; r < end; r++) {
-						if (bT[r] == wall[z][y][x]) {
-							found = 1;
-							break;
-						}
-					}
-					if (found == 0) {
-						bT[bTi] = wall[z][y][x];
-						bTi++;
-					}
-				}
-			}
-		}
-
-	   int once = 0;
-	   for (int k = 0; k < bTi; k++) {
-		int dealoff = 0;
-		for (int y = 0; y <= maxY; y++) {
-			for (int x = 0; x <= maxX; x++) {
-				if (wall[z][y][x] == bT[k] && wall[z-1][y][x] != 0) {
-					dealoff = 1;		
-					goto out11;
-				}
-			}
-		}
-
-		out11:
-		if (dealoff == 0) {
-			once++;	
-			printf("dropping.br.[%d]. z -> z-1: [%d] -> [%d]\n", bT[k], z, z-1); 
-			for (int y = 0; y <= maxY; y++) {
-				for (int x = 0; x <= maxX; x++) {
-					if (wall[z][y][x] == bT[k]) {
-						wall[z-1][y][x] = wall[z][y][x];
-						wall[z][y][x] = 0;
-					}	
-				}
-			}
-		}
-			
-	    }
-/*
-	    if (once) {
-		z = z-2;
-		if (z < 2) {z = 2;}
-	    }
-*/
-	}
+bool check_if_overlap(const Brick& b1, const Brick& b2) {
+	bool x_overlap = false;
+	bool y_overlap = false;
+	x_overlap = min(b2.start[0], b2.end[0]) <= b1.start[0] && b1.start[0] <= max(b2.start[0], b2.end[0]);
+	y_overlap = min(b2.start[1], b2.end[1]) <= b1.start[1] && b1.start[1] <= max(b2.start[1], b2.end[1]);
+	if (x_overlap && y_overlap) return true;
+	x_overlap = x_overlap || (min(b2.start[0], b2.end[0]) <= b1.end[0] && b1.end[0] <= max(b2.start[0], b2.end[0]));
+	y_overlap = y_overlap || (min(b2.start[1], b2.end[1]) <= b1.end[1] && b1.end[1] <= max(b2.start[1], b2.end[1]));
+	if (x_overlap && y_overlap) return true;
+	x_overlap = x_overlap || (min(b1.start[0], b1.end[0]) <= b2.start[0] && b2.start[0] <= max(b1.start[0], b1.end[0]));
+	y_overlap = y_overlap || (min(b1.start[1], b1.end[1]) <= b2.start[1] && b2.start[1] <= max(b1.start[1], b1.end[1]));
+	if (x_overlap && y_overlap) return true;
+	x_overlap = x_overlap || (min(b1.start[0], b1.end[0]) <= b2.end[0] && b2.end[0] <= max(b1.start[0], b1.end[0]));
+	y_overlap = y_overlap || (min(b1.start[1], b1.end[1]) <= b2.end[1] && b2.end[1] <= max(b1.start[1], b1.end[1]));
+	if (x_overlap && y_overlap) return true;
+	return false;
 }
 
-	for (int z = maxZ; z >= 3 ; z--) {
-		int allzeroes = 0;
-		for (int y = 0; y <= maxY; y++) {
-			for (int x = 0; x <= maxX; x++) {
-				if (wall[z][y][x] != 0) {
-					allzeroes = 1;	
-					goto out5;
+int main(int argc, char * argv[]) {
+	printf("2023 Day 22 Part 2\n");
+	string input;
+	if (argc > 1) {
+		input = argv[1];
+	}
+
+	string line;
+	fstream file(input);
+	const regex mask_pattern(R"((-?[0-9]+),(-?[0-9]+),(-?[0-9]+)~(-?[0-9]+),(-?[0-9]+),(-?[0-9]+))");
+	smatch mask_match;
+	vector<Brick> bricks;
+	while(getline(file, line)) {
+		regex_search(line, mask_match, mask_pattern); 
+		Brick b;
+		b.id = bricks.size();
+		b.start[0] = stoi(mask_match[1]);
+		b.start[1] = stoi(mask_match[2]);
+		b.start[2] = stoi(mask_match[3]);
+		b.end[0] = stoi(mask_match[4]);
+		b.end[1] = stoi(mask_match[5]);
+		b.end[2] = stoi(mask_match[6]);
+		bricks.push_back(b);
+		// cout << b.start[0] << ' ' << b.start[1] << ' ' 
+		//           << b.start[2] << ' ' << b.end[0] << ' ' 
+		//           << b.end[1]<< ' ' << b.end[2] << '\n';
+	}
+	for (auto& b : bricks) {
+		if (b.start[2] > b.end[2]) {
+			swap(b.start, b.end);
+		}
+	}
+	sort(
+			begin(bricks), 
+			end(bricks), 
+			[](const auto& b1, const auto& b2) { 
+			return b1.start[2] < b2.start[2];
+			}
+		 );
+	{  
+		const auto h = bricks[0].end[2] - bricks[0].start[2];
+		bricks[0].start[2] = 1;
+		bricks[0].end[2] = 1 + h;
+	}
+	for (int i = 1; i < (int)bricks.size(); i++) {
+		// cout << "\nBrick moving down: " << char('A' + bricks[i].id) << '\n';
+		const auto h = bricks[i].end[2] - bricks[i].start[2];
+		for (int j = i - 1; j >= 0; j--) {
+			// cout << "Comparing with: " << char('A' + bricks[j].id) << '\n';
+			bricks[i].start[2] = bricks[j].start[2];
+			bricks[i].end[2] = bricks[i].start[2] + h;
+			if (check_if_overlap(bricks[i], bricks[j])) {
+				// cout << "Overlap found between " << char('A' + bricks[i].id) << " and " << char('A' + bricks[j].id) << '\n';
+				// cout << char('A' + bricks[j].id) << " occupies " << bricks[j].start[2] << "->" <<  bricks[j].end[2]  << " in Z" << '\n';
+				bricks[i].start[2] = bricks[j].end[2] + 1;
+				bricks[i].end[2] = bricks[i].start[2] + h;
+				// cout << char('A' + bricks[i].id) << " now set to " << bricks[i].start[2] << "->" <<  bricks[i].end[2]  << '\n';
+				break;
+			}
+		}
+		// While the bricks are arranged in z bfore they start falling, 
+		// they might have a differnt height order after they land
+		partial_sort(
+				begin(bricks), 
+				next(begin(bricks), i), 
+				end(bricks), 
+				[](const auto& b1, const auto& b2) { 
+				return b1.end[2] < b2.end[2];
+				}
+				);
+	}
+	array<int, 3> values {0,0,0};
+	for (const auto& b : bricks) {
+		values[0] = max(values[0], b.start[0]);
+		values[0] = max(values[0], b.end[0]);
+		values[1] = max(values[1], b.start[1]);
+		values[1] = max(values[1], b.end[1]);
+		values[2] = max(values[2], b.start[2]);
+		values[2] = max(values[2], b.end[2]);
+	}
+	vector<vector<vector<int>>> map (
+			values[0]+1, vector<vector<int>>(
+				values[1]+1, vector<int>(
+					values[2]+1, 0
+					)
+				)
+			);
+	// cout << values[0] << ' ' << values[1] << ' ' << values[2] << '\n';
+	for (const auto& b : bricks) {
+		for (int x = min(b.start[0],b.end[0]); x <= max(b.start[0],b.end[0]); x++) {
+			for (int y = min(b.start[1], b.end[1]); y <= max(b.start[1],b.end[1]); y++) {
+				for (int z = min(b.start[2], b.end[2]); z <= max(b.start[2],b.end[2]); z++) {
+					// cout << x << ' ' << y << ' ' << z << '\n';
+					map[x][y][z] = b.id;
 				}
 			}
-
 		}
-
-		out5:
-		if (allzeroes == 0) {
-			maxZ--;
-		}
-
 	}
-	printit(); 
-         
-	for (int z = 0; z <= maxZ; z++) {
-		for (int y = 0; y <= maxY; y++) {
-			for (int x = 0; x <= maxX; x++) {
-				wallOrig[z][y][x] = wall[z][y][x];
+
+	// for (int z = 0; z <= values[2]; z++) {
+	//   for (int x = 0; x <= values[0]; x++) {
+	//     cout << map[x][0][z];
+	//   }
+	//   cout << '\n';
+	// }
+
+	unordered_map<int, vector<int>> supports;
+	unordered_map<int, vector<int>> supported_by;
+	for(const auto& b : bricks) {
+		supports[b.id] = {};
+		supported_by[b.id] = {};
+	}
+	for (int i = 0; i < (int)bricks.size(); i++) {
+		for (int j = 0; j < (int)bricks.size(); j++) {
+			if (i == j) continue;
+			if(bricks[i].end[2] + 1 == bricks[j].start[2] && check_if_overlap(bricks[i], bricks[j])) {
+				supports[bricks[i].id].push_back(bricks[j].id);
+				supported_by[bricks[j].id].push_back(bricks[i].id);
 			}
 		}
 	}
-	//printitOrig(); 
-
-	int dropped = 0;
-//////////////////////////
-	map <int, int> mp;
-	printf("maxZ maxY maxX %d %d %d\n", maxZ, maxY, maxX); 
-	for (int bN = 1; bN < leny+1; bN++) { 
-printf("entering loop... bN %d\n", bN);
-		int foundAtLastZ1 = 0;
-		int first = 1; int zFIR = 1;
-/////////////
-		for (int z = 1; z <= maxZ; z++) {
-			for (int y = 0; y <= maxY; y++) {
-				for (int x = 0; x <= maxX; x++) {
-					wall[z][y][x] = wallOrig[z][y][x];
+	size_t count = 0;
+	for (const auto& b : bricks) {
+		queue<int> q;
+		for (const auto& ele : supports[b.id]) {
+			q.push(ele);
+		}
+		// Do not cache bricks that might have been seen as 
+		// they are added each time one of the bricks that supports them is destroyed
+		// Only the last time they are added, 
+		// at which point all the bricks supporting them might have been destroyed
+		// will they be free fall and hence be counted
+		unordered_set<int> moved {b.id};
+		while(!q.empty()) {
+			const auto current = q.front();
+			q.pop();
+			bool will_move = true;
+			for (const auto& ele : supported_by[current]) {
+				if (moved.find(ele) == moved.end()) {
+					will_move = false;
+					break;
 				}
 			}
-		}
-		for (int y = 0; y <= maxY; y++) {
-			for (int x = 0; x <= maxX; x++) {
-				wall[0][y][x] = -1;
+			if (!will_move) continue;
+			moved.insert(current);
+			for (const auto& supported_by_current : supports[current]) {
+				q.push(supported_by_current);
 			}
 		}
-		int changed = 0;
-		for (int z = 1; z <= maxZ; z++) {
-			for (int y = 0; y <= maxY; y++) {
-				for (int x = 0; x <= maxX; x++) {
-					if (wall[z][y][x] == bN) {
-						changed = 1;
-						wall[z][y][x] = 0;
-						foundAtLastZ1 = z;
-						if (first==1) {first++; zFIR = z;}
-					}
-				}
-			}
-			if (foundAtLastZ1 != 0 && foundAtLastZ1 < z) {break;}
-		}
-		if (changed == 0) {printf("ERROR changed brick %d\n", bN); getchar();}
-
-///////////////
-           mp.clear();
-printf("entering second loop..\n");
-	   for (int bN2 = 1; bN2 < leny+1; bN2++) { 
-		if (bN == bN2) {continue;}
-		if (mp.find(bN2) != mp.end()) {continue;} 
-		int dealoff = 0;
-		int found = 0;
-		int foundAtLastZ = 0;
-		
-		for (int z = 1; z <= maxZ; z++) {
-			for (int y = 0; y <= maxY; y++) {
-				for (int x = 0; x <= maxX; x++) {
-					if (wall[z][y][x] == bN2) {foundAtLastZ=z; found = 1;}
-					if (wall[z][y][x] == bN2 && wall[z-1][y][x] != 0) {
-					        if (wall[z-1][y][x] != bN2) {
-							dealoff = 1;
-							goto out10;
-						} 
-					} 
-				}
-			}
-			if (foundAtLastZ != 0 && foundAtLastZ < z) {break;}
-	        }
-
-		out10:
-		if (dealoff == 0 && found == 1) {
-			dropped++;
-			//printf(" dropped: %d \n", dropped);
-			int foundAtLastZ2 = 0;
-			mp.insert({bN2, 1});
-			for (int z1 = 1; z1 <= maxZ; z1++) {
-				for (int y1 = 0; y1 <= maxY; y1++) {
-					for (int x1 = 0; x1 <= maxX; x1++) {
-						if (wall[z1][y1][x1] == bN2) {
-							wall[z1][y1][x1] = 0;
-							foundAtLastZ2=z1;
-						}
-					}
-				}
-				if (foundAtLastZ2 != 0 && foundAtLastZ2 < z1) {bN2 = 0; break;}
-			}
-			bN2 = 0;
-		}
-           }
-      }
-
-/////////////////
-
-
-
-//////////////////////////
-
-	printf("leny is %d\n", leny);
-	printf("*** dropped: %d\n", dropped);
-	fflush(stdout); dup2(fd, 1);
-	printf("**ans: %d\n", dropped);
-}
-
-int printitOrig() {
-	printf("Z X Orig\n");
-	for (int z=maxZ; z >= 0; z--) {
-		for (int x = 0; x <= maxX; x++) {
-			printf("[%4d]", wallOrig[z][0][x]);
-		}
-		printf("        ");
-		for (int x = 0; x <= maxX; x++) {
-			printf("[%4d]", wallOrig[z][1][x]);
-		}
-		printf("  ");
-		for (int x = 0; x <= maxX; x++) {
-			printf("[%4d]", wallOrig[z][2][x]);
-		}
-		printf("  ");
-		for (int x = 0; x <= maxX; x++) {
-			printf("[%4d]", wallOrig[z][3][x]);
-		}
-		printf("  ");
-		for (int x = 0; x <= maxX; x++) {
-			printf("[%4d]", wallOrig[z][4][x]);
-		}
-		printf("  ");
-		for (int x = 0; x <= maxX; x++) {
-			printf("[%4d]", wallOrig[z][5][x]);
-		}
-		printf("  ");
-		for (int x = 0; x <= maxX; x++) {
-			printf("[%4d]", wallOrig[z][6][x]);
-		}
-		printf("  ");
-		for (int x = 0; x <= maxX; x++) {
-			printf("[%4d]", wallOrig[z][7][x]);
-		}
-		printf("  ");
-		for (int x = 0; x <= maxX; x++) {
-			printf("[%4d]", wallOrig[z][8][x]);
-		}
-		printf("\n");
+		count += moved.size() - 1;
 	}
-	printf("\n");
-
-	printf("Z Y Orig\n");
-	for (int z = maxZ; z>= 0; z--) {
-		for (int y = 0; y <= maxY; y++) {
-			printf("[%4d]", wallOrig[z][y][0]);
-		}
-		printf("  ");
-		for (int y = 0; y <= maxY; y++) {
-			printf("[%4d]", wallOrig[z][y][1]);
-		}
-		printf("  ");
-		for (int y = 0; y <= maxY; y++) {
-			printf("[%4d]", wallOrig[z][y][2]);
-		}
-		printf("  ");
-		for (int y = 0; y <= maxY; y++) {
-			printf("[%4d]", wallOrig[z][y][3]);
-		}
-		printf("  ");
-		for (int y = 0; y <= maxY; y++) {
-			printf("[%4d]", wallOrig[z][y][4]);
-		}
-		printf("  ");
-		for (int y = 0; y <= maxY; y++) {
-			printf("[%4d]", wallOrig[z][y][5]);
-		}
-		printf("  ");
-		for (int y = 0; y <= maxY; y++) {
-			printf("[%4d]", wallOrig[z][y][6]);
-		}
-		printf("  ");
-		for (int y = 0; y <= maxY; y++) {
-			printf("[%4d]", wallOrig[z][y][7]);
-		}
-		printf("  ");
-		for (int y = 0; y <= maxY; y++) {
-			printf("[%4d]", wallOrig[z][y][8]);
-		}
-		printf("\n");
-	}
-	printf("\n");
-
-	return 1;
-}
-int printit() {
-	printf("Z X Orig\n");
-	for (int z=maxZ; z >= 0; z--) {
-		for (int x = 0; x <= maxX; x++) {
-			printf("[%4d]", wall[z][0][x]);
-		}
-		printf("      ");
-		for (int x = 0; x <= maxX; x++) {
-			printf("[%4d]", wall[z][1][x]);
-		}
-		printf("      ");
-		for (int x = 0; x <= maxX; x++) {
-			printf("[%4d]", wall[z][2][x]);
-		}
-		printf("      ");
-		for (int x = 0; x <= maxX; x++) {
-			printf("[%4d]", wall[z][3][x]);
-		}
-		printf("      ");
-		for (int x = 0; x <= maxX; x++) {
-			printf("[%4d]", wall[z][4][x]);
-		}
-		printf("      ");
-		for (int x = 0; x <= maxX; x++) {
-			printf("[%4d]", wall[z][5][x]);
-		}
-		printf("      ");
-		for (int x = 0; x <= maxX; x++) {
-			printf("[%4d]", wall[z][6][x]);
-		}
-		printf("      ");
-		for (int x = 0; x <= maxX; x++) {
-			printf("[%4d]", wall[z][7][x]);
-		}
-		printf("      ");
-		for (int x = 0; x <= maxX; x++) {
-			printf("[%4d]", wall[z][8][x]);
-		}
-		printf("\n");
-	}
-	printf("\n");
-
-	printf("Z Y Orig\n");
-	for (int z = maxZ; z>= 0; z--) {
-		for (int y = 0; y <= maxY; y++) {
-			printf("[%4d]", wall[z][y][0]);
-		}
-		printf("      ");
-		for (int y = 0; y <= maxY; y++) {
-			printf("[%4d]", wall[z][y][1]);
-		}
-		printf("      ");
-		for (int y = 0; y <= maxY; y++) {
-			printf("[%4d]", wall[z][y][2]);
-		}
-		printf("      ");
-		for (int y = 0; y <= maxY; y++) {
-			printf("[%4d]", wall[z][y][3]);
-		}
-		printf("      ");
-		for (int y = 0; y <= maxY; y++) {
-			printf("[%4d]", wall[z][y][4]);
-		}
-		printf("      ");
-		for (int y = 0; y <= maxY; y++) {
-			printf("[%4d]", wall[z][y][5]);
-		}
-		printf("      ");
-		for (int y = 0; y <= maxY; y++) {
-			printf("[%4d]", wall[z][y][6]);
-		}
-		printf("      ");
-		for (int y = 0; y <= maxY; y++) {
-			printf("[%4d]", wall[z][y][7]);
-		}
-		printf("      ");
-		for (int y = 0; y <= maxY; y++) {
-			printf("[%4d]", wall[z][y][8]);
-		}
-		printf("\n");
-	}
-	printf("\n");
-
-	return 1;
+	//cout << count << '\n';
+	printf("**ans: %d\n", (int)count);
+	return 0;
 }

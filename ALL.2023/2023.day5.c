@@ -1,130 +1,128 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-#include <math.h>
-#include <unistd.h>
+//vss2sn
+#include <algorithm>
+#include <cmath>
+#include <fstream>
+#include <iostream>
+#include <numeric>
+#include <string>
+#include <vector>
+#include <array>
 
-unsigned long long getLocation(unsigned long long in);
-unsigned long long lookup(unsigned long long in, int mppos);
+using namespace std;
+struct Mapping {
+	long long destination_start;
+	long long source_start;;
+	long long range;
 
-#define getchar()
-int isAlready(int num);
-int arr[10000] = {0};
-int endarr = 0;
-struct mymap {
-	unsigned long long from;
-	unsigned long long to;
-	unsigned long long range;
+	bool in_destination_range(const long long n) const {
+		return n >= destination_start && n <= destination_start + range;
+	}
+
+	bool in_source_range(const long long n) const {
+		return n >= source_start && n <= source_start + range;
+	}
+
+	long long get_mapping(const long long n) const {
+		return destination_start + (n - source_start);
+	}
 };
-struct mymap stos[400];
-struct mymap stof[400];
-struct mymap ftow[400];
-struct mymap wtol[400];
-struct mymap ltot[400];
-struct mymap ttoh[400];
-struct mymap htol[400];
 
-struct mymap *pmap[7];
-int pmapNum[10];
-int main(int argc, char **argv)
-{
-	printf("%d", argc);
-	printf("%s", argv[1]);
-	fflush(stdin); fflush(stdout);
-	pmap[0] = stos;
-	pmap[1] = stof;
-	pmap[2] = ftow;
-	pmap[3] = wtol;
-	pmap[4] = ltot;
-	pmap[5] = ttoh;
-	pmap[6] = htol;
+struct Map {
+	string map_from;
+	string map_to;
+	vector<Mapping> mappings;
+};
 
-	FILE * a = fopen(argv[1], "r");
-	printf("2023 Day5.1\n");
-	fflush(stdin); fflush(stdout);
-
-	fflush(stdout); int fd = dup(1); close(1);
-	char line1[1000];
-	int linenum = 0;
-
-	int poswithin = 0;
-	fgets(line1, 1000, a); //seeds
-	char seeds123[1000];
-	line1[(int)strlen(line1)-1] = '\0';
-	strcpy(seeds123, line1);
-	fgets(line1, 1000, a); //blank
-	int mymappos = -1;
-	//POPULATE... Great...
-	memset(pmapNum, 0, sizeof(pmapNum));
-	while (1) {
-		fgets(line1, 1000, a);
-		if (strlen(line1) == 1) {fgets(line1, 1000, a);}
-		if (strstr(line1, "map")) {
-			fgets(line1, 1000, a); mymappos++; poswithin=0;
-		}
-		printf("%s", line1);
-		if (feof(a)) break;
-		linenum++;
-		pmap[mymappos][poswithin].to = 0;
-		pmap[mymappos][poswithin].from = 0;
-		pmap[mymappos][poswithin].range = 0;
-		sscanf(line1, "%llu %llu %llu",
-				&pmap[mymappos][poswithin].to,
-				&pmap[mymappos][poswithin].from,
-				&pmap[mymappos][poswithin].range);
-		//printf("got: %llu %llu %llu\n", pmap[mymappos][poswithin].to, pmap[mymappos][poswithin].from, pmap[mymappos][poswithin].range);
-		pmapNum[mymappos]++;
-		poswithin++;
+vector<long long> extract(const string& s) {
+	vector<long long> numbers;
+	long long start = 0;
+	long long end = s.find(' ');
+	while (end != string::npos) {
+		// cout << s.substr(start, end - start) << '|' << '\n';
+		numbers.push_back(stoll(s.substr(start, end - start)));
+		start = end + 1;
+		end = s.find(' ', start);
 	}
-
-
-	char * fir = strtok(seeds123, ":");
-	fir = strtok(NULL, ":");
-	char nuIn[1000];
-	strcpy(nuIn, fir);
-	char *ne = strtok(nuIn, " \0");
-	int pos123 = 0;
-	unsigned long long NUMboth[50];
-	do {
-		char *bla;
-		NUMboth[pos123] = strtoull(ne, &bla, 10);
-		pos123++;
-	} while ((ne = strtok(NULL, " \0")) != NULL);
-	NUMboth[pos123+1] = 0;
-
-	int m = 0;
-	////////////
-
-	unsigned long long NUMsmall = 99999999999999;
-	unsigned long long NUM = 0;;
-	for (m = 0; NUMboth[m] != 0; m++) {
-		//printf("m is %d\n", m);
-		NUM = NUMboth[m];
-		unsigned long long retNUM1 = getLocation(NUM);
-		if (retNUM1 < NUMsmall) {NUMsmall = retNUM1;}
-	}
-
-	fflush(stdout); dup2(fd, 1);
-	printf("**ans: %llu\n", NUMsmall);
+	// cout << s.substr(start, s.size() - start) << '|' << '\n';
+	numbers.push_back(stoll(s.substr(start, s.size() - start)));
+	return numbers;
 }
-unsigned long long getLocation(unsigned long long in) {
-	unsigned long long tmp1 = lookup(in, 0);
-	unsigned long long tmp2 = lookup(tmp1, 1);
-	unsigned long long tmp3 = lookup(tmp2, 2);
-	unsigned long long tmp4 = lookup(tmp3, 3);
-	unsigned long long tmp5 = lookup(tmp4, 4);
-	unsigned long long tmp6 = lookup(tmp5, 5);
-	unsigned long long tmp7 = lookup(tmp6, 6);
-	return tmp7;
-}
-unsigned long long lookup(unsigned long long in, int mppos) {
-	for (int i = 0; i < pmapNum[mppos]; i++) {
-		if (in >= pmap[mppos][i].from  && in <= pmap[mppos][i].from+pmap[mppos][i].range) {
-			return pmap[mppos][i].to + in - pmap[mppos][i].from;
-		} else {
-			continue;
-		}
+
+vector<string> parameters {
+	"soil", "fertilizer", "water", "light", "temperature", "humidity", "location"
+};
+
+long long get_location (long long value, const vector<Map>& maps, const string& map_from) {
+	if (map_from == "location") {
+		return value;
 	}
-	return in;
+	const auto map = *find_if(
+			begin(maps), 
+			end(maps), 
+			[&map_from](const auto& map) {
+			return map.map_from == map_from;
+			}
+			);
+	for (const auto& mapping : map.mappings) {
+		if (mapping.in_source_range(value)) {
+			return get_location(mapping.get_mapping(value), maps, map.map_to);
+		} 
+	}
+	return get_location(value, maps, map.map_to);
+}
+
+int main(int argc, char * argv[]) {
+	printf("2023 Day 5 Part 1\n");
+	string input = argv[1];
+	if (argc > 1) {
+		input = argv[1];
+	}
+
+	string line;
+	fstream file(input);
+	vector<Map> maps;
+	getline(file, line);
+	// cout << line << '\n';
+	vector<long long> seeds = extract(line.substr(7, line.size() - 7));
+
+	while(getline(file, line)) {
+		if (line.empty()) {
+			getline(file, line);
+			// cout << line << '\n';
+
+			Map map;
+			long long start = 0;
+			long long end = line.find('-');
+			map.map_from = line.substr(start, end - start);
+			start = end + 4;
+			end = line.find(' ', start);
+			map.map_to = line.substr(start, end - start);
+			//cout << map.map_from << " ---> " << map.map_to << '\n';
+			maps.push_back(map);
+			getline(file, line);
+		}
+		// cout << line << '\n';
+
+		const auto numbers = extract(line);
+		Mapping mapping;
+		mapping.destination_start = numbers[0];
+		mapping.source_start = numbers[1];
+		mapping.range = numbers[2];
+		// for (const auto number : numbers) {
+		//   cout << number << ' ';
+		// }
+		// cout << '\n';
+		maps.back().mappings.push_back(mapping);
+	}
+
+	vector<long long> locations;
+	for (const auto& seed : seeds) {
+		locations.push_back(get_location(seed, maps, "seed"));
+		//cout << locations.back() << '\n';
+	}
+	//cout << *min_element(begin(locations), end(locations)) << '\n';
+	//cout << *min_element(begin(locations), end(locations)) << '\n';
+
+	printf("**ans: %lld\n", *min_element(begin(locations), end(locations))); 
+	return 0;
 }

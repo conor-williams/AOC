@@ -1,144 +1,135 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-#include <math.h>
-#include <map>
+//vss2sn
+#include <algorithm>
+#include <cassert>
+#include <cmath>
+#include <fstream>
+#include <iostream>
+#include <numeric>
+#include <string>
+#include <vector>
+#include <array>
 
 using namespace std;
+struct Mapping {
+	array<long long, 2> from;
+	array<long long, 2> to;
 
-#include <unistd.h>
-
-map <unsigned long long, unsigned long long> mp[10];
-unsigned long long getLocation(unsigned long long in);
-unsigned long long lookup(unsigned long long in, int mppos);
-
-#define getchar()
-int isAlready(int num);
-int arr[10000] = {0};
-int endarr = 0;
-struct mymap {
-	unsigned long long from;
-	unsigned long long to;
-	unsigned long long range;
+	long long apply_map(const long long n) const {
+		return to[0] + (n - from[0]);
+	}
 };
-struct mymap stos[400];
-struct mymap stof[400];
-struct mymap ftow[400];
-struct mymap wtol[400];
-struct mymap ltot[400];
-struct mymap ttoh[400];
-struct mymap htol[400];
 
-struct mymap *pmap[7];
-int pmapNum[10];
-int main(int argc, char **argv)
-{
-	printf("SLOW ~15 mins\n");
-	printf("%d", argc);
-	printf("%s", argv[1]);
-	fflush(stdin); fflush(stdout);
-	pmap[0] = stos;
-	pmap[1] = stof;
-	pmap[2] = ftow;
-	pmap[3] = wtol;
-	pmap[4] = ltot;
-	pmap[5] = ttoh;
-	pmap[6] = htol;
+struct Map {
+	string map_from;
+	string map_to;
+	vector<Mapping> mappings;
+};
 
-	FILE * a = fopen(argv[1], "r");
-	printf("2023 Day5.2\n");
-	fflush(stdin); fflush(stdout);
-
-	fflush(stdout); int fd = dup(1); close(1);
-	char line1[1000];
-	int linenum = 0;
-
-	int poswithin = 0;
-	fgets(line1, 1000, a); //seeds
-	char seeds123[1000];
-	line1[(int)strlen(line1)-1] = '\0';
-	strcpy(seeds123, line1);
-	fgets(line1, 1000, a); //blank
-	int mymappos = -1;
-	//POPULATE... Great...
-	memset(pmapNum, 0, sizeof(pmapNum));
-	while (1) {
-		fgets(line1, 1000, a);
-		if (strlen(line1) == 1) {fgets(line1, 1000, a);}
-		if (strstr(line1, "map")) {
-			fgets(line1, 1000, a); mymappos++; poswithin=0;
-		}
-		printf("%s", line1);
-		if (feof(a)) break;
-		linenum++;
-		pmap[mymappos][poswithin].to = 0;
-		pmap[mymappos][poswithin].from = 0;
-		pmap[mymappos][poswithin].range = 0;
-		sscanf(line1, "%llu %llu %llu",
-				&pmap[mymappos][poswithin].to,
-				&pmap[mymappos][poswithin].from,
-				&pmap[mymappos][poswithin].range);
-		//printf("got: %llu %llu %llu\n", pmap[mymappos][poswithin].to, pmap[mymappos][poswithin].from, pmap[mymappos][poswithin].range);
-		pmapNum[mymappos]++;
-		poswithin++;
+vector<long long> extract(const string& s) {
+	vector<long long> numbers;
+	size_t start = 0;
+	size_t end = s.find(' ');
+	while (end != string::npos) {
+		numbers.push_back(stoll(s.substr(start, end - start)));
+		start = end + 1;
+		end = s.find(' ', start);
 	}
-
-
-	char * fir = strtok(seeds123, ":");
-	fir = strtok(NULL, ":");
-	char nuIn[1000];
-	strcpy(nuIn, fir);
-	char *ne = strtok(nuIn, " \0");
-	int pos123 = 0;
-	unsigned long long NUMinput[50];
-	unsigned long long NUMrange[50];
-	do {
-		char *bla;
-		if (pos123 % 2 == 0) {
-			NUMinput[pos123/2] = strtoull(ne, &bla, 10);
-		} else {
-			NUMrange[pos123/2] = strtoull(ne, &bla, 10);
-		}
-		pos123++;
-	} while ((ne = strtok(NULL, " \0")) != NULL);
-	NUMinput[(pos123/2)] = 0;
-	NUMrange[(pos123/2)] = 0;
-
-	int m = 0;
-	////////////
-
-	unsigned long long NUMsmall = 99999999999999;
-	unsigned long long NUM = 0;;
-	for (m = 0; NUMinput[m] != 0; m++) {
-		printf("m is %d\n", m);
-		for (unsigned long long kkk = 0; kkk < NUMrange[m]; kkk++) {
-			NUM = NUMinput[m]+kkk;
-			unsigned long long retNUM1 = getLocation(NUM);
-			if (retNUM1 < NUMsmall) {NUMsmall = retNUM1;}
-		}
-	}
-
-	fflush(stdout); dup2(fd, 1);
-	printf("**ans: %llu\n", NUMsmall);
+	numbers.push_back(stoll(s.substr(start, s.size() - start)));
+	return numbers;
 }
-unsigned long long getLocation(unsigned long long in) {
-	unsigned long long tmp1 = lookup(in, 0);
-	unsigned long long tmp2 = lookup(tmp1, 1);
-	unsigned long long tmp3 = lookup(tmp2, 2);
-	unsigned long long tmp4 = lookup(tmp3, 3);
-	unsigned long long tmp5 = lookup(tmp4, 4);
-	unsigned long long tmp6 = lookup(tmp5, 5);
-	unsigned long long tmp7 = lookup(tmp6, 6);
-	return tmp7;
-}
-unsigned long long lookup(unsigned long long in, int mppos) {
-	for (int i = 0; i < pmapNum[mppos]; i++) {
-		if (in >= pmap[mppos][i].from  && in <= pmap[mppos][i].from+pmap[mppos][i].range) {
-			return pmap[mppos][i].to + in - pmap[mppos][i].from;
-		} else {
-			continue;
+
+vector<pair<long long, long long>> apply_filter(vector<pair<long long, long long>> relevant_ranges, const vector<Mapping>& mappings) {
+	vector<pair<long long, long long>> new_relevant_values;
+	for (const auto&  relevant_range : relevant_ranges) {
+		vector<pair<long long, long long>> ranges_where_filter_applied;
+		vector<pair<long long, long long>> values_when_filter_applied;
+		for (const auto& mapping : mappings) {
+			if (relevant_range.second < mapping.from[0] || relevant_range.first > mapping.from[1]) continue;
+			if (relevant_range.first >= mapping.from[0] && relevant_range.second <= mapping.from[1]) {
+				ranges_where_filter_applied.emplace_back(relevant_range.first, relevant_range.second);
+			} else if (relevant_range.first >= mapping.from[0] && relevant_range.second >= mapping.from[1]) {
+				ranges_where_filter_applied.emplace_back(relevant_range.first, mapping.from[1]);
+			} else if (relevant_range.first <= mapping.from[0] && relevant_range.second <= mapping.from[1]) {
+				ranges_where_filter_applied.emplace_back(mapping.from[0],relevant_range.second);
+			} else if (relevant_range.first <= mapping.from[0] && relevant_range.second >= mapping.from[1]) {
+				ranges_where_filter_applied.emplace_back(mapping.from[0], mapping.from[1]);
+			} else {
+				cout << "?!" << '\n';
+				exit(0);
+			}
+			values_when_filter_applied.emplace_back(mapping.apply_map(ranges_where_filter_applied.back().first), mapping.apply_map(ranges_where_filter_applied.back().second));
+		}
+		auto current_start = relevant_range.first;
+		for (int i = 0; i < (int)ranges_where_filter_applied.size() ; i++) {
+			new_relevant_values.emplace_back(current_start, ranges_where_filter_applied[i].first - 1);
+			new_relevant_values.emplace_back(values_when_filter_applied[i].first, values_when_filter_applied[i].second);
+			current_start = ranges_where_filter_applied[i].second + 1;
+		}
+		if (current_start <= relevant_range.second) {
+			new_relevant_values.emplace_back(current_start, relevant_range.second);
 		}
 	}
-	return in;
+	vector<pair<long long, long long>> filtered_new_relevant_values;
+	copy_if (begin(new_relevant_values), end(new_relevant_values), back_inserter(filtered_new_relevant_values), [](const auto& ele ){
+			return ele.first <= ele.second; 
+			} );
+	//   cout << new_relevant_values.size() << ' ' << filtered_new_relevant_values.size() << '\n';
+	sort(begin(filtered_new_relevant_values), end(filtered_new_relevant_values), [](const auto& v1, const auto& v2) {return v1.first < v2.first;});
+	return filtered_new_relevant_values;
+}
+
+int main(int argc, char * argv[]) {
+	printf("2023 Day 5 Part 2\n");
+	string input = argv[1];
+	if (argc > 1) {
+		input = argv[1];
+	}
+
+	string line;
+	fstream file(input);
+	vector<Map> maps;
+	getline(file, line);
+	vector<long long> input_ranges = extract(line.substr(7, line.size() - 7));
+	vector<pair<long long, long long>> seeds;
+	for (int i = 0; i < (int)input_ranges.size(); i+=2) {
+		seeds.emplace_back(input_ranges[i], input_ranges[i] + input_ranges[i+1] - 1);
+	}
+	while(getline(file, line)) {
+		if (line.empty()) {
+			getline(file, line);
+			Map map;
+			long long start = 0;
+			long long end = line.find('-');
+			map.map_from = line.substr(start, end - start);
+			start = end + 4;
+			end = line.find(' ', start);
+			map.map_to = line.substr(start, end - start);
+			maps.push_back(map);
+			getline(file, line);
+		}
+		const auto numbers = extract(line);
+		Mapping mapping;
+		mapping.to = {{numbers[0], numbers[0] + numbers[2]-1}};
+		mapping.from = {{numbers[1], numbers[1] + numbers[2]-1}};
+		// cout << mapping.from[0] << ' ' << mapping.from[1] << '\n';
+		// cout << mapping.to[0] << ' ' << mapping.to[1] << '\n';
+		maps.back().mappings.push_back(mapping);
+	}
+
+	for (auto& map : maps) {
+		sort(begin(map.mappings), end(map.mappings), [](const auto& m1, const auto& m2) {return m1.from[0] < m2.from[0];});
+	}
+
+	for (int i = 0; i < (int)maps.size()-1; i++) {
+		assert(maps[i+1].map_from == maps[i].map_to);
+	}
+
+	vector<pair<long long, long long>> relevant_values = seeds;
+	for (const auto& map : maps) {
+		relevant_values = apply_filter(relevant_values, map.mappings);
+	}
+
+	//cout << min_element(begin(relevant_values), end(relevant_values))->first << '\n';
+	printf("**ans: %lld\n", min_element(begin(relevant_values), end(relevant_values))->first);
+	return 0;
 }
