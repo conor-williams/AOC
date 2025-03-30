@@ -61,7 +61,7 @@ vector<tuple<int, int, int, char>> reachable_keys(int sx, int sy, const set<char
 int main(int argc, char **argv) {
         FILE * a = fopen(argv[1], "r");
         printf("2019 Day18 Part1\n");
-        printf("SLOW 1minute 20seconds\n");
+        printf("SLOW 1minute 20seconds\n"); fflush(stdout);
 #ifdef _ACCOLADE_
 	printf("thanks reddit:bla2 -> convert with codeconvert.ai\n");
 #endif
