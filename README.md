@@ -39,7 +39,7 @@ o ps and kill are your friend
  	<s>2020.day13.2   15 minutes</s>      60ms
 	<s>2022.day16.2    8 minutes</s>    7000ms
   	<s>2022.day19.2    34 minutes</s>    600ms
-	<s>2023.day5.1      15 minutes</s>   250ms
+	<s>2023.day5.2      15 minutes</s>   250ms
 	<s>2023.day22.2      60 minutes</s> 2500ms
 	
 </pre>
