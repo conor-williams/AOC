@@ -1,0 +1,23 @@
+### in the end quite manual once you know; 
+#	sum == axb x Cin         
+#       cout = a.b + cin.(axb)  (note the first and last are correct (ignore them.. )
+### start around 2 or 3 and get a system going eg... first line xor second line xor, x before y for the xor and y before x for the and)
+### eg: (watch what matches up... fcs is on the second line of the previos etc... jdb is on the 3rd line... (its all repetive...) enjoy!!
+#-----z07
+#swp XOR fcs -> z07
+#x07 XOR y07 -> fcs
+#y07 AND x07 -> btb
+#mcs OR jwh -> swp
+#vrh AND wts -> mcs
+#----- z08 --
+#kpt XOR prr -> z08
+#x08 XOR y08 -> prr
+#y08 AND x08 -> mkj
+#jdb OR btb -> kpt
+#fcs AND swp -> jdb
+
+### handy awk if ordering has changed and you want to do a diff
+### 1544   awk '{print $1 " " $2 " " $3 " " $5; print $3 " " $2 " " $1 " " $5}' fil6 > fil6.6
+### diff i1.txt i1.mod.txt  
+### :g /^--.*$/d 
+#### also, look for abberations in the generated graph as u go -- has some pointers
