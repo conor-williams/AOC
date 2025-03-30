@@ -33,11 +33,15 @@ o ps and kill are your friend
 <s><h3>Update (30-03-2025 lu30)</h3></s>
 <pre>
   Finished this list: <s> Slows above 5 minutes t.b.f soon (n2s: list here)</s><br>
-	<s>2016.day23.2 35 minutes</s>     60ms
- 	<s>2017.day17.2 -21 minutes</s>   500ms
-	<s>2018.day11.2   7 minutes</s>   150ms
- 	<s>2020.day13.2   15 minutes</s>   60ms
-  	<s>2022.day19.2    34 minutes</s> 600ms
+	<s>2016.day23.2 35 minutes</s>        60ms
+ 	<s>2017.day17.2 -21 minutes</s>      500ms
+	<s>2018.day11.2   7 minutes</s>      150ms
+ 	<s>2020.day13.2   15 minutes</s>      60ms
+	<s>2022.day16.2    8 minutes</s>    7000ms
+  	<s>2022.day19.2    34 minutes</s>    600ms
+	<s>2023.day5.1      15 minutes</s>   250ms
+	<s>2023.day22.2      60 minutes</s> 2500ms
+	
 </pre>
 
 <s><h3><s>Reared</s>Nigglers (check 2015-2024 inclusive) <s>a.</s>fin (lu0330)</h3></s></s>
