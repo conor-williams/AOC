@@ -195,7 +195,7 @@ rectified soon (update: nearly rectified...) (late december 2024)
 <li>there are around 40 that have not been completed -- (<b><i>todo in 2025</b></i>) </li>
 <li>a couple were done without c/c++ -- mostly using sed, awk, du, find and other *nix commands scripts and 1 java -- will upload(e.g. find . +size 1M -type f)(finds all files from current dir greater that, (yes u got it..) (<b><i>todo in 2025</i></b>) </li>
 <li>lately (03202025) thanks to the reddit python et. al. coders and online converters such as codeconvert.ai</li>
-	
+<li>1000ms is 1s</li>
  <li>kudos to <i><b>Eric Wastl & co.</b></i></li>
  <li></li>
 </ul>
