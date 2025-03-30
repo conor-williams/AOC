@@ -32,7 +32,7 @@ o ps and kill are your friend
 
 <s><h3>Update (30-03-2025 lu30)</h3></s>
 <pre>
-  Finished this list: <s> Slows above 5 minutes t.b.f soon (n2s: list here)</s><br>
+  NOT Finished this list:  Slows above ~5 minutes t.b.f soon (n2s: list here)<br>
 	<s>2016.day23.2 35 minutes</s>        60ms
  	<s>2017.day17.2 -21 minutes</s>      500ms
 	<s>2018.day11.2   7 minutes</s>      150ms
@@ -41,7 +41,11 @@ o ps and kill are your friend
   	<s>2022.day19.2    34 minutes</s>    600ms
 	<s>2023.day5.2      15 minutes</s>   250ms
 	<s>2023.day22.2      60 minutes</s> 2500ms
-	
+	2016 Day 14.2          3 minutes
+	2017 Day 20.2          3 minutes
+	2018 Day 23.2          5 mins 50
+	2019 Day 14.1          5 mins
+	2020 Day 20.2          3 mins
 </pre>
 
 <s><h3><s>Reared</s>Nigglers (check 2015-2024 inclusive) <s>a.</s>fin (lu0330)</h3></s></s>
@@ -200,6 +204,7 @@ rectified soon (update: nearly rectified...) (late december 2024)
 <li>a couple were done without c/c++ -- mostly using sed, awk, du, find and other *nix commands scripts and 1 java -- will upload(e.g. find . +size 1M -type f)(finds all files from current dir greater that, (yes u got it..) (<b><i>todo in 2025</i></b>) </li>
 <li>lately (03202025) thanks to the reddit python et. al. coders and online converters such as codeconvert.ai</li>
 <li>1000ms is 1s</li>
+<li>fflush pushes out the ouput.. liprx(</li>
  <li>kudos to <i><b>Eric Wastl & co.</b></i></li>
  <li></li>
 </ul>
