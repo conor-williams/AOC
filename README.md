@@ -4,6 +4,7 @@ o ps and kill are your friend
 <object type="text/html" data="unfin.txt"></object> 
 <h2>Notes (this README is a .html file (drag and drop into a browser)) lu:29-03-2025 @16:49</h2>
 <address><b>conor.williams@gmail.com</b></address><br>
+
 <h3>Update (04-03-25):</h3>
 <pre>
 <h3>New todos to finish off unfinished as per Feb 2025 (lu:2903) (plus a few <s>stragglersnigglers above&47;below</s> )</h3>
@@ -29,9 +30,13 @@ o ps and kill are your friend
 <!-- <s>YEAR: 2016- 2016 day 11 part 2</s> moved_to stragglers -->
 </pre>
 
-<h3><s>Update (28-03-25 </s>lu0329):</h3>
+<h3>Update (30-03-2025)</h3>
 <pre>
-<s><h3><s>Reared</s>Nigglers (check 2015-2024 inclusive) <s>a.</s>fin</h3></s>
+   Slows above 5 minutes t.b.f soon (n2s: list here)<br>
+</pre>
+
+<s><h3><s>Reared</s>Nigglers (check 2015-2024 inclusive) <s>a.</s>fin (lu0330)</h3></s>
+<pre>
 	2016
 <s>2016.20.2 (V.SLOW +1hour)</s> speedy (consistently < 60milliseconds)
 	2018
@@ -52,7 +57,7 @@ o ps and kill are your friend
 <s>2023.22.2 (missing - soon)</s>
 </pre>
 
-<s><h3>straggle<s>rs (mentioned elsewhere) (updated 032825 GMT:13hours19mins)</s> w</s>ahoo (finished this list)</h3>
+<s><h3>straggle<s>rs (mentioned elsewhere) (updated 032825 GMT:13hours19mins)</s> <s>w</s>ahoo (finished this list)</h3>
 <pre>	
  2016
    <s>day 11.1</s>
@@ -67,7 +72,7 @@ o ps and kill are your friend
     <s>day21.2</s>
 </pre>
      
-<s><h3>Update (11::20-03-25) <s>wh lu290325</s>:</h3></s>
+<h3>Update (11::20-03-25) wh lu290325:</h3></s>
 <pre>
 	o run "sh FIRST.sh" -- it does everything for you
 	o length of filename getting you down? use ln and stop getting down (e.g.):
