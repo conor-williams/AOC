@@ -14,7 +14,7 @@ o runtime ~1.25  hours +/- 25 minutes
 <pre>
 <h3>New todos to finish off unfinished as per Feb 2025 (lu:2903) (plus a few <s>stragglersnigglers above&47;below</s> )</h3>
 <!--<h3>YEAR: 2022</h3>-->	year: 2022
-                     |  2022 day 13 part 2
+                     |  <s>2022 day 13 part 2</s>
  <s>2022 day 15 part 2  |  2022 day 17 part 2</s>
  <s>2022 day 18 part 2</s>  |  2022 day 21 part 2
  2022 day 22 part 2  
