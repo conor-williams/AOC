@@ -3,7 +3,7 @@ o unzip AOC-main.zip
 o unzip is a cygwin package
 o sh FIRST.sh
 o ps and kill are your friend, not so much now
-o runtime ~1.25 hours
+o runtime ~1.25  hours +/- 25 minutes
 
 <!-- <embed src=unfin.txt> -->
 <!-- <object type="text/html" data="unfin.txt"></object> -->
