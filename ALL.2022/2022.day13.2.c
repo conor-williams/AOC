@@ -37,13 +37,16 @@ std::string replaceAll(std::string str, const std::string& from, const std::stri
 	}
 	return str;
 }
+void bubbleIt(vector<vector<string>>& ve1);
+void printit(vector<vector <string>>);
+
 int fd;
 int main(int argc, char **argv)
 {
 	signal(SIGTSTP, &sigfunc);
-//	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
+	//printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-	a = fopen(argv[1], "r"); printf("		2022 Day 13 - 1\n"); fflush(stdout);
+	a = fopen(argv[1], "r"); printf("		2022 Day 13 - 2\n"); fflush(stdout);
 	fd = dup(1); close(1);
 	char line1[LINE];
 
@@ -51,7 +54,7 @@ int main(int argc, char **argv)
 	int first = 1;
 	string fir;
 	string sec;
-	int index = 1;
+	//int index = 1;
 	int tot = 0;
 	vector <vector <string>> ve;
 	while (1) {
@@ -76,21 +79,69 @@ int main(int argc, char **argv)
 			ve.push_back(f1);
 			ve.push_back(f2);
 			getchar();
-			int ret1 = compareSQ(f1, f2);
-			if (ret1 < 0) {
+			//int ret1 = compareSQ(f1, f2);
+			//if (ret1 < 0) {
 				//printf("%d\n", index);
-				tot+= index;
-			}
+			//	tot+= index;
+			//}
 
-			index++;
+			//index++;
 		}
 		leny++;
 		//printf("index [%d] tot [%d]\n", index-1, tot);
 	}
 	fclose(a);
 
+	vector <string> two = putIntoVectors("[[2]]");
+	vector <string> six = putIntoVectors("[[6]]");
+	ve.push_back(two);
+	ve.push_back(six);
+	bubbleIt(ve);
+
+	printit(ve);
+	int pos = 0;
+	int pos1 = -1;
+	int pos2 = -1;
+        for (auto var_str: ve) {
+                //cout << var_str << endl;
+		if (var_str.size() == 1 && var_str[0] == "[2]") {
+			pos1 = pos;
+		} else if (var_str.size() == 1 && var_str[0] == "[6]") {
+			pos2 = pos;
+		}
+		if (pos1 != -1 && pos2 != -1) {
+			break;
+		}
+		pos++;
+        }
+	int ans1 = (1+pos1) * (1+pos2);
 	fflush(stdout); dup2(fd, 1);
-	printf("**ans %d\n", tot);
+	printf("**ans %d\n", ans1);
+}
+void printit(vector<vector <string>> ve) {
+        for (auto var_str: ve) {
+                //cout << var_str << endl;
+		for (auto v2: var_str) {
+ 	               cout << v2 << " ";
+		}
+		cout << endl;
+        }
+	cout << endl;
+}
+
+void bubbleIt(vector<vector<string>>& ve1) {
+        //g4g
+        int n1 = ve1.size();
+        for (int i = 0; i < n1 - 1; i++) {
+                for (int j = 0; j < n1-i-1; j++) {
+                        if (compareSQ(ve1[j], ve1[j+1]) > 0) {
+                                vector<string> tmp1 = ve1[j];
+                                ve1[j] = ve1[j+1];
+                                ve1[j+1] = tmp1;
+                                //swap(ve1[j], ve1[j+1]);
+                        }
+                }
+        }
 }
 
 vector <string> putIntoVectors(string s10) //putIntoVectors the input into different vector based on []
