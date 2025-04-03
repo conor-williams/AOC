@@ -17,7 +17,7 @@ o runtime ~1.25  hours +/- 25 minutes
                      |  <s>2022 day 13 part 2</s>
  <s>2022 day 15 part 2  |  2022 day 17 part 2</s>
  <s>2022 day 18 part 2</s>  |  2022 day 21 part 2
- 2022 day 22 part 2  
+ <s>2022 day 22 part 2 </s>
 <!--<h3>YEAR: 2021</h3>-->	year: 2021
  <s>2021 day 11 part 2</s>  |  <s>2021 day 12 part 2</s>
  2021 day 14 part 2  |  <s>2021 day 15 part 2</s>
