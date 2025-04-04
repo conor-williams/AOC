@@ -10,11 +10,8 @@
 #include <map>
 #include <iostream>
 
-#include <unistd.h>
-
-#define getchar()
 using namespace std;
-map <string, string> mp;
+map <string, pair<string, int>> mp;
 
 FILE *a;
 #define LINE 1000
@@ -40,9 +37,8 @@ int main(int argc, char **argv)
 	signal(SIGTSTP, &sigfunc);
 	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-	a = fopen(argv[1], "r"); printf("2022 Day 21 part1\n"); fflush(stdout);
-
-	fflush(stdout); int fd = dup(1); close(1);
+	a = fopen(argv[1], "r"); printf("2021 Day 21 part1\n"); fflush(stdout);
+	int fd = dup(1); close(1);
 	char line1[LINE];
 
 	long long leny = 0;
@@ -60,42 +56,37 @@ int main(int argc, char **argv)
 		ret = sscanf(line1, "%[^:]:%[^\0]", inst[leny].s1, rest);
 		printf("ret is %lld\n", ret);
 		//sprintf(rest2, "( %s)", rest); //string re = rest2; //if (strcmp(inst[leny].s1, "root") == 0) {first = leny;}
-		mp[inst[leny].s1] = rest;
+		mp[inst[leny].s1] = make_pair(rest, 0);
 
-		assert(ret == 2);
+		//assert(ret == 2);
 		leny++;
 	}
 	fclose(a);
 
-	string newString;
 again:
 	for (auto it = mp.begin(); it != mp.end(); it++) {
-		cout << "checking: " << it->second << endl;
-		printf("%lld %lld %lld\n", alldigitsAndOp(it->second), 
-				hasOp(it->second), alldigits(it->second));
-
-		if (alldigitsAndOp(it->second) == 1 && hasOp(it->second)) {
-			printf("calling doCalc\n");
-			it->second = doCalc(it->second);
-		} else if (alldigits(it->second)) {
-			printf("alldigits...\n");
+		if (it->second.second==0 && alldigitsAndOp(it->second.first) == 1 && hasOp(it->second.first)) {
+			//printf("calling doCalc\n");
+			it->second.first = doCalc(it->second.first);
+		} else if (it->second.second == 0 && alldigits(it->second.first)) {
 			for (auto it2 = mp.begin(); it2 != mp.end(); it2++) {
 				long long ind = 0;
-				if ((ind = it2->second.find(it->first)) != -1 ) {
-					it2->second.replace(ind, 4, it->second);
-					printf("doing a replace...\n");
+				if ((ind = it2->second.first.find(it->first)) != -1 ) {
+					it2->second.first.replace(ind, 4, it->second.first);
+					it->second.second = 1;
+					break;
 				}
 			}
 		}
 	}
-	if (alldigits(mp["root"])) { 
-		cout << "not going again" << endl;
-
-		cout << "**ans: " << mp["root"] << endl;
+	if (alldigits(mp["root"].first)) { 
+		//cout << "not going again" << endl;
 		fflush(stdout); dup2(fd, 1);
-		printf("**ans: %s\n", mp["root"].c_str());
+		cout << "**ans: " << mp["root"].first << endl;
+		exit(0);
+		//getchar();
 	} else {
-		cout << "interim ans: " << mp["root"] << endl;
+		//cout << "interim ans: " << mp["root"].first << endl;
 		goto again;
 	}
 
@@ -107,7 +98,8 @@ string doCalc(string ch) {
 
 	long long ret = sscanf(blah, "%lld %c %lld", &num1, &op, &num2);
 	if (ret != 3) {
-		printf("err:%s\n", blah); exit(0);
+		return "-99";
+		//printf("err:%s\n", blah); exit(0);
 	}
 	long long ans = 0;
 	switch (op) {
