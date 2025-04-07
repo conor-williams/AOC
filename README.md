@@ -1,10 +1,11 @@
+<pre>
 o green button Code -> Download Zip
 o unzip AOC-main.zip 
 o unzip is a cygwin package
 o sh FIRST.sh
 o ps and kill are your friend, not so much now
-o runtime ~1.25  hours +/- 25 minutes
-
+o runtime ~<2  hours on a dual core 2GHZ
+</pre>
 <!-- <embed src=unfin.txt> -->
 <!-- <object type="text/html" data="unfin.txt"></object> -->
 <h2>Notes (this README is a .html file (drag and drop into a browser)) lu:30-03-2025 @20:23</h2>
@@ -15,12 +16,12 @@ o runtime ~1.25  hours +/- 25 minutes
 <h3>New todos to finish off unfinished as per Feb 2025 (lu:2903) (plus a few <s>stragglersnigglers above&47;below</s> )</h3>
 <!--<h3>YEAR: 2022</h3>-->	year: 2022
                      |  <s>2022 day 13 part 2</s>
- <s>2022 day 15 part 2  |  2022 day 17 part 2</s>
- <s>2022 day 18 part 2</s>  |  2022 day 21 part 2
+ <s>2022 day 15 part 2</s>  |  <s>2022 day 17 part 2</s>
+ <s>2022 day 18 part 2</s>  |  <s>2022 day 21 part 2</s>
  <s>2022 day 22 part 2 </s>
 <!--<h3>YEAR: 2021</h3>-->	year: 2021
  <s>2021 day 11 part 2</s>  |  <s>2021 day 12 part 2</s>
- 2021 day 14 part 2  |  <s>2021 day 15 part 2</s>
+ <s>2021 day 14 part 2</s>  |  <s>2021 day 15 part 2</s>
  2021 day 16 part 2  |  <s>2021 day 18 part 2</s>
  2021 day 21 part 2  |  2021 day 22 part 2
  <s>2021 day 23 part 2</s>
@@ -300,3 +301,4 @@ t-0 03192025 w.h.buckos<br>
 t+2 == 2 &#47;c.<b><i>w</i>i<i>l</i>l51</b>.
 <br>t+23 (tot) 030925
 <br>t+15 (tot) 033025@sat dave clark on radio @ 1am
+<br>t+12 (tot) 070425@sun cormac battle on rate @ 2am
