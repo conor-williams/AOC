@@ -5,6 +5,7 @@ o unzip is a cygwin package
 o sh FIRST.sh
 o ps and kill are your friend, not so much now
 o runtime ~<2  hours on a dual core 2GHZ
+o for many solns/languages: web search: advent of code 20XY day AB solutions
 </pre>
 <!-- <embed src=unfin.txt> -->
 <!-- <object type="text/html" data="unfin.txt"></object> -->
