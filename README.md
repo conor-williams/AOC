@@ -9,12 +9,12 @@ o for many solns/languages: web search: advent of code 20XY day AB solutions
 </pre>
 <!-- <embed src=unfin.txt> -->
 <!-- <object type="text/html" data="unfin.txt"></object> -->
-<h2>Notes (this README is a .html file (drag and drop into a browser)) lu:30-03-2025 @20:23</h2>
+<h2>Notes (this README is a .html file (drag and drop into a browser)) lu:09-04-2025 @22:42</h2>
 <address><b>conor.williams@gmail.com</b></address><br>
 
 <h3>Update (04-03-25):</h3>
 <pre>
-<h3>New todos to finish off unfinished as per Feb 2025 (lu:2903) (plus a few <s>stragglersnigglers above&47;below</s> )</h3>
+<h3>New todos to finish off unfinished as per Feb 2025 (lu:0904) (plus a few <s>stragglersnigglers above&47;below</s> )</h3>
 <!--<h3>YEAR: 2022</h3>-->	year: 2022
                      |  <s>2022 day 13 part 2</s>
  <s>2022 day 15 part 2</s>  |  <s>2022 day 17 part 2</s>
