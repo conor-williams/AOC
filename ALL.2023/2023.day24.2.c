@@ -40,11 +40,12 @@ int main(int argc, char **argv)
 {
 	//printf("%d", argc); printf("%s", argv[1]); fflush(stdin); fflush(stdout);
 
-	FILE * a = fopen(argv[1], "r"); printf("2024 Day24.2\n"); fflush(stdout);
+	FILE * a = fopen(argv[1], "r");
+	printf("		2023 Day24.2\n"); fflush(stdout);
 	char line1[1000];
 	struct rlimit limit;
         getrlimit (RLIMIT_STACK, &limit);
-        printf ("\nStack Limit = %ld and %ld max\n", limit.rlim_cur, limit.rlim_max);
+        //printf ("\nStack Limit = %ld and %ld max\n", limit.rlim_cur, limit.rlim_max);
         if (limit.rlim_cur < 900000000) {printf("need to widen stack with -Wl,--stack,999777666\n"); exit(10);}
 
 
@@ -465,6 +466,7 @@ end:
 	printf("\n****tot: %lld\n", (long long)Xst+(long long)Yst+(long long)Zst);
 	fflush(stdout); dup2(fd, 1);
 	printf("**ans: %lld\n", (long long)Xst+(long long)Yst+(long long)Zst);
+	fflush(stdout);
 	/*
 	   for (int i = 0; i < leny-1; i++) {
 	   for (int j = i+1; j < leny; j++) {
