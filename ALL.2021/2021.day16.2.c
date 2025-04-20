@@ -60,7 +60,7 @@ int main(int argc, char **argv)
 	//mp4[0] = "0000";
 
 	//mp4_4["0000"] = 0;
-	a = fopen(argv[1], "r"); printf("		2021 Day12.2\n"); fflush(stdout);
+	a = fopen(argv[1], "r"); printf("		2021 Day16.2\n"); fflush(stdout);
 	int fd = dup(1); close(1);
 	char line1[LINE];
 
