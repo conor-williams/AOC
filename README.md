@@ -10,7 +10,7 @@ o for many solns/languages: web search: advent of code 20XY day AB solutions
 </pre>
 <!-- <embed src=unfin.txt> -->
 <!-- <object type="text/html" data="unfin.txt"></object> -->
-<h2>Notes (this README is a .html file (drag and drop into a browser)) lu:09-04-2025 @22:42</h2>
+<h2>Notes (this README is a .html file (drag and drop into a browser)) lu:20-04-2025 @07:09GMT</h2>
 <address><b>conor.williams@gmail.com</b></address><br>
 
 <h3>Update (04-03-25):</h3>
