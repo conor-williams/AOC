@@ -14,7 +14,7 @@ long long calculate_ore(long long amount_fuel);
 //ta:Diderikdm
 int fd;
 int main(int argc, char **argv) {
-	printf("2019 Day14 part2\n");
+	printf("		2019 Day14 part2\n");
 	//part 1: 1046184
 #ifdef _ACCOLADE_
 	printf("ta Diderikdm on reddit + codeconvert.ai - 1 hour manipulation (float)\n");
@@ -42,6 +42,7 @@ int main(int argc, char **argv) {
 	cout << final_result << endl;
 	fflush(stdout); dup2(fd, 1);
 	printf("**ans: %lld\n", final_result);
+	fflush(stdout);
 	/////////////////////// (pyt...)
 	///	print(int(int(1000000000000 / one_fuel)*(1000000000000 / calculate_ore(int(1000000000000 / one_fuel)))))
 	///	print(int(1000000000000 / one_fuel))
@@ -95,7 +96,7 @@ long long calculate_ore(long long amount_fuel) {
 	chain_levelsdeep.push_back(1);
 
 	int e_index = 0;
-	while (e_index < chain.size()) {
+	while (e_index < (int)chain.size()) {
 		int levelsdeep = chain_levelsdeep[e_index] + 1;
 		for (size_t i = 0; i < result.size(); i++) {
 			if (result[i] == chain[e_index]) {
@@ -116,7 +117,7 @@ long long calculate_ore(long long amount_fuel) {
 
 	long long ore_total = 0;
 	int p = 1;
-	while (p < chain.size()) {
+	while (p < (int)chain.size()) {
 		int key = 0;
 		int q = 0;
 		while (q < p) {

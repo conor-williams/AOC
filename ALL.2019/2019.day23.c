@@ -16,7 +16,7 @@
 using namespace std;
 
 int lenx, leny;
-#define DAY "2019 day 23 part1\n"
+#define DAY "		2019 day 23 part1\n"
 #undef _DEBUG_
 //#define _DEBUG_
 #define getchar()
@@ -87,7 +87,7 @@ int main(int argc, char **argv)
 	struct tm *info;
 	time( &rawtime );
 	info = localtime( &rawtime );
-	printf("%s", asctime(info));
+	//printf("%s", asctime(info));
 	for (int i = 0; i < NM; i++) {
 		destReady[i] = 1;
 		booting[i] = 1;
@@ -97,7 +97,7 @@ int main(int argc, char **argv)
 	struct pos_s st = {xCur, yCur, PATH};
 	
 	lenx = 0; leny = 0;
-        printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
+        //printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
@@ -248,7 +248,7 @@ int machineMulti(int var_mach, int machineNumber, int one, long long inst[MAXI],
 	long long output[6], int times[6], int finished[6], int inputCounters[6], long long saveInst[6][MAXI], 
 	long long nextInst[6], long long relativeBase[6]) {
 		if (finished[machineNumber] == 1) { printf("return 22\n"); return 22;}
-		long long input[10];	
+		//long long input[10];	
 
 		for (int i = 0; i < instTOT; i++) {
 			inst[i] = saveInst[machineNumber][i];
@@ -328,7 +328,7 @@ int machineMulti(int var_mach, int machineNumber, int one, long long inst[MAXI],
 			numSteps++;
 			long long OUT;
                         if (inst[i] > 200) {
-				input[1] = inst[relativeBase[machineNumber]+inst[i+1]];
+				//input[1] = inst[relativeBase[machineNumber]+inst[i+1]];
 				if (one == 0) {
 	                                output[(machineNumber+1)%5] = inst[relativeBase[machineNumber]+inst[i+1]]; 
 				} else if (one == 1) {
@@ -345,7 +345,7 @@ int machineMulti(int var_mach, int machineNumber, int one, long long inst[MAXI],
 #ifdef _DEBUG_
                                 printf("or is it OUTS: %s\n", instruction[i+1]);
 #endif
-				input[1] = inst[i+1];
+				//input[1] = inst[i+1];
 				if (one == 0) {
 	                                output[(machineNumber+1)%5] = inst[i+1]; 
 				} else if (one == 1) {
@@ -357,7 +357,7 @@ int machineMulti(int var_mach, int machineNumber, int one, long long inst[MAXI],
                                 printf("OUT: %lld\n", inst[inst[i+1]]); 
                                 printf("OUTS: %s\n", instruction[inst[i+1]]);
 #endif
-				input[1] = inst[inst[i+1]];
+				//input[1] = inst[inst[i+1]];
 				if (one == 0) {
                                 	output[(machineNumber+1)%5] = inst[inst[i+1]]; 
 				} else if (one == 1) {
@@ -388,11 +388,13 @@ int machineMulti(int var_mach, int machineNumber, int one, long long inst[MAXI],
 				long long Yval = OUT;
 				//printf("got a Yval %lld [%d]\n", Yval, var_mach);
 				if (QNUM > 49 || watch[var_mach] == 1) {
-					char cans[100];
-					sprintf(cans, "touch %lld", Yval);
-					system(cans);
+					//char cans[100];
+					//sprintf(cans, "touch %lld", Yval);
+					//system(cans);
 					fflush(stdout); dup2(fd, 1);
-					printf("ANS is %lld\n", Yval); exit(0);
+					printf("**ans: %lld\n", Yval);
+					fflush(stdout);
+				       	exit(0);
 				} else {
 					destReady[var_mach] = 1;
 					Q[QNUM].push_back(Yval);
