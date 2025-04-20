@@ -42,7 +42,7 @@ o for many solns/languages: web search: advent of code 20XY day AB solutions
 2019.day25 is interactive  (dungeons and dragons -- could be automated but its a fun game... (in the 2019/day25 directory..)
 2022.day7.X uses unix scripts..(simulation of a hard drive). (maybe a todo -> c/c++ in 2025)
 2023.day25 is manual use of graphics (python dot etc...) (nodes in a kindof graph) see readme on how: 2023.day25.readme.txt (have to run scripts)
-2024.day24.2 is manual use of graphics (python dot etc...) (44 bit half adder kinda microchip) see readme on how: 2024.day24.2.readme.txt (have to run scripts)
+2024.day24.2 is manual use of graphics (python dot etc...) (44 bit half/full adder kinda microchip) see readme on how: 2024.day24.2.readme.txt (have to run scripts)
 </pre>
 <s><h3>Update (30-03-2025 lu30)</h3></s>
 <pre>
