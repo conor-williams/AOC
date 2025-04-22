@@ -10,7 +10,7 @@ o for many solns/languages: web search: advent of code 20XY day AB solutions
 </pre>
 <!-- <embed src=unfin.txt> -->
 <!-- <object type="text/html" data="unfin.txt"></object> -->
-<h2>Notes (this README is a .html file (drag and drop into a browser)) lu:21-04-2025 @01:30GMT</h2>
+<h2>Notes (this README is a .html file (drag and drop into a browser)) lu:22-04-2025 @04:36GMT</h2>
 <address><b>conor.williams@gmail.com</b></address><br>
 
 <h3>Update (04-03-25):</h3>
@@ -30,7 +30,7 @@ o for many solns/languages: web search: advent of code 20XY day AB solutions
 <!--<h3>YEAR: 202<font color = red>0</font></h3>-->	year: 2020
  <s>2020 day 12 part 2</s>  |  <s>2020 day 13 part 2</s>
  <s>2020 day 14 part 2</s>  |  <s>2020 day 15 part 2</s>
- 2020 day 16 part 2  |  2020 day 17 part 2
+ <s>2020 day 16 part 2</s>  |  2020 day 17 part 2
  2020 day 18 part 2  |  2020 day 19 part 2
  <s>2020 day 20 part 2</s>  |  2020 day 21 part 2
  2020 day 22 part 2  |  2020 day 23 part 2
@@ -308,3 +308,4 @@ t+2 == 2 &#47;c.<b><i>w</i>i<i>l</i>l51</b>.
 <br>t+10       160425@Wed morn - overnight radio (nevadent)
 <br>t+9	       200425@Easter sunday -- overnight + lincoln lawyer season 1
 <br>t+8	       210425@1 am easter monday watching The Order
+<br>t+7	       220425@4:36 am - boxsets
