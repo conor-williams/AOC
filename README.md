@@ -10,7 +10,7 @@ o for many solns/languages: web search: advent of code 20XY day AB solutions
 </pre>
 <!-- <embed src=unfin.txt> -->
 <!-- <object type="text/html" data="unfin.txt"></object> -->
-<h2>Notes (this README is a .html file (drag and drop into a browser)) lu:23-04-2025 @06:21GMT</h2>
+<h2>Notes (this README is a .html file (drag and drop into a browser)) lu:23-04-2025 @14:35GMT</h2>
 <address><b>conor.williams@gmail.com</b></address><br>
 
 <h3>Update (04-03-25):</h3>
@@ -31,7 +31,7 @@ o for many solns/languages: web search: advent of code 20XY day AB solutions
  <s>2020 day 12 part 2</s>  |  <s>2020 day 13 part 2</s>
  <s>2020 day 14 part 2</s>  |  <s>2020 day 15 part 2</s>
  <s>2020 day 16 part 2</s>  |  <s>2020 day 17 part 2</s>
- 2020 day 18 part 2  |  2020 day 19 part 2
+ <s>2020 day 18 part 2</s>  |  2020 day 19 part 2
  <s>2020 day 20 part 2</s>  |  2020 day 21 part 2
  2020 day 22 part 2  |  2020 day 23 part 2
  <s>2020 day 24 part 2</s>
@@ -309,4 +309,5 @@ t+2 == 2 &#47;c.<b><i>w</i>i<i>l</i>l51</b>.
 <br>t+9	       200425@Easter sunday -- overnight + lincoln lawyer season 1
 <br>t+8	       210425@1 am easter monday watching The Order
 <br>t+7	       220425@4:36 am - boxsets
-<br>t+6        230425@6:19 am   hacker movies -- sleep pattern still off 14/11 15/10
+<br>t+6        230425@6:19 am   hacker movies -- sl/pa 14/11 15/10
+<br>t+5        230425@14:25pm   went to tallaght -- all good in the hood.. sleep time..
