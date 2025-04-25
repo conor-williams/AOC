@@ -10,7 +10,7 @@ o for many solns/languages: web search: advent of code 20XY day AB solutions
 </pre>
 <!-- <embed src=unfin.txt> -->
 <!-- <object type="text/html" data="unfin.txt"></object> -->
-<h2>Notes (this README is a .html file (drag and drop into a browser)) lu:24-04-2025 @09:23GMT</h2>
+<h2>Notes (this README is a .html file (drag and drop into a browser)) lu:25-04-2025 @09:22GMT</h2>
 <address><b>conor.williams@gmail.com</b></address><br>
 
 <h3>Update (04-03-25):</h3>
@@ -32,7 +32,7 @@ o for many solns/languages: web search: advent of code 20XY day AB solutions
  <s>2020 day 14 part 2</s>  |  <s>2020 day 15 part 2</s>
  <s>2020 day 16 part 2</s>  |  <s>2020 day 17 part 2</s>
  <s>2020 day 18 part 2</s>  |  <s>2020 day 19 part 2</s>
- <s>2020 day 20 part 2</s>  |  2020 day 21 part 2
+ <s>2020 day 20 part 2</s>  |  <s>2020 day 21 part 2</s>
  2020 day 22 part 2  |  2020 day 23 part 2
  <s>2020 day 24 part 2</s>
 <!-- <s>YEAR: 2016- 2016 day 11 part 2</s> moved_to stragglers -->
@@ -311,4 +311,5 @@ t+2 == 2 &#47;c.<b><i>w</i>i<i>l</i>l51</b>.
 <br>t+7	       220425@4:36 am - boxsets
 <br>t+6        230425@6:19 am   hacker movies -- sl/pa 14/11 15/10
 <br>t+5        230425@14:25pm   went to tallaght -- all good in the hood.. sleep time..
-<br>t+5        240425@09:24pm   watching tracker...
+<br>t+4        240425@09:24am   watching tracker...
+<br>t+3        250425@9:23am    watching the empress
