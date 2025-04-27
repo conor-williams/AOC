@@ -40,8 +40,8 @@ void mysort();
 int fd;
 int main(int argc, char **argv)
 {
-        printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
-        FILE * a = fopen(argv[1], "r"); printf("2018 Day13.1\n"); fflush(stdout);
+        ///printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
+        FILE * a = fopen(argv[1], "r"); printf("		2018 Day13.1\n"); fflush(stdout);
 
 	fflush(stdout); fd = dup(1); close(1);
 while (1) 
@@ -176,8 +176,9 @@ void checkCollision() {
 		for (int j = 0; j < startsPos; j++) {
 			if (i == j) {continue;}
 			if (starts[i].x == starts[j].x && starts[i].y == starts[j].y) {
+				//printf("%d, collisions at %d,%d\n", colNum++, starts[i].x, starts[i].y); getchar();
 				fflush(stdout); dup2(fd, 1);
-				printf("%d, collisions at %d,%d\n", colNum++, starts[i].x, starts[i].y); getchar();
+				printf("**ans: %d,%d\n", starts[i].x, starts[i].y); getchar();
 				exit(0);
 			} else {
 				//printf("no coll\n");

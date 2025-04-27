@@ -45,10 +45,10 @@ void printit(int cX, int cY, char (*gridCopy)[tX+351]);
 #define getchar()
 int main(int argc, char **argv)
 {
-	printf("compile with gcc\n");
-	printf("SLOW ~2 minutes\n");
-	printf("%d", argc); printf("@%s", argv[1]); fflush(stdout);
-	FILE * a = fopen(argv[1], "r"); printf("2018 Day22.2\n"); fflush(stdout);
+	///printf("%d", argc); printf("@%s", argv[1]); fflush(stdout);
+	FILE * a = fopen(argv[1], "r"); printf("		2018 Day22.2\n"); fflush(stdout);
+	printf("	compile with gcc\n");
+	printf("	SLOW ~2 minutes\n");
 	//fflush(stdout); int fd = dup(1); close(1);
 
 	int leny = 0;

@@ -16,7 +16,7 @@ struct baseG {
 } gardaMAP[30];
 int main(int argc, char **argv)
 {
-        printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
+        ///printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
 
 	char newFileSorted[200];
 	sprintf(newFileSorted, "%s.sorted", argv[1]);
@@ -24,8 +24,9 @@ int main(int argc, char **argv)
 	sprintf(sortCmd, "sort %s > %s", argv[1], newFileSorted);		
 
 	system(sortCmd);
-        //FILE * a = fopen(argv[1], "r"); printf("Day4.1\n"); fflush(stdout);
-        FILE * a = fopen(newFileSorted, "r"); printf("Day4.1\n"); fflush(stdout);
+        //FILE * a = fopen(argv[1], "r");
+        FILE * a = fopen(newFileSorted, "r");
+       	printf("		2018 Day4.1\n"); fflush(stdout);
 	fflush(stdout); int fd = dup(1); close(1);
 
         char line1[1000];
@@ -125,6 +126,7 @@ int main(int argc, char **argv)
 		if (totsleep > maxMinutesOverall) {maxMinute = countMinMax; gardaMax = gardaMAP[i].hashnum; maxMinutesOverall = totsleep;}
 	}
 	fflush(stdout); dup2(fd, 1);
-	printf("**ans: %d * %d == %d\n", maxMinute, gardaMax, maxMinute * gardaMax);
+	//printf("**ans: %d * %d == %d\n", maxMinute, gardaMax, maxMinute * gardaMax);
+	printf("**ans: %d\n", maxMinute * gardaMax);
 		
 }

@@ -30,8 +30,8 @@ int main(int argc, char **argv)
 {
 	if (argc >= 3) {NUMW = atoi(argv[2]);}
 	if (argc >= 4) {TIME = atoi(argv[3]);}
-	printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
-	FILE * a = fopen(argv[1], "r"); printf("2018 Day7.2\n"); fflush(stdout);
+	////printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
+	FILE * a = fopen(argv[1], "r"); printf("		2018 Day7.2\n"); fflush(stdout);
 
 	fflush(stdout); int fd = dup(1); close(1);
 	int SIZE = 1000; char line1[SIZE];

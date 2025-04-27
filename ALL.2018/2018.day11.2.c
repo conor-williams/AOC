@@ -4,7 +4,7 @@ using namespace std;
 int sum[301][301];
 int input = 3613;
 signed main() {
-	printf("2018 Day11 part2\n");
+	printf("		2018 Day11 part2\n");
 	int bx, by, bs, best = INT_MIN;
 	for(int y = 1; y <= 300; y++) {
 		for(int x = 1; x <= 300; x++) {

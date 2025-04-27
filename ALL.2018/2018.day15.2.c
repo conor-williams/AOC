@@ -47,10 +47,10 @@ int main(int argc, char **argv)
 {
 	//int fd = dup(1);
 	//close(1);
-	printf("must compile with gcc (auto functions)\n");
-	printf("slow ~2min per round -- hint: use 23+hits\n");
-	printf("%d", argc); printf("@%s", argv[1]); fflush(stdout);
-	FILE * a = fopen(argv[1], "r"); printf("2018 Day15.2\n"); fflush(stdout);
+	////printf("%d", argc); printf("@%s", argv[1]); fflush(stdout);
+	FILE * a = fopen(argv[1], "r"); printf("		2018 Day15.2\n"); fflush(stdout);
+	printf("	must compile with gcc (auto functions)\n");
+	printf("	slow ~2min per round -- hint: use 23+hits\n");
 
 	fflush(stdout); int fd = dup(1); close(1);
 	while (1)

@@ -47,7 +47,7 @@ int run_activation_system(int magic_number, bool is_part_1) {
 }
 
 int main(int argc, char **argv) {
-	printf("2018 day21 Part2\n");
+	printf("		2018 day21 Part2\n");
 	// Open the file "i1.txt" for reading
 
 	ifstream infile(argv[1]);

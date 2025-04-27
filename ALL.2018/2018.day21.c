@@ -67,7 +67,7 @@ int instNum =0;
 int mycmp(char four[]);
 int main(int argc, char **argv)
 {
-	a = fopen(argv[1], "r"); printf("2018 Day21.1\n"); fflush(stdout);
+	a = fopen(argv[1], "r"); printf("		2018 Day21.1\n"); fflush(stdout);
 	int fd = dup(1); close(1);
 
 	while (1) 

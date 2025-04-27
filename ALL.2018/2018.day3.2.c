@@ -10,7 +10,7 @@
 #define BOARD_X 1000
 #define BOARD_Y 1000
 int lenx, leny;
-#define DAY "2018 day3 part2\n"
+#define DAY "		2018 Day3 part2\n"
 #undef _DEBUG_
 int board[BOARD_X][BOARD_Y];
 int boardClaim[BOARD_X][BOARD_Y];
@@ -19,7 +19,7 @@ void printboard();
 int main(int argc, char **argv)
 {
 	lenx = 0; leny = 0;
-	printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
+	////printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
 	FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
 

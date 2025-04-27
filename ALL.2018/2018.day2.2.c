@@ -9,7 +9,7 @@
 #define getchar()
 int lenx, leny;
 int numlet[26];
-#define DAY "2018 day2 part2\n"
+#define DAY "		2018 day2 part2\n"
 #define _DEBUG_
 int fd;
 int main(int argc, char **argv)
@@ -17,7 +17,7 @@ int main(int argc, char **argv)
 	int totFound2 = 0;
 	int totFound3 = 0;
 	lenx = 0; leny = 0;
-        printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
+        ////printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        

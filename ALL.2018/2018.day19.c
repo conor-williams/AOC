@@ -17,8 +17,8 @@ int instNum =0;
 int mycmp(char four[]);
 int main(int argc, char **argv)
 {
-	printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
-	FILE * a = fopen(argv[1], "r"); printf("2018 Day19.1\n"); fflush(stdout);
+	////printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
+	FILE * a = fopen(argv[1], "r"); printf("		2018 Day19.1\n"); fflush(stdout);
 
 	fflush(stdout); int fd = dup(1); close(1);
 
@@ -116,7 +116,9 @@ int main(int argc, char **argv)
 			if (regC ==  instREG) {k = regb[instREG];}
 		}
 		fflush(stdout); dup2(fd, 1);
-		printf("**regb[0] is %d\n", regb[0]);
+		//printf("**regb[0] is %d\n", regb[0]);
+		printf("**ans: %d\n", regb[0]);
+		fflush(stdout);
 		exit(0);
 	}
 }
