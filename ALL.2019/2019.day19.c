@@ -101,7 +101,7 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
 
-	fflush(stdout); int fd = dup(1); close(1);
+	fflush(stdout); fd = dup(1); close(1);
        
         char line1[MAX];
 	for (int i = 0 ; i < MAX; i++) {
