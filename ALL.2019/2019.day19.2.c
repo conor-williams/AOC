@@ -114,7 +114,7 @@ void TimerStop(int signum) {
 int main(int argc, char **argv)
 {
 	///TimerSet(55*60);
-	printf("SLOW: 2mins\n");
+	printf("SLOW: ~3mins\n");
 
 	struct pos_s st = {xCur, yCur, PATH};
 	
@@ -539,6 +539,7 @@ aft2:
 					ans += fY;
 					fflush(stdout); dup2(fd, 1);
 					printf("**ans %llu\n", ans);
+					fflush(stdout);
 					exit(0);
 				} else if (y99 > TOY) {
 					printf("widen...\n");

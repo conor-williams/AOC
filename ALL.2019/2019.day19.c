@@ -466,7 +466,8 @@ int machine(int machineNumber, int one) {
 				}
 				
 				fflush(stdout); dup2(fd, 1);
-				printf("**var_count %d\n", var_count);
+				printf("**ans: %d\n", var_count);
+				fflush(stdout);
 				exit(0);
 			} else {
 				return 100;
