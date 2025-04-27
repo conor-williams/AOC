@@ -13,7 +13,7 @@ using namespace std;
 #define getchar()
 
 int lenx, leny;
-#define DAY "2019 day22 part1\n"
+#define DAY "		2019 day22 part1\n"
 #undef _DEBUG_
 #define LINE 200
 #define END 10007
@@ -22,7 +22,7 @@ vector <int> deck;
 int main(int argc, char **argv)
 {
 	lenx = 0; leny = 0;
-        printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
+        ////printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); 
        
@@ -100,6 +100,7 @@ fclose(a);
 	printf("\n");
 	assert(pos1 == pos2);
 	fflush(stdout); dup2(fd, 1);
-	printf("******** pos1 %d\n", pos1);
+	//printf("******** pos1 %d\n", pos1);
+	printf("**ans: %d\n", pos1);
 
 }

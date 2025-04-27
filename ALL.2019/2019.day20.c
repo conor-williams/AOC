@@ -14,7 +14,7 @@
 using namespace std;
 
 int lenx, leny;
-#define DAY "2019 day20 part1\n"
+#define DAY "		2019 day20 part1\n"
 #undef _DEBUG_
 #define SZ 140
 char grid[SZ][SZ];
@@ -39,7 +39,7 @@ int main(int argc, char **argv)
 {
 	signal(SIGTSTP, signal_hand);
 	lenx = 0; leny = 0;
-        printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
+        ////printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); 
 	       

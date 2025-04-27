@@ -14,7 +14,7 @@
 using namespace std;
 
 int lenx, leny;
-#define DAY "2019 day 19 part2\n"
+#define DAY "		2019 day 19 part2\n"
 //#define _DEBUG_
 #undef DEBUG
 #define getchar()
@@ -114,7 +114,6 @@ void TimerStop(int signum) {
 int main(int argc, char **argv)
 {
 	///TimerSet(55*60);
-	printf("SLOW: ~3mins\n");
 
 	struct pos_s st = {xCur, yCur, PATH};
 	
@@ -141,9 +140,10 @@ int main(int argc, char **argv)
 
 	//grid[0][0] = 'X';
 	lenx = 0; leny = 0;
-        printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
+        ////printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY);
+	printf("	SLOW: ~3mins\n");
 	fflush(stdout); fd = dup(1); close(1);
        
         char line1[MAX];

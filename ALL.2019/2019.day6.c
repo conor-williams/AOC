@@ -12,7 +12,7 @@
 using namespace std;
 
 int lenx, leny;
-#define DAY "2019 day6 part1\n"
+#define DAY "		2019 day6 part1\n"
 #define _DEBUG_
 
 struct Fnode {
@@ -33,7 +33,7 @@ int foundEND = 0;
 int main(int argc, char **argv)
 {
 	lenx = 0; leny = 0;
-        printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
+        ////printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdout);
 
@@ -134,7 +134,7 @@ restart:
 	}
 
 	fflush(stdout); dup2(fd, 1);
-	printf("**%d\n", tot); 
+	printf("**ans: %d\n", tot); 
 }
 
 /*

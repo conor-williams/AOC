@@ -13,7 +13,7 @@
 using namespace std;
 
 int lenx, leny;
-#define DAY "2019 day 15 part1\n"
+#define DAY "		2019 day 15 part1\n"
 //#define _DEBUG_
 #undef DEBUG
 #define getchar()
@@ -82,7 +82,7 @@ int main(int argc, char **argv)
 
 	grid[SZ/2][SZ/2] = 'X';
 	lenx = 0; leny = 0;
-        printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
+        ////printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
@@ -196,7 +196,8 @@ char reverseInput(char in) {
 void next(int x, int y, int path) {
 	if (x == OXX && y == OXY) {
 		fflush(stdout); dup2(fd, 1);
-		printf("end reached path is %d\n", path);
+		//printf("end reached path is %d\n", path);
+		printf("**ans: %d\n", path);
 		exit(0);
 	}
 

@@ -16,7 +16,7 @@ using namespace std;
 
 #define getchar()
 int lenx, leny;
-#define DAY "2019 day14 part1\n"
+#define DAY "		2019 day14 part1\n"
 #define _DEBUG_
 
 struct Fnode {
@@ -38,12 +38,12 @@ unordered_map <string, double> mpspare;
 int fd;
 int main(int argc, char **argv)
 {
-	printf("SLOW: ~%d minutes\n", 5);
 
 	lenx = 0; leny = 0;
-        printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
+        ////printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdout);
+	printf("	SLOW: ~%d minutes\n", 5);
        
 	fflush(stdout); fd = dup(1); close(1);
         char line1[SIZEL];

@@ -156,7 +156,7 @@ long long two(vector<Body>& moons) {
 }
 
 int main(int argc, char **argv) {
-	printf("2019 Day12 Part 2\n");
+	printf("		2019 Day12 Part 2\n");
 #ifdef _ACCOLADE_
 	printf("codeconver.ai (no mods) + reddit @ dartcoder/algos(github) <-> python\n");
 #endif

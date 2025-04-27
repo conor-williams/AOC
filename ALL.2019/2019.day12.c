@@ -8,7 +8,7 @@
 
 #define getchar()
 int lenx, leny;
-#define DAY "2019 day12 part1\n"
+#define DAY "		2019 day12 part1\n"
 #undef _DEBUG_
 #define MAX 50
 
@@ -28,7 +28,7 @@ struct pos_s pos[10];
 int main(int argc, char **argv)
 {
 	lenx = 0; leny = 0;
-        printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
+        ////printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        

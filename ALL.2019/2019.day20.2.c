@@ -13,7 +13,7 @@
 using namespace std;
 
 int lenx, leny;
-#define DAY "2019 day20 part2\n"
+#define DAY "		2019 day20 part2\n"
 #undef _DEBUG_
 #define SZ 150
 char grid[SZ][SZ];
@@ -40,11 +40,10 @@ int main(int argc, char **argv)
 {
 	signal(SIGTSTP, signal_hand);
 	lenx = 0; leny = 0;
-	printf("SLOW ~38seconds\n");
 
 	struct rlimit limit;
         getrlimit (RLIMIT_STACK, &limit);
-        printf ("\nStack Limit = %ld and %ld max\n", limit.rlim_cur, limit.rlim_max);
+        ///printf ("\nStack Limit = %ld and %ld max\n", limit.rlim_cur, limit.rlim_max);
         if (limit.rlim_cur < 900000000) {printf("need to widen stack with -Wl,--stack,999777666\n"); exit(10);}
 
 
@@ -52,6 +51,7 @@ int main(int argc, char **argv)
 	//printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
 	FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdout);
+	printf("	SLOW ~38seconds\n"); fflush(stdout);
 	int fd = dup(1); close(1);
 
 	char line1[SZ];

@@ -23,7 +23,7 @@ int numPos = 0;
 int firstHash = -1;
 int lenx, leny;
 int turnon = 0;
-#define DAY "2019 day 17 part2\n"
+#define DAY "		2019 day 17 part2\n"
 //#define _DEBUG_
 #undef DEBUG
 //#define getchar()

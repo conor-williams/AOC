@@ -17,7 +17,7 @@ using namespace std;
 
 //#define getchar()
 int lenx, leny;
-#define DAY "2019 day16 part2\n"
+#define DAY "		2019 day16 part2\n"
 //#undef _DEBUG_
 #define SIZE 653
 //vector <int> base = {0,1,0,-1};

@@ -18,7 +18,7 @@ using namespace std;
 
 
 int lenx, leny;
-#define DAY "2019 day 23 part2\n"
+#define DAY "		2019 day 23 part2\n"
 #undef _DEBUG_
 //#define _DEBUG_
 #define getchar()

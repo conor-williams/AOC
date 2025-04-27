@@ -22,7 +22,7 @@ using ll=long long int;
 using namespace std;
 //compile: copy in bigint .h headers : -I.
 int lenx, leny;
-#define DAY "2019 day22 part2\n"
+#define DAY "		2019 day22 part2\n"
 #undef _DEBUG_
 #define getchar()
 #define LINE 200
@@ -46,7 +46,7 @@ int fd;
 int main(int argc, char **argv)
 {
 	lenx = 0; leny = 0;
-        printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
+        ///printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); 
 
