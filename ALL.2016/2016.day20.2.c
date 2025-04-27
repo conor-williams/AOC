@@ -12,7 +12,7 @@
 using namespace std;
 
 int lenx, leny;
-#define DAY "2016 day20 part2"
+#define DAY "		2016 day20 part2\n"
 #define _DEBUG_
 unsigned long long tot;
 #define SIZE 200
@@ -66,7 +66,7 @@ int main(int argc, char **argv)
 	tot = 0;lenx = 0; leny = 0;
 	//printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 	FILE * a = fopen(argv[1], "r"); 
-	printf("		%s\n", DAY); fflush(stdout);
+	printf(DAY); fflush(stdout);
 
 	fd = dup(1); close(1);
 

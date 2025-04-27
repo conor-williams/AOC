@@ -45,8 +45,8 @@ void compute_md5(const char *input) {
 //////////////////////
 int main(int argc, char **argv)
 {
-	printf("SLOW ~30secoonds\n");
-	printf("2016 Day5 Part 1\n");
+	printf("		2016 Day5 Part 1\n");
+	printf("	SLOW ~30secoonds\n");
 	unsigned long i = 0; 
 	char buf[100];
 

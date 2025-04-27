@@ -15,7 +15,7 @@
 using namespace std;
 
 int lenx, leny;
-#define DAY "2016 day21 part2 \n"
+#define DAY "		2016 day21 part2\n"
 #define _DEBUG_
 long tot;
 #define SIZE 100
@@ -25,7 +25,7 @@ vector <char> VLINE;
 int main(int argc, char **argv)
 {
 	tot = 0;lenx = 0; leny = 0;
-        printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
+        ///printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        

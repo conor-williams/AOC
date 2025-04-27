@@ -20,7 +20,7 @@ void TimerStop(int signum);
 void TimerSet(int interval);
 
 void TimerSet(int interval) {
-    printf("starting timer\n");
+    //printf("starting timer\n");
     struct itimerval it_val;
 
     it_val.it_value.tv_sec = interval;
@@ -111,8 +111,8 @@ int main(int argc, char **argv)
 {
 
 	TimerSet(1200);
-	printf("SLOW ~3mins\n");
-	printf("2016 day14 part 2\n");
+	printf("		2016 day14 part 2\n");
+	printf("	SLOW ~3mins\n");
 	fflush(stdout); fd = dup(1); close(1);
 	for (int i = 0; i < UPTO; i++) {
 		threefive[i].five =0;

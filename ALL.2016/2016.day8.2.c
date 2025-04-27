@@ -8,7 +8,7 @@
 
 #define getchar()
 int lenx, leny;
-#define DAY "2016 day8 Part2 \n"
+#define DAY "		2016 day8 Part2\n"
 #define _DEBUG_
 long tot;
 
@@ -19,7 +19,7 @@ void printGrid();
 int main(int argc, char **argv)
 {
 	tot = 0;lenx = 0; leny = 0;
-        printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
+        ///printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
@@ -90,6 +90,7 @@ end:
 }
 fclose(a);
 	fflush(stdout); dup2(fd, 1);
+	printf("**ans:\n");
 	printGrid();
 	int count = 0;
 	for (int x = 0; x < XM; x++) {

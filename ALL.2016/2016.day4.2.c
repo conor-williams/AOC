@@ -9,7 +9,7 @@
 #define getchar()
 // needs cygwin package: words
 int lenx, leny;
-#define DAY "2016 day4 part2 \n"
+#define DAY "		2016 day4 part2\n"
 #undef _DEBUG_
 long tot;
 FILE *b;
@@ -33,9 +33,9 @@ int isitaword(char *incoming) {
 int main(int argc, char **argv)
 {
 	tot = 0;lenx = 0; leny = 0;
-        b = fopen("/usr/share/dict/words", "r"); 
-	if (b == NULL) {printf("ERROR: /usr/share/dist/words not here - install cygwin package: words\n"); exit(0);}
-        printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
+        //b = fopen("/usr/share/dict/words", "r"); 
+	//if (b == NULL) {printf("ERROR: /usr/share/dist/words not here - install cygwin package: words\n"); exit(0);}
+        //printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        

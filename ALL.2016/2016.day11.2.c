@@ -117,8 +117,8 @@ return false;
 
 int main(int argc, char **argv) {
 	//printf("ta->> karlanka + products.codeporting.ai + codeconvert.ai -- (broke into snippets)\n");
-	printf("2016 day 11 Part 2\n");
-	printf("	--	does not use an input file\n");
+	printf("		2016 day 11 Part 2\n");
+	//printf("	--	does not use an input file\n");
 	//vector<pair<vector<int>, int>> visited = { {{0, 1, 0, 2, 0}, 0} };
 	//#visited = [([0, 1, 0, 2, 0], 0)]  # test
 	//vector<pair<vector<int>, int>> visited = { {{0, 0, 0, 0, 1, 0, 1, 2, 2, 2, 2}, 0} };

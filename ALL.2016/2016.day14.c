@@ -57,7 +57,7 @@ int compute_md5(const char *input, int timerOn, int pr) {
 int main(int argc, char **argv)
 {
 
-	printf("2016 day14 part1\n");
+	printf("		2016 day14 part1\n");
 	fflush(stdout); int fd = dup(1); close(1);
 	unsigned long i = 0; 
 	char buf[100];

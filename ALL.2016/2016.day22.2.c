@@ -22,7 +22,7 @@ int mycount = 0;
 //int path = 0;
 int minPathLen;
 int lenx, leny;
-#define DAY "2016 day22 part2\n"
+#define DAY "		2016 day22 part2\n"
 #define _DEBUG_
 long tot;
 long tot1;
@@ -138,7 +138,7 @@ int main(int argc, char **argv)
 {
 	struct rlimit limit;
 	getrlimit (RLIMIT_STACK, &limit);
-	printf ("\nStack Limit = %ld and %ld max\n", limit.rlim_cur, limit.rlim_max);
+	///printf ("\nStack Limit = %ld and %ld max\n", limit.rlim_cur, limit.rlim_max);
 	if (limit.rlim_cur < 900000000) {printf("need to widen stack with -Wl,--stack,999777666\n"); exit(10);}
 	//signal(SIGILL, sig_handler);
 	//signal(SIGKILL, sig_handler);

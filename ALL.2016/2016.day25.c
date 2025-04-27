@@ -8,7 +8,7 @@
 
 #define getchar()
 int lenx, leny;
-#define DAY "2016 day25 part1 \n"
+#define DAY "		2016 day25 part1\n"
 #define _DEBUG_
 long tot;
 #define SIZE 200
@@ -18,7 +18,7 @@ char instrs[100][20];
 int main(int argc, char **argv)
 {
 	tot = 0;lenx = 0; leny = 0;
-        printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
+        //printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
@@ -147,7 +147,7 @@ fclose(a);
 				
 			printf("INVALID.. CONT [%s]\n", instrs[i]);
 		}
-		if (count == 1000) {fflush(stdout); dup2(fd, 1); printf("i:[%d] is good\n", i); exit(0);} else {/*printf("i:%d bad\n", i);*/}
+		if (count == 1000) {fflush(stdout); dup2(fd, 1); printf("**ans: [%d]\n", i); exit(0);} else {/*printf("i:%d bad\n", i);*/}
 	}
 
 	//printf("***tot %ld END\n", tot); fflush(stdout);
