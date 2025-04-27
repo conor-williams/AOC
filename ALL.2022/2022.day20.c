@@ -39,9 +39,9 @@ int main(int argc, char **argv)
 {
 	if (argc == 3) {hide = 1;}	
 	signal(SIGTSTP, &sigfunc);
-	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
+	///printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-	a = fopen(argv[1], "r"); printf("2022 Day 20 Part 1\n"); fflush(stdout);
+	a = fopen(argv[1], "r"); printf("		2022 Day 20 Part 1\n"); fflush(stdout);
 
 	fflush(stdout); fd = dup(1); close(1);
 	char line1[LINE];

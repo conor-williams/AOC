@@ -160,7 +160,7 @@ auto part2(const blueprints_t& blueprints)
 
 int main(int argc, char **argv)
 {
-	printf("2022 Day 19 Part 2\n");
+	printf("		2022 Day 19 Part 2\n");
 	// auto test_values = load_input("../src/day19/test_input.txt");
 	auto actual_values = load_input(argv[1]);
 

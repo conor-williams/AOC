@@ -47,9 +47,9 @@ int check(char a, char b, char c, int *x, int *y);
 int main(int argc, char **argv)
 {
 	signal(SIGTSTP, &sigfunc);
-	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
+	////printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-	a = fopen(argv[1], "r"); printf("2022 Day 14 part2\n"); fflush(stdout);
+	a = fopen(argv[1], "r"); printf("		2022 Day 14 part2\n"); fflush(stdout);
 
 	//fflush(stdout); int fd = dup(1); //close(1);
 	char line1[LINE];

@@ -33,7 +33,7 @@ char* lltoa(long long val, int base){
 
 }
 int main(int argc, char **argv) {
-	printf("2022 Day 25 Part 1\n"); fflush(stdout);
+	printf("		2022 Day 25 Part 1\n"); fflush(stdout);
 #ifdef _ACCOLADE_
 	printf("thank you java (openjdk-23.0.2) + codeconvert.ai\n");
 #endif

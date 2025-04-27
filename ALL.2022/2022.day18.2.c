@@ -20,9 +20,9 @@ int floodFill3Dp(int x, int y, int z);
 int main(int argc, char **argv)
 {
 	signal(SIGTSTP, &sigfunc);
-	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
+	///printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-	a = fopen(argv[1], "r"); printf("2022 Day18 Part2\n"); fflush(stdout);
+	a = fopen(argv[1], "r"); printf("		2022 Day18 Part2\n"); fflush(stdout);
 	char line1[LINE];
 	char line2[LINE];
 

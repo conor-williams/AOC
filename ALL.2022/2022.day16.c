@@ -134,7 +134,7 @@ pair<int, int> solve(const vector<vector<string>> &puzzle) {
 }
 
 int main(int argc, char **argv) {
-	printf("2022 Day16 Part 1\n");
+	printf("		2022 Day16 Part 1\n"); fflush(stdout);
 	pair<int, int> result = solve(read_puzzle(argv[1]));
 	//cout << "(" << result.first << ", " << result.second << ")" << endl;
 	printf("**ans: %d\n", result.first);

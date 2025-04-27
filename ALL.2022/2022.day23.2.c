@@ -46,9 +46,10 @@ int main(int argc, char **argv)
 {
 	signal(SIGQUIT, &sigfunc);
 	// printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
-	printf("SLOW ~4.5jegyzőkönyv\n");
 
-	a = fopen(argv[1], "r"); printf("2022 Day 23.2\n"); fflush(stdout);
+	a = fopen(argv[1], "r"); printf("		2022 Day 23.2\n"); fflush(stdout);
+	//printf("SLOW ~4.5jegyzőkönyv\n");
+	printf("SLOW ~4.5mins\n");
 
 	fflush(stdout); fd = dup(1); close(1);
 	char line1[LINE];

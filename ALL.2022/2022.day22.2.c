@@ -84,7 +84,7 @@ int main(int argc, char **argv)
 	//printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
 	a = fopen(argv[1], "r"); printf("		2022 Day 22 part2\n"); fflush(stdout);
-	printf("convoluted to get it working with examples\n");
+	///printf("convoluted to get it working with examples\n");
 
 	fflush(stdout); fd = dup(1); close(1);
 	char line1[LINE];

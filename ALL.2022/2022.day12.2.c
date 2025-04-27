@@ -61,12 +61,12 @@ void TimerStop(int signum) {
 //main:::if (argc == 3) {printf("SETTING TIME TO [%d]\n", atoi(argv[2])); TimerSet(atoi(argv[2]));}
 int main(int argc, char **argv)
 {
-	printf("SLOW ~15seconds\n");
 	//TimerSet(30);
 	signal(SIGTSTP, &sigfunc);
-	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
+	////printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-	a = fopen(argv[1], "r"); printf("2022 Day 12 - 2\n"); fflush(stdout);
+	a = fopen(argv[1], "r"); printf("		2022 Day 12.2\n"); fflush(stdout);
+	printf("	SLOW ~15seconds\n");
 
 	fflush(stdout); fd = dup(1); close(1);
 	char line1[LINE];

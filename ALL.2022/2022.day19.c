@@ -76,13 +76,13 @@ char line2[LINE];
 int main(int argc, char **argv)
 {
 
-	printf("SLOW ~1minute 30 seconds\n");
 	//signal(SIGTSTP, &sigfunc);
 	signal(SIGQUIT, &sigfunc);
 	memset(blue, '0', sizeof(blue));
-	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
+	////printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-	a = fopen(argv[1], "r"); printf("2022 Day 19 - part 1\n"); fflush(stdout);
+	a = fopen(argv[1], "r"); printf("		2022 Day 19.1\n"); fflush(stdout);
+	printf("	SLOW ~1minute 30 seconds\n");
 
 	fflush(stdout); int fd = dup(1); close(1);
 	int leny = 0;

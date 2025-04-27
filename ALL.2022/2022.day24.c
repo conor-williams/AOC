@@ -66,10 +66,10 @@ int main(int argc, char **argv)
 	if (argc == 3) {dep = atoi(argv[2]); printf("using depth %d\n", dep);}
 
 	signal(SIGTSTP, &sigfunc);
-	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
+	///printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
 
-	a = fopen(argv[1], "r"); printf("2022 Day 24 Part1 \n"); fflush(stdout);
+	a = fopen(argv[1], "r"); printf("		2022 Day 24 Part1\n"); fflush(stdout);
 	fflush(stdout); int fd = dup(1); close(1);
 	if (hide == 1) {
 		fd = dup(1); close(1);
