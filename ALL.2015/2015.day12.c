@@ -5,7 +5,7 @@
 #include <math.h>
 
 int lenx, leny;
-#define DAY "2015 day12 part1\n"
+#define DAY "		2015 day12 part1\n"
 #undef _DEBUG_
 
 int main(int argc, char **argv)

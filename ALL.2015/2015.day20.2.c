@@ -12,10 +12,10 @@ int tot = 0;
 int NUMHOUSES = INP;
 int main(int argc, char **argv)
 {
-        printf("%d", argc);
+        //printf("%d", argc);
 
-        printf("2015 Day20.2\n"); fflush(stdout);
-	printf("Using Input %d\n", NUMHOUSES);
+        printf("		2015 Day20.2\n"); fflush(stdout);
+	//printf("Using Input %d\n", NUMHOUSES);
 
 	fflush(stdout); int fd = dup(1); close(1);
 	int up;

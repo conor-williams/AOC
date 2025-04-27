@@ -7,14 +7,14 @@
 
 #define getchar()
 
-#define DAY "2015 Day 2.1"
+#define DAY "		2015 Day 2.1"
 int tot = 0;
 int main(int argc, char **argv)
 {
-        printf("%d", argc); printf("%s", argv[1]); fflush(stdin); fflush(stdout);
+        //printf("%d", argc); printf("%s", argv[1]); fflush(stdin); fflush(stdout);
 
         FILE * a = fopen(argv[1], "r");
-	printf(DAY); printf("\n"); fflush(stdin); fflush(stdout);
+	printf(DAY); printf("\n"); fflush(stdout);
 
 	fflush(stdout); int fd = dup(1); close(1);
 

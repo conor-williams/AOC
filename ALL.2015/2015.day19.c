@@ -13,7 +13,7 @@
 using namespace std;
 
 int lenx, leny;
-#define DAY "2015 day19 part1\n"
+#define DAY "		2015 day19 part1\n"
 #undef _DEBUG_
 multimap <string, string> mp;
 map <string, string> mpStore;

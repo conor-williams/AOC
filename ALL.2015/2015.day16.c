@@ -8,7 +8,7 @@
 
 #define getchar()
 int lenx, leny;
-#define DAY "2015 day16 part1\n"
+#define DAY "		2015 day16 part1\n"
 #undef _DEBUG_
 struct sue {
 	int children;

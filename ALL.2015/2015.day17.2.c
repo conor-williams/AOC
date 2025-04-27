@@ -14,7 +14,7 @@ using namespace std;
 
 int buckets[100];
 int lenx, leny;
-#define DAY "2015 day17 part2\n"
+#define DAY "		2015 day17 part2\n"
 #undef _DEBUG_
 int main(int argc, char **argv)
 {

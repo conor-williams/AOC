@@ -9,7 +9,7 @@
 #define getchar()
 int buckets[100];
 int lenx, leny;
-#define DAY "2015 day18 part1\n"
+#define DAY "		2015 day18 part1\n"
 #undef _DEBUG_
 char grid[105][105];
 char gridtmp[105][105];
