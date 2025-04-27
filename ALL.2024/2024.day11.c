@@ -30,10 +30,10 @@ int main(int argc, char **argv)
 {
 
         signal(SIGQUIT, &sigfunc);
-        printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
+        ////printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 	if (argc == 3) {TIMES = atoi(argv[2]);} 
 
-        a = fopen(argv[1], "r"); printf("2024 Day 11 Part 1\n"); fflush(stdout);
+        a = fopen(argv[1], "r"); printf("		2024 Day 11 Part 1\n"); fflush(stdout);
 
 	fflush(stdout); int fd = dup(1); close(1);
         char line1[LINE];

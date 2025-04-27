@@ -56,15 +56,15 @@ void sigfunc(int a) { printf("[[ %d of %d ]]\n", curInQ, curTot); }
 struct diff_s diffs[3000][2001];
 int main(int argc, char **argv)
 {
-	printf("SLOW ~2minutes\n");
         clock_t start, end; double cpu_time_used;
 
 	if (argc == 3) {TIMES = atoi(argv[2]);}
 
 	signal(SIGQUIT, &sigfunc);
-	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
+	///printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-	a = fopen(argv[1], "r"); printf("2024 Day 22 Part 2\n"); fflush(stdout);
+	a = fopen(argv[1], "r"); printf("		2024 Day 22 Part 2\n"); fflush(stdout);
+	printf("	SLOW ~2minutes\n");
 
 	fflush(stdout); int fd = dup(1); close(1);
 	char line1[LINE];

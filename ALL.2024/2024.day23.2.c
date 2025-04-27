@@ -54,19 +54,19 @@ bool cmp(pair<string, int>& a, pair<string, int>& b)
 int fd = 0;
 int main(int argc, char **argv)
 {
-	printf("SLOW ~20seconds\n");
 	clock_t start, end; double cpu_time_used;
 	start = clock();
 	//DO
 	end = clock();
 	cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
-	printf("        time: %f seconds\n", cpu_time_used);
+	//printf("        time: %f seconds\n", cpu_time_used);
 
 	//signal(SIGTSTP, &sigfunc);
 	signal(SIGQUIT, &sigfunc);
-	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
+	///printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-	a = fopen(argv[1], "r"); printf("2024 Day 23 Part 2\n"); fflush(stdout);
+	a = fopen(argv[1], "r"); printf("		2024 Day 23 Part 2\n"); fflush(stdout);
+	printf("	SLOW ~20seconds\n");
 
 	fflush(stdout); fd = dup(1); close(1);
 	char line1[LINE];

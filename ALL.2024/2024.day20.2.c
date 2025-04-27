@@ -232,11 +232,11 @@ int getPathLength(tuple <int, int, int, int> bla) {
 int main(int argc, char **argv)
 {
 	//signal(SIGTSTP, &sigfunc);
-	printf("SLOW ~25seconds\n");
 	signal(SIGQUIT, &sigfunc);
-	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
+	///printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-	a = fopen(argv[1], "r"); printf("2024 Day 20 Part 2\n"); fflush(stdout);
+	a = fopen(argv[1], "r"); printf("		2024 Day 20 Part 2\n"); fflush(stdout);
+	printf("	SLOW ~25seconds\n");
 
 	fflush(stdout); int fd = dup(1); close(1);
 	char line1[LINE];

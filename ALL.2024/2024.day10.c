@@ -29,9 +29,9 @@ void loop (int x, int y, int nVal, int sx, int sy);
 int main(int argc, char **argv)
 {
         signal(SIGTSTP, &sigfunc);
-        printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
+        ////printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-        a = fopen(argv[1], "r"); printf("2024 Day 10 Part 1\n"); fflush(stdout);
+        a = fopen(argv[1], "r"); printf("		2024 Day 10 Part 1\n"); fflush(stdout);
 
 	fflush(stdout); int fd = dup(1); close(1);
         char line1[LINE];
@@ -68,7 +68,8 @@ fclose(a);
 	}
 
 	fflush(stdout); dup2(fd, 1);
-	printf("**ans (mpAns size is) %d\n", (int)mpAns.size());
+	//printf("**ans (mpAns size is) %d\n", (int)mpAns.size());
+	printf("**ans: %d\n", (int)mpAns.size());
 	//printf("count is %d\n", count);
 	//printf("**ans %ld\n", ans);
 

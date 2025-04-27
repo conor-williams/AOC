@@ -31,9 +31,9 @@ deque <struct prize_s> de;
 int main(int argc, char **argv)
 {
         signal(SIGTSTP, &sigfunc);
-        printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
+        ////printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-        a = fopen(argv[1], "r"); printf("2024 Day 13 Part 1\n"); fflush(stdout);
+        a = fopen(argv[1], "r"); printf("		2024 Day 13 Part 1\n"); fflush(stdout);
 
 	fflush(stdout); int fd = dup(1); close(1);
         char line1[LINE];
