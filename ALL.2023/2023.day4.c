@@ -12,10 +12,9 @@ int arr[10000] = {0};
 int endarr = 0;
 int main(int argc, char **argv)
 {
-	printf("%d", argc);
-	printf("%s", argv[1]);
+	///printf("%d", argc); printf("%s", argv[1]);
 	FILE * a = fopen(argv[1], "r");
-	printf("2023 Day4.1\n");
+	printf("		2023 Day4.1\n");
 	fflush(stdout); int fd = dup(1); close(1);
 	char line1[1000];
 	int linenum = 0;

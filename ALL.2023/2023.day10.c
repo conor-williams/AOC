@@ -21,8 +21,8 @@ int main(int argc, char **argv)
 {
 	//int r = 0;
 	//char starts[100][5];
-	printf("%d", argc); printf("%s", argv[1]); fflush(stdin); fflush(stdout);
-	FILE * a = fopen(argv[1], "r"); printf("2023 Day10.1\n"); fflush(stdin); fflush(stdout);
+	///printf("%d", argc); printf("%s", argv[1]); fflush(stdin); fflush(stdout);
+	FILE * a = fopen(argv[1], "r"); printf("		2023 Day10.1\n"); fflush(stdin); fflush(stdout);
 
 	fflush(stdout); int fd = dup(1); close(1);
 	char line1[1000];

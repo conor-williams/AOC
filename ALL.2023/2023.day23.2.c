@@ -96,8 +96,8 @@ int main(int argc, char **argv)
 {
 	//printf("%d", argc); printf("%s", argv[1]); fflush(stdin); fflush(stdout);
 
-	FILE * a = fopen(argv[1], "r"); printf("2023 Day23 Part2\n"); fflush(stdout);
-	printf("SLOW >59seconds <1min2seconds\n");
+	FILE * a = fopen(argv[1], "r"); printf("		2023 Day23 Part2\n"); fflush(stdout);
+	printf("	SLOW ~1min\n"); fflush(stdout);
 	int fd = dup(1); close(1);
 	char line1[1000];
 

@@ -27,7 +27,7 @@ Time:        53     91     67     68
 Distance:   250   1330   1081   1025
 */
 
-	a = fopen(argv[1], "r"); printf("2023 Day 6 Part 1\n"); fflush(stdout);
+	a = fopen(argv[1], "r"); printf("		2023 Day 6 Part 1\n"); fflush(stdout);
 	fflush(stdout); int fd = dup(1); //close(1);
 	char line1[LINE];
 

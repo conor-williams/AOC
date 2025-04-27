@@ -14,7 +14,7 @@ int commandFound = 0;
 long tot = 0;
 int leny = 0;
 int lenx = 0;
-#define DAY "2023 Day15 Part2\n"
+#define DAY "		2023 Day15 Part2\n"
 int hashval(char *token);
 struct lens box[256][30000];
 int boxes[256];

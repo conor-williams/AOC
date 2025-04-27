@@ -19,7 +19,7 @@
 #include <unistd.h>
 
 
-#define DAY "2023 Day12 Part2"
+#define DAY "		2023 Day12 Part2"
 using namespace std;
 
 int main(int argc, char **argv) {

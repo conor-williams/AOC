@@ -5,7 +5,7 @@
 #include <math.h>
 #include <unistd.h>
 
-#define DAY "2023 Day13 Part2"
+#define DAY "		2023 Day13 Part2"
 
 void doif(int x1, int x2, int y);
 int doifY(int y1, int y2);

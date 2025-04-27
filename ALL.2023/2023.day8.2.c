@@ -33,9 +33,9 @@ int gcd(unsigned long long a, unsigned long long b);
 unsigned long long findlcm(vector <unsigned long long>arr, int n);
 int main(int argc, char **argv)
 {
-	printf("%d", argc); printf("%s", argv[1]); fflush(stdin); fflush(stdout);
+	///printf("%d", argc); printf("%s", argv[1]); fflush(stdin); fflush(stdout);
 
-	FILE * a = fopen(argv[1], "r"); printf("Day8.2\n"); fflush(stdin); fflush(stdout);
+	FILE * a = fopen(argv[1], "r"); printf("		2023 Day8.2\n"); fflush(stdin); fflush(stdout);
 	fflush(stdout); int fd = dup(1); close(1);
 	map<string, struct lr> mp;
 

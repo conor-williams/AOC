@@ -45,13 +45,13 @@ int main(int argc, char **argv)
 	//DO
 	end = clock();
 	cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
-	printf("        time: %f seconds\n", cpu_time_used);
+	///printf("        time: %f seconds\n", cpu_time_used);
 
 	//signal(SIGTSTP, &sigfunc);
 	signal(SIGQUIT, &sigfunc);
-	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
+	////printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-	a = fopen(argv[1], "r"); printf("2023 Day 1 Part 2\n"); fflush(stdout);
+	a = fopen(argv[1], "r"); printf("		2023 Day 1 Part 2\n"); fflush(stdout);
 	char line1[LINE];
 
 	leny = 0;

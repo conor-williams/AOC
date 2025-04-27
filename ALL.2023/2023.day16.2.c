@@ -9,7 +9,7 @@
 #define getchar()
 #define assert(asdf)
 int lenx, leny;
-#define DAY "2023 day16 part2\n"
+#define DAY "		2023 day16 part2\n"
 #undef _DEBUG_
 int tot;
 struct inst {
@@ -68,13 +68,13 @@ void TimerStop(int signum) {
 //main:::if (argc == 3) {printf("SETTING TIME TO [%d]\n", atoi(argv[2])); TimerSet(atoi(argv[2]));}
 int main(int argc, char **argv)
 {
-	printf("SLOW ~3minutes\n");
-	TimerSet(55*60);
+	///TimerSet(55*60);
 	myinstarrayLen = 0;
 	tot = 0;lenx = 0; leny = 0;
 	//printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
 	FILE * a = fopen(argv[1], "r"); 
-	printf(DAY); fflush(stdin); fflush(stdout);
+	printf(DAY); fflush(stdout);
+	printf("	SLOW ~3minutes\n");
 
 	fflush(stdout); fd = dup(1); close(1);
 	char line1[200];

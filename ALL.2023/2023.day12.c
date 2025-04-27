@@ -18,7 +18,7 @@ void printmaze();
 int leny = 0;
 int lenx = 0;
 int distfun(int y1, int x1, int y2, int x2);
-#define DAY "2023 Day12 Part1"
+#define DAY "		2023 Day12 Part1"
 void buildit3(int *nums, int pos, int one, int two, int three);
 void buildit4(int *nums, int pos, int one, int two, int three, int four);
 void buildit5(int *nums, int pos, int one, int two, int three, int four, int five);
@@ -32,7 +32,7 @@ int main(int argc, char **argv)
 {
 	//int zzz = 0;
 	//char starts[100][5];
-	printf("args: %d ", argc); printf("File: %s ", argv[1]); fflush(stdin); fflush(stdout);
+	////printf("args: %d ", argc); printf("File: %s ", argv[1]); fflush(stdin); fflush(stdout);
 	FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); printf("\n"); fflush(stdin); fflush(stdout);
 

@@ -268,7 +268,7 @@ long long part2(const std::string &puzzle_input) {
 
 int main(int argc, char **argv){
 
-	printf("2023 Day 19 Part2\n");
+	printf("		2023 Day 19 Part2\n");
 #ifdef _ACCOLADE_
 	printf("mgtezak on reddit - + codeconvert.ai, t.y.\n");
 #endif

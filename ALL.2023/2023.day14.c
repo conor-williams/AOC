@@ -7,7 +7,7 @@
 #include <unistd.h>
 
 #define getchar()
-#define DAY "2023 Day14 Part1"
+#define DAY "		2023 Day14 Part1"
 
 char line1[1000];
 char line[1000][1000];
@@ -20,7 +20,7 @@ void someDebug();
 int main(int argc, char **argv)
 {
 	tot = 0;
-	printf("%d\n", argc); printf("%s\n", argv[1]); fflush(stdin); fflush(stdout);
+	///printf("%d\n", argc); printf("%s\n", argv[1]); fflush(stdin); fflush(stdout);
 	FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); printf("\n"); fflush(stdin); fflush(stdout);
 

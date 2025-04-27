@@ -8,7 +8,7 @@
 
 #define getchar()
 int lenx, leny;
-#define DAY "2023 day18 part1 \n"
+#define DAY "		2023 day18 part1 \n"
 #undef _DEBUG_
 long tot;
 
@@ -27,11 +27,11 @@ void controllerfloodpuzzle(char what);
 void floodpuzzle(int myx, int myy, char what);
 int main(int argc, char **argv)
 {
-	printf("widen the stack\n");
 	tot = 0;lenx = 0; leny = 0;
-	printf("%d", argc); printf("%s", argv[1]);
+	///printf("%d", argc); printf("%s", argv[1]);
 	FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdout);
+	printf("	make sure the stack is widened\n");
 
 	fflush(stdout); int fd = dup(1); close(1);
 	char line1[220];

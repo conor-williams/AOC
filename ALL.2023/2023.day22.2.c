@@ -43,7 +43,7 @@ bool check_if_overlap(const Brick& b1, const Brick& b2) {
 }
 
 int main(int argc, char * argv[]) {
-	printf("2023 Day 22 Part 2\n");
+	printf("		2023 Day 22 Part 2\n");
 	string input;
 	if (argc > 1) {
 		input = argv[1];

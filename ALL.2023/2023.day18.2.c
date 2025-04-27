@@ -8,7 +8,7 @@
 
 #define getchar()
 int lenx, leny;
-#define DAY "2023 day18 part2 \n"
+#define DAY "		2023 day18 part2\n"
 #undef _DEBUG_
 long long tot;
 

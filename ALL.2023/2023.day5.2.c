@@ -79,7 +79,7 @@ vector<pair<long long, long long>> apply_filter(vector<pair<long long, long long
 }
 
 int main(int argc, char * argv[]) {
-	printf("2023 Day 5 Part 2\n");
+	printf("		2023 Day 5 Part 2\n");
 	string input = argv[1];
 	if (argc > 1) {
 		input = argv[1];

@@ -5,7 +5,7 @@
 #include <math.h>
 #include <unistd.h>
 
-#define DAY "2023 Day14 Part2"
+#define DAY "		2023 Day14 Part2"
 
 char line1[1000];
 char line[1000][1000];

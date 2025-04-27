@@ -72,7 +72,7 @@ long long get_location (long long value, const vector<Map>& maps, const string& 
 }
 
 int main(int argc, char * argv[]) {
-	printf("2023 Day 5 Part 1\n");
+	printf("		2023 Day 5 Part 1\n");
 	string input = argv[1];
 	if (argc > 1) {
 		input = argv[1];

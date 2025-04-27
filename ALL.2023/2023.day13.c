@@ -7,7 +7,7 @@
 #include <unistd.h>
 
 #define getchar()
-#define DAY "2023 Day13 Part1"
+#define DAY "		2023 Day13 Part1"
 
 void doif(int x1, int x2, int y);
 void doifY(int y1, int y2);
