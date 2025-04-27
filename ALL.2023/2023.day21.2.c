@@ -147,7 +147,8 @@ std::unordered_map<Point, std::size_t, hasher> create_count_map(const std::vecto
 int main(int argc, char * argv[]) {
 	if (argc < 2) {printf("error args file\n"); exit(0);}
 	printf("	2023 Day 21.2\n");
-	printf("SLOW ~32 seconds (blame vss2sn)\n");
+	printf("SLOW ~32 seconds\n");
+	//thanks vss2sn
 
 	std::string input = argv[1];
 	if (argc > 1) {
