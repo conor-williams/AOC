@@ -26,7 +26,7 @@ int main(int argc, char **argv)
 {
 	//printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-	a = fopen(argv[1], "r"); printf("2021 Day18 Part2\n"); fflush(stdout);
+	a = fopen(argv[1], "r"); printf("		2021 Day18 Part2\n"); fflush(stdout);
 	int fd = dup(1); close(1);
 	char line1[LINE];
 	int leny = 0;

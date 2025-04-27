@@ -21,9 +21,9 @@ char gridtmp[GX][GX];
 int main(int argc, char **argv)
 {
 	signal(SIGTSTP, &sigfunc);
-	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
+	///printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-	a = fopen(argv[1], "r"); printf("2021 Day 25\n"); fflush(stdout);
+	a = fopen(argv[1], "r"); printf("		2021 Day 25\n"); fflush(stdout);
 
 	fflush(stdout); int fd = dup(1); close(1);
 	char line1[LINE];
@@ -106,7 +106,7 @@ int main(int argc, char **argv)
 		}
 		//printf("\n");
 
-		if (found == 0) {fflush(stdout); dup2(fd, 1); printf("last round %d\n", round); break;}
+		if (found == 0) {fflush(stdout); dup2(fd, 1); printf("**ans: %d\n", round); break;}
 		printf("After %d step:\n", round);
 		for (int y = 0; y < leny; y++) {
 			for (int x = 0; x < lenx; x++) {

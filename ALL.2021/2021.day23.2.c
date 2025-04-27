@@ -188,7 +188,7 @@ int solve(const string &puzzle_input) {
 }
 
 int main(int argc, char **argv) {
-	printf("2021 day23 Part2\n");
+	printf("		2021 day23 Part2\n");
 #ifdef _ACCOLADE_
 	printf("Gravitar64 on reddit + codeconvert.ai\n");
 #endif

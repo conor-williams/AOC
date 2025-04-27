@@ -8,9 +8,9 @@ FILE *a;
 int grid[120][120] = {{-1}};
 int main(int argc, char **argv)
 {
-        printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
+        ////printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
-        a = fopen(argv[1], "r"); printf("2021 Day9.1\n"); fflush(stdout);
+        a = fopen(argv[1], "r"); printf("		2021 Day9.1\n"); fflush(stdout);
         char line1[5000];
 	int tot = 0;
 	int leny = 0;

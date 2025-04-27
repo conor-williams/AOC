@@ -55,7 +55,7 @@ int main(int argc, char **argv)
 
 	mp2["000"] = 0; mp2["001"] = 1; mp2["010"] = 2; mp2["011"] = 3;
 	mp2["100"] = 4; mp2["101"] = 5; mp2["110"] = 6; mp2["111"] = 7;
-	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
+	////printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
 	//mp4[0] = "0000";
 
