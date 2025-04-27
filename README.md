@@ -226,9 +226,9 @@ rectified soon (update: nearly rectified...) (late december 2024)
 <li>1000ms is 1s</li>
 <li>fflush pushes out the ouput.. liprx(</li>
 <li>-O2 optimisation to gcc/g++ caused some to crash for no apparent reason</li>
+<li>took a fairly solid 1 year and six months pretty much coding all the time to complete</li>
 <li></li>
-
-	<li>kudos to <i><b>Eric Wastl & co.</b></i></li>
+<li>kudos to <i><b>Eric Wastl & co.</b></i></li>
 </ul>
 <br>
 <address><b>conor.williams@gmail.com</b></address><br>
@@ -238,50 +238,50 @@ rectified soon (update: nearly rectified...) (late december 2024)
 <h2>NOTE To Self: update below tables (28032025 todo)</h2>
 <h3>Table of years/days of days which need optimizations or work (todo: ongoing):</h3>
 <table> 
-	<tr><td><b>2015</b></td><td>day10</td><td>day12</td><td>day19.2</td><td>day20</td><td>day24</td></tr>
-	<tr><td><b>2016</b></td><td><s>day2 x 2 </s></td></td><td>day9.2</td><td>day11 x 2 </td><td>day20.2</td><td>day22.2</td><td>day23.2</td></tr>
-	<tr><td><b>2017</b></td><td>day7.2</td></td><td>day11.2</td><td>day16.2</td><td>day17.2</td><td>day18.2</td><td>day20.2</td></tr>
-	<tr><td><b>2018</b></td><td>day3</td><td>day5</td><td>day7</td><td>day9.2</td><td>day11.2</td><td>day15</td><td>day19.2</td><td>day21</td><td>day22.2</td><td>day23.2</td></tr>
-	<tr><td><b>2019</b></td><td>day12.2</td><td>day3.2</td><td>day14.2</td><td>day17.2</td><td>day18</td></tr>
-	<tr><td><b>2020</b></td><td>day10.2</td><td>day12.2</td><td>day13.2</td><td>day14.2</td><td>day15.2</td><td>day16.2</td><td>day17.2</td><td>day18.2</td><td>day19.2</td><td>day20.2</td>
-				<td>day21.2</td><td>day22.2</td><td>day23.2</td><td>day24.2</td></tr>
-	<tr><td><b>2021</b></td><td>day11.2</td><td>day12.2</td><td>day14.2</td><td>day15.2</td><td>day16.2</td><td>day18.2</td>
-				<td>day21.2</td><td>day22.2</td><td>day23</td><td>day24</td></tr>
-	<tr><td><b>2022</b></td><td>day9.2</td><td>day13.2</td><td>day15.2</td><td>day17.2</td><td>day18.2</td><td>day21.2</td>
-				<td>day22.2</td><td>day25.1 (java)</td></tr>
-	<tr><td><b>2023</b></td><td><s>day1</s></td><td>day2</td><td>day5</td><td>day7</td><td>day8.2</td><td>day9</td><td>day10.2</td><td>day11.2</td><td>day12.2</td><td>day13.2</td>
-				<td>day14.2</td><td>day15</td><td>day17</td><td>day21</td></tr>
-	<tr><td><b><i>2024</i></b></td><td>day22.2</td></tr>
+	<tr><td><b>2015</b></td><s><td><s>day10</s></td><td><s>day12</s></td><td><s>day19.2</s></td><td><s>day20</s></td><td><s>day24</s></td></tr></s>
+	<tr><td><b>2016</b></td><s><td><s>day2 x 2 </s></td></td><td><s>day9.2</s></td><td><s>day11 x 2 </s></td><td><s>day20.2</s></td><td><s>day22.2</s></td><td><s>day23.2</s></td></s></tr>
+	<s><tr><td><b>2017</b></td><td><s>day7.2</s></td></td><td><s>day11.2</s></td><td><s>day16.2</s></td><td><s>day17.2</s></td><td><s>day18.2</s></td><td><s>day20.2</s></td></tr></s>
+	<s><tr><td><b>2018</b></td><td><s>day3</s></td><td><s>day5</s></td><td><s>day7</s></td><td><s>day9.2</s></td><td><s>day11.2</s></td><td><s>day15</s></td><td><s>day19.2</s></td><td><s>day21</s></td><td><s>day22.2</s></td><td><s>day23.2</s></td></tr></s>
+	<tr><td><b>2019</b></td><td><s>day12.2</s></td><td><s>day3.2</s></td><td><s>day14.2</s></td><td><s>day17.2</s></td><td><s>day18</s></td></tr>
+	<tr><td><b>2020</b></td><td><s>day10.2</s></td><td><s>day12.2</s></td><td><s>day13.2</s></td><td><s>day14.2</s></td><td><s>day15.2</s></td><td><s>day16.2</s></td><td><s>day17.2</s></td><td><s>day18.2</s></td><td><s>day19.2</s></td><td><s>day20.2</s></td>
+				<td><s>day21.2</s></td><td><s>day22.2</s></td><td><s>day23.2</s></td><td><s>day24.2</s></td></tr>
+	<tr><td><b>2021</b></td><td><s>day11.2</s></td><td><s>day12.2</s></td><td><s>day14.2</s></td><td><s>day15.2</s></td><td><s>day16.2</s></td><td><s>day18.2</s></td>
+				<td><s>day21.2</s></td><td><s>day22.2</s></td><td><s>day23</s></td><td><s>day24</s></td></tr>
+	<tr><td><b>2022</b></td><td><s>day9.2</s></td><td><s>day13.2</s></td><td><s>day15.2</s></td><td><s>day17.2</s></td><td><s>day18.2</s></td><td><s>day21.2</s></td>
+				<td><s>day22.2</s></td><td><s>day25.1 (java)</s></td></tr>
+	<tr><td><b>2023</b></td><td><s>day1</s></td><td><s>day2</s></td><td><s>day5</s></td><td><s>day7</s></td><td><s>day8.2</s></td><td><s>day9</s></td><td><s>day10.2</s></td><td><s>day11.2</s></td><td><s>day12.2</s></td><td><s>day13.2</s></td>
+				<td><s>day14.2</s></td><td><s>day15</s></td><td><s>day17</s></td><td><s>day21</s></td></tr>
+	<tr><td><b><i>2024</i></b></td><td><s>day22.2</s></td></tr>
 </table>
 
 <h2>Split of the above table into three tables: broken, slow, not yet attempted</h2>
 <h2>Broken</h2>
-<table> 
-	<tr><td><b>2015</b></td><td>day12</td><td>day19.2</td></tr>
-	<tr><td><b>2016</b></td><td>day 11</td></tr>
-	<tr><td><b>2017</b></td><td>day7.2</td></td><td>day11</td><td>day20.2</td></tr>
-	<tr><td><b>2018</b></td><td>day7</td><td>day9.2</td><td>day15</td><td>day21</td><td>day22.2</td><td>day23.2</td></tr>
-	<tr><td><b>2019</b></td><td>day17.2</td><td><s>day18</s></td></tr>
+<table>
+	<tr><td><b>2015</b></td><td><s>day12</s></td><td><s>day19.2</s></td></tr>
+	<tr><td><b>2016</b></td><td><s>day 11</s></td></tr>
+	<tr><td><b>2017</b></td><td><s>day7.2</s></td></td><td><s>day11</s></td><td><s>day20.2</s></td></tr>
+	<tr><td><b>2018</b></td><td><s>day7</s></td><td><s>day9.2</s></td><td><s>day15</s></td><td><s>day21</s></td><td><s>day22.2</s></td><td><s>day23.2</s></td></tr>
+	<tr><td><b>2019</b></td><td><s>day17.2</s></td><td><s>day18</s></td></tr>
 	<tr><td><b>2020</b></td><td></td></tr>
 	<tr><td><b>2021</b></td><td></td></tr>
-	<tr><td><b>2022</b></td><td>day25.1(written in java)</td></tr>
-	<tr><td><b>2023</b></td><td><s>day1</s></td><td>day2</td><td>day5</td><td>day7</td><td>day9</td><td>day10.2</td><td>day11.2</td><td>day12.2</td><td>day13.2</td>
-				<td>day15</td><td>day17</td><td>day21</td></tr>
+	<tr><td><b>2022</b></td><td><s>day25.1(written in java)</s></td></tr>
+	<tr><td><b>2023</b></td><td><s>day1</s></td><td><s>day2</s></td><td><s>day5</s></td><td><s>day7</s></td><td><s>day9</s></td><td><s>day10.2</s></td><td><s>day11.2</s></td><td><s>day12.2</s></td><td><s>day13.2</s></td>
+				<td><s>day15</s></td><td><s>day17</s></td><td><s>day21</s></td></tr>
 	<tr><td><b><i>2024</i></b></td><td></td></tr>
 </table>
 <hr>
 <h2>Slow</h2>
-<table> 
-	<tr><td><b>2015</b></td><td>day10</td><td>day20</td><td>day24</td></tr>
-	<tr><td><b>2016</b></td><td><s>day2 x 2 </s></td></td><td>day9.2</td><td>day20.2</td><td>day22.2</td><td>day23.2</td></tr>
-	<tr><td><b>2017</b></td><td>day16.2</td><td>day17.2</td><td>day18.2</td></tr>
-	<tr><td><b>2018</b></td><td>day3</td><td>day5</td><td>day11.2</td><td>day19.2</td><td>day21</td></tr>
-	<tr><td><b>2019</b></td><td>day12.2</td><td>day3.2</td><td>day14.2</td></tr>
+<table>
+	<tr><td><b>2015</b></td><td><s>day10</s></td><td><s>day20</s></td><td><s>day24</s></td></tr>
+	<tr><td><b>2016</b></td><td><s>day2 x 2 </s></td></td><td><s>day9.2</s></td><td><s>day20.2</s></td><td><s>day22.2</s></td><td><s>day23.2</s></td></tr>
+	<tr><td><b>2017</b></td><td><s>day16.2</s></td><td><s>day17.2</s></td><td><s>day18.2</s></td></tr>
+	<tr><td><b>2018</b></td><td><s>day3</s></td><td><s>day5</s></td><td><s>day11.2</s></td><td><s>day19.2</s></td><td><s>day21</s></td></tr>
+	<tr><td><b>2019</b></td><td><s>day12.2</s></td><td><s>day3.2</s></td><td><s>day14.2</s></td></tr>
 	<tr><td><b>2020</b></td><td></td></tr>
-	<tr><td><b>2021</b></td><td>day23</td><td>day24</td></tr>
-	<tr><td><b>2022</b></td><td>day11,2</td><td>day16.2</td><td>day19.2</td><td>day23.2</td></tr>
-	<tr><td><b>2023</b></td><td>day8.2</td><td>day14.2</td></tr>
-	<tr><td><b>2024</b></td><td>day22.2</td></tr>
+	<tr><td><b>2021</b></td><td><s>day23</s></td><td><s>day24</s></td></tr>
+	<tr><td><b>2022</b></td><td><s>day11,2</s></td><td><s>day16.2</s></td><td><s>day19.2</s></td><td><s>day23.2</s></td></tr>
+	<tr><td><b>2023</b></td><td><s>day8.2</s></td><td><s>day14.2</s></td></tr>
+	<tr><td><b>2024</b></td><td><s>day22.2</s></td></tr>
 </table>
 <hr>
 <h2>Not attempted Yet</h2>
@@ -291,15 +291,17 @@ rectified soon (update: nearly rectified...) (late december 2024)
 	<tr><td><b>2017</b></td><td>FIN</td></tr>
 	<tr><td><b>2018</b></td><td>FIN</td></tr>
 	<tr><td><b>2019</b></td><td>FIN</td></tr>
-	<tr><td><b>2020</b></td><td>day10.2</td><td>day12.2</td><td>day13.2</td><td>day14.2</td><td>day15.2</td><td>day16.2</td><td>day17.2</td><td>day18.2</td><td>day19.2</td><td>day20.2</td>
-				<td>day21.2</td><td>day22.2</td><td>day23.2</td><td>day24.2</td></tr>
-	<tr><td><b>2021</b></td><td>day11.2</td><td>day12.2</td><td>day14.2</td><td>day15.2</td><td>day16.2</td><td>day18.2</td>
-				<td>day21.2</td><td>day22.2</td><td>day23</td><td>day24</td></tr>
-	<tr><td><b>2022</b></td><td>day9.2</td><td>day13.2</td><td>day15.2</td><td>day17.2</td><td>day18.2</td><td>day21.2</td>
-				<td>day22.2</td><td>day25.1 (java)</td></tr>
-	<tr><td><s><b>2023</b></td><td>day12.2</td></s></tr>
+	<tr><td><b>2020</b></td><td>FIN</td><td><s>day10.2</s></td><td><s>day12.2</s></td><td><s>day13.2</s></td><td><s>day14.2</s></td><td><s>day15.2</s></td><td><s>day16.2</s></td><td><s>day17.2</s></td><td><s>day18.2</s></td><td><s>day19.2</s></td><td><s>day20.2</s></td>
+				<td><s>day21.2</s></td><td><s>day22.2</s></td><td><s>day23.2</s></td><td><s>day24.2</s></td></tr>
+	<tr><td><b>2021</b></td><td>FIN</td><td><s>day11.2</s></td><td><s>day12.2</s></td><td><s>day14.2</s></td><td><s>day15.2</s></td><td><s>day16.2</s></td><td><s>day18.2</s></td>
+				<td><s>day21.2</s></td><td><s>day22.2</s></td><td><s>day23</s></td><td><s>day24</s></td></tr>
+	<tr><td><b>2022</b></td><td>FIN</td><td><s>day9.2</s></td><td><s>day13.2</s></td><td><s>day15.2</s></td><td><s>day17.2</s></td><td><s>day18.2</s></td><td><s>day21.2</s></td>
+				<td><s>day22.2</s></td><td><s>day25.1 (java)</s></td></tr>
+	<tr><td><b>2023</b></td><td>FIN</td><td><s>day12.2</s></td></s></tr>
 	<tr><td><b>2024</b></td><td>FIN</td></tr>
 </table>
+
+-------------
 <hr>
 t-33 03042025<br>
 t-0 03192025 w.h.buckos<br>
