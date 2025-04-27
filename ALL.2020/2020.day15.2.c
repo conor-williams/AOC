@@ -24,7 +24,7 @@ int lastNumber, nextNumber;
 int main(int argc, char **argv)
 {
 
-	FILE *a = fopen(argv[1], "r"); printf("2020 Day15 Part2\n"); fflush(stdout);
+	FILE *a = fopen(argv[1], "r"); printf("		2020 Day15 Part2\n"); fflush(stdout);
 	int fd = dup(1); close(1);
 	char line1[LINE];
 

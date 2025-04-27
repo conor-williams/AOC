@@ -7,7 +7,7 @@
 using namespace std;
 
 int main(int argc, char **argv) {
-	printf("2020 Day 13 Part 2\n");
+	printf("		2020 Day 13 Part 2\n");
 	// #rune_kg on reddit
 	// Include i/o and file handling libraries
 
