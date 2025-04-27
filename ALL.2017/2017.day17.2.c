@@ -11,7 +11,7 @@ struct node {
 
 int main(int argc, char const* argv[])
 {
-	printf("2017 Day 17 Part 2\n");
+	printf("		2017 Day 17 Part 2\n");
 	const int step = 354;
 	shared_ptr<struct node> head = make_shared<struct node>();
 	shared_ptr<struct node> curr = head;

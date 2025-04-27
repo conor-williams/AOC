@@ -81,8 +81,8 @@ int main(int argc, char **argv)
 {
         signal(SIGTSTP, sig_handler);
         //printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
-        FILE * a = fopen(argv[1], "r"); printf("2017 Day18.2\n"); fflush(stdout);
-	printf("SLOW ~30seconds\n");
+        FILE * a = fopen(argv[1], "r"); printf("		2017 Day18.2\n"); fflush(stdout);
+	printf("	SLOW ~30seconds\n");
 	TimerSet(28);
 	fd = dup(1); close(1);	
 

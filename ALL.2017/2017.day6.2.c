@@ -9,9 +9,9 @@
 #define getchar()
 int main(int argc, char **argv)
 {
-	printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
+	///printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
 
-	FILE * a = fopen(argv[1], "r"); printf("2017 Day6.2\n"); fflush(stdout);
+	FILE * a = fopen(argv[1], "r"); printf("		2017 Day6.2\n"); fflush(stdout);
 	if (a == NULL) {printf("ERR opening file\n"); exit(0);}
 
 	fflush(stdout); int fd = dup(1); close(1);

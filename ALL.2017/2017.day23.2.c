@@ -5,7 +5,7 @@
 
 #define getchar()
 int main(void) {
-	printf("2017 day23 Part 2\n");
+	printf("		2017 day23 Part 2\n");
 	fflush(stdout); int fd = dup(1); close(1);
 	long long h = 0;
 	long long b = ((57*100)+100000);

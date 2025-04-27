@@ -14,8 +14,8 @@ using namespace std;
 map <string, int> mp;
 int main(int argc, char **argv)
 {
-        printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
-        FILE * a = fopen(argv[1], "r"); printf("2017 Day8.1\n"); fflush(stdout);
+        ////printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
+        FILE * a = fopen(argv[1], "r"); printf("		2017 Day8.1\n"); fflush(stdout);
 
 	fflush(stdout); int fd = dup(1); close(1);
         char line1[3000];

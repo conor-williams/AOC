@@ -20,7 +20,7 @@ int main(int argc, char **argv)
 
         char line1[3000];
 */
-        printf("2017 Day3.2\n"); fflush(stdout);
+        printf("		2017 Day3.2\n"); fflush(stdout);
 
 	fflush(stdout); int fd = dup(1); close(1);
 
@@ -74,7 +74,7 @@ start:
 	} else {
 		grid[y][x] = val;
 		//{printf("%d ", val); }
-		if (val > 277678) {fflush(stdout); dup2(fd, 1); printf("**ans: %d\n", val);exit(0);}
+		if (val > 277678) {fflush(stdout); dup2(fd, 1); printf("**ans: %d\n", val);fflush(stdout);exit(0);}
 	}
 	if (dir == 1) {x = x+1;} else if (dir == 0) {y=y-1;} else if (dir == 3) {x=x-1;} else if (dir == 2) {y=y+1;}
 	goto start;

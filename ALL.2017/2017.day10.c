@@ -15,8 +15,8 @@ int theInts[100];
 #define N 256
 int main(int argc, char **argv)
 {
-        printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
-        FILE * a = fopen(argv[1], "r"); printf("2017 Day10.1\n"); fflush(stdout);
+        ///printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
+        FILE * a = fopen(argv[1], "r"); printf("		2017 Day10.1\n"); fflush(stdout);
 
 	fflush(stdout); int fd = dup(1); close(1);
 int leny = 0;
@@ -79,8 +79,9 @@ while (1)
 		printf("skip %d\n", skip);
 	}
 	
-	fflush(stdout); dup2(fd, 1);
 	printf("***mul %d*%d =  %d\n", initial[0], initial[1], initial[0] * initial[1]);
-	printf("\nEND\n");
+	fflush(stdout); dup2(fd, 1);
+	printf("***ans:  %d\n", initial[0] * initial[1]);
+	///printf("\nEND\n");
 
 }
