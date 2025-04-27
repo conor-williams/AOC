@@ -5,12 +5,14 @@ o unzip AOC-main.zip
 o unzip is a cygwin package
 o sh FIRST.sh
 o ps and kill are your friend, not so much now
-o runtime ~<2  hours on a dual core 2GHZ
+o runtime ~<1.50 hours on a dual core 2GHZ
 o for many solns/languages: web search: advent of code 20XY day AB solutions
+	-- page per day on reddit
+	-- plus codeconvert.ai is very good at converting python to c++ (sometimes need manual intervention)
 </pre>
 <!-- <embed src=unfin.txt> -->
 <!-- <object type="text/html" data="unfin.txt"></object> -->
-<h2>Notes (this README is a .html file (drag and drop into a browser)) lu:26-04-2025 @13:51GMT</h2>
+<h2>Notes (this README is a .html file (drag and drop into a browser)) lu:27-04-2025 @06:16GMT</h2>
 <address><b>conor.williams@gmail.com</b></address><br>
 
 <h3>Update (04-03-25):</h3>
@@ -33,7 +35,7 @@ o for many solns/languages: web search: advent of code 20XY day AB solutions
  <s>2020 day 16 part 2</s>  |  <s>2020 day 17 part 2</s>
  <s>2020 day 18 part 2</s>  |  <s>2020 day 19 part 2</s>
  <s>2020 day 20 part 2</s>  |  <s>2020 day 21 part 2</s>
- <s>2020 day 22 part 2</s>  |  2020 day 23 part 2
+ <s>2020 day 22 part 2</s>  |  <s>2020 day 23 part 2</s>
  <s>2020 day 24 part 2</s>
 <!-- <s>YEAR: 2016- 2016 day 11 part 2</s> moved_to stragglers -->
 </pre>
@@ -223,8 +225,10 @@ rectified soon (update: nearly rectified...) (late december 2024)
 <li>lately (03202025) thanks to the reddit python et. al. coders and online converters such as codeconvert.ai</li>
 <li>1000ms is 1s</li>
 <li>fflush pushes out the ouput.. liprx(</li>
- <li>kudos to <i><b>Eric Wastl & co.</b></i></li>
- <li></li>
+<li>-O2 optimisation to gcc/g++ caused some to crash for no apparent reason</li>
+<li></li>
+
+	<li>kudos to <i><b>Eric Wastl & co.</b></i></li>
 </ul>
 <br>
 <address><b>conor.williams@gmail.com</b></address><br>
@@ -314,3 +318,4 @@ t+2 == 2 &#47;c.<b><i>w</i>i<i>l</i>l51</b>.
 <br>t+4        240425@09:24am   watching tracker...
 <br>t+3        250425@9:23am    watching the empress
 <br>t+2        260425@13:51     watching no good deed -- only one left...
+<br>t+1        260425@06:17     listening to miss monique... thats a wrap...
