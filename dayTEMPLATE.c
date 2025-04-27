@@ -91,13 +91,13 @@ int main(int argc, char **argv)
 	//DO
 	end = clock();
 	cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
-	printf("        time: %f seconds\n", cpu_time_used);
+	//printf("        time: %f seconds\n", cpu_time_used);
 	// printf("time: %f\n",  ((double) (end - start)) / CLOCKS_PER_SEC);
 
 
 	//signal(SIGTSTP, &sigfunc);
 	signal(SIGQUIT, &sigfunc);
-	printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
+	///printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
 
 	a = fopen(argv[1], "r"); if (a == NULL) {printf("BAD file %s\n", argv[1]); exit(0);}
 	printf("20YY Day ***XYZXYZ** Part *XYZ**\n"); fflush(stdout);
