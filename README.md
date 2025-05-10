@@ -1,6 +1,8 @@
 <pre>
-Warning: some of the input files are incorrect giving the wrong answer - corrected soon in the next week or so 09/05/2025
-	i think it might be for low numbered puzzles
+	i think he give different input files for most... so you need to use your own inputs but i think the
+	examples are all the same -- hmmm...
+<s>Warning: some of the input files are incorrect giving the wrong answer - corrected soon in the next week or so 09/05/2025
+	i think it might be for low numbered puzzles</s>
 	Install:
 o green button Code -> Download Zip
 o unzip AOC-main.zip 
