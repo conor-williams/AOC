@@ -38,7 +38,7 @@ struct hash_function
 
 
 FILE *a;
-#define LINE 28000
+#define LINE 60000
 //#define getchar()
 void sigfunc(int a) { printf("[[ %s ]]\n", "signal hand..\n"); }
 int lenx;

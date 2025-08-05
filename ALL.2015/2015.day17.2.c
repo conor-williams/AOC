@@ -41,9 +41,9 @@ int main(int argc, char **argv)
 	int ar[100];
 	int vol = 150;
 	int tot = 0;
-	int minEnd = 1000;
+	int min = 9999;
+	int count[200] = {0};
 	for (int end = 0; end < leny; end++) {
-		if (end == minEnd+1) {break;}
 		for (int i = 0; i < end; i++) {
 			ar[i] = 1;
 		}
@@ -61,13 +61,13 @@ int main(int argc, char **argv)
 			}
 			if (sumB == vol) {
 				tot++;
+				if (end < min) {min = end;}
 				//printf("%d is min\n", end);
-				minEnd = end;
+				count[end]++;
 			}
 		} while (next_permutation(ar, ar+leny));
 	}
 
-	printf("****tot %d\n", tot);
 	fflush(stdout); dup2(fd, 1);
-	printf("**ans: %d\n", tot);
+	printf("**ans: %d\n", count[min]);
 }

@@ -8,7 +8,7 @@
 
 #include <unistd.h>
 
-#define getchar()
+//#define getchar()
 using namespace std;
 
 int lenx, leny;
@@ -34,6 +34,7 @@ int main(int argc, char **argv)
 	fflush(stdout); int fd = dup(1); close(1);
         char line1[200];
 	int curinst = 0;
+	int BNUM = 0;
 while(1) {
         fgets(line1, 200, a);
         if (feof(a)) break;
@@ -77,6 +78,8 @@ while(1) {
 	strcpy(insts[curinst].reg1, reg1);
 	strcpy(insts[curinst].reg2, reg2);
 	strcpy(insts[curinst].reg3, reg3);
+	insts[curinst].num = num;
+	/*
 	if (strcmp(reg3, "b") == 0) {printf("gotcha\n");}
 	if (reg3[0] == 'b' && (int)strlen(reg3) == 1) {
 		printf("here222\n"); getchar();
@@ -85,6 +88,7 @@ while(1) {
 	} else {
 		insts[curinst].num = num;
 	}
+	*/
 /*
 	printf("[%s] [%s] [%s] [%d] [%d]\n",
 		insts[curinst].reg1,
@@ -93,6 +97,11 @@ while(1) {
 		insts[curinst].num,
 		insts[curinst].type);
 */
+	if (reg3[0] == 'b' && (int)strlen(reg3) == 1) {
+                //insts[curinst].num = 46065;
+		BNUM = curinst;
+        }
+
 	curinst++;
 }
 fclose(a);
@@ -110,6 +119,18 @@ if (mp.find(tofindb) != mp.end()) {
 	printf("OOPS"); getchar();
 }
 */
+int first = 1;
+int WIREA = 0;
+for (int iii = 0; iii < 2; iii++) {
+	printf("first is %d\n", first);
+	mp.clear();
+	curinst = 0;
+	times = 0;
+	if (first == 0) {
+		printf("setting WIREA\n");
+		insts[BNUM].num = WIREA;
+	}
+
 while (1) {
 	int ans = 0;
 	char reg1[10], reg2[10], reg3[10]; int num;
@@ -227,6 +248,7 @@ while (1) {
 		if (mp.find(tofinda) != mp.end()) {
 			if (mp[tofinda] != 0) {
 				printf("wire a: [%d]\n", mp[tofinda]);
+				if (first == 1) {WIREA = mp[tofinda]; first = 0;printf("WIREA %d\n", WIREA);}
 				break;
 				//getchar();
 			}
@@ -238,15 +260,17 @@ while (1) {
 	curinst++;
 	if (curinst == maxInst) {times++; curinst = curinst %maxInst; if (times %1000 == 0){printf("times... %d\n", times);}}
 	
+}
 	
 }
-	string tofinda = "a";
+        string tofinda = "a";
 
-	fflush(stdout); dup2(fd, 1);
-	if (mp.find(tofinda) != mp.end()) {
-		printf("wire a: [%d]\n", mp[tofinda]);
-	} else {
-		printf("NO A???");
-	}
-	//printf("end...\n"); fflush(stdout);
+        fflush(stdout); dup2(fd, 1);
+        if (mp.find(tofinda) != mp.end()) {
+                printf("**ans [%d]\n", mp[tofinda]);
+        } else {
+                printf("NO A???");
+        }
+        //printf("end...\n"); fflush(stdout);
+
 }

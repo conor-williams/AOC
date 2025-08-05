@@ -7,11 +7,44 @@
 #include <unistd.h>
 
 #define getchar()
+void printit(struct game xx);
 int tot = 0;
-struct vals { int cost; int damage; int armor; int hit; int turns; int getCost;};
-struct vals2 { int cost; int damage; int armor; int hit; int turns; int getCost; int timerCount;};
+struct spells_s { int cost; int damage; int armor; int hit; int turns; int getCost;};
+struct vals2 { int cost; int damage; int armor; int hit; int turns; int getCost; int timerCount;
+	vals2() {
+                cost = 0;
+                damage = 0;
+                armor = 0;
+                hit = 0;
+                turns = 0;
+                getCost = 0;
+                timerCount = -1;
+        }
 
-struct vals spells[] = { {53, 4, 0, 0, 1, 0}, {73, 2, 0, 2, 1, 0}, {113, 0, 7, 0, 6, 0}, {173, 3, 0, 0, 6, 0}, {229, 0, 0, 0, 5, 101}, {-1, -1, -1, -1, -1, -1}};
+        vals2& operator=(const vals2& o) {
+                if (this != &o) { // Avoid self-assignment
+                        cost = o.cost;
+                        damage = o.damage;
+                        armor = o.armor;
+                        hit = o.hit;
+                        turns = o.turns;
+                        getCost = o.getCost;
+                        timerCount = o.timerCount;
+                }
+                return *this;
+        }
+        vals2(const vals2& o) {
+                cost = o.cost;
+                damage = o.damage;
+                armor = o.armor;
+                hit = o.hit;
+                turns = o.turns;
+                getCost = o.getCost;
+                timerCount = o.timerCount;
+        }
+};
+
+struct spells_s spells[] = { {53, 4, 0, 0, 1, 0}, {73, 2, 0, 2, 1, 0}, {113, 0, 7, 0, 6, 0}, {173, 3, 0, 0, 6, 0}, {229, 0, 0, 0, 5, 101}, {-1, -1, -1, -1, -1, -1}};
 //0 == MagicMissile(53) 1==Drain(73) 2=Shield(113) 3=Poison(173) 4==Recharge=229
 int spellsTot = 5;
 
@@ -29,12 +62,66 @@ struct game {
 	int bDamage;
 	int bArmor;
 	int bMana;
+
+	game& operator=(const game& o) {
+                if (this != &o) { // Avoid self-assignment
+                        pMana = o.pMana;
+                        pCost = o.pCost;
+                        pDamage = o.pDamage;
+                        pArmor = o.pArmor;
+                        pHit = o.pHit;
+                        for (int ii = 0; ii < spellsTot; ii++) {
+                                pCounters[ii] = o.pCounters[ii];
+                        }
+                        pGetCost = o.pGetCost;
+
+                        bHit = o.bHit;
+                        bDamage = o.bDamage;
+                        bArmor = o.bArmor;
+                        bMana = o.bMana;
+                }
+                return *this;
+        };
+	game() {
+                pMana = 0;
+                pCost = 0;
+                pDamage = 0;
+                pArmor = 0;
+                pHit = 0;
+                struct vals2 pCounters[5];
+		for (int ii = 0; ii < 5; ii++) {
+			pCounters[ii] = vals2();
+		}
+                pGetCost = 0;
+
+                bHit = 0;
+                bDamage = 0;
+                bArmor = 0;
+                bMana = 0;
+        };
+	game(const game& o) {
+                pMana = o.pMana;
+                pCost = o.pCost;
+                pDamage = o.pDamage;
+                pArmor = o.pArmor;
+                pHit = o.pHit;
+                for (int ii = 0; ii < spellsTot; ii++) {
+                        pCounters[ii] = o.pCounters[ii];
+                }
+                pGetCost = o.pGetCost;
+
+                bHit = o.bHit;
+                bDamage = o.bDamage;
+                bArmor = o.bArmor;
+                bMana = o.bMana;
+        }
+
 };
 
-struct game games[10000];
+struct game games[300000];
 int gamesPos = 0;
 
-struct game newGames[10000];
+struct game newGames[300000];
 int newGamesPos = 0;
 
 int taketurn();
@@ -74,24 +161,11 @@ int main(int argc, char **argv)
 	
 
 	//int minPlayerCost = 99999;
+	games[0] = game();
 
 	games[0].pMana = playerManaOrig;
-	games[0].pCost = 0;
-	games[0].pDamage = 0;
 	games[0].pArmor = playerArmorOrig;
 	games[0].pHit = playerHitOrig;
-	for (int i = 0; i < spellsTot; i++) {
-		for (int j; j < spellsTot; j++) {
-			games[0].pCounters[i].cost = 0;
-			games[0].pCounters[i].damage = 0;
-			games[0].pCounters[i].armor = 0;
-			games[0].pCounters[i].hit = 0;
-			games[0].pCounters[i].turns = 0;
-			games[0].pCounters[i].getCost = 0;
-			games[0].pCounters[i].timerCount = -1;
-		}
-	}
-	games[0].pGetCost = 0;
 	games[0].bHit = bossHitOrig;
 	games[0].bDamage = bossDamageOrig;
 	games[0].bArmor = bossArmorOrig;
@@ -100,25 +174,32 @@ int main(int argc, char **argv)
 	spellsMatrixPos = 0;
 	do {
 ///////////////////////CAST
-		do {
+		while (gamesPos != 0) {
 			cast(); 
-		} while (gamesPos != 0);
+		}
 ////
 		for (int i = 0; i < newGamesPos; i++) {
 			games[i] = newGames[i];
+			//printit(games[i]);
 			gamesPos++;
 		}
 		newGamesPos = 0;
+		printf("gamesPos : %d\n", gamesPos);
+		getchar();
 		
 ///////////////////////TAKE TURN
-		do {
+		while (gamesPos != 0) {
 			turns();
-		} while (gamesPos != 0);
+		}
 ////
+		printf("----after turns------");
 		for (int i = 0; i < newGamesPos; i++) {
 			games[i] = newGames[i];
+			//printit(games[i]);
 			gamesPos++;
 		}
+		printf("----------");
+		getchar();
 		newGamesPos = 0;
 		//spellsMatrixPos++;
 	} while (gamesPos != 0);
@@ -128,30 +209,34 @@ int main(int argc, char **argv)
         printf("***minManaSpent: %d\n", minManaSpent);
 }
 
+void printit(struct game xx) {
+	printf("%d %d %d %d %d %d\n", xx.pMana, xx.pCost, xx.pArmor, xx.pHit, xx.pGetCost);
+	printf("%d %d %d\n", xx.bHit, xx.bDamage, xx.bArmor, xx.bMana);
+	/*
+	for (int i  =0; i < 6; i++) {
+		printf("%d %d %d %d %d %d %d\n", 
+                        xx.pCounters[i].cost,
+                        xx.pCounters[i].damage,
+                        xx.pCounters[i].armor,
+                        xx.pCounters[i].hit, 
+                        xx.pCounters[i].turns, 
+                        xx.pCounters[i].getCost, 
+                        xx.pCounters[i].timerCount);
+	}
+	*/
+
+	
+}
 void cast() {
 //PLAYER
 	gamesPos--;
-	int pMana=games[gamesPos].pMana;
-	int pCost=games[gamesPos].pCost;
-	//int pDamage=games[gamesPos].pDamage;
-	int pArmor=games[gamesPos].pArmor;
-	int pHit=games[gamesPos].pHit;
-	struct vals2 pCounters[6];
-	for (int i = 0; i < spellsTot; i++) {
-		pCounters[i] = games[gamesPos].pCounters[i];
-	}
-		
-	//int pGetCost = games[gamesPos].pGetCost;
-////BOSS
-	int bHit = games[gamesPos].bHit;
-	int bDamage = games[gamesPos].bDamage;
-	int bMana = games[gamesPos].bMana;
-	int bArmor = games[gamesPos].bArmor;
+	struct game xx = games[gamesPos];
 	
-	
+	int notafford = 0;
+	int notyet = 0;
 	for (int sp = 0; sp < spellsTot; sp++) {
-		struct game tmpGame;
-		if (pCounters[sp].timerCount <= 0 /*&& spellsMatrix[spellsMatrixPos] == sp*/) {
+		if (xx.pCounters[sp].timerCount < 0 && minManaSpent > xx.pCost) {
+			struct game tmpGame = xx;
 
 			printf("Player casts ");
 			switch (sp) {
@@ -172,39 +257,36 @@ void cast() {
 					break;
 
 			}
-			tmpGame.pMana = pMana - spells[sp].cost;// + spells[sp].getCost;
-			if (tmpGame.pMana <= 0) {printf("cannot afford\n"); continue;}
-			tmpGame.pCost = pCost + spells[sp].cost;
-			//tmpGame.pDamage = pDamage + spells[sp].damage;
-			tmpGame.pArmor = pArmor + spells[sp].armor;
-			tmpGame.pHit = pHit + spells[sp].hit;
-			for (int j = 0; j < spellsTot; j++) {
-				tmpGame.pCounters[j] = pCounters[j];
-			}
+			tmpGame.pMana = xx.pMana - spells[sp].cost;// + spells[sp].getCost;
+			if (tmpGame.pMana <= 0) {notafford++; printf("cannot afford\n"); continue;}
+			tmpGame.pCost = xx.pCost + spells[sp].cost;
+
 			tmpGame.pCounters[sp].cost = spells[sp].cost;
 			tmpGame.pCounters[sp].damage = spells[sp].damage;
 			tmpGame.pCounters[sp].armor = spells[sp].armor;
 			tmpGame.pCounters[sp].hit = spells[sp].hit;
 			tmpGame.pCounters[sp].getCost = spells[sp].getCost;
 			tmpGame.pCounters[sp].timerCount = spells[sp].turns;
-			//tmpGame.pGetCost = spells[sp].getCost;
 
-			tmpGame.bHit = bHit;
-			tmpGame.bDamage = bDamage;
-			tmpGame.bMana = bMana;
-			tmpGame.bArmor = bArmor;
-			
 			if (sp == 1) {
 				tmpGame.bHit -= spells[sp].damage;
-				tmpGame.pCounters[sp].timerCount = -1;
+				tmpGame.pHit = xx.pHit + spells[sp].hit;
 			} else if (sp == 0) {
 				tmpGame.bHit -= spells[sp].damage;
-				tmpGame.pCounters[sp].timerCount = -1;
+			} else if (sp == 3) {
+				//tmpGame.pDamage = xx.pDamage;
+			} else if (sp == 2) {
+				tmpGame.pArmor = xx.pArmor + spells[sp].armor;
 			}
-				
-			newGames[newGamesPos] = tmpGame; newGamesPos++;
-		}
 
+			newGames[newGamesPos] = tmpGame; newGamesPos++;
+		} else if (xx.pCounters[sp].timerCount >= 0) {
+			notyet++;
+		}
+	}
+	if (notafford == spellsTot) {}
+        if (notyet == spellsTot) {
+        	newGames[newGamesPos] = xx; newGamesPos++;
 	}
 }
 void turns() {
@@ -213,12 +295,12 @@ void turns() {
 	//	gamesPos--;
 	//	return;
 	//}// 
-	int ret2 = bossTurn(); getchar();
+	int ret2 = bossTurn(); //getchar();
 	if (ret2 != 0) {
 		gamesPos--;
 		return;
 	}
-	int ret3 = playerTurn(); getchar();
+	int ret3 = playerTurn();/// getchar();
 	if (ret3 == 0) {
 		newGames[newGamesPos] = games[gamesPos-1]; newGamesPos++;
 	}
@@ -235,6 +317,7 @@ int bossTurn() {//play
 	printf("- Player has %d hit points, %d armor, %d mana - dam(%d)\n", games[c].pHit, games[c].pArmor, games[c].pMana, games[c].pDamage);
 	printf("- Boss has %d hit points\n", games[c].bHit);
 
+	if (c == -1) {printf("minus1"); exit(0);}
 	for (int i = 0; i < spellsTot; i++) {
 		if (games[c].pCounters[i].getCost != 0 && games[c].pCounters[i].timerCount > 0) {
 			games[c].pMana += games[c].pCounters[i].getCost;
@@ -301,6 +384,7 @@ int playerTurn() {//play
 	//printf("taking turn...of Player\n");
 	printf("\n-- Player turn --\n");
 	int c = gamesPos -1;
+	if (c == -1) {printf("minus1player"); exit(0);}
 
 	printf("- Player has %d hit points, %d armor, %d mana - dam(%d)\n", games[c].pHit, games[c].pArmor, games[c].pMana, games[c].pDamage);
 	printf("- Boss has %d hit points\n", games[c].bHit);
