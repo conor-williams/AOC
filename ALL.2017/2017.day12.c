@@ -64,6 +64,7 @@ while (1)
 		arBack[lNum].nums[arBack[lNum].numnums++] = num;
 		printf("lNum is %d num is %d\n", lNum, num);
 	}
+	printf("leny: %d\n", leny);
 	leny++;
 }
 	for (int i = 0; i < leny; i++) {
@@ -136,5 +137,5 @@ int check(int num) {
 			if (ret == 0) {return 0;} else if (ret == 2) {continue;}
 		}
 	}
-	//return 0;
+	return -1;
 }

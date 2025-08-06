@@ -12,7 +12,7 @@ int tot = 0;
 #define SIZE 200
 char line1[SIZE];
 #define TIME 100000
-void same();
+int same();
 
 struct it_s {
 	long long posX;
@@ -39,33 +39,33 @@ void TimerStop(int signum);
 void TimerSet(int interval);
 
 void TimerSet(int interval) {
-    printf("starting timer\n");
-    struct itimerval it_val;
+	printf("starting timer\n");
+	struct itimerval it_val;
 
-    it_val.it_value.tv_sec = interval;
-    it_val.it_value.tv_usec = 0;
-    it_val.it_interval.tv_sec = 0;
-    it_val.it_interval.tv_usec = 0;
+	it_val.it_value.tv_sec = interval;
+	it_val.it_value.tv_usec = 0;
+	it_val.it_interval.tv_sec = 0;
+	it_val.it_interval.tv_usec = 0;
 
-    if (signal(SIGALRM, TimerStop) == SIG_ERR) {
-        perror("Unable to catch SIGALRM");
-        exit(1);
-    }
-    if (setitimer(ITIMER_REAL, &it_val, NULL) == -1) {
-        perror("error calling setitimer()");
-        exit(1);
-    }
+	if (signal(SIGALRM, TimerStop) == SIG_ERR) {
+		perror("Unable to catch SIGALRM");
+		exit(1);
+	}
+	if (setitimer(ITIMER_REAL, &it_val, NULL) == -1) {
+		perror("error calling setitimer()");
+		exit(1);
+	}
 }
 
 int fd;
 void TimerStop(int signum) {
 
 	fflush(stdout); dup2(fd, 1);
-    printf("Timer ran out! Stopping timer\n");
+	printf("Timer ran out! Stopping timer\n");
 	FILE *f = fopen("out.tim", "a");
 	fprintf(f, "Timer ran out! Stopping timer timestamp@%s\n", "out.tim");
 	fclose(f);
-    exit(10);
+	exit(10);
 }
 //main:::if (argc == 3) {printf("SETTING TIME TO [%d]\n", atoi(argv[2])); TimerSet(atoi(argv[2]));}
 int main(int argc, char **argv)
@@ -73,7 +73,6 @@ int main(int argc, char **argv)
 	TimerSet(1200);
 	///printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
 	FILE * a = fopen(argv[1], "r"); printf("		2017 Day20.2\n"); fflush(stdout);
-	printf("	SLOW ~3minutes\n");
 
 
 	fflush(stdout); fd = dup(1); close(1);
@@ -95,64 +94,52 @@ int main(int argc, char **argv)
 		leny++;
 	}
 	fclose(a);
-	for (int i = 0; i < leny; i++) {
-		itLast[i].posX = it[i].posX;
-		itLast[i].posY = it[i].posY;
-		itLast[i].posZ = it[i].posZ;
-		itLast[i].velX = it[i].velX;
-		itLast[i].velY = it[i].velY;
-		itLast[i].velZ = it[i].velZ;
 
-	}
-	//same();
+	int countNoCol = 0;
 	for (int t = 1; t < TIME; t++) {
-		if (t % 10000 == 0) {
-			tot = 0; for (int i = 0; i < leny; i++) { if (it[i].flag == 0) { tot++; } }
-			printf("t:%d -- interim tot %d\n", t, tot); 
-		}
-		long long velX, velY, velZ;
-		long long posX, posY, posZ;
+		long velX = 0, velY = 0, velZ = 0;
+		long posX = 0, posY = 0, posZ = 0;
 		for (int i = 0; i < leny; i++) {
 			if (it[i].flag == 0) {
-				velX = itLast[i].velX + it[i].accX;
-				velY = itLast[i].velY + it[i].accY;
-				velZ = itLast[i].velZ + it[i].accZ;
-				posX = itLast[i].posX + velX;
-				posY = itLast[i].posY + velY; 
-				posZ = itLast[i].posZ + velZ;
+				velX = it[i].velX + it[i].accX;
+				velY = it[i].velY + it[i].accY;
+				velZ = it[i].velZ + it[i].accZ;
+				posX = it[i].posX + velX;
+				posY = it[i].posY + velY;
+				posZ = it[i].posZ + velZ;
 
-				itLast[i].velX = velX; itLast[i].velY = velY; itLast[i].velZ = velZ;
-				itLast[i].posX = posX; itLast[i].posY = posY; itLast[i].posZ = posZ;
+				it[i].velX = velX; it[i].velY = velY; it[i].velZ = velZ;
+				it[i].posX = posX; it[i].posY = posY; it[i].posZ = posZ;
 			}
 		}
-		same();
-	}
 
-	tot = 0; for (int i = 0; i < leny; i++) { if (it[i].flag == 0) { tot++; } /*printf("tot %d\n", tot);*/ }
-	printf("***tot is ^^ [%d]\n", tot);
-	
+		if (same() == 0) {
+			countNoCol++;
+		} else {
+			countNoCol = 0;
+		}
+		if (countNoCol == 200) {break;}
+	}
+	long  tot = 0; for (int i = 0; i < leny; i++) { if (it[i].flag == 0) { tot++; } }
+
 	fflush(stdout); dup2(fd, 1);
 	printf("**ans: %d\n", tot);
 	return 0;
+
 }
-void same() {
-	for (int i = 0; i < leny; i++) {
-		if (it[i].flag == 1) {continue;}
-		int flagged[1001];
-		int flaggedPos = 0;
-		for (int j = i+1; j < leny; j++) {
-			if (it[j].flag == 0 && itLast[i].posX == itLast[j].posX &&
-					itLast[i].posY == itLast[j].posY &&
-					itLast[i].posZ == itLast[j].posZ) {
-				flagged[flaggedPos++] = i;
-				flagged[flaggedPos++] = j;
-			}
-		}
-		for (int k =0; k < flaggedPos; k++) {
-			itLast[flagged[k]].flag = 1;
-			itLast[flagged[k]].flag = 1;	
-			it[flagged[k]].flag = 1;	
-			it[flagged[k]].flag = 1;	
-		}
-	}
-}
+        int same() {
+                int ch = 0;
+                for (int i = 0; i < leny; i++) {
+                        if (it[i].flag == 1) {continue;}
+                        for (int j = i+1; j < leny; j++) {
+                                if (it[j].flag == 1) {continue;}
+                                if (it[i].posX == it[j].posX && it[i].posY == it[j].posY && it[i].posZ == it[j].posZ) {
+                                        it[i].flag = 1;
+                                        it[j].flag = 1;
+                                        ch =1;
+                                }
+                        }
+                }
+                return ch;
+        }
+

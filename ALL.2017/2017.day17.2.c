@@ -1,5 +1,6 @@
 #include <iostream>
 #include <memory>
+#include <string.h>
 
 //CharlieYJH on reddit
 using namespace std;
@@ -12,7 +13,17 @@ struct node {
 int main(int argc, char const* argv[])
 {
 	printf("		2017 Day 17 Part 2\n");
-	const int step = 354;
+
+	
+        FILE * a = fopen(argv[1], "r");
+        char line1[1000];
+while(1)
+{
+        fgets(line1, 999, a);
+        if (feof(a)) break;
+        line1[strlen(line1) -1]='\0';
+}
+	const int step = atoi(line1);
 	shared_ptr<struct node> head = make_shared<struct node>();
 	shared_ptr<struct node> curr = head;
 	head->val = 0;

@@ -1,14 +1,33 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include <unistd.h>
 
 #define getchar()
-int main(void) {
+int main(int argc, char **argv) {
 	printf("		2017 day23 Part 2\n");
 	fflush(stdout); int fd = dup(1); close(1);
+
+
+        FILE * a = fopen(argv[1], "r");
+        char line1[1000];
+	int B = 0;
+while(1)
+{
+        fgets(line1, 999, a);
+        if (feof(a)) break;
+        line1[strlen(line1) -1]='\0';
+
+	sscanf(line1, "set b %d\n", &B);
+	break;
+}
+
+
+
 	long long h = 0;
-	long long b = ((57*100)+100000);
+	long long b = ((B*100)+100000);
 	//long long c = (b+1000);
 	
 	long long f = 0;

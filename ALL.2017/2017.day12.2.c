@@ -156,4 +156,5 @@ int check(int num) {
 			if (ret == 0) {return 0;} else if (ret == 2) {continue;}
 		}
 	}
+	return -1;
 }

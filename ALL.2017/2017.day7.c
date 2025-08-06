@@ -8,7 +8,7 @@
 
 #define getchar()
 unsigned long long tot = 0;
-#define SIZE 200
+#define SIZE 500
 char line1[SIZE];
 struct rules_s {
 	char from[10];
@@ -17,7 +17,7 @@ struct rules_s {
 	int toPos;
 };
 
-struct rules_s rules[1111];
+struct rules_s rules[2000];
 void next(char from[], int weightIn);
 int leny = 0;
 char bottom[30];

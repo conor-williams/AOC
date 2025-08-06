@@ -30,6 +30,11 @@ while (1)
 	if (feof(a)) break;
  	line1[strlen(line1)-1] = '\0';
  	printf("line1: %s\n", line1);
+	int len = strlen(line1);
+	line1[len] = '-';
+	line1[len+1] = '\0';
+
+	
 	
 	
 	for (int i = 0; i < strlen(line1); i++) {

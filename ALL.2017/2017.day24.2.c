@@ -56,8 +56,12 @@ fclose(a);
 		if (port[i].from == 0) {
 			tot2 = port[i].to;
 			next(0, port[i].to);
-		
 		}
+		if (port[i].to == 0) {
+			tot2 = port[i].from;
+			next(0, port[i].from);
+		}
+
 	}
 	printf("***tot is ^^ [%d]\n", tot);
 

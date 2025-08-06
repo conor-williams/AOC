@@ -13,7 +13,6 @@ char line1[SIZE];
 int theInts[100];
 /*#define N 5*/
 #define N 256
-unsigned int int_to_bin(unsigned int k);
 char * tobin(char xy);
 char grid[130][130];
 int grid2[130][130];
@@ -38,8 +37,11 @@ while (1)
 	if (feof(a)) break;
  	line1[strlen(line1)-1] = '\0';
  	printf("line1: %s\n", line1);
-	
-	
+	int len = strlen(line1);
+        line1[len] = '-';
+        line1[len+1] = '\0';
+
+
 	for (int i = 0; i < strlen(line1); i++) {
 		if (line1[i] == ',') {
 			theInts[i] = 44;
@@ -109,16 +111,19 @@ while (1)
 				}
 				startpos = (startpos+len+skip)%N;
 				skip++;
-				//printf("NUMS: ");
-				//for (int j = 0; j < N; j++) {
-				//	printf(" %d ", initial[j]);
-				//}
-				//printf("\n");
-				//printf("new start %d\n", startpos);
-				//printf("skip %d\n", skip);
+				/*
+				printf("NUMS: ");
+				for (int j = 0; j < N; j++) {
+					printf(" %d ", initial[j]);
+				}
+				printf("\n");
+				printf("new start %d\n", startpos);
+				printf("skip %d\n", skip);
+				fflush(stdout);
+				*/
 			}
 		}
-		int ans[20] = {0};
+		int ans[100] = {0};
 		for (int i = 0; i < 16; i++) {
 			for (int j = 0; j < 16; j++) {
 				ans[i] ^= initial[i*16+j];
@@ -135,12 +140,12 @@ while (1)
 			printf("%02x", ans[i]);
 			
 		}
-		char cAns[40] = "";
+		char cAns[100] = "";
 		for (int i = 0; i < 16; i++) {
 			sprintf(cAns, "%s%02x", cAns, ans[i]);
 		}
 		printf("\n[%s]\n", cAns);
-		char bAns[130] = "";
+		char bAns[200] = "";
 		for (int i = 0; i < 32; i++) {
 			sprintf(bAns, "%s%s", bAns, tobin(cAns[i]));
 		}
@@ -208,6 +213,7 @@ int floodfill(int x, int y, int first) {
 	if (first == 1) {
 		floodGroup++;
 	}
+	return 1;
 			
 }
 
@@ -261,10 +267,11 @@ char * tobin(char xy) {
 		case 'f':
 			return "1111";
 			break;
+		default:
+			perror("bin error");
+			exit(0);
 	}
+	return "9999";
 
-}
-unsigned int int_to_bin(unsigned int k) {
-//    return (k == 0 || k == 1 ? k : ((k % 2) + 10 * int_to_bin(k / 2)));
 }
 
