@@ -1,12 +1,7 @@
 
 <pre>
-	NOTE: found around 20 bugs in C/C++ code due to coding in Java - a lot are array sizes - will fix soon 28/07/2025
-	
-	i think he give different input files for most... so you need to use your own inputs but i think the
-	examples are all the same -- hmmm...
-<s>Warning: some of the input files are incorrect giving the wrong answer - corrected soon in the next week or so 09/05/2025
-	i think it might be for low numbered puzzles</s>
-	Install:
+NOTE: found around 20 bugs in C/C++ code due to coding in Java - a lot are array sizes - will fix soon 28/07/2025
+Install:
 
 o green button Code -> Download Zip
 o unzip AOC-main.zip 
@@ -18,6 +13,40 @@ o for many solns/languages: web search: advent of code 20XY day AB solutions
 	-- page per day on reddit
 	-- plus codeconvert.ai is very good at converting python to c++ (sometimes need manual intervention)
 </pre>
+<h3>Update (05-08-25) Fixing Bugs:</h3>
+<pre>
+<s>	bugs_2015 05/08/2025
+	bugs_2016 06/08/2025
+	bugs_2017 06/08/2025</s>
+	bugs_2018
+	bugs_2019
+	bugs_2020
+	bugs_2021
+	bugs_2022
+	bugs_2023
+	bugs_2024
+</pre>
+<pre>
+    bugs causes:
+	o. c++ tightening up on return values
+	o. slightly corrupt input files from human error
+	o. better algorithms
+	o. having a second input file to find other conditions
+	o. hard coded values (not reading vals from input files)
+	o. human error on input values 
+	o. array sizes
+	o. input file width sizes
+	---------------------
+	most if not all input files differ for each login
+	
+	
+
+</pre>
+<s>i think he give different input files for most... so you need to use your own inputs but i think the
+	examples are all the same -- hmmm...
+Warning: some of the input files are incorrect giving the wrong answer - corrected soon in the next week or so 09/05/2025
+	i think it might be for low numbered puzzles</s>
+<hr>
 <!-- <embed src=unfin.txt> -->
 <!-- <object type="text/html" data="unfin.txt"></object> -->
 <h2>Notes (this README is a .html file (drag and drop into a browser)) lu:27-04-2025 @06:16GMT</h2>
