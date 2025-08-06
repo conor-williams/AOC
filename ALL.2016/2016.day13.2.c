@@ -32,6 +32,7 @@ int main(int argc, char **argv)
        
 	fflush(stdout); int fd = dup(1); close(1);
         char line1[SIZE];
+	int fav = 0;
 while(1) 
 {
         fgets(line1, SIZE-1, a);
@@ -40,12 +41,12 @@ while(1)
 #ifdef _DEBUG_
 //	printf("LINE: %s\n", line1);
 #endif
+	fav = atoi(line1);
 	leny++;
 }
 fclose(a);
 
 	//int fav = 10;
-	int fav = 1362;
 	for (int y = 0; y < GRID; y++) {
 		for (int x = 0; x < GRID; x++) {
 			unsigned int ans = x*x + 3*x + 2*x*y + y + y *y + fav;

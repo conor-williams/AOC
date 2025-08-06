@@ -51,9 +51,22 @@ int main(int argc, char **argv)
 	char buf[100];
 
 	fflush(stdout); int fd = dup(1); close(1);
+	FILE * a = fopen(argv[1], "r");
+        char line1[220];
+        unsigned int tot =0;
+	char input[30];
+while(1)
+{
+        fgets(line1, 200, a);
+        if (feof(a)) break;
+        line1[strlen(line1) -1]='\0';
+        printf("LINE: %s\n", line1);
+	strcpy(input, line1);
+}
+
         num = 0;
 	int count = 0;
-	char input[] = "ojvtpuvg";
+	//char input[30];// = "ojvtpuvg";
 //	char *input = "abc";
 	while (1) {
 		count++;

@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
 #include <stdlib.h>
 
 int32_t a = 0;
@@ -19,21 +20,31 @@ void toggle(int32_t target) {
 
 int main(int argc, char** argv) {
 	printf("		2016 Day 23 Part 2\n");
-	//a = atoi(argv[1]);
-	a = 12;
-	b = a;
-	b--;
+	FILE * a = fopen(argv[1], "r");
 
-lbl:
-	a *= b;
-	b--;
-	c = b * 2;
-	toggle(c);
-	if (!toggledTheJump) {
-		goto lbl;
+	int linenum = 0;
+	char line1[200];
+
+	int num_nineteen = 0;
+	int num_twenty = 0;
+        while(1)
+        {
+                fgets(line1, 999, a);
+                if (feof(a)) break;
+                line1[strlen(line1) -1]='\0';
+		if (linenum == 19) {
+			sscanf(line1, "cpy %d c", &num_nineteen);
+		} else if (linenum == 20) {
+			sscanf(line1, "jnz %d d", &num_twenty);
+		}
+		linenum++;
+        }
+
+	long ans = 1;
+	for (int ii = 1; ii <= 12; ii++) {
+		ans *= ii;
 	}
+	ans += num_nineteen*num_twenty;
 
-	a += 78 * 75;
-
-	printf("**ans: %d\n", a);
+	printf("**ans: %d\n", ans);
 }

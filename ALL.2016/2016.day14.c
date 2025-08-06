@@ -61,7 +61,19 @@ int main(int argc, char **argv)
 	fflush(stdout); int fd = dup(1); close(1);
 	unsigned long i = 0; 
 	char buf[100];
-	char *input = "ihaygndm";
+
+        FILE * a = fopen(argv[1], "r");
+        char line1[1000];
+	char input[50];
+while(1)
+{
+        fgets(line1, 999, a);
+        if (feof(a)) break;
+        line1[strlen(line1) -1]='\0';
+	strcpy(input, line1);
+}
+
+	//char *input = "ihaygndm";
 	//char *input = "abc";
 	int pos = 0;
 	while (1) {

@@ -121,7 +121,19 @@ int main(int argc, char **argv)
 
 	//unsigned long i = 0; 
 	char buf[100];
-	char *input = "ihaygndm";
+	FILE * a = fopen(argv[1], "r");
+        char line1[1000];
+        char input[50];
+while(1)
+{
+        fgets(line1, 999, a);
+        if (feof(a)) break;
+        line1[strlen(line1) -1]='\0';
+        strcpy(input, line1);
+}
+
+
+	//char *input = "ihaygndm";
 	//char *input = "abc";
 	for (int i = 0; i < UPTO; i++) {
                 snprintf(buf, 50, "%s%d", input, i);
@@ -136,7 +148,7 @@ int main(int argc, char **argv)
 	//printf("after...\n"); fflush(stdout); 
 	int pos = 0;
 	for (int i = 0; i < UPTO-2000; i++) {
-		if (threefive[i].three == 1) {
+		if (threefive[i].three == 1 && threefive[i].five == 0) {
 			for (int j = i+1; j < 1000+i+1; j++) {
 				if (threefive[j].five == 1 && threefive[i].theThree == threefive[j].theFive) {
 					pos++;

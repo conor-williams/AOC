@@ -58,8 +58,21 @@ int main(int argc, char **argv)
 	printf("		2016 day5.2\n");
 	printf("	SLOW ~30seconds\n");
 	fflush(stdout); int fd = dup(1); close(1);
+	FILE * a = fopen(argv[1], "r");
+        char line1[220];
+        unsigned int tot =0;
+        char input[30];
+while(1)
+{
+        fgets(line1, 200, a);
+        if (feof(a)) break;
+        line1[strlen(line1) -1]='\0';
+        printf("LINE: %s\n", line1);
+        strcpy(input, line1);
+}
+
 	int count = 0;
-	char *input = "ojvtpuvg";
+	//char *input = "ojvtpuvg";
 //	char *input = "abc";
 	while (1) {
 		count++;
