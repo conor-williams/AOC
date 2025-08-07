@@ -17,8 +17,8 @@ o for many solns/languages: web search: advent of code 20XY day AB solutions
 <pre>
 <s>	bugs_2015 05/08/2025
 	bugs_2016 06/08/2025
-	bugs_2017 06/08/2025</s>
-	bugs_2018
+	bugs_2017 06/08/2025
+	bugs_2018 07/08/2025</s>
 	bugs_2019
 	bugs_2020
 	bugs_2021
