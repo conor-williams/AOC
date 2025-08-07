@@ -25,11 +25,12 @@ int minx = 99999; int maxx = 0;
 int miny = 99999; int maxy = 0;
 void printit(int val);
 struct save_s {
-	int x;
-	int y;
-}; 
+        int x;
+        int y;
+};
 struct save_s save[50000];
 map<pair<int, int>,int> mp;
+
 int drilldown(int x1, int y1);
 int comeup(int frmx1, int frmy1, int tox1, int toy1, int drillit);
 
@@ -86,8 +87,9 @@ int main(int argc, char **argv)
 
 		leny++;
 	}
-	miny = 0;
+	int origMiny = miny;
 	int origMaxy = maxy;
+	miny = 0;
 	maxy += 5;
 	minx -= 5;
 	maxx += 5;
@@ -119,7 +121,6 @@ int main(int argc, char **argv)
 	int i = savePos-1;
 
 	comeup(save[i].x, save[i].y, 500, 0, 1);
-	//comeup(save[i].x, save[i].y, save[i-1].x, save[i-1].y);
 
 
 	//tidy up -- spurious R.L or L.R
@@ -133,27 +134,66 @@ int main(int argc, char **argv)
 			} else if (grid[y][x] == 'L' && grid[y][x+1] == '.' && grid[y][x+2] == 'R') {
 				grid[y][x+1] = 'F';
 				Ftot++;
+			} else if (grid[y][x] == 'L' && grid[y][x+1] == '.' && grid[y][x+2] == 'L') {
+				grid[y][x+1] = 'F';
+				Ftot++;
+			} else if (grid[y][x] == 'R' && grid[y][x+1] == '.' && grid[y][x+2] == 'R') {
+				grid[y][x+1] = 'F';
+				Ftot++;
 			}
+
 		}
 	}
-	printit(23);
-	printf("Ftot is %d\n", Ftot);			
+
 
 	int susperr = 0;
-	for (int x = minx; x<= maxx; x++) {
-		for (int y = miny; y <= origMaxy; y++) {
-			if (grid[y][x] == 'L' && grid[y+1][x] == '.') {
-				susperr++;
-				printf("ERRL.\n");
-			} else if (grid[y][x] == 'R' && grid[y+1][x] == '.') {
-				susperr++;
-				printf("ERRR.\n");
-			} else if (grid[y][x] == '|' && grid[y+1][x] == '.') {
-				susperr++;
-				printf("ERR|\n");
+	do {
+		susperr = 0;
+		for (int x = minx; x<= maxx; x++) {
+			for (int y = miny; y <= origMaxy; y++) {
+				if (grid[y][x] == 'L' && grid[y+1][x] == '.') {
+					susperr++;
+					drilldown(x, y);
+					int i = savePos-1;
+					comeup(save[i].x, save[i].y, x, y, 1);
+					printf("ERRL.\n");
+				} else if (grid[y][x] == 'R' && grid[y+1][x] == '.') {
+					susperr++;
+					drilldown(x, y);
+					int i = savePos-1;
+					comeup(save[i].x, save[i].y, x, y, 1);
+					printf("ERRR.\n");
+				} else if (grid[y][x] == '|' && grid[y+1][x] == '.') {
+					susperr++;
+					drilldown(x, y);
+					int i = savePos-1;
+					comeup(save[i].x, save[i].y, x, y, 1);
+					printf("ERR|\n");
+				}
+			}
+		}
+	} while (susperr != 0);
+
+
+	Ftot = 0;
+	for (int y = miny; y <= origMaxy; y++) {
+		for (int x = minx; x<= maxx-2; x++) {
+			if (grid[y][x] == 'R' && grid[y][x+1] == '.' && grid[y][x+2] == 'L') {
+				grid[y][x+1] = 'F';
+				Ftot++;
+			} else if (grid[y][x] == 'L' && grid[y][x+1] == '.' && grid[y][x+2] == 'R') {
+				grid[y][x+1] = 'F';
+				Ftot++;
+			} else if (grid[y][x] == 'L' && grid[y][x+1] == '.' && grid[y][x+2] == 'L') {
+				grid[y][x+1] = 'F';
+				Ftot++;
+			} else if (grid[y][x] == 'R' && grid[y][x+1] == '.' && grid[y][x+2] == 'R') {
+				grid[y][x+1] = 'F';
+				Ftot++;
 			}
 		}
 	}
+
 
 	printf("susperr is %d\n", susperr);
 	int hasherr =0;
@@ -173,13 +213,33 @@ int main(int argc, char **argv)
 	//fflush(stdout); dup2(fd, 1);
 	grid[sy][sx] = '+';
 	tot = 0;
-	for (int y = miny+8; y <= origMaxy; y++) {
+	for (int y = origMiny; y <= origMaxy; y++) {
+		for (int x = minx; x<= maxx-2; x++) {
+			if (grid[y][x] == 'R' && grid[y][x+1] == '|' && grid[y][x+2] == 'R') {
+				grid[y][x+1] = 'R';
+			}
+			if (grid[y][x] == 'L' && grid[y][x+1] == '|' && grid[y][x+2] == 'L') {
+				grid[y][x+1] = 'R';
+			}
+			if (grid[y][x] == 'L' && grid[y][x+1] == '|' && grid[y][x+2] == 'R') {
+				grid[y][x+1] = 'L';
+			}
+			if (grid[y][x] == 'R' && grid[y][x+1] == '|' && grid[y][x+2] == 'L') {
+				grid[y][x+1] = 'L';
+			}
+		}
+	}
+
+
+	tot = 0;
+	for (int y = origMiny; y <= origMaxy; y++) {
 		for (int x = minx; x<= maxx; x++) {
 			if (grid[y][x] == '|' || grid[y][x] == 'R' || grid[y][x] == 'L' || grid[y][x] == 'F') {
 				tot++;
 			}
 		}
 	}
+
 	fflush(stdout); dup2(fd, 1);
 	printf("**ans: %d\n", tot);
 	//printit(22);
@@ -219,36 +279,65 @@ int comeup(int frmx1, int frmy1, int tox1, int toy1, int drillit) {
 
 	//left
 
+	int y;
+	int itsx = frmx1+1;
+	int end123 =0;
 	int breakit = 0;
 	for (int y = frmy1; y>toy1;y--) {
-		//printf("comeup: y is %d\n", y); fflush(stdout);
 
-/*
-...LLLLRRRRRRRRRRRRRRRRRRRRRRRRRR......
-...||#RRRRRRRRRRRRRRRRRRRRRRRRR#|....
-...||#RRRRRRRRRRRRRRRRRRRRRRRRR#|.....
-...||###########################|......
-...||...........................|......
-...||...........................|.......
-*/
-		int itsx = frmx1+1;
-		for (int x = frmx1-1; x >= minx ; x--) {
-			//printf("comeup: Lx is %d\n", x); fflush(stdout); 
+		int x;
+		for (x = /*itsx */frmx1+1; x <= maxx ;x++) {
+			if (grid[y][x] == '#') { //found wall right
+				if (y == toy1+1) {
+					toy1--;
+				}
+				end123 = x+1;
+				break;
+			} else {
+				grid[y][x] = 'R';
+				if ((y+1 <= frmy1 && grid[y+1][x] == '#' )|| (grid[y+1][x] == '.')) {
+					if (grid[y+1][x+1] == '.') {
+						if (grid[y+1][x] != '.') {
+							grid[y][x+1] = 'R';
+							end123 = x+1;
+							int ret2  = drilldown(x+1, y+1);
+							if (ret2 == 55) {breakit = 1; break;}
+							else if (ret2 == 11) {breakit = 1; break;}
+
+							else {if (33 == comeup(save[savePos-1].x, save[savePos-1].y, save[savePos-1].x, 1, 1)) {} }
+							breakit = 1;
+							break;
+						} else {
+							breakit = 1;
+							break;
+						}
+					} else if (grid[y+1][x+1] == '|' && grid[y+1][x+2] == '.') {
+						breakit = 1; break;
+					}
+
+				} else {
+				}
+			}
+		}
+
+		for (x = frmx1-1; x >= minx ; x--) {
 			if (grid[y][x] == '#') { //found wall left
-				itsx = x+1;
+				itsx = x-1;
+				if (y == toy1+1) {
+					toy1--;
+				}
 				break;
 			} else {
 				grid[y][x] = 'L';
 				if ((y+1 <= frmy1 && grid[y+1][x] == '#') || (grid[y+1][x] == '.')) {
 					if (grid[y+1][x-1] == '.') {
 						if (grid[y+1][x] != '.') {
-							 printf("L: found top of wall @ %d %d\n", x, y+1);
 							grid[y][x-1] = 'L';
+							itsx = x-1;
 							int ret1  = drilldown(x-1, y+1);
-							printf("ret1 is %d\n", ret1);
-							if (ret1 == 55) {printf("55 R\n"); breakit = 1; break;}
-							else if (ret1 == 11) {printf("got 11 L\n"); breakit=1; break;}
-							else {if (33 == comeup(save[savePos-1].x, save[savePos-1].y, save[savePos-1].x, 1, 1)) {/*return 44;*/}printit(0);}
+							if (ret1 == 55) {breakit = 1; break;}
+							else if (ret1 == 11) {breakit=1; break;}
+							else {if (33 == comeup(save[savePos-1].x, save[savePos-1].y, save[savePos-1].x, 1, 1)) {}}
 							breakit = 1;
 							break;
 						} else {
@@ -262,38 +351,17 @@ int comeup(int frmx1, int frmy1, int tox1, int toy1, int drillit) {
 				}
 			}
 		}
-
-		//right
-		for (int x = itsx /*frmx1+1*/; x <= maxx ;x++) {
-			//printf("comeup: Rx is %d\n", x); fflush(stdout);
-			if (grid[y][x] == '#') { //found wall right
-				break;
-			} else {
-				grid[y][x] = 'R';
-				if ((y+1 <= frmy1 && grid[y+1][x] == '#' )|| (grid[y+1][x] == '.')) {
-					if (grid[y+1][x+1] == '.') {
-						printf("found wall ...%d V %d %c\n", y+1, frmy1, grid[y+1][x]);
-						grid[y][x+1] = 'R';
-						printf("RRR: found top of wall @ %d %d\n", x, y+1); 
-						printf("RRR: drill down @ %d %d\n", x+1, y+1); 
-						int ret2  = drilldown(x+1, y+1);
-						printf("ret2 is %d\n", ret2);
-						if (ret2 == 55) {printf("55 L\n"); breakit = 1; break;}
-						else if (ret2 == 11) {printf("got 11 R\n");  breakit = 1; break;}
-						else {if (comeup(save[savePos-1].x, save[savePos-1].y, save[savePos-1].x, 1, 1) == 33) {/*return 44;*/} printit(0);}
-						breakit = 1;
-						break;
-					} else if (grid[y+1][x+1] == '|' && grid[y+1][x+2] == '.') {
-						breakit = 1; break;
-					}
-				} else {
-					printf("did I not find wall...%d V %d (y+1 <= frmy1) %c\n", y+1, frmy1, grid[y+1][x]);
-					//if (frmy1 == 1948 && grid[y+1][x] == '#') {grid[y][x] = 'Z';}
+		if (breakit == 1) { 
+			for (int i = itsx; i <=end123 ; i++) {
+				if (grid[y][i] == 'R' || grid[y][i] == 'L') {
+					if (grid[y-1][i] != 'R' && grid[y-1][i] != 'L') {
+						grid[y][i] = 'R';
+					} 
 				}
 			}
+			return 33;
 		}
 
-		if (breakit == 1) {printf("ret 33\n"); return 33;}
 	}
 	printit(23); getchar();
 	return 0;

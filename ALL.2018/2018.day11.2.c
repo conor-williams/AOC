@@ -2,9 +2,20 @@
 // tribulu
 using namespace std;
 int sum[301][301];
-int input = 3613;
-signed main() {
+int input;
+signed main(int argc, char **argv) {
 	printf("		2018 Day11 part2\n");
+
+        FILE * a = fopen(argv[1], "r");
+        char line1[1000];
+while(1)
+{
+        fgets(line1, 999, a);
+        if (feof(a)) break;
+        line1[strlen(line1) -1]='\0';
+	input = atoi(line1);
+}
+
 	int bx, by, bs, best = INT_MIN;
 	for(int y = 1; y <= 300; y++) {
 		for(int x = 1; x <= 300; x++) {

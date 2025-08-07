@@ -69,6 +69,7 @@ int main(int argc, char **argv)
 {
 	a = fopen(argv[1], "r"); printf("		2018 Day21.1\n"); fflush(stdout);
 	int fd = dup(1); close(1);
+	int instREG;
 
 	while (1) 
 	{
@@ -76,95 +77,88 @@ int main(int argc, char **argv)
 		if (feof(a)) break;
 		line1[(int)strlen(line1)-1] = '\0';
 		//printf("line1 %s\n", line1);
-		strcpy(instr[instNum++], line1);
+		if (leny == 0) {
+			sscanf(line1, "#ip %d", &instREG);
+		} else {
+			strcpy(instr[leny-1], line1);
+			instNum++;
+		}
 
 		leny++;
 	}
 	fclose(a);
 
-	for (REG0 = 6482000; REG0 < 6500000; REG0++) 
-	{
-		int instREG;
-		int ret1 = sscanf(instr[0], "#ip %d", &instREG);
-		if (ret1 == 1) {
-			for (int z = 0; z < instNum-1; z++) {
-				strcpy(instr[z], instr[z+1]);
-			}
-			instNum--;
-		}
+	int ans = 0;
+	long long regb[10] = {0};
+	int regA, regB, regC, in;
+	regb[0] = 1;
+	for (int k = 0; k < instNum; k++) {
 
-		long long regb[10] = {0};
-		int regA, regB, regC, in;
-		regb[0] = REG0;
-		long long count = -1;
-		for (int k = 0; k < instNum; k++) {	
-			count++;
-			char four[10];
-			int ret = sscanf(instr[k], "%s %d %d %d", four, &regA, &regB, &regC);
-			if (ret == 4) { in = mycmp(four); }
-			regb[instREG] = k;
-			printf("inst: %d (%d %d %d)\n", in, regA, regB, regC); fflush(stdout); getchar();
-			switch(in) {
-				case 9: //addr
-					regb[regC] = regb[regA] + regb[regB];
-					break;
-				case 11: //addi
-					regb[regC] = regb[regA] + regB;
-					//printf("addi regb[regC] is %d\n", regb[regC]);
-					break;
-				case 15: //mulr
-					regb[regC] = regb[regA] * regb[regB];
-					break;
-				case 7: //muli
-					regb[regC] = regb[regA] * regB;
-					break;
-				case 5: //banr
-					regb[regC] = regb[regA] & regb[regB];
-					break;
-				case 1: //bani
-					regb[regC] = regb[regA] & regB;
-					break;
-				case 6: //borr
-					regb[regC] = regb[regA] | regb[regB];
-					break;
-				case 3: //bori
-					regb[regC] = regb[regA] | regB;
-					break;
-				case 8: //setr
-					regb[regC] = regb[regA];
-					break;
-				case 2: //seti
-					regb[regC] = regA;
-					break;
-				case 12: //gtir
-					if (regA > regb[regB]) {regb[regC] = 1;} else {regb[regC] = 0;}
-					break;
-				case 14: //gtir
-					if (regb[regA] > regB) {regb[regC] = 1;} else {regb[regC] = 0;}
-					break;
-				case 13: //gtrr
-					if (regb[regA] > regb[regB]) {regb[regC] = 1;} else {regb[regC] = 0;}
-					break;
-				case 4: //eqir
-					if (regA == regb[regB]) {regb[regC] = 1;} else {regb[regC] = 0;}
-					break;
-				case 0:
-					if (regb[regA] == regB) {regb[regC] = 1;} else {regb[regC] = 0;}
-					break;
-				case 10:
-					if (regb[regA] == regb[regB]) {regb[regC] = 1;} else {regb[regC] = 0;}
-					break;
-				default:
-					printf("ERR\n"); exit(0);
-			}
-			if (regC ==  instREG) {k = regb[instREG];}
-			if (count > 2000) {break;}
+		char four[10];
+		int ret = sscanf(instr[k], "%s %d %d %d", four, &regA, &regB, &regC);
+		if (ret == 4) { in = mycmp(four); }
+		regb[instREG] = k;
+		printf("inst: %d (%d %d %d)\n", in, regA, regB, regC); fflush(stdout); getchar();
+		switch(in) {
+			case 9: //addr
+				regb[regC] = regb[regA] + regb[regB];
+				break;
+			case 11: //addi
+				regb[regC] = regb[regA] + regB;
+				//printf("addi regb[regC] is %d\n", regb[regC]);
+				break;
+			case 15: //mulr
+				regb[regC] = regb[regA] * regb[regB];
+				break;
+			case 7: //muli
+				regb[regC] = regb[regA] * regB;
+				break;
+			case 5: //banr
+				regb[regC] = regb[regA] & regb[regB];
+				break;
+			case 1: //bani
+				regb[regC] = regb[regA] & regB;
+				break;
+			case 6: //borr
+				regb[regC] = regb[regA] | regb[regB];
+				break;
+			case 3: //bori
+				regb[regC] = regb[regA] | regB;
+				break;
+			case 8: //setr
+				regb[regC] = regb[regA];
+				break;
+			case 2: //seti
+				regb[regC] = regA;
+				break;
+			case 12: //gtir
+				if (regA > regb[regB]) {regb[regC] = 1;} else {regb[regC] = 0;}
+				break;
+			case 14: //gtir
+				if (regb[regA] > regB) {regb[regC] = 1;} else {regb[regC] = 0;}
+				break;
+			case 13: //gtrr
+				if (regb[regA] > regb[regB]) {regb[regC] = 1;} else {regb[regC] = 0;}
+				break;
+			case 4: //eqir
+				if (regA == regb[regB]) {regb[regC] = 1;} else {regb[regC] = 0;}
+				break;
+			case 0:
+				if (regb[regA] == regB) {regb[regC] = 1;} else {regb[regC] = 0;}
+				break;
+			case 10:
+				ans = regb[regA];
+				goto after;
+				//if (regb[regA] == regb[regB]) {regb[regC] = 1;} else {regb[regC] = 0;}
+				//break;
+			default:
+				printf("ERR\n"); exit(0);
 		}
-		if (count < 2000) {break;} else {continue;}
-		printf("**REG0: ((((%d)))) count is %lld\n", REG0, count);
+		if (regC ==  instREG) {k = regb[instREG];}
 	}
+after:
 	fflush(stdout); dup2(fd, 1);
-	printf("**ans: %d\n", REG0);
+	printf("**ans: %d\n", ans);
 }
 
 int mycmp(char four[]) {

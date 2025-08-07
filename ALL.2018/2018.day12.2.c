@@ -6,6 +6,8 @@
 #include <string>
 #include <algorithm>
 
+#include <vector>
+#include <map>
 #include <unistd.h>
 
 #define getchar()
@@ -33,9 +35,11 @@ int main(int argc, char **argv)
 	////printf("%d", argc); printf("@%s", argv[1]); fflush(stdout);
 	FILE * a = fopen(argv[1], "r"); printf("		2018 Day12.2\n"); fflush(stdout);
 
-	fflush(stdout); int fd = dup(1); close(1);
-	char initial3[900];
+	fflush(stdout); int fd = dup(1);// close(1);
+	string initial = "";
 	int leny = 0;
+	map <string, char> mp;
+	char initial3[SIZE];
 	while (1)
 	{
 		fgets(line1, SIZE-1, a);
@@ -44,117 +48,70 @@ int main(int argc, char **argv)
 		line1[(int)strlen(line1)-1] = '\0';
 		int ret = 0;
 		ret = sscanf(line1, "initial state: %s", initial3);
+		initial = initial3;
 		if (ret == 1) {continue;}
 		if ((int)strlen(line1) == 0) {
 			continue;
 		}
 		sscanf(line1, "%s => %c", plant[leny].from, &plant[leny].to);
+		mp[plant[leny].from] = plant[leny].to;
 		leny++;
 	}
 	fclose(a);
 
-	printf("initial3 is %s\n", initial3);
-	unsigned long long tot = 0;
-	for (int i = 0; i < 186; i++) {
-		unsigned long long pos = (unsigned long long) 50000000000  -87 + i;
-		tot+= pos;
-	}
-	
-	printf("**tot %llu\n", tot);
-	fflush(stdout); dup2(fd, 1);
-	printf("**ans: %llu\n", tot);
-	exit(0);
+	int theZero = 400;
+	string dots(theZero, '.');
+	initial = dots + initial;
+	initial = initial + dots;
 
-	getchar();
-	char initial[2000];
-	sprintf(initial, "............................................................................................................................................................................................................................................................................................................%s..................................................", initial3);
-			char *s = (char*)malloc(100000000);
-			if (s==NULL) {printf("s NULL\n"); exit(0);}
-			char *initial2 = (char*)malloc(5000000000);
-			if (initial2==NULL) {printf("s NULL\n"); exit(0);}
-			strcpy(s, initial);
-			for (long long z = 0; z <= 5000000000; z++) {
-				if (z % 10000 == 0) {printf("z %lld \n", z);}
-				printf("loop is z %lld \n", z);
-				for (int q = 0; q < (int)strlen(s); q++) {
-					if (s[q] == '#') {printf("first # is %d\n", q-300); break;}
-				}
-				for (int q = (int)strlen(s) -1; q >= 0; q--) {
-					if (s[q] == '#') {printf("last # is %d\n", q-300); break;}
-				} 
-				int end1 = (int)strlen(s);
-				if (s[end1-1] == '#' && s[end1-2] == '#') {
-					s[end1] = '.';
-					s[end1+1] = '.';
-					s[end1+2]  = '\0';
-				} else if (s[end1-1] == '.' && s[end1-2] == '#') {
-					s[end1] = '.';
-					s[end1+1]  = '\0';
-				} else if (s[end1-1] == '#' && s[end1-2] == '.') {
-					s[end1] = '.';
-					s[end1+1] = '.';
-					s[end1+2]  = '\0';
-				}
-				for (int i = 0; i < (int)strlen(s); i++) {
-					char note[6];
-					if (i-2 < 0) {note[0] = '.';} else {note[0] = s[i-2];}
-					if (i-1 < 0) {note[1] = '.';} else {note[1] = s[i-1];}
-					note[2] = s[i];
-					if (i+1 > (int)strlen(s) -1) {note[3] = '.';} else {note[3] = s[i+1];}
-					if (i+2 > (int)strlen(s) -1) {note[4] = '.';} else {note[4] = s[i+2];}
-					note[5] = '\0';
-					
-					int found = 0;
-					for (int k = 0; k < leny; k++) {
-						if (strcmp(plant[k].from, note) == 0) {
-							found = 1;
-							initial2[i] = plant[k].to; break;
-						}	
-					}
-					if (found == 0) {
-						initial2[i] = '.';
-					}
-				}
-				initial2[strlen(s)+5] = '\0';
-				strcpy(s, initial2);
-				//printf("next s is %s\n", s);// getchar();
-			}
-			printf("s after is %s\n", s);
-/*
-	int cou = 0;
-			
-	for (int z = 0; z < 1000; z++) {
-		char initial2[5000];
-		for (int i = 0; i < (int)strlen(initial); i++) {
-			char note[6];
-			if (i-2 < 0) {note[0] = '.';} else {note[0] = initial[i-2];}
-			if (i-1 < 0) {note[1] = '.';} else {note[1] = initial[i-1];}
-			note[2] = initial[i];
-			if (i+1 > (int)strlen(initial) -1) {note[3] = '.';} else {note[3] = initial[i+1];}
-			if (i+2 > (int)strlen(initial) -1) {note[4] = '.';} else {note[4] = initial[i+2];}
-			note[5] = '\0';
-			
-			int found = 0;
-			for (int k = 0; k < leny; k++) {
-				if (strcmp(plant[k].from, note) == 0) {
-					found = 1;
-					initial2[i] = plant[k].to; break;
-				}	
-			}
-			if (found == 0) {
-				initial2[i] = '.';
-			}
+	//string dots = ".".repeat(6);
+	vector <string> repeatChecker;
+	int repeatStart = 0;
+	for (int ii = 0; ii < 200; ii++) {
+		int ind1 = initial.find_first_of('#');
+		int ind2 = initial.find_last_of('#')+1;
+
+		if (find(repeatChecker.begin(), repeatChecker.end(), initial.substr(ind1, ind2-ind1)) != repeatChecker.end()) {
+			auto it = find(repeatChecker.begin(), repeatChecker.end(), initial.substr(ind1, ind2-ind1));
+			repeatStart = it - repeatChecker.begin();
+			break;
+
 		}
-		initial2[(int)strlen(initial)] = '\0';
-		strcpy(initial, initial2);
+		repeatChecker.push_back(initial.substr(ind1, ind2-ind1));
+		//initial = dots + initial.substring(ind1, ind2) + dots;
+
+
+		string tmp1((int)initial.length()+10, '.');
+
+		for (int kk = 0; kk < (int)initial.length()-4; kk++) {
+			string sub1 = initial.substr(kk, kk+5-kk);
+			char to = '.';
+
+			if (mp.find(sub1) != mp.end()) {
+				to = mp[sub1];
+			}
+			tmp1[kk+2] = to;
+		}
+		initial = tmp1; 
 	}
-*/
-	tot = 0;
-	for (int i = 0; i < (int)strlen(s); i++) {
-		if (s[i] == '#') {
-			tot+=i-300;
+
+	int counthash = 0;
+	for (int jj = 0; jj < (int)initial.length(); jj++) {
+		if (initial[jj] == '#') {
+			counthash++;
 		}
 	}
-		
-	free(s);
+
+	long num = 50000000000L - repeatStart-1;
+	long tot = 0;
+	for (int ii = 0; ii < (int)initial.length(); ii++) {
+		if (initial[ii] == '#') {
+			tot += ii-theZero;
+		}
+	}
+
+
+
+	printf("**ans: ");
+	printf("%ld\n", (tot + (num*counthash)));
 }

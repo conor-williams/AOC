@@ -1,96 +1,234 @@
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <string>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+#include <math.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+#include <math.h>
+#include <map>
+#include <unordered_map>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <sys/time.h>
+#include <signal.h>
+#include <unistd.h>
 #include <vector>
-#include <set>
+#include <algorithm>
 
 using namespace std;
+#define getchar()
 
-// Function: run_activation_system
-// Parameters:
-//   magic_number: an integer read from the file (acting as a constant for each run)
-//   is_part_1: a boolean flag indicating which part of the computation to execute
-// Returns an integer result based on the internal logic
-int run_activation_system(int magic_number, bool is_part_1) {
-	// Initialize a set to store seen values, variable c, and last_unique_c as in the original Python code
-	set<int> seen;
-	int c = 0;
-	int last_unique_c = -1;
+void TimerStop(int signum);
+void TimerSet(int interval);
 
-	while (true) {
-		int a = c | 65536;  // Bitwise OR operation between c and 65536
-		c = magic_number;   // Reset c to the magic_number
+#define INTERVAL 12 
 
-		while (true) {
-			// Update c with a series of bitwise and arithmetic operations to mirror the Python behavior
-			c = (((c + (a & 255)) & 16777215) * 65899) & 16777215;
+void TimerStop(int signum);
+void TimerSet(int interval);
+FILE *a;
+int REG0 = 0;
 
-			// Check if a is less than 256
-			if (256 > a) {
-				if (is_part_1) {
-					return c;  // For part 1, immediately return c
-				} else {
-					if (seen.find(c) == seen.end()) {
-						seen.insert(c);  // Add c to the set if it has not been seen before
-						last_unique_c = c;
-						break;  // Break from the inner loop and continue the outer loop
-					} else {
-						return last_unique_c;  // If c is seen again, return the last unique value of c
-					}
-				}
-			} else {
-				a = a / 256;  // Integer division to reduce a
-			}
+struct in_s {
+                int in = 0;
+                int regA = 0;
+                int regB = 0;
+                int regC = 0;
+        };
+struct in_s ins[1000];
+
+void TimerStop(int signum) {
+	printf("\x1b[H");
+	printf("\x1b[%dB", 4);
+	printf("Timer ran out! Stopping timer %d\n", REG0);
+	fclose(a);
+	exit(10);
+}
+
+void TimerSet(int interval) {
+	//printf("starting timer\n");
+	struct itimerval it_val;
+
+	it_val.it_value.tv_sec = interval;
+	it_val.it_value.tv_usec = 0;
+	it_val.it_interval.tv_sec = 0;
+	it_val.it_interval.tv_usec = 0;
+
+	if (signal(SIGALRM, TimerStop) == SIG_ERR) {
+		perror("Unable to catch SIGALRM");
+		exit(1);
+	}
+	if (setitimer(ITIMER_REAL, &it_val, NULL) == -1) {
+		perror("error calling setitimer()");
+		exit(1);
+	}
+}
+
+
+int tot = 0;
+#define SIZE 500
+char line1[SIZE];
+int leny = 0;
+
+char instr[1000][25];
+int instNum =0;
+int mycmp(char four[]);
+int main(int argc, char **argv)
+{
+	a = fopen(argv[1], "r"); printf("		2018 Day21.2\n"); fflush(stdout);
+	printf("	SLOW ~30seconds\n");
+	fflush(stdout);
+	int fd = dup(1); //close(1);
+	int instREG;
+
+	while (1) 
+	{
+		fgets(line1, SIZE -1, a);
+		if (feof(a)) break;
+		line1[(int)strlen(line1)-1] = '\0';
+		//printf("line1 %s\n", line1);
+		if (leny == 0) {
+			sscanf(line1, "#ip %d", &instREG);
+		} else {
+			//strcpy(instr[leny-1], line1);
+			char four[20];
+		       	int regA, regB, regC;	
+			sscanf(line1, "%s %d %d %d", four, &regA, &regB, &regC);
+			ins[instNum].in = mycmp(four);
+			ins[instNum].regA = regA;
+			ins[instNum].regB = regB;
+			ins[instNum].regC = regC;
+
+			instNum++;
 		}
+
+		leny++;
 	}
+	fclose(a);
+
+	int ans = 0;
+	long long regb[10] = {0};
+	int regA, regB, regC, in;
+	regb[0] = 1;
+	int prev = 0;
+        //unordered_map <int, int> mp;
+	vector <int> ve;
+
+	for (int k = 0; k < instNum; k++) {
+
+		//char four[10];
+		//int ret = sscanf(instr[k], "%s %d %d %d", four, &regA, &regB, &regC);
+		//if (ret == 4) { in = mycmp(four); }
+		in = ins[k].in;
+		regA = ins[k].regA;
+		regB = ins[k].regB;
+		regC = ins[k].regC;
+
+		regb[instREG] = k;
+		//printf("inst: %d (%d %d %d)\n", in, regA, regB, regC); fflush(stdout); getchar();
+		switch(in) {
+			case 9: //addr
+				regb[regC] = regb[regA] + regb[regB];
+				break;
+			case 11: //addi
+				regb[regC] = regb[regA] + regB;
+				//printf("addi regb[regC] is %d\n", regb[regC]);
+				break;
+			case 15: //mulr
+				regb[regC] = regb[regA] * regb[regB];
+				break;
+			case 7: //muli
+				regb[regC] = regb[regA] * regB;
+				break;
+			case 5: //banr
+				regb[regC] = regb[regA] & regb[regB];
+				break;
+			case 1: //bani
+				regb[regC] = regb[regA] & regB;
+				break;
+			case 6: //borr
+				regb[regC] = regb[regA] | regb[regB];
+				break;
+			case 3: //bori
+				regb[regC] = regb[regA] | regB;
+				break;
+			case 8: //setr
+				regb[regC] = regb[regA];
+				break;
+			case 2: //seti
+				regb[regC] = regA;
+				break;
+			case 12: //gtir
+				if (regA > regb[regB]) {regb[regC] = 1;} else {regb[regC] = 0;}
+				break;
+			case 14: //gtir
+				if (regb[regA] > regB) {regb[regC] = 1;} else {regb[regC] = 0;}
+				break;
+			case 13: //gtrr
+				if (regb[regA] > regb[regB]) {regb[regC] = 1;} else {regb[regC] = 0;}
+				break;
+			case 4: //eqir
+				if (regA == regb[regB]) {regb[regC] = 1;} else {regb[regC] = 0;}
+				break;
+			case 0:
+				if (regb[regA] == regB) {regb[regC] = 1;} else {regb[regC] = 0;}
+				break;
+			case 10:
+				if (regb[regA] == regb[regB]) {regb[regC] = 1;} else {regb[regC] = 0;}
+
+
+				if (find(ve.begin(), ve.end(), regb[regA]) != ve.end() ) {
+					ans = prev;
+					goto after;
+				} else {
+					prev = regb[regA];
+					ve.push_back(regb[regA]);
+					//printf("%d\n", prev);
+				}
+				break;
+				/*
+				mp[regb[regA]] = mp[regb[regA]]+1;
+				if (mp[regb[regA]] > 1) {
+					ans = prev;
+					goto after;
+				} else {
+					prev = regb[regA];
+					//printf("%d\n", prev);
+				}
+				*/
+
+				break;
+
+			default:
+				printf("ERR\n"); exit(0);
+		}
+		if (regC ==  instREG) {k = regb[instREG];}
+	}
+after:
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %d\n", ans);
 }
 
-int main(int argc, char **argv) {
-	printf("		2018 day21 Part2\n");
-	// Open the file "i1.txt" for reading
-
-	ifstream infile(argv[1]);
-
-#ifdef _ACCOLADE_
-	printf("deleted on reddit, codeconvert.ai no modification\n");
-#endif
-	//
-	// Read all lines from the file into a vector of strings
-	vector<string> lines;
-	string line;
-	while (getline(infile, line)) {
-		lines.push_back(line);
-	}
-	infile.close();
-
-	// Ensure the file has at least 9 lines, as we need index 8
-	//if (lines.size() < 9) {
-	//   cerr << "Error: not enough lines in file" << endl;
-	//  return 1;
-	//}
-
-	// Tokenize the 9th line (index 8) to extract the magic_number (the second token)
-	istringstream iss(lines[8]);
-	vector<string> tokens;
-	string token;
-	while (iss >> token) {
-		tokens.push_back(token);
-	}
-	/*
-	if (tokens.size() < 2) {
-		cerr << "Error: not enough tokens in line" << endl;
-		return 1;
-	}
-	*/
-	int magic_number = stoi(tokens[1]);  // Convert the second token to an integer
-
-	// Print the output for part 1 and part 2 respectively by calling run_activation_system
-	///cout << run_activation_system(magic_number, true) << endl;
-	//cout << run_activation_system(magic_number, false) << endl;
-	int ans2 =  run_activation_system(magic_number, false);
-
-	printf("**ans: %d\n", ans2);
-	return 0;
+int mycmp(char four[]) {
+	if (strcmp(four, "addr") == 0) {return 9;}
+	else if (strcmp(four, "addi") == 0) {return 11;}
+	else if (strcmp(four, "mulr") == 0) {return 15;}
+	else if (strcmp(four, "muli") == 0) {return 7;}
+	else if (strcmp(four, "banr") == 0) {return 5;}
+	else if (strcmp(four, "bani") == 0) {return 1;}
+	else if (strcmp(four, "borr") == 0) {return 6;}
+	else if (strcmp(four, "bori") == 0) {return 3;}
+	else if (strcmp(four, "setr") == 0) {return 8;}
+	else if (strcmp(four, "seti") == 0) {return 2;}
+	else if (strcmp(four, "gtir") == 0) {return 12;}
+	else if (strcmp(four, "gtri") == 0) {return 14;}
+	else if (strcmp(four, "gtrr") == 0) {return 13;}
+	else if (strcmp(four, "eqir") == 0) {return 4;}
+	else if (strcmp(four, "eqri") == 0) {return 0;}
+	else if (strcmp(four, "eqrr") == 0) {return 10;}
+	else {printf("ERR\n"); exit(0);}
 }
-

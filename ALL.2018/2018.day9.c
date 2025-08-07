@@ -81,7 +81,7 @@ void play(int players, int lastMarble) {
 	circle.push_back(0);
 	circle.push_back(4);
 
-	unsigned long long score[450] = {0};
+	unsigned long long score[1000] = {0};
 	int origI = 4;
 	while (1) {
 		origI++;
