@@ -36,6 +36,8 @@ o for many solns/languages: web search: advent of code 20XY day AB solutions
 	o. human error on input values 
 	o. array sizes
 	o. input file width sizes
+	o. deep copy
+	o. non initialisation of vars eg.tot
 	---------------------
 	most if not all input files differ for each login
 	
