@@ -18,13 +18,14 @@ o for many solns/languages: web search: advent of code 20XY day AB solutions
 <s>	bugs_2015 05/08/2025
 	bugs_2016 06/08/2025
 	bugs_2017 06/08/2025
-	bugs_2018 07/08/2025</s>
-	bugs_2019
+	bugs_2018 07/08/2025
+	bugs_2019 09/08/2025 01:01</s>
 	bugs_2020
 	bugs_2021
 	bugs_2022
 	bugs_2023
 	bugs_2024
+Note: Haven't fixed the un-Java'ed ones yet
 </pre>
 <pre>
     bugs causes:
