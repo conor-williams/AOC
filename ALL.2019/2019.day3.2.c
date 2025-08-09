@@ -4,8 +4,10 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <map>
 #include <unistd.h>
 
+using namespace std;
 #define getchar()
 int pos;
 int lenx, leny;
@@ -25,12 +27,17 @@ struct posmin points[1000];
 #define STARTX 10
 #define STARTY 40
 */
+/*
 #define GRIDX 35000
 #define GRIDY 20000
 #define STARTX 30000
 #define STARTY 15000
+*/
+int GRIDX = 0;
+int GRIDY = 0;
+int STARTX = 0;
+int STARTY = 0;
 int prevX; int prevY; 
-char puz[2][GRIDY][GRIDX];
 void recordW1(int x, int y, int man, int stepsW1);
 void recordW1(int x, int y, int man, int stepsW1) {
 	for (int i = 0; i < pos; i++) {
@@ -55,287 +62,261 @@ int man2X(int x, int y) {
 	return abs(STARTX - x) + abs(STARTY - y);
 
 }
-void manX();
-void manX() {
-	for (int y = 0; y < GRIDY; y++) {
-		for (int x = 0 ; x < GRIDX; x++) {
-			if (puz[1][y][x] == 'X') {
-				printf("res is: %d\n", abs(STARTX - x) + abs(STARTY - y));
-			}
-		}
-	}
+/*
+   void manX();
+   void manX() {
+   for (int y = 0; y < GRIDY; y++) {
+   for (int x = 0 ; x < GRIDX; x++) {
+   if (puz[1][y][x] == 'X') {
+   printf("res is: %d\n", abs(STARTX - x) + abs(STARTY - y));
+   }
+   }
+   }
 
-}
-void minmanX();
-void minmanX() {
-	int min = 0;
-	int first = 0;
-	for (int y = 0; y < GRIDY; y++) {
-		for (int x = 0 ; x < GRIDX; x++) {
-			if (puz[1][y][x] == 'X') {
-				if (first == 0) {first = 1; min = abs(STARTX-x) + abs(STARTY-y);}
-				if ((abs(STARTX -x) + abs(STARTY-y)) < min) {
-					min = abs(STARTX -x) + abs(STARTY-y);
-				}
-			}
-		}
-	}
-	printf("min is %d\n", min);
+   }
+   void minmanX();
+   void minmanX() {
+   int min = 0;
+   int first = 0;
+   for (int y = 0; y < GRIDY; y++) {
+   for (int x = 0 ; x < GRIDX; x++) {
+   if (puz[1][y][x] == 'X') {
+   if (first == 0) {first = 1; min = abs(STARTX-x) + abs(STARTY-y);}
+   if ((abs(STARTX -x) + abs(STARTY-y)) < min) {
+   min = abs(STARTX -x) + abs(STARTY-y);
+   }
+   }
+   }
+   }
+   printf("min is %d\n", min);
 
-}
-void printpuzzle();
-void printpuzzle() {
-	for (int y = 0; y < GRIDY; y++) {
-		for (int x = 0 ; x < GRIDX; x++) {
-			printf("%c", puz[1][y][x]);
-		}
-		printf("\n");
-	}
-}
-void dotpuzzle();
+   }
+   void printpuzzle();
+   void printpuzzle() {
+   for (int y = 0; y < GRIDY; y++) {
+   for (int x = 0 ; x < GRIDX; x++) {
+   printf("%c", puz[1][y][x]);
+   }
+   printf("\n");
+   }
+   }
+   void dotpuzzle();
 
-void dotpuzzle()
-{
-	for (int y = 0; y < GRIDY; y++) {
-		for (int x = 0 ; x < GRIDX; x++) {
-			puz[0][y][x] = '.';
-			puz[1][y][x] = '.';
-		}
-	}
-}
+   void dotpuzzle()
+   {
+   for (int y = 0; y < GRIDY; y++) {
+   for (int x = 0 ; x < GRIDX; x++) {
+   puz[0][y][x] = '.';
+   puz[1][y][x] = '.';
+   }
+   }
+   }
+   */
 int main(int argc, char **argv)
 {
-	dotpuzzle();
 	lenx = 0; leny = 0;
 	////printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
 	FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
 
-	fflush(stdout); int fd = dup(1); close(1);
+	fflush(stdout); int fd = dup(1);// close(1);
 	pos = 0;
 
 	char line1[3000];
 	int wire = 0;
 	int stepsW1 = 0; int stepsW2 = 0;
-	while(1) {
+	int startx = 0;
+	int starty = 0;
+	int minX = 99999999;
+	int minY = 99999999;
+	int maxX = 0;
+	int maxY = 0;
+	int pX = 0; int pY = 0;
+	char lines[2][3000];
 
-		prevX = STARTX; prevY = STARTY;
-		int num = 0;
-		wire++;
-		fgets(line1, 2990, a);
-		if (feof(a)) break;
-		line1[strlen(line1) -1]='\0';
-		lenx = strlen(line1);
-#ifdef _DEBUG_
-		printf("LINE: %s getchar\n", line1); getchar();
-#endif
-		char *token = strtok(line1, ",\n");
-		while (token != NULL) {
-			char tokenRLUD = token[0];
-			token[0] = ' ';
-			num = atoi(token);
-			//printf("num %d getchar\n", num); getchar();
-			switch(tokenRLUD) {
-				case 'R':
-					for (int x = prevX+1; x <= num+prevX; x++) {
-						if (x >= GRIDX) {printf("pos warning X"); fflush(stdout);exit(0);}
-						if (wire == 2) {
-							stepsW2++;
-							if (puz[0][prevY][x] == '|') {
-								puz[1][prevY][x] = 'X';
-								puz[0][prevY][x] = 'X'; recordW2(x, prevY, man2X(x, prevY), stepsW2);
-							} else {
-								puz[1][prevY][x] = '-';
-							} 
-						} else if (wire == 1) {
-							puz[0][prevY][x] = '-';
-						}
-					}
-					prevX = num+prevX;
-					break;
-				case 'L':
-					for (int x = prevX-1; x >= prevX-num; x--) {
-						if (x < 0) {printf("neg warning X"); fflush(stdout);exit(0);}
-						if (wire == 2) {
-							stepsW2++;
-							if (puz[0][prevY][x] == '|') {
-								puz[1][prevY][x] = 'X';
-								puz[0][prevY][x] = 'X'; recordW2(x, prevY, man2X(x, prevY), stepsW2);
-							} else {
-								puz[1][prevY][x] = '-';
-							}
-						} else {
-							puz[0][prevY][x] = '-';
-						}
-
-					}
-					prevX = prevX - num;
-					break;
-				case 'U':
-					for (int y = prevY-1; y >= prevY-num; y--) {
-						if (y < 0) {printf("neg warning y"); fflush(stdout); exit(0);}
-						if (wire == 2) {
-							stepsW2++;
-							if (puz[0][y][prevX] == '-') {
-								puz[1][y][prevX] = 'X';
-								puz[0][y][prevX] = 'X'; recordW2(prevX, y, man2X(prevX, y), stepsW2);
-							} else {
-								puz[1][y][prevX] = '|';
-							}
-						} else {
-							puz[0][y][prevX] = '|';
-						}
-
-					}
-					prevY = prevY - num;
-					break;
-				case 'D':
-					for (int y = prevY+1; y <= prevY+num; y++) {
-						if (y >= GRIDY) {printf("pos warning y"); fflush(stdout); exit(0);}
-						if (wire == 2) {
-							stepsW2++;
-							if (puz[0][y][prevX] == '-') {
-								puz[1][y][prevX] = 'X';
-								puz[0][y][prevX] = 'X'; recordW2(prevX, y, man2X(prevX, y), stepsW2);
-							} else {
-								puz[1][y][prevX] = '|';
-							}
-						} else {
-							puz[0][y][prevX] = '|';
-						}
-					}
-					prevY = prevY + num;
-					break;
-				default:
-					printf("ERROR - exit\n"); fflush(stdout); exit(0);
-			}
-			token = strtok(NULL, ",\n");
-			leny++;
-		}
-
-		printf("lenx %d - leny %d\n", lenx, leny);
-	}
-	fclose(a);
-	a = fopen(argv[1], "r"); 
-	wire = 0;
-	//second while
 	while (1) {
-		stepsW1 = 0;
-		prevX = STARTX; prevY = STARTY;
+		pX = 0; pY = 0;
 		int num = 0;
-		wire++;
-		//int steps = 0;
-		int foundX = 0;
 		fgets(line1, 2990, a);
 		if (feof(a)) break;
 		line1[strlen(line1) -1]='\0';
+		strcpy(lines[wire], line1);
 		lenx = strlen(line1);
-#ifdef _DEBUG_
-		printf("LINE: %s getchar\n", line1); getchar();
-#endif
-		char *token = strtok(line1, ",\n");
+		//printf("%s\n", lines[wire]); fflush(stdout);
+		char *token = strtok(line1, ",\0");
 		while (token != NULL) {
 			char tokenRLUD = token[0];
 			token[0] = ' ';
+			//printf("%s\n", token);
 			num = atoi(token);
-			//printf("num %d getchar\n", num); getchar();
+			//printf("%d\n", num);
 			switch(tokenRLUD) {
 				case 'R':
-					for (int x = prevX+1; x <= num+prevX; x++) {
-						if (x >= GRIDX) {printf("pos warning X"); fflush(stdout);exit(0);}
-						if (wire == 1) {
-							stepsW1++;
-							if (puz[0][prevY][x] == 'X') {
-								foundX = 1; recordW1(x, prevY, 0, stepsW1);
-							} else {
-
-							} 
-						}
-					}
-					prevX = num+prevX;
+					pX+=num;
 					break;
 				case 'L':
-					for (int x = prevX-1; x >= prevX-num; x--) {
-						if (x < 0) {printf("neg warning X"); fflush(stdout);exit(0);}
-						if (wire == 1) {
-							stepsW1++;
-							if (puz[0][prevY][x] == 'X') {
-								foundX = 1; recordW1(x, prevY, 0, stepsW1);
-							} else {
-							}
-						}
-
-					}
-					prevX = prevX - num;
+					pX-=num;
 					break;
 				case 'U':
-					for (int y = prevY-1; y >= prevY-num; y--) {
-						if (y < 0) {printf("neg warning y"); fflush(stdout); exit(0);}
-						if (wire == 1) {
-							stepsW1++;
-							if (puz[0][y][prevX] == 'X') {
-								foundX = 1; recordW1(prevX, y, 0, stepsW1);
-							} else {
-							}
-						}
-
-					}
-					prevY = prevY - num;
+					pY-=num;
 					break;
 				case 'D':
-					for (int y = prevY+1; y <= prevY+num; y++) {
-						if (y >= GRIDY) {printf("pos warning y"); fflush(stdout); exit(0);}
-						if (wire == 1) {
-							stepsW1++;
-							if (puz[0][y][prevX] == 'X') {
-								foundX = 1; recordW1(prevX, y, 0, stepsW1); 
+					pY+=num;
+					break;
+			}
+			if (pX > maxX) {maxX = pX;}
+			if (pX < minX) {minX = pX;}
+			if (pY > maxY) {maxY = pY;}
+			if (pY < minY) {minY = pY;}
+			token = strtok(NULL, ",\0");
+		}
+		wire++;
+	}
+	fclose(a);
+
+	GRIDX = maxX-minX+30;
+	GRIDY = maxY-minY+30;
+
+
+	STARTX=abs(minX)+15;
+	STARTY=abs(minY)+15;
+
+	//char puz[2][GRIDY][GRIDX];
+	map <int, map <int, char>> grid;
+	map <int, map <int, int>> trip1;
+	map <int, map <int, int>> trip2;
+
+	/*
+	   for (int y = 0; y < GRIDY; y++) {
+	   for (int x = 0 ; x < GRIDX; x++) {
+	   puz[0][y][x] = '.';
+	   puz[1][y][x] = '.';
+	   }
+	   }
+	   */
+	wire = 0;
+
+	while(1) {
+		if (wire == 2) {break;}
+
+		strcpy(line1, lines[wire]);
+
+		int lenlen = 0;
+		int x = STARTX;
+		int y = STARTY;
+		if (wire == 1) {
+			grid[y][x] = '1';
+		}
+		char *token = strtok(line1, ",\n");
+		while (token != NULL) {
+			char URDL = token[0];
+			token[0] = ' ';
+			int val = atoi(token);
+			switch (URDL) {
+				case 'U':
+					for (int yy = 0; yy < val; yy++) {
+						y--;
+						lenlen++;
+						if (wire == 0) {
+							grid[y][x] = '1';
+							if (trip1[y][x] == 0) {
+								trip1[y][x] = lenlen;
+							}
+						} else if (wire == 1) {
+							if (trip2[y][x] == 0) {
+								trip2[y][x] = lenlen;
+							}
+							if (grid[y][x] == '1' || grid[y][x] == '3') {
+								grid[y][x] = '3';
 							} else {
+								grid[y][x] = '2';
 							}
 						}
 					}
-					prevY = prevY + num;
 					break;
-				default:
-					printf("ERROR - exit\n"); fflush(stdout); exit(0);
+				case 'R':
+					for (int xx = 0; xx < val; xx++) {
+						x++;
+						lenlen++;
+						if (wire == 0) {
+							if (trip1[y][x] == 0) {
+								trip1[y][x] = lenlen;
+							}
+							grid[y][x] = '1';
+						} else if (wire == 1) {
+							if (trip2[y][x] == 0) {
+								trip2[y][x] = lenlen;
+							}
+							if (grid[y][x] == '1' || grid[y][x] == '3') {
+								grid[y][x] = '3';
+							} else {
+								grid[y][x] = '2';
+							}
+						}
+					}
+					break;
+				case 'D':
+					for (int yy = 0; yy < val; yy++) {
+						y++;
+						lenlen++;
+						if (wire == 0) {
+							if (trip1[y][x] == 0) {
+								trip1[y][x] = lenlen;
+							}
+							grid[y][x] = '1';
+						} else if (wire == 1) {
+							if (trip2[y][x] == 0) {
+								trip2[y][x] = lenlen;
+							}
+							if (grid[y][x] == '1' || grid[y][x] == '3') {
+								grid[y][x] = '3';
+							} else {
+								grid[y][x] = '2';
+							}
+						}
+					}
+					break;
+				case 'L':
+					for (int xx = 0; xx < val; xx++) {
+						x--;
+						lenlen++;
+						if (wire == 0) {
+							if (trip1[y][x] == 0) {
+								trip1[y][x] = lenlen;
+							}
+							grid[y][x] = '1';
+						} else if (wire == 1) {
+							if (trip2[y][x] == 0) {
+								trip2[y][x] = lenlen;
+							}
+							if (grid[y][x] == '1' || grid[y][x] == '3') {
+								grid[y][x] = '3';
+							} else {
+								grid[y][x] = '2';
+							}
+						}
+					}
+					break;
 			}
-			token = strtok(NULL, ",\n");
-			leny++;
 
-			//		if (foundX == 1) {printf("steps is %d\n", steps); break;}
+			token = strtok(NULL, ",\n");
+		}
+		wire++;
+
+	}
+	int minlen = 9999999;
+	for (auto yyy: grid) {
+		for (auto xxx: yyy.second) {
+			if (xxx.second == '3') {
+				int len = trip1[yyy.first][xxx.first] + trip2[yyy.first][xxx.first];
+				if (len < minlen) {minlen = len;}
+			}
 		}
 	}
+	printf("**ans: ");
+	printf("%d", minlen);
+	printf("\n");
 
 
-	int posminman = 0;
-	int first = 0;
-	int minman2 = 0;
-	for (int i = 0; i < pos; i++) {
-		if (first == 0) {first = 1; posminman = 0; minman2 = points[pos].man;}
-		if (points[i].man < minman2) {minman2 = points[i].man; posminman = pos; }
-		printf("x: %d y: %d man: %d stepsW1: %d stepsW2: %d W1+W2 %d\n", 
-				points[i].x, points[i].y, points[i].man, points[i].stepsW1, points[i].stepsW2, points[i].stepsW1+points[i].stepsW2);
-
-	}
-	int posminsum = 0;
-	int minsum;
-	for (int i = 0; i < pos; i++) {
-		if (first == 0) {first = 1; posminsum = 0; minsum = points[0].stepsW1 + points[0].stepsW2;}
-		if (points[i].stepsW1 + points[i].stepsW2 < minsum) {minsum = points[i].stepsW1 + points[i].stepsW2; posminsum = i; }
-		printf("x: %d y: %d man: %d stepsW1: %d stepsW2: %d W1+W2 %d\n", 
-				points[i].x, points[i].y, points[i].man, points[i].stepsW1, points[i].stepsW2, points[i].stepsW1+points[i].stepsW2);
-
-	}
-	printf("**min steps wire 1 + wire 2= %d\n", points[posminsum].stepsW1 + points[posminsum].stepsW2);
-	fflush(stdout); dup2(fd, 1);
-	printf("**ans: %d\n", points[posminsum].stepsW1 + points[posminsum].stepsW2);
-	exit(0);
-
-
-
-	if (GRIDX == 50) {printpuzzle();}
-	manX();
-	minmanX();
-	fclose(a);
-
-	//printf("******** tot %ld\n", tot);
 }
+

@@ -7,18 +7,31 @@
 #include <deque>
 #include <cassert>
 #include <unistd.h>
+#include <string>
 
 using namespace std;
-int myinPos = 0;
-//char myin[] = "A,B,A,C,B,B,A,B,A,CZL,10,R,8,R,8,R,12,L,8ZL,10,R,6Z2,R,6,L,10,R,12,L,8,L,10,R,12ZnZ";
-//char myin[] = "A,B,CZ3ZL3ZR2ZyZ";
-//char myin[] = "A,B,C,A,B,XXX,C,B,C,B,XXX,C,A,B,C,A,B,XXX,CZR,6,L,10,R,8,R,8ZR,12,L,8ZL,10Zn";
-//char myin[] = "A,B,C,A,B,C,B,B,A,C,C,B,A,A,A,A,A,C,C,B,B,B,C,B,C,B,C,B,B,A,C,C,B,A,A,A,A,A,C,C,B,B,B,C,A,B,C,A,B,C,B,B,A,C,C,B,A,A,A,A,A,C,C,B,B,B,CZR,6,L,10,R,8,R,8ZR,12,L,8ZL,10ZnZ";
+int theconstructedlinePos = 0;
+//char theconstructedline[] = "A,B,A,C,B,B,A,B,A,CZL,10,R,8,R,8,R,12,L,8ZL,10,R,6Z2,R,6,L,10,R,12,L,8,L,10,R,12ZnZ";
+//char theconstructedline[] = "A,B,CZ3ZL3ZR2ZyZ";
+//char theconstructedline[] = "A,B,C,A,B,XXX,C,B,C,B,XXX,C,A,B,C,A,B,XXX,CZR,6,L,10,R,8,R,8ZR,12,L,8ZL,10Zn";
+//char theconstructedline[] = "A,B,C,A,B,C,B,B,A,C,C,B,A,A,A,A,A,C,C,B,B,B,C,B,C,B,C,B,B,A,C,C,B,A,A,A,A,A,C,C,B,B,B,C,A,B,C,A,B,C,B,B,A,C,C,B,A,A,A,A,A,C,C,B,B,B,CZR,6,L,10,R,8,R,8ZR,12,L,8ZL,10ZnZ";
 //-- R:6 L:10 R:8 R:8 -- R:12 L:8 -- L:10
 
-char myin[] = "A,B,A,C,B,C,A,B,A,CZR,6,L,10,R,8,R,8ZR,12,L,8,L,10ZR,12,L,10,R,6,L,10ZnZ";
+long long ans = 0;
+//char theconstructedline[] = "A,B,A,C,B,C,A,B,A,CZR,6,L,10,R,8,R,8ZR,12,L,8,L,10ZR,12,L,10,R,6,L,10ZnZ";
+char theconstructedline[200];
 int numNewline = 0;
+int times2222;
 int numDots = 0;
+//int sx = 0; int sy = 0;
+const int SZ = 120;
+char grid[SZ][SZ];
+int already[SZ][SZ];
+int yy = 0;
+int xx = 0;
+int var_inPos = 0;
+char var_in[200];
+string gPath;
 int numPos = 0;
 int firstHash = -1;
 int lenx, leny;
@@ -26,13 +39,15 @@ int turnon = 0;
 #define DAY "		2019 day 17 part2\n"
 //#define _DEBUG_
 #undef DEBUG
-//#define getchar()
+#define getchar()
 int numSteps = 0;
-#define MAX 5000
+#define MAX 6000
 int instTOT = 0;
 long long inst[MAX];
 long long instOrig[MAX];
 char instruction    [MAX][40];
+void replaceAll(std::string& str, const std::string& from, const std::string& to);
+void next(int x, int y, int ex, int ey, int dir, char turn, string tu2);
 
 long long output[6] = {0};
 long long saveInst[6][MAX] = {0};
@@ -54,12 +69,11 @@ int tmpInPos = 0;
 void printit();
 void next(int x, int y, int path);
 int mytimes = 1;
-#define SX 78
-#define SY 41
-char grid[SY+5][SX+5];
+#define SX 120
+#define SY 120
+//char grid[SY+5][SX+5];
 int yCur = 0;
 int xCur = 0;
-int already[SY][SX];
 int MAXPATH = 0;
 
 int pathPrev = 0;
@@ -77,7 +91,7 @@ deque <char> PATH;
 int pathPOS = 0;
 void ne(int x, int y, int endX, int endY, int px, int py, int dir, int turn, int path, char move);
 int fd;
-#define getchar()
+///#define getchar()
 int main(int argc, char **argv)
 {
 
@@ -130,11 +144,14 @@ int main(int argc, char **argv)
 				printf("getc\n");
 #endif
 			} else {
+				instruction[newStart][pos] = line1[i];
+				/*
 				if (i != 0) {
 					instruction[newStart][pos] = line1[i];
 				} else {
 					instruction[newStart][pos] = '2';
 				}
+				*/
 				pos++;
 			}
 		}
@@ -170,9 +187,11 @@ int main(int argc, char **argv)
 	sort(phase, phase+5);
 	long long outputMAX = 0; int phaseMAX[5] = {0};
 	do {	
+re600:
 		for (int i = 0; i < 5; i++) {
 			output[i] = 0;
 			nextInst[i] = 0;
+			relativeBase[i] = 0;
 			times[i] = 0;
 			finished[i] = 0;
 			inputCounters[i] = 0;
@@ -188,19 +207,222 @@ restart:
 		i = i%5;
 		i = 0; /////////////////////////////////	
 		int one = 1;
-		int ret = machine(i, one);
-		if (ret == 34) {goto restart;} else if (ret == 33 && i == 4) {goto end;} else if (ret == 33 && one == 1) {goto end;}  else if (ret == 22) {goto restart;}
+		/*
+		   int ret = machine(i, one);
+		   if (ret == 34) {goto restart;} else if (ret == 33 && i == 4) {goto end;} else if (ret == 33 && one == 1) {goto end;}  else if (ret == 22) {goto restart;}
 end:
-		printf("output CONOR %lld\n", output[0]);  getchar();
-		if (output[0] > outputMAX) {outputMAX = output[0]; phaseMAX[0] = phase[0]; phaseMAX[1] = phase[1]; phaseMAX[2] = phase[2]; phaseMAX[3] = phase[3]; phaseMAX[4] = phase[4];}
+printf("output CONOR %lld\n", output[0]);  getchar();
+if (output[0] > outputMAX) {outputMAX = output[0]; phaseMAX[0] = phase[0]; phaseMAX[1] = phase[1]; phaseMAX[2] = phase[2]; phaseMAX[3] = phase[3]; phaseMAX[4] = phase[4];}
 		//printf("output: %lld\n", output[0]);
 		//printf("outputMAX now: %lld\n", outputMAX);
+		*/
+		break;
 	} while (next_permutation(phase, phase+5));
 
 	printf("***OUTPUTMAX: %lld\n", outputMAX);
 	printf("PHASEMAX:\n"); for (int i = 0; i < 5; i++) { printf("%d ", phaseMAX[i]); } printf("\n"); //getchar();
 
+	times2222 = -1;
+	while (ans == 0) {
+		times2222++;
 
+		for (int i = 0; i < 5; i++) {
+			output[i] = 0;
+			nextInst[i] = 0;
+			relativeBase[i] = 0;
+			times[i] = 0;
+			finished[i] = 0;
+			inputCounters[i] = 0;
+		}
+		for (int j = 0; j < 5; j++) {
+			for (int i = 0; i < instTOT; i++) {
+				saveInst[j][i] = instOrig[i];
+			}
+		}
+		printf("running again: ");
+		getchar();
+		int ret = machine(0, 1);
+		if (times2222 == 0) {
+			for (int yy4 = 0; yy4 < 120; yy4++) {
+				for (int xx4 = 0; xx4 < 120; xx4++) {
+					printf("%c", grid[yy4][xx4]);
+				}
+				printf("\n");
+			}
+			getchar();
+			int sx = 0; int sy = 0; int dir = 0; int ex = 0; int ey = 0;
+			for (int yy3 = 1; yy3< 120-1; yy3++) {
+				for (int xx3 = 1; xx3 < 120-1; xx3++) {
+					if (grid[yy3][xx3] == '^') {
+						dir = 0;
+						sx = xx3; sy = yy3;
+						goto after2;
+					} else if (grid[yy3][xx3] == '>') {
+						dir = 1;
+						sx = xx3; sy = yy3;
+						goto after2;
+					} else if (grid[yy3][xx3] == 'v') {
+						dir = 2;
+						sx = xx3; sy = yy3;
+						goto after2;
+					} else if (grid[yy3][xx3] == '<') {
+						dir = 3;
+						sx = xx3; sy = yy3;
+						goto after2;
+					}
+
+				}
+			}
+after2:
+			for (int yy3 = 1; yy3< 120-1; yy3++) {
+				for (int xx3 = 1; xx3 < 120-1; xx3++) {
+					int count = 0;
+					if (grid[yy3][xx3] != '#') {continue;}
+					if (grid[yy3-1][xx3] == '.') {
+						count++;
+					} 
+					if (grid[yy3][xx3+1] == '.') {
+						count++;
+					}
+					if (grid[yy3+1][xx3] == '.') {
+						count++;
+					}
+					if (grid[yy3][xx3-1] == '.') {
+						count++;
+					}
+					if (count == 3) {
+						ex = xx3; ey= yy3;
+						goto after3;
+					}
+				}
+			}
+
+after3:
+			grid[ey][ex] = '#';
+			grid[sy][sx] = '#';
+			printf("starts/ends: %d %d %d %d\n", sy, sx, ey, ex);
+			getchar();
+			string bla = "";
+			for (int yy = 0; yy < 120; yy++) {
+				for (int xx = 0; xx < 120; xx++) {
+					already[yy][xx] = 0;
+				}
+			}
+			next(sx, sy, ex, ey, dir, 'Q', bla);
+			printf("gPath: %s\n", gPath.c_str());
+			getchar();
+			{
+				int count = 0;
+				int first = 0;
+				string pa = "";
+				for (char ch: gPath) {
+					if (ch != 'S') {
+						if (first != 0) {
+							//pa += "22" /*+ to_string(count+1) */ + ",";
+							pa = pa+ to_string(count+1) + ",";
+						} else {
+							first = 1;
+						}
+						pa = pa + ch + ",";
+						count = 0;
+					} else {
+						count++;
+					}
+				}
+				pa += to_string(count+1);
+				pa += ",";
+				printf("%s\n", pa.c_str());
+				string paOrig = pa;
+				printf("%s\n", paOrig.c_str());
+				int ar[3];
+				for (int end = 0; end < 3; end++) {
+					for (int iii = 0; iii < end; iii++) {
+						ar[iii] = 1;
+					}
+					for (int iii = end; iii < 3; iii++) {
+						ar[iii] = 0;
+					}
+					int arOrig[3];// = Arrays.copyOf(ar, 3);
+					sort(ar, ar+3);
+					for (int qqqq =0; qqqq < 3; qqqq++) {
+						arOrig[qqqq] = ar[qqqq];
+					}
+
+					do {
+						pa = paOrig;
+						int paPos = 0;
+						string parts[3];
+						parts[0] = "";
+						parts[1] = "";
+						parts[2] = "";
+						int partsPos = 0;
+						for (int jjj = 0; jjj < 3; jjj++) {
+							if (ar[jjj] == 1) {
+								paPos = 0;
+								for (int kk = 0; kk < 8; kk++) {
+									paPos = pa.find(",", paPos+1);
+								}
+								parts[partsPos] = pa.substr(0, paPos);
+
+								replaceAll(pa, parts[partsPos]+",", "");
+								partsPos++;
+							} else {
+								paPos = 0;
+								for (int kk = 0; kk < 6; kk++) {
+									paPos = pa.find(",", paPos+1);
+								}
+								parts[partsPos] = pa.substr(0, paPos);
+								replaceAll(pa, parts[partsPos]+",", "");
+								partsPos++;
+							}
+						}
+						if (pa.find("R") == -1 && pa.find("L") == -1) {
+
+							string pa2 = paOrig;
+							for (int ii = 0; ii < 3; ii++) {
+								char ch = (char)('A'+ii);
+								string rep1;
+								rep1.push_back(ch);
+								replaceAll(pa2, parts[ii], rep1);
+							}
+							if (pa2.find("R") == -1 && pa2.find("L") == -1) {
+								printf("yatzee...");
+								pa2 = pa2.substr(0, pa2.length()-1);
+								for (int ii = 0; ii < 3; ii++) {
+									pa2+= "\n";
+									pa2+=parts[ii];
+								}
+								pa2+="\nn\n";
+								strcpy(theconstructedline, pa2.c_str());
+								printf("var_in %s\n", var_in);
+								getchar();
+								goto after5;
+							}
+
+
+						}
+					} while (next_permutation(ar, ar+3));
+				}
+
+			}
+
+		}
+after5:
+		continue;
+	}
+after4:
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: %ld\n", ans);
+	exit(0);
+}
+void replaceAll(std::string& str, const std::string& from, const std::string& to) {
+    if(from.empty())
+        return;
+    size_t start_pos = 0;
+    while((start_pos = str.find(from, start_pos)) != std::string::npos) {
+        str.replace(start_pos, from.length(), to);
+        start_pos += to.length(); // In case 'to' contains 'from', like replacing 'x' with 'yx'
+    }
 }
 
 char reverseInput(char in) {
@@ -212,24 +434,94 @@ char reverseInput(char in) {
 	}
 	return 0;
 }
-void next(int x, int y, int path) {
-	if (x == OXX && y == OXY) {
-		printf("end reached path is %d\n", path);
-		if (mytimes == 1) { mytimes++; if (path < MINPATH) {MINPATH = path;}} else {MINPATH = 0;}
-	}
 
-	if (already[y][x] == -1 || path < already[y][x]) {
-		already[y][x] = path;
-		switch (grid[y][x]) {
-			case '#':
-				return;
-			case '.':
-				next(x+1, y, path+1);
-				next(x-1, y, path+1);
-				next(x, y+1, path+1);
-				next(x, y-1, path+1);
+void next(int x, int y, int ex, int ey, int dir, char turn, string tu2) {
+	if (x == ex && y == ey) {printf("END\n"); getchar(); gPath = tu2; printf("end %s\n", tu2.c_str()); return;}
+	if (grid[y][x] != '#') {return;}
+	/*
+		if (x == 26 && y== 28) {
+			printf("here26...");
+		}
+		if (x == 27 && y== 28) {
+			printf("here27...");
+		}
+		*/
+	if (already[y][x] == 0) {
+		int goStrait = 0;
+		string tu = tu2;
+		//printf("tu: %s\n", tu.c_str());
+		int count = 0;
+		if (y-1 >= 0 && grid[y-1][x] == '#') {
+			count++;
+		} 
+		if (x+1 < 120 && grid[y][x+1] == '#') {
+			count++;
+		}
+		if (y+1 < 120 && grid[y+1][x] == '#') {
+			count++;
+		}
+		if (x-1 >= 0 && grid[y][x-1] == '#') {
+			count++;
+		}
+		if (count == 4) {
+			goStrait = 1;
+		}
+
+		if (dir == 0) {
+			if (y-1 >= 0) {
+				next(x, y-1, ex, ey, 0, 'S', tu+'S');
+			}
+			if (goStrait != 1) {
+				if (x-1 >= 0) {
+					next(x-1, y, ex, ey, 3, 'L', tu+'L');
+				}
+				if (x+1 < 120) {
+					next(x+1, y, ex, ey, 1, 'R', tu+'R');
+				}
+			}
+		} else if (dir == 1) {
+			if (x == 27 && y== 28) {
+				printf("here10...");
+			}
+			if (x+1 < 120) {
+				next(x+1, y, ex, ey, 1, 'S', tu+'S');
+			}
+			if (goStrait != 1) {
+				if (y-1 >= 0) {
+					next(x, y-1, ex, ey, 0, 'L', tu+'L');
+				}
+				if (y+1 < 120) {
+					next(x, y+1, ex, ey, 2, 'R', tu+'R');
+				}
+			}
+		} else if (dir == 2) {
+			if (y+1 < 120) {
+				next(x, y+1, ex, ey, 2, 'S', tu+'S');
+			}
+			if (goStrait != 1) {
+				if (x+1 < 120) {
+					next(x+1, y, ex, ey, 1, 'L', tu+'L');
+				}
+				if (x-1 >= 0) {
+					next(x-1, y, ex, ey, 3, 'R', tu+'R');
+				}
+			}
+		} else if (dir == 3) {
+			if (x-1 >= 0) {
+				next(x-1, y, ex, ey, 3, 'S', tu+'S');
+			}
+			if (goStrait != 1) {
+				if (y+1 < 120) {
+					next(x, y+1, ex, ey, 2, 'L', tu+'L');
+				}
+				if (y-1 >= 0) {
+					next(x, y-1, ex, ey, 0, 'R', tu+'R');
+				}
+			}
 		}
 	}
+
+
 }
 
 int machine(int machineNumber, int one) {
@@ -248,6 +540,13 @@ int machine(int machineNumber, int one) {
 	} else {
 		input[1] = output[machineNumber];
 		input[0] = phase[machineNumber];
+	}
+	if (times2222 != 0) {
+		printf("setting inst to 2..>");
+		printf("inst[0] was %lld\n", inst[0]);
+		inst[0] = (long long)2;
+		printf("nextInst[0]: %d\n", nextInst[0]);
+		getchar();
 	}
 
 	for (int i = nextInst[machineNumber]; i < instTOT; i++) {
@@ -269,10 +568,7 @@ int machine(int machineNumber, int one) {
 				//inst[relativeBase[machineNumber]+inst[i+1]] = input[inputCounter];
 				///printf("in is %s\n", in); printf("int of in is %d\n", in[0]);
 				//printf("giving %d\n", in[0]); getchar();
-				if (myin[myinPos] == 'Z') {
-					myin[myinPos] = '\n';
-				}
-				inst[relativeBase[machineNumber]+inst[i+1]] = (int)myin[myinPos++];
+				inst[relativeBase[machineNumber]+inst[i+1]] = (int)theconstructedline[theconstructedlinePos++];
 			} else {
 				///input[inputCounter] = (long long)(myInput - 48);
 				printf("giveinput\n");
@@ -280,11 +576,8 @@ int machine(int machineNumber, int one) {
 
 				///printf("in is %s\n", in);
 				//printf("giving %d\n", in[0]); getchar();
-				if (myin[myinPos] == 'Z') {
-					myin[myinPos] = '\n';
-				}
 				//inst[inst[i+1]] = input[inputCounter];
-				inst[inst[i+1]] = (int)myin[myinPos++];
+				inst[inst[i+1]] = (int)theconstructedline[theconstructedlinePos++];
 			}
 			if (inputCounter != 1) {
 				inputCounter++;
@@ -339,212 +632,27 @@ int machine(int machineNumber, int one) {
 			}
 			struct pos_s pos1;
 
-			switch(OUT) {
-				case (35): {
-						   if (firstHash == -1) {
-							   firstHash = numDots;
-							   printf("firstHash is %d\n", firstHash); //getchar();
-						   }
-						   printf("got a 35 : hash \n");
-						   numPos++;
-						   if (turnon == 1) { getchar(); }
-						   grid[yCur][xCur] = '#';
-						   xCur++;
-						   //yCur = yPrev; xCur = xPrev;
-						   //myBack.pop_front();
-						   //MOVE = 0;
-						   break;
-					   }
-				case (46): {
-						   printf("got a 46 : dot numDots (%d)\n", numDots);// getchar();
-						   numDots++;
-						   numPos++;
-						   if (turnon == 1) { getchar(); }
-						   grid[yCur][xCur] = '.';
-						   xCur++;
-						   //MOVE = 0;
-						   break;
-					   }
-				case (10):
-					   {
-						   //grid[yCur][xCur] = '.';
-						   xCur = 0;
-						   yCur++;
-						   printf("got a 10: newline %d numNewline(%d)\n", numSteps, numNewline); //getchar();
-						   numNewline++;
-						   numDots = 0;
-						   firstHash = -1;
-						   numPos = 0;
-						   if (turnon == 1) { getchar(); }
-						   //MOVE = 0;
-						   //OXX = xCur;
-						   //OXY = yCur;
-						   //printf("found OXEGEN at %d,%d\n", xCur, yCur); //getchar(); getchar();// exit(0);
-						   break;
-					   }
-				default: //if ((char)OUT == '?') {turnon = 1;} printf("got other, OUT %lld (%c) numNewline %d numPos %d\n", OUT, (int)OUT, numNewline, numPos); getchar();
-					   printf("got other, OUT %lld (%c) numNewline %d numPos %d\n", OUT, (int)OUT, numNewline, numPos); getchar();
-					   if (OUT < 256) {
-						   printf("got other, OUT %lld (%c) numNewline %d numPos %d\n", OUT, (int)OUT, numNewline, numPos); 
-					   } else {
-						   printf("got other, OUT %lld \n", OUT); getchar(); 
-						   fflush(stdout); dup2(fd, 1);
-						   printf("**ans: %lld\n", OUT);
-						   exit(0);
-					   }
+			if (times2222 == 1 && OUT > 50) {
+				printf("OUT is %lld\n", OUT);
+				getchar();
+			}
+			if (OUT > 255) {
+				ans = OUT;
+				printf("setting ans...");
+				printf("OUT is %lld\n", OUT);
+				getchar();
+			} else if (yy < 120 && xx < 120) {
 
+				if (OUT == 35) {grid[yy][xx] = '#'; xx++;}
+				else if (OUT == 46) {grid[yy][xx] = '.'; xx++;}
+				else if (OUT == 10) {yy++;xx=0;}
+				else { grid[yy][xx] = (char)(OUT%256); xx++; }
 			}
 
-			for (int i = 0; i < instTOT; i++) {
-				saveInst[machineNumber][i] = inst[i];
-			}
-			nextInst[machineNumber] = i+2;
-			times[machineNumber]++;
-			inputCounters[machineNumber] = inputCounter;
-			return 34;
-			//i++;
+			i++;
 		} else if (myINST == 99) {
 			printf("GOT QUIT 99\n"); //in = 1; 
-#ifdef _DEBUG_
-#endif
-#ifdef _DEBUG_
-			printf("INSTS:\n");
-			for (int i = 0; i < instTOT; i++) {
-				printf("%lld ", inst[i]);
-
-			}
-			printf("\n");
-#endif
-			finished[machineNumber] = 1;
-
-			//printit();
-			if (one == 1) {printf("numSteps is %d\n", numSteps);
-
-				int stX = -1; int stY;
-				int enX; int enY;
-				for (int y = 1; y < SY-1; y++) {
-					for (int x = 1; x < SX-1; x++) {
-						if (grid[y][x] == '#') {
-							int count = 0;
-							if (grid[y-1][x] == '.') {
-								count++;
-							}
-							if (grid[y+1][x] == '.') {
-								count++;
-							}
-							if (grid[y][x+1] == '.') {
-								count++;
-							}
-							if (grid[y][x-1] == '.') {
-								count++;
-							}
-							if (count == 3 && stX == -1) {
-								stX = x; stY = y;
-								y+=3; //jump past the boggie
-							} else if (count == 3) {
-								enX = x; enY = y;
-							}
-						}
-
-					}
-				}
-
-				for (int y = 0; y < SY; y++) {
-					for (int x = 0; x < SX; x++) {
-						if (grid[y][x] == '#') {
-							if (grid[y][x+1] == '#' && grid[y][x-1] == '#' && grid[y+1][x] == '#' && grid[y-1][x] == '#') {
-								grid[y][x] = 'o';
-							}
-						}
-
-					}
-				}
-				int alignment = 0;
-				for (int y = 0; y < SY; y++) {
-					for (int x = 0; x < SX; x++) {
-						if (grid[y][x] == 'o' ) {
-							alignment += y*x;
-							/*
-							   if (y == 10 && x == 56) {}  else {
-							   alignment += y*x;
-							   }
-							   */
-						}
-					}
-				}
-				printf("stX, stY %d,%d\n", stX, stY);
-				printf("enX, enY %d,%d\n", enX, enY);
-				printf("**alignment is %d (minus bogie...)\n", alignment);
-
-				//printit();
-				for (int y = 0; y < SY; y++) {
-					for (int x = 0; x < SX; x++) {
-						already[y][x] = -1;
-					}
-				}
-				already[stY][stX] = 1;
-				ne(stX, stY-1, enX, enY, stX, stY, 'U', 'n', 1, 'S');
-				/*CONOR2*/
-
-				int testit = 0;
-				if (testit == 1) {
-					int SXT = 14;
-					int SYT = 8;
-					char gridT[SYT][SXT];
-					strcpy(gridT[0], "..#..........");
-					strcpy(gridT[1], "..#..........");
-					strcpy(gridT[2], "#######...###");
-					strcpy(gridT[3], "#.#...#...#.#");
-					strcpy(gridT[4], "#############");
-					strcpy(gridT[5], "..#...#...#..");
-					strcpy(gridT[6], "..#####...#..");
-
-					for (int y = 0; y < SYT; y++) {
-						printf("%s\n", gridT[y]);
-					}
-
-					for (int y = 0; y < SYT; y++) {
-						for (int x = 0; x < SXT; x++) {
-							if (gridT[y][x] == '#') {
-								if (gridT[y][x+1] == '#' && gridT[y][x-1] == '#' && gridT[y+1][x] == '#' && gridT[y-1][x] == '#') {
-									gridT[y][x] = 'o';
-								}
-								/*
-								   if (x+1 < SXT && gridT[y][x+1] == '#' && y-1 > 0 && gridT[y-1][x] == '#') {
-								   gridT[y][x] = 'o';
-								   }
-								   if (x-1 > 0 && gridT[y][x-1] == '#' && y+1 < SYT && gridT[y+1][x] == '#') {
-								   gridT[y][x] = 'o';
-								   }
-								   if (x+1 < SXT && gridT[y][x+1] == '#' && y+1 < SYT && gridT[y+1][x] == '#') {
-								   gridT[y][x] = 'o';
-								   }
-								   if (x-1 > 0 && gridT[y][x-1] == '#' && y-1 >0 && gridT[y-1][x] == '#') {
-								   gridT[y][x] = 'o';
-								   }
-								   */
-							}
-
-						}
-					}
-					for (int y = 0; y < SYT; y++) {
-						printf("%s\n", gridT[y]);
-					}
-					int alignmentT = 0;
-					for (int y = 0; y < SYT; y++) {
-						for (int x = 0; x < SXT; x++) {
-							if (gridT[y][x] == 'o' ) {
-								alignmentT += y*x;
-							}
-						}
-					}
-					printf("**alignmentT is %d\n", alignmentT);
-					assert(alignmentT == 76);
-				}
-
-				//for (int y = 0; y < SY; y++) { for (int x = 0; x < SX; x++) { already[y][x] = -1; } }
-
-				exit(0);}
+			return 9999;
 			if (machineNumber == 4) {return 33;} else if (machineNumber == 0 && one == 1) {return 33;} else {return 22;}
 		} else { 
 			int err = 0;

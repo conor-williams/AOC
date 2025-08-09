@@ -37,7 +37,7 @@ int main(int argc, char **argv)
 	printf(DAY); fflush(stdin); fflush(stdout);
        
 	fflush(stdout); fd = dup(1); close(1);
-        char line1[3000];
+        char line1[4000];
 	for (int i = 0 ; i < MAX; i++) {
 		inst[i] = 0;
 	}
@@ -45,7 +45,7 @@ int main(int argc, char **argv)
 	int newStart = 0;
 	int pos = 0;
 while(1) {
-        fgets(line1, 2990, a);
+        fgets(line1, 3999, a);
         if (feof(a)) break;
 	line1[strlen(line1) -1]='\0';
 	lenx = strlen(line1);

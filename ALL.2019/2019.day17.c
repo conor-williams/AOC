@@ -18,7 +18,7 @@ int lenx, leny;
 #undef DEBUG
 #define getchar()
 int numSteps = 0;
-#define MAX 5000
+#define MAX 6000
 int instTOT = 0;
 long long inst[MAX];
 long long instOrig[MAX];
@@ -44,8 +44,8 @@ int tmpInPos = 0;
 void printit();
 void next(int x, int y, int path);
 int mytimes = 1;
-#define SX 78
-#define SY 41
+#define SX 150
+#define SY 150
 char grid[SY+5][SX+5];
 int yCur = 0;
 int xCur = 0;
@@ -318,6 +318,7 @@ int machine(int machineNumber, int one) {
 					}
 				case (46): {
 						printf("got a 46 : dot\n"); getchar();
+						printf("%d %d\n", xCur, yCur); fflush(stdout);
 						grid[yCur][xCur] = '.';
 						xCur++;
 						//MOVE = 0;
@@ -335,6 +336,8 @@ int machine(int machineNumber, int one) {
 						//printf("found OXEGEN at %d,%d\n", xCur, yCur); getchar(); getchar();// exit(0);
 						break;
 					}
+				default:
+					 grid[yCur][xCur] = (char)(OUT%256); xCur++;
 			}
 
 			for (int i = 0; i < instTOT; i++) {

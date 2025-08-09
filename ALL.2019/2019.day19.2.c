@@ -17,14 +17,17 @@ int lenx, leny;
 #define DAY "		2019 day 19 part2\n"
 //#define _DEBUG_
 #undef DEBUG
-#define getchar()
 int numSteps = 0;
+long ans = 0;
 #define MAX 5000
 int instTOT = 0;
 long long inst[MAX];
+long long instCONOR[MAX];
 long long instOrig[MAX];
 char instruction    [MAX][40];
 char instructionOrig    [MAX][40];
+int FIR = 0;
+int CONOR = 0;
 
 long long output[6] = {0};
 long long saveInst[6][MAX] = {0};
@@ -42,20 +45,32 @@ int OXY = 0;
 int MINPATH;
 //char tmpIn[] = {'3','3','3','1','2'};
 long long  tmpIn[] = {0, 0, 1,  0, 2, 0, 3, 2, 2, 2, -1};
+int FIRSTY = 200;
+int SECONDY = 1000;
 int var_moves = 0;
 int FRMX = 1000;
-int TOX = 1500;
+int TOX = 2000;
 int FRMY = 1000;
-int TOY = 1500;
-int var_inputX = FRMX; int var_inputXprev;
-int var_inputY = FRMY; int var_inputYprev;
+int TOY = 2000;
+int xline1_1 = -1;
+int xline1_2 = -1;
+int xline2_1 = -1;
+int xline2_2 = -1;
+int yline1_1 = -1;
+int yline1_2 = -1;
+int yline2_1 = -1;
+int yline2_2 = -1;
+int CHECK = 0;
+
+int var_inputX = 0; int var_inputXprev;
+int var_inputY = SECONDY; int var_inputYprev;
 int tmpInPos = 0;
 void printit();
 void next(int x, int y, int path);
 int mytimes = 1;
 
-#define SX 1500
-#define SY 1500
+#define SX 3000
+#define SY 3000
 int grid[SY+5][SX+5];
 int yCur = 0;
 int xCur = 0;
@@ -75,40 +90,39 @@ int MOVE = 0;
 deque <char> PATH;
 int pathPOS = 0;
 int fd;
-
 #include <sys/time.h>
 #include <signal.h>
 void TimerStop(int signum);
 void TimerSet(int interval);
 
 void TimerSet(int interval) {
-    printf("starting timer\n");
-    struct itimerval it_val;
+	printf("starting timer\n");
+	struct itimerval it_val;
 
-    it_val.it_value.tv_sec = interval;
-    it_val.it_value.tv_usec = 0;
-    it_val.it_interval.tv_sec = 0;
-    it_val.it_interval.tv_usec = 0;
+	it_val.it_value.tv_sec = interval;
+	it_val.it_value.tv_usec = 0;
+	it_val.it_interval.tv_sec = 0;
+	it_val.it_interval.tv_usec = 0;
 
-    if (signal(SIGALRM, TimerStop) == SIG_ERR) {
-        perror("Unable to catch SIGALRM");
-        exit(1);
-    }
-    if (setitimer(ITIMER_REAL, &it_val, NULL) == -1) {
-        perror("error calling setitimer()");
-        exit(1);
-    }
+	if (signal(SIGALRM, TimerStop) == SIG_ERR) {
+		perror("Unable to catch SIGALRM");
+		exit(1);
+	}
+	if (setitimer(ITIMER_REAL, &it_val, NULL) == -1) {
+		perror("error calling setitimer()");
+		exit(1);
+	}
 }
 
 
 void TimerStop(int signum) {
 
 	fflush(stdout); dup2(fd, 1);
-    printf("Timer ran out! Stopping timer\n");
+	printf("Timer ran out! Stopping timer\n");
 	FILE *f = fopen("out.tim", "a");
 	fprintf(f, "Timer ran out! Stopping timer timestamp@%s\n", "out.tim");
 	fclose(f);
-    exit(10);
+	exit(10);
 }
 //main:::if (argc == 3) {printf("SETTING TIME TO [%d]\n", atoi(argv[2])); TimerSet(atoi(argv[2]));}
 int main(int argc, char **argv)
@@ -116,77 +130,77 @@ int main(int argc, char **argv)
 	///TimerSet(55*60);
 
 	struct pos_s st = {xCur, yCur, PATH};
-	
+
 	//myInputQ.push_back(st);
-/*
+	/*
+	   for (int y = 0; y < SY; y++) {
+	   for (int x = 0; x < SX; x++) {
+	   grid[y][x] = '.';
+	   }
+	   grid[y][SX] = ' ';
+	   grid[y][SX+1] = (y%10) + 48;
+	   }
+	   for (int x = 0; x < SX; x++) {
+	   grid[SY][x] = ' ';
+	   grid[SY+1][x] = (x%10)+48;
+	   }
+	   */
 	for (int y = 0; y < SY; y++) {
 		for (int x = 0; x < SX; x++) {
-			grid[y][x] = '.';
-		}
-		grid[y][SX] = ' ';
-		grid[y][SX+1] = (y%10) + 48;
-	}
-	for (int x = 0; x < SX; x++) {
-		grid[SY][x] = ' ';
-		grid[SY+1][x] = (x%10)+48;
-	}
-*/
-	for (int y = 0; y < SY; y++) {
-		for (int x = 0; x < SX; x++) {
-			grid[y][x] = 0;
+			grid[y][x] = 3;
 		}
 	}
-	
+
 
 	//grid[0][0] = 'X';
 	lenx = 0; leny = 0;
-        ////printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
-        FILE * a = fopen(argv[1], "r"); 
+	////printf("%d", argc); printf("%s", argv[1]); fflush(stdout);
+	FILE * a = fopen(argv[1], "r"); 
 	printf(DAY);
-	printf("	SLOW: ~3mins\n");
 	fflush(stdout); fd = dup(1); close(1);
-       
-        char line1[MAX];
+
+	char line1[MAX];
 	for (int i = 0 ; i < MAX; i++) {
 		inst[i] = 0;
 	}
 
 	int newStart = 0;
 	int pos = 0;
-while(1) {
-        fgets(line1, MAX-1, a);
-        if (feof(a)) break;
-	line1[strlen(line1) -1]='\0';
-	lenx = strlen(line1);
+	while(1) {
+		fgets(line1, MAX-1, a);
+		if (feof(a)) break;
+		line1[strlen(line1) -1]='\0';
+		lenx = strlen(line1);
 #ifdef _DEBUG_
-	printf("LINE: %s getchar\n", line1); getchar();
+		printf("LINE: %s getchar\n", line1); getchar();
 #endif
-	for (int i = 0; i < (int)strlen(line1); i++) {
-		if (line1[i] == ',') {
-			instruction[newStart][pos] = '\0';
-			instructionOrig[newStart][pos] = '\0';
+		for (int i = 0; i < (int)strlen(line1); i++) {
+			if (line1[i] == ',') {
+				instruction[newStart][pos] = '\0';
+				instructionOrig[newStart][pos] = '\0';
 #ifdef _DEBUG_
-			printf("instruction[newStart]: %s (newStart:%d)\n", instruction[newStart], newStart); 
+				printf("instruction[newStart]: %s (newStart:%d)\n", instruction[newStart], newStart); 
 #endif
-			newStart++;
-			pos = 0;
+				newStart++;
+				pos = 0;
 #ifdef _DEBUG_
-			printf("instruction[newStart]getc\n");
-			printf("getc\n");
+				printf("instruction[newStart]getc\n");
+				printf("getc\n");
 #endif
-		} else {
-			instruction[newStart][pos] = line1[i];
-			instructionOrig[newStart][pos] = line1[i];
-			pos++;
+			} else {
+				instruction[newStart][pos] = line1[i];
+				instructionOrig[newStart][pos] = line1[i];
+				pos++;
+			}
 		}
+		leny++;
 	}
-	leny++;
-}
 	fclose(a);
 	newStart++;
 	instruction[newStart][pos] = '\0';
 	instructionOrig[newStart][pos] = '\0';
 RErestart:
+	printf("RErestart..."); getchar();
 	for (int i = 0; i < 6; i++) {
 		output[i] = 0;
 		nextInst[i] = 0;
@@ -200,7 +214,7 @@ RErestart:
 			saveInst[i][j] = 0;
 		}
 	}
-	
+
 	for (int i = 0; i < newStart; i++) {
 		strcpy(instruction[i], instructionOrig[i]);
 	}
@@ -231,17 +245,20 @@ RErestart:
 	sort(phase, phase+5);
 	long long outputMAX = 0; int phaseMAX[5] = {0};
 	do {	
-		for (int i = 0; i < 5; i++) {
-			output[i] = 0;
-			nextInst[i] = 0;
-			times[i] = 0;
-			finished[i] = 0;
-			inputCounters[i] = 0;
-		}
 		for (int j = 0; j < 5; j++) {
 			for (int i = 0; i < instTOT; i++) {
 				saveInst[j][i] = instOrig[i];
 			}
+		}
+re500:
+		CONOR = 1;
+		for (int i = 0; i < 5; i++) {
+			output[i] = 0;
+			relativeBase[i] = 0;
+			nextInst[i] = 0;
+			times[i] = 0;
+			finished[i] = 0;
+			inputCounters[i] = 0;
 		}
 		int i = -1;	
 restart:
@@ -251,15 +268,16 @@ restart:
 		int one = 1;
 		int ret = machine(i, one);
 		if (ret == 100) {printf("RErestart\n"); getchar(); goto RErestart;}
+		if (ret == 500) {goto re500;}
 		if (ret == 34) {goto restart;} else if (ret == 33 && i == 4) {goto end;} else if (ret == 33 && one == 1) {goto end;}  else if (ret == 22) {goto restart;}
 end:
-	printf("output CONOR %lld\n", output[0]);  getchar();
-	if (output[0] > outputMAX) {outputMAX = output[0]; phaseMAX[0] = phase[0]; phaseMAX[1] = phase[1]; phaseMAX[2] = phase[2]; phaseMAX[3] = phase[3]; phaseMAX[4] = phase[4];}
+		printf("output CONOR %lld\n", output[0]);  getchar();
+		if (output[0] > outputMAX) {outputMAX = output[0]; phaseMAX[0] = phase[0]; phaseMAX[1] = phase[1]; phaseMAX[2] = phase[2]; phaseMAX[3] = phase[3]; phaseMAX[4] = phase[4];}
 		//printf("output: %lld\n", output[0]);
 		//printf("outputMAX now: %lld\n", outputMAX);
 	} while (next_permutation(phase, phase+5));
 
-printf("***OUTPUTMAX: %lld\n", outputMAX);
+	printf("***OUTPUTMAX: %lld\n", outputMAX);
 	printf("PHASEMAX:\n"); for (int i = 0; i < 5; i++) { printf("%d ", phaseMAX[i]); } printf("\n"); //getchar();
 
 
@@ -295,28 +313,44 @@ void next(int x, int y, int path) {
 }
 
 int machine(int machineNumber, int one) {
-		if (finished[machineNumber] == 1) { return 22;}
-		long long input[10];	
+	printf("%d %d\n", var_inputX, var_inputY);
+	if (finished[machineNumber] == 1) { return 22;}
+	long long input[10];	
 
-		for (int i = 0; i < instTOT; i++) {
-			inst[i] = saveInst[machineNumber][i];
-		}
+	for (int i = 0; i < instTOT; i++) {
+		inst[i] = saveInst[machineNumber][i];
+	}
+	/*
+	   if (FIR == 0) {
+	   FIR = 1;
+	   for (int i = 0; i < instTOT; i++) {
+	   instCONOR[i] = inst[i];
+	   }
+	   }
+	   if (CONOR == 1) {
+	   for (int i = 0; i < instTOT; i++) {
+	   inst[i] = instCONOR[i];
+	   }
+	   CONOR = 0;
+	   }
+	   */
 
-		int inputCounter = inputCounters[machineNumber];
 
-		if (machineNumber == 0 && times[machineNumber] == 0) {
-			input[1] = 1; 
-			input[0] = phase[machineNumber];
-		} else {
-			input[1] = output[machineNumber];
-			input[0] = phase[machineNumber];
-		}
- 
+	int inputCounter = inputCounters[machineNumber];
+
+	if (machineNumber == 0 && times[machineNumber] == 0) {
+		input[1] = 1; 
+		input[0] = phase[machineNumber];
+	} else {
+		input[1] = output[machineNumber];
+		input[0] = phase[machineNumber];
+	}
+
 	for (int i = nextInst[machineNumber]; i < instTOT; i++) {
 #ifdef _DEBUG_
-                printf("\nNEW NEW NEW:::"); fflush(stdout);
-                printf("POS InstNUM: (%d) ", i); fflush(stdout);
-                printf(" is [%lld] ", inst[i]); fflush(stdout); //getchar();
+		printf("\nNEW NEW NEW:::"); fflush(stdout);
+		printf("POS InstNUM: (%d) ", i); fflush(stdout);
+		printf(" is [%lld] ", inst[i]); fflush(stdout); //getchar();
 #endif
 
 		int myINST = inst[i] % 100;
@@ -329,8 +363,8 @@ int machine(int machineNumber, int one) {
 				var_inputXprev = var_inputX;
 				var_inputYprev = var_inputY;
 			}
-		
-                        if (inst[i] > 200) {
+
+			if (inst[i] > 200) {
 				if (var_moves % 2 == 0) {
 					//inst[relativeBase[machineNumber]+inst[i+1]] = input[inputCounter];
 					inst[relativeBase[machineNumber]+inst[i+1]] = var_inputX;
@@ -345,19 +379,21 @@ int machine(int machineNumber, int one) {
 				} else {
 					inst[inst[i+1]] = var_inputY;
 				}
-				
+
 			}
 			if (inputCounter != 1) {
 				inputCounter++;
 			}
 			if (var_moves % 2 == 0) {
 				++var_inputX;
-				if (var_inputX / TOX == 1) {
-					var_inputY++;
-					var_inputX = FRMX;
+				if (CHECK == 1) {
+					if (var_inputX / TOX == 1) {
+						var_inputY++;
+						var_inputX = FRMX;
+					}
 				}
 				//var_inputX %= TO;
-				
+
 			}
 			var_moves++;
 			printf("var_inputXprev, var_inputYprev: %d, %d\n", var_inputXprev, var_inputYprev);
@@ -366,50 +402,50 @@ int machine(int machineNumber, int one) {
 			//printit(); getchar();
 		} else if (myINST == 4) {
 			printf("here5...\n"); fflush(stdout);
-                        {printf("got a 4 look@ %lld contains %lld\n", inst[i+1], inst[inst[i+1]]); fflush(stdout);}
+			{printf("got a 4 look@ %lld contains %lld\n", inst[i+1], inst[inst[i+1]]); fflush(stdout);}
 #ifdef _DEBUG_
 #endif
 			//OUT 0 == Wall 1 == OK 2==OX
 			numSteps++;
 			long long OUT;
-                        if (inst[i] > 200) {
+			if (inst[i] > 200) {
 				input[1] = inst[relativeBase[machineNumber]+inst[i+1]];
 				if (one == 0) {
-	                                output[(machineNumber+1)%5] = inst[relativeBase[machineNumber]+inst[i+1]]; 
+					output[(machineNumber+1)%5] = inst[relativeBase[machineNumber]+inst[i+1]]; 
 				} else if (one == 1) {
-	                                output[(machineNumber)%5] = inst[relativeBase[machineNumber]+inst[i+1]]; 
+					output[(machineNumber)%5] = inst[relativeBase[machineNumber]+inst[i+1]]; 
 				}
 				OUT =  inst[relativeBase[machineNumber]+inst[i+1]];
 
-                                printf("REL OUT: %lld (base: %lld+%lld)\n", inst[relativeBase[machineNumber]+inst[i+1]],
-					relativeBase[machineNumber], inst[i+1]);
+				printf("REL OUT: %lld (base: %lld+%lld)\n", inst[relativeBase[machineNumber]+inst[i+1]],
+						relativeBase[machineNumber], inst[i+1]);
 #ifdef _DEBUG_
 #endif
-                        } else if (inst[i] > 100) {
-                                printf("or is it OUT: %lld\n", inst[i+1]);
+			} else if (inst[i] > 100) {
+				printf("or is it OUT: %lld\n", inst[i+1]);
 #ifdef _DEBUG_
-                                printf("or is it OUTS: %s\n", instruction[i+1]);
+				printf("or is it OUTS: %s\n", instruction[i+1]);
 #endif
 				input[1] = inst[i+1];
 				if (one == 0) {
-	                                output[(machineNumber+1)%5] = inst[i+1]; 
+					output[(machineNumber+1)%5] = inst[i+1]; 
 				} else if (one == 1) {
-	                                output[(machineNumber)%5] = inst[i+1]; 
+					output[(machineNumber)%5] = inst[i+1]; 
 				}
 				OUT = inst[i+1];
-                        } else {
-                                printf("OUT: %lld\n", inst[inst[i+1]]); 
+			} else {
+				printf("OUT: %lld\n", inst[inst[i+1]]); 
 #ifdef _DEBUG_
-                                printf("OUTS: %s\n", instruction[inst[i+1]]);
+				printf("OUTS: %s\n", instruction[inst[i+1]]);
 #endif
 				input[1] = inst[inst[i+1]];
 				if (one == 0) {
-                                	output[(machineNumber+1)%5] = inst[inst[i+1]]; 
+					output[(machineNumber+1)%5] = inst[inst[i+1]]; 
 				} else if (one == 1) {
-	                                output[(machineNumber)%5] = inst[inst[i+1]]; 
+					output[(machineNumber)%5] = inst[inst[i+1]]; 
 				}
 				OUT = inst[inst[i+1]];
-                        }
+			}
 			struct pos_s pos1;
 
 			if (OUT == 1) {
@@ -425,143 +461,223 @@ int machine(int machineNumber, int one) {
 				printf("UNK OUT %lld\n", OUT); getchar();
 			}
 
-	
-/*
-			switch(OUT) {
-				case (35): {
-						printf("got a 35 : hash \n"); getchar();
-						grid[yCur][xCur] = '#';
-						xCur++;
-						//yCur = yPrev; xCur = xPrev;
-						//myBack.pop_front();
-						//MOVE = 0;
-						break;
-					}
-				case (46): {
-						printf("got a 46 : dot\n"); getchar();
-						grid[yCur][xCur] = '.';
-						xCur++;
-						//MOVE = 0;
-						break;
-					}
-				case (10):
-					{
-						//grid[yCur][xCur] = '.';
-						xCur = 0;
-						yCur++;
-						printf("got a 10: newline %d\n", numSteps); getchar();
-						//MOVE = 0;
-						//OXX = xCur;
-						//OXY = yCur;
-						//printf("found OXEGEN at %d,%d\n", xCur, yCur); getchar(); getchar();// exit(0);
-						break;
-					}
-			}
-*/
 
-			for (int i = 0; i < instTOT; i++) {
-				saveInst[machineNumber][i] = inst[i];
+			/*
+			   switch(OUT) {
+			   case (35): {
+			   printf("got a 35 : hash \n"); getchar();
+			   grid[yCur][xCur] = '#';
+			   xCur++;
+			//yCur = yPrev; xCur = xPrev;
+			//myBack.pop_front();
+			//MOVE = 0;
+			break;
 			}
-			nextInst[machineNumber] = i+2;
-			times[machineNumber]++;
-			inputCounters[machineNumber] = inputCounter;
-			return 34;
-                        //i++;
+			case (46): {
+			printf("got a 46 : dot\n"); getchar();
+			grid[yCur][xCur] = '.';
+			xCur++;
+			//MOVE = 0;
+			break;
+			}
+			case (10):
+			{
+			//grid[yCur][xCur] = '.';
+			xCur = 0;
+			yCur++;
+			printf("got a 10: newline %d\n", numSteps); getchar();
+			//MOVE = 0;
+			//OXX = xCur;
+			//OXY = yCur;
+			//printf("found OXEGEN at %d,%d\n", xCur, yCur); getchar(); getchar();// exit(0);
+			break;
+			}
+			}
+			*/
+
+			/*
+			   for (int i = 0; i < instTOT; i++) {
+			   saveInst[machineNumber][i] = inst[i];
+			   }
+			   nextInst[machineNumber] = i+2;
+			   times[machineNumber]++;
+			   inputCounters[machineNumber] = inputCounter;
+			   */
+			//return 34;
+			i++;
 		} else if (myINST == 99) {
 			printf("GOT QUIT 99\n"); //in = 1; 
-#ifdef _DEBUG_
-#endif
-#ifdef _DEBUG_
-	printf("INSTS:\n");
-	for (int i = 0; i < instTOT; i++) {
-		printf("%lld ", inst[i]);
+						 //nextInst[0] = 0;
+			getchar();
 
-	}
-	printf("\n");
-#endif
-			finished[machineNumber] = 1;
-			
 
-			//exit(0);
-			if (var_inputY == TOY+1) {
-				int var_count = 0;
-				for (int y = FRMY; y<TOY; y++) {
-					for (int x = FRMX; x < TOX; x++) {
-						if (grid[y][x] == 1) {
-							printf("#");
-							var_count++;
-						} else {
-							printf(" ");
+			if (CHECK == 0) {
+				//printf("in check...");
+
+				/*
+				   if (var_inputY == FIRSTY) {
+				   printf("FIRSTY...");
+				   for (int x = 0; ;x++) {
+				   if (grid[var_inputY][x] == 0 && grid[var_inputY][x+1] == 1) {
+				   xline1_1 = 0;
+				   yline1_1 = 0;
+				   }
+				   if (grid[var_inputY][x] == 1 && grid[var_inputY][x+1] == 0) {
+				   xline2_1 = 0;
+				   yline2_1 = 0;
+				   }
+				   if (grid[var_inputY][x] == 3) {
+				   break;	
+				   }
+				   }
+				   }
+				   if (xline2_1 == -1) {
+				   return 500;
+				   } else if (var_inputY == FIRSTY) {
+				   var_inputY = SECONDY;
+				   var_inputX = 0;
+				   return 500;
+				   }
+				   */
+
+				if (var_inputY == SECONDY) {
+					printf("secondY...");
+					for (int x = 0; ;x++) {
+						if (grid[var_inputY][x] == 0 && grid[var_inputY][x+1] == 1) {
+							xline1_2 = x+1;
+							yline1_2 = SECONDY;
 						}
-						if (x == TOX-1) { printf("  %d", y); }
-					}
-					printf("\n");
-						
-				}
-				printf("\n\n");
-			
-				for (int x = FRMX; x < TOX; x++) {
-					if (x % 10 == 0) {
-						printf(" ");
-					} else {
-						printf("%d", x%10);
-					}
-				}
-				printf("**var_count %d\n", var_count);
-				
-				int fY; int lastX;
-
-ag3:
-				int y = FRMY;
-				{
-					for (int x = TOX; x>=0; x--) {
-						if (grid[y][x] == 1) {
-							lastX = x; fY = y; goto aft2;
+						if (grid[var_inputY][x] == 1 && grid[var_inputY][x+1] == 0) {
+							xline2_2 = x;
+							yline2_2 = SECONDY;
+						}
+						if (grid[var_inputY][x] == 3) {
+							break;
 						}
 					}
 				}
-aft2:
-				int y99 = fY+99;
-				if (y99 > TOY) {printf("y99 greater err\n"); exit(0);}
-				
-				int found33 = 0;
-				if (grid[y99][lastX-99] == 1 && grid[y99][lastX-100] == 0) {
-					printf("\nwahoo wahey ans:\n");
-					unsigned long long ans = (unsigned long long)(lastX-99) * (unsigned long long)10000;
-					ans += fY;
-					fflush(stdout); dup2(fd,1);
-					//printf("\n\nans %llu\n", ans);
-					//printf("\nwahoo222 wahey ans:\n");
-					found33 = 1;
+				if (xline2_2 == -1) {
+					return 500;
+				} 
+				xline2_1 = 0;
+				yline2_1 = 0;
+				xline1_1 = 0;
+				yline1_1 = 0;
+
+				printf("%d", xline1_1); printf(" "); printf("%d\n", xline2_1);
+				printf("%d", yline1_1); printf(" "); printf("%d\n", yline2_1);
+				printf("%d", xline1_2); printf(" "); printf("%d\n", xline2_2);
+				printf("%d", yline1_2); printf(" "); printf("%d\n", yline2_2);
+
+				double slope1 = (double)((double)yline1_2- (double)yline1_1) / (double) ((double) xline1_2- (double)xline1_1);
+				double slope1_2 = (double)((double)yline1_1- (double)yline1_2) / (double) ((double) xline1_1- (double)xline1_2);
+
+				double intercept1 = (double)yline1_2 - ((double)slope1 * (double)xline1_2);
+				double intercept1_2 = (double)yline1_1 - ((double)slope1_2 * (double)xline1_1);
+				intercept1 = 0.0;
+				intercept1_2 = 0.0;
+				if (intercept1 != intercept1_2) {
 				}
-				if (found33 == 1) {
-					unsigned long long ans = (unsigned long long)(lastX-99) * (unsigned long long)10000;
-					ans += fY;
-					fflush(stdout); dup2(fd, 1);
-					printf("**ans %llu\n", ans);
-					fflush(stdout);
-					exit(0);
-				} else if (y99 > TOY) {
-					printf("widen...\n");
-					break;
-				} else if (found33 == 0) {
-					printf("again %d\n", fY);
-					FRMY++;
-					goto ag3;
+
+				double slope2 = (double)((double)yline2_2- (double)yline2_1) / (double) ((double) xline2_2- (double)xline2_1);
+				double intercept2 = (double)yline2_2 - ((double)slope2 * (double)xline2_2);
+				intercept2 = 0.0;
+				if (slope1 != slope2) {
+					printf("diff slopes... %d %d \n", slope1, slope2);
 				}
-				
-				exit(0);
-			} else {
-				return 100;
+
+				printf("slopes: %f %f %f\n", slope1, slope1_2, slope2);
+				int count = 0;
+
+				double s1 = yline1_2/xline1_2;
+				double s2 = yline2_2/xline2_2;
+				printf("s1 s2: %f %f\n", s1, s2);
+				for (int yy = 200; yy < 2000; yy++) {
+					double yy1 = yy;
+					double xx1 = floor(((double)yy1 - intercept1) / ((double)slope1));
+					double yy2 = yy1-99;
+					double xx2 = xx1+99;
+
+					int zz = (int)(((slope2 * xx2) + intercept2) - (double)yy2);
+
+					printf("%f %f %f %f\n", yy1, xx1, yy2, xx2);
+					if (zz == 0) {
+						if (count == 0) {
+							printf("zz is %d\n", zz);
+							printf("setting...");
+							getchar();
+							FRMY = (int) yy2-30;
+							FRMX = (int) xx1-30;
+							TOY = (int)yy1+30;
+							TOX = (int)xx2+30;
+							fflush(stdout);
+							break;
+						}
+						count++;
+					} else {}
+				}
+				//perror("check now 1");
+				CHECK = 1;
+				var_inputY = FRMY;
+				var_inputX = FRMX;
+				printf("%d\n", xline1_2);
+				printf("%d\n", xline2_2);
+				printf("%d %d %d %d\n", FRMX, FRMY, TOX, TOY);
+			} 
+
+
+			if (CHECK == 1) {
+				if (var_inputY == TOY+1) {
+
+					int fY = -1;
+					int lastX = -1;
+					int go1 = 0;
+					do {
+						int y = FRMY;
+						{
+							for (int x = TOX; x>=0; x--) {
+								if (grid[y][x] == 1) {
+									lastX = x; fY = y; break;
+								}
+							}
+						}
+						if (fY == -1 && lastX == -1) {go1=1; FRMY++; continue;}
+
+						int y99 = fY+99;
+						if (y99 > TOY) { }
+						if (y99 < FRMY) {go1=1; FRMY++; continue;}
+
+						int found33 = 0;
+						if (grid[y99][lastX-99] == 1 && grid[y99][lastX-100] == 0) {
+							found33 = 1;
+
+						}
+
+						if (found33 == 1) {
+							long ans2 = (long)(lastX-99) * (long)10000;
+							ans2 += fY;
+							ans = ans2;
+							fflush(stdout); dup2(fd, 1);
+							printf("**ans: ");
+							printf("%ld\n", ans);
+							exit(0);
+
+						} else if (y99 > TOY) {
+							break;
+						} else if (found33 == 0) {
+							FRMY++;
+							go1 = 1;
+						}
+					} while (go1 == 1);
+					return 500;
+				} else {
+					return 500;
+				}
 			}
-			printit();
-			if (one == 1) {printf("numSteps is %d\n", numSteps);
-			
 
-/*CONOR*/
- exit(0);
+			/*CONOR*/
+			exit(0);
 
-}
 			if (machineNumber == 4) {return 33;} else if (machineNumber == 0 && one == 1) {return 33;} else {return 22;}
 		} else { 
 			int err = 0;
@@ -584,27 +700,27 @@ aft2:
 			printf("NOW: %s\n", tmp2); 
 #endif
 			long long val1, val2, ans;
-			
+
 			if (tmp2[1] == '0') {
 
-val1 = inst[inst[i+1]]; 
+				val1 = inst[inst[i+1]]; 
 #ifdef _DEBUG_
-			printf("(pos0) val1 %lld\n", inst[inst[i+1]]);
+				printf("(pos0) val1 %lld\n", inst[inst[i+1]]);
 #endif
-}
+			}
 			else if (tmp2[1] == '1') {
 
 
-val1 = inst[i+1];
+				val1 = inst[i+1];
 #ifdef _DEBUG_
-			printf("(Npos1) val1 %lld\n", val1);
+				printf("(Npos1) val1 %lld\n", val1);
 #endif
-} 
+			} 
 			else if (tmp2[1] == '2') {val1 = inst[relativeBase[machineNumber]+inst[i+1]];
 				printf("(Rpos1) val1 %lld\n", val1);
 #ifdef _DEBUG_
 #endif
-} 
+			} 
 			else { printf("HERE"); getchar(); val1 = inst[i+1]; /*val2 = inst[i+2]; goto clear;*/}
 
 			if (myINST != 9) {
@@ -621,49 +737,49 @@ val1 = inst[i+1];
 					printf("(Rpos2) val2 %lld\n", val2);
 #endif
 				} else { printf("HERE2"); getchar(); val2 = inst[i+2];}
-	                } else {
+			} else {
 				printf("GOT A NINE\n");
 			}
-	
+
 			if (myINST == 2) {
 #ifdef _DEBUG_
 				printf("%lld **** %lld\n", val1, val2);
 #endif
-                                ans = val1 * val2;
-                        } else if (myINST == 1) {
+				ans = val1 * val2;
+			} else if (myINST == 1) {
 #ifdef _DEBUG_
-                                printf("%lld ++++ %lld\n", val1, val2);
+				printf("%lld ++++ %lld\n", val1, val2);
 #endif
-                                ans = val1 + val2;
-                        } else if (myINST == 5) {
+				ans = val1 + val2;
+			} else if (myINST == 5) {
 #ifdef _DEBUG_
-                                for (int i = 0; i < instTOT; i++) {
-                                        printf("%lld,", inst[i]);
-                                } printf("\n");
-                                printf("val1 is %lld\n", val1);
+				for (int i = 0; i < instTOT; i++) {
+					printf("%lld,", inst[i]);
+				} printf("\n");
+				printf("val1 is %lld\n", val1);
 #endif
-                                if (val1 != 0) {
+				if (val1 != 0) {
 #ifdef _DEBUG_
-                                        printf("NONZ: JUMP to (%lld)\n", val2);
+					printf("NONZ: JUMP to (%lld)\n", val2);
 #endif
-                                        i = val2-1; err = 2;
-                                } else {
+					i = val2-1; err = 2;
+				} else {
 #ifdef _DEBUG_
-                                        printf("ZNOJUMP (%lld)\n", val1);
+					printf("ZNOJUMP (%lld)\n", val1);
 #endif
-                                err = 1;}
-                        } else if (myINST == 6) {
-                                if (val1 == 0) {
+					err = 1;}
+			} else if (myINST == 6) {
+				if (val1 == 0) {
 #ifdef _DEBUG_
-                                        printf("ZERO: JUMP to (%lld)\n", val2);
+					printf("ZERO: JUMP to (%lld)\n", val2);
 #endif
-                                         i = val2-1; err = 2;
-                                } else {
+					i = val2-1; err = 2;
+				} else {
 #ifdef _DEBUG_
-                                        printf("NONZ NOJMP (%lld)\n", val1);
+					printf("NONZ NOJMP (%lld)\n", val1);
 #endif
-                                         err = 1;}
-                        } else if (myINST == 7) {
+					err = 1;}
+			} else if (myINST == 7) {
 
 				if (val1 < val2) {ans = 1;} else {ans = 0;}
 #ifdef _DEBUG_
@@ -709,16 +825,16 @@ val1 = inst[i+1];
 }
 
 void printit() {
-			for (int y = 0; y < SY+2; y++) { 
-				for (int x = 0; x<SX+2; x++) {
-					if (x == xCur && y == yCur) {
-						printf("D");
-					} else {
-						printf("%c", grid[y][x]);
-					}
-				} 
-				printf("\n");
-			} printf("\n");
+	for (int y = 0; y < SY+2; y++) { 
+		for (int x = 0; x<SX+2; x++) {
+			if (x == xCur && y == yCur) {
+				printf("D");
+			} else {
+				printf("%c", grid[y][x]);
+			}
+		} 
+		printf("\n");
+	} printf("\n");
 }
 void ne(int x, int y, int endX, int endY, int px, int py) {
 	if (endX == x && endY == y) { printf("end reached"); return; }

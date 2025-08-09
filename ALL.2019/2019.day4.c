@@ -15,27 +15,24 @@ int main(int argc, char **argv)
         FILE * a = fopen(argv[1], "r"); 
 	printf(DAY); fflush(stdin); fflush(stdout);
        
-        //char line1[3000];
+        char line1[3000];
 	//int wire = 0;
 
-/*
+	int fir = 0, sec = 0;
 while(1) {
         fgets(line1, 2990, a);
         if (feof(a)) break;
 	line1[strlen(line1) -1]='\0';
 	lenx = strlen(line1);
-#ifdef _DEBUG_
-	printf("LINE: %s getchar\n", line1); getchar();
-#endif
+	sscanf(line1, "%d-%d", &fir, &sec);
 	leny++;
 }
-*/
 
 fclose(a);
 
 	char buf[10];
 	int count = 0;
-	for (int i = 134792; i <= 675810; i++) {
+	for (int i = fir; i <= sec; i++) {
 		sprintf(buf, "%d", i);
 		if (buf[5] >= buf[4] && buf[4] >= buf[3] && buf[3] >= buf[2] && buf[2] >= buf[1] && buf[1] >= buf[0]) { 
 			int doubles = 0;
