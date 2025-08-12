@@ -22,8 +22,8 @@ o for many solns/languages: web search: advent of code 20XY day AB solutions
 	bugs_2019 09/08/2025 01:01
 	bugs_2020 12/08/2025
 	bugs_2021 12/08/2025
-	bugs_2022 12/08/2025</s>
-	bugs_2023
+	bugs_2022 12/08/2025
+	bugs_2023 12/08/2025</s>
 	bugs_2024
 Note: Haven't fixed the un-Java'ed ones yet
 </pre>
