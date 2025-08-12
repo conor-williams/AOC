@@ -25,7 +25,7 @@ struct inst_s {
 	char op;
 	long long num1;
 };
-struct inst_s inst[2000];
+struct inst_s inst[3000];
 
 string doCalc(string ch);
 long long hasOp(string ch);

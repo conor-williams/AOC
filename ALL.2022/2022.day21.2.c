@@ -26,7 +26,7 @@ struct inst_s {
 	char op;
 	long long num1;
 };
-struct inst_s inst[2000];
+struct inst_s inst[3000];
 
 string doCalc(string ch);
 long long hasOp(string ch);
@@ -55,7 +55,7 @@ int main(int argc, char **argv)
 		char rest[100];
 		//char rest2[120];
 		//long long ret;//, num1;
-			      //ret = sscanf(line1, "%s: %s %c %s", inst[leny].s1, inst[leny].s2, inst[leny].op, inst[leny].s3);
+		//ret = sscanf(line1, "%s: %s %c %s", inst[leny].s1, inst[leny].s2, inst[leny].op, inst[leny].s3);
 		/*ret = */sscanf(line1, "%[^:]:%[^\0]", inst[leny].s1, rest);
 		//printf("ret is %lld\n", ret);
 		//sprintf(rest2, "( %s)", rest); //string re = rest2; //if (strcmp(inst[leny].s1, "root") == 0) {first = leny;}
@@ -77,39 +77,36 @@ int main(int argc, char **argv)
 	unsigned long long upper = /*400; */pow(10, 13);
 	unsigned long long lower = 0; //pow(10, 6);
 	int five = 0;
+	bool checking = false;
+	map<long, bool> mpTried;
+	long ans = 0;
 	while (1) {
 		printf("in while at start...\n");
 		unsigned long long iii;
-		if (upper-lower <= 5) {
-			iii = lower+five;
-			five++;
+		if (checking) {
+			printf("checing on...");
+			iii--;
 		} else {
 			iii = lower+((upper - lower) /2);
+			printf("checking off...");
 		}
 		mp = mpOrig;
 		char tmpS[30];
 		sprintf(tmpS, "%llu", iii);
 		mp["humn"].first = tmpS;
-		//mp["humn"] = "3296135418821";
-		//mp["humn"] = "5"; //iii;
 		printf("iii: %llu\n", iii); fflush(stdout);
 again:
 		for (auto it = mp.begin(); it != mp.end(); it++) {
-			//cout << "checking: " << it->second << endl;
-			//printf("%lld %lld %lld\n", alldigitsAndOp(it->second), hasOp(it->second), alldigits(it->second));
 
 			if (it->second.second == 0 && alldigitsAndOp(it->second.first) == 1 && hasOp(it->second.first)) {
-				//printf("calling doCalc\n");
 				if ((it->second.first = doCalc(it->second.first)) == "-99") {printf("bad %llu %llu\n", lower, upper); lower+=100; goto nextiii;}
 			} else if (it->second.second == 0 && alldigits(it->second.first)) {
-				//printf("alldigits...\n");
 				for (auto it2 = mp.begin(); it2 != mp.end(); it2++) {
 					long long ind = 0;
 					if ((ind = it2->second.first.find(it->first)) != -1 ) {
 						it2->second.first.replace(ind, 4, it->second.first);
 						it->second.second = 1;
 						break;
-						//printf("doing a replace...\n");
 					}
 				}
 			}
@@ -119,34 +116,41 @@ again:
 			unsigned long long one = strtoull(mp[restRootOrig1].first.c_str(), 0, 10);
 			unsigned long long two = strtoull(mp[restRootOrig2].first.c_str(), 0, 10);
 			printf("here1... one V two %llu V %llu\n", one, two);
-		
+
 			if (mp[restRootOrig1] == mp[restRootOrig2]) {
-				fflush(stdout); dup2(fd, 1);
-				cout << "**ans: " << iii << endl;
-				exit(0);
+				printf("same..\n");
+				if (!checking) {printf("checking on...\n"); checking = true;}
+				mpTried[iii] = true;
+				if (mpTried.find(iii-1) != mpTried.end() && mpTried[iii-1] == false) {
+					ans = iii;
+					goto after;
+				}
 			} else if (one < two) {
-				printf("one LT %llu V %llu\n", one, two);
-				//printf("humn shouting %d not a match... mp[root]: %s\n", iii, mp["root"].c_str());
-				printf("upper lower %llu V %llu\n", upper, lower);
-				if (five == 0) {
+				printf("one < two\n");
+				mpTried[iii] = false;
+				if (checking) {
+					if (mpTried[iii+1] == true) {
+						ans = iii+1;
+						goto after;
+					}
+				} else {
 					upper = iii;
 				}
 			} else if (one > two) {
-				printf("two LT %llu V %llu\n", one, two);
-				if (five == 0) {
+				printf("one > two\n");
+				mpTried[iii] = false;
+				if (checking) {
+					if (mpTried[iii+1] == true) {
+						ans = iii+1;
+						goto after;
+					}
+				} else {
 					lower = iii;
 				}
-				printf("upper lower %llu V %llu\n", upper, lower);
 			}
-			printf("after %llu V %llu\n", one, two);
-			printf("aft %llu V %llu\n", upper, lower);
-
-			getchar();
-			printf("goto...\n");
-			
-			goto nextiii;
-			///cout << "**ans: " << mp["root"] << endl; ///getchar();
+			//goto nextiii;
 		} else {
+			printf("not all digits..");
 			//cout << "interim ans: " << mp["root"] << endl;
 			//printf("again...\n");
 			goto again;
@@ -154,6 +158,11 @@ again:
 nextiii:
 		continue;
 	}
+after:
+	fflush(stdout); dup2(fd, 1);
+	printf("**ans: ");
+	printf("%ld", ans);
+	printf("\n");
 
 }
 string doCalc(string ch) {

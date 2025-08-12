@@ -28,23 +28,25 @@ int minPathTot = 0;
 FILE *a;
 #define LINE 1000
 #define getchar()
-int minPath = 99999;
-int minminPath = 99999;
+int minPath = 9999;
+int minminPath = 9999;
 int dep = 800;
 int hide = 0;
 int fd;
 //void sigfunc(int a) { if (count123 % 2 == 0) {fflush(stdout); dup2(fd,1);}if (hide==1) {dup2(fd, 1);} printf("[[ %s %d]]\n", "signal hand..\n", minPath); if (hide==1) {fd=dup(1); close(1);} }
 void sigfunc(int a) { fflush(stdout); dup2(fd,1); printf("in sig\n"); /*fd=dup(1); close(1);*/ count123++; if (count123 % 2 == 0) {dup2(fd,1);} else if (count123 % 2 == 1) {fd=dup(1); close(1);} }
 
+/*
 struct al_s {
 	int depth;
 	int path;
 };
 struct al_s already[120][120];
+*/
 
-#define SX 105
+#define SX 150
 char grid[SX][SX];
-int gridNum[1000][SX][SX];
+int gridNum[10000][SX][SX];
 int gridNumInter[SX][SX];
 //int already[SX][SX] = {0};
 int leny = 0;
@@ -57,12 +59,14 @@ void dikjstra(int conSX, int conSY, int conEX, int conEY, int mmPP);
 
 int main(int argc, char **argv)
 {
+	/*
 	for (int y = 0; y < SX; y++) {
 		for (int x = 0; x < SX; x++) {
 			already[y][x].depth = -1;
 			already[y][x].path = 0;
 		}
 	}
+	*/
 	if (argc == 3) {dep = atoi(argv[2]); printf("using depth %d\n", dep);}
 
 	signal(SIGTSTP, &sigfunc);
@@ -87,7 +91,10 @@ int main(int argc, char **argv)
 	fclose(a);
 	lenx = (int)strlen(grid[0]);
 
-	memset(gridNum[0], 0, sizeof(gridNum[0]));
+	//memset(gridNum[0], 0, sizeof(gridNum[0]));
+	memset(gridNum, 0, sizeof(gridNum));
+	memset(gridNumInter, 0, sizeof(gridNumInter));
+
 	for (int y = 1; y < leny-1; y++) {
 		for (int x = 1; x < lenx-1; x++) {
 			switch(grid[y][x]) {
@@ -135,7 +142,7 @@ int main(int argc, char **argv)
 	}
 
 	minPathTot = 0;
-	minPath = 99999;
+	minPath = 9999;
 	next(1, 0, 0, lenx-2, leny-1);
 	next(1, 0, 1, lenx-2, leny-1);
 	//dik2(1, 0, lenx-2, leny-1, 0); 
@@ -156,85 +163,11 @@ int main(int argc, char **argv)
 	//printf("**ans %d\n", minPathTot);
 
 }
-void dikjstra(int conSX, int conSY, int conEX, int conEY, int mmpp)
-{ 
-	minminPath = 99999;
-	printf("in dikj %d %d %d %d %d\n", conSX, conSY, conEX, conEY, mmpp); fflush(stdout);
-	if (mmpp != 0) {
-		for (int i = mmpp; i < dep; i++) {
-			for (int y = 0; y < leny; y++) {
-				for (int x = 0; x < lenx; x++) {
-					gridNum[i-mmpp][y][x] = gridNum[i][y][x];
-				}
-			}
-		}
-		dep -= mmpp;
-		printf("after mmpp shift\n");
-	} else {
-		printf("no mmpp shift\n");
-	}
-
-	//int curx = conSX; int cury = conSY;
-
-	mpALL.clear(); mp.clear(); mpTmp2.clear(); mpTmp.clear(); minPath = 99999; int path = 0;
-	mp[{conSX, conSY, path}] = 1;
-again:
-	if ((int)mp.size() != 0) {mpTmp2 = mp;} mpTmp = mp; mp.clear();
-	if (mpTmp.size() == 0 && mpTmp2.size() == 0) {goto end;}
-	if (mpTmp.size() == 0) {
-		for (map<tuple<int, int, int>, int>::iterator it = mpTmp2.begin(); it != mpTmp2.end(); it++) {
-			tuple fir = it->first;
-			int cx = get<0>(fir); int cy = get<1>(fir); int pa = get<2>(fir); pa++;
-			mpTmp[{cx, cy, pa}] = 1;
-		}
-		mpTmp2.clear();
-	}
-
-	for (auto it = mpTmp.begin(); it != mpTmp.end(); it++) {
-		tuple fir = it->first;
-		int cx = get<0>(fir); int cy = get<1>(fir); int pa = get<2>(fir);
-		tuple abcd = make_tuple(cx, cy, pa);
-		if (mpALL.find(abcd) != mpALL.end()) {continue;} else {mpALL[abcd] = 1;} 
-
-		for (int ey1 = 0; ey1 < leny; ey1++) {
-			for (int ex1 = 1; ex1 < lenx-1; ex1++) {
-
-				if (ey1 == 0 && ex1 != 1) {continue;} else
-					if (ey1 == leny-1 && ex1 != lenx -2) {continue;}
-				for (int y = 0; y < SX; y++) {
-					for (int x = 0; x < SX; x++) {
-						already[y][x].depth = -1;
-						already[y][x].path = 0;
-					}
-				}
-
-				minPath = 99999;
-				//int found22 = 0; for (int zz2 = pa+1; zz2 < dep; zz2++) { if (gridNum[zz2][ey1][ex1] == 0) { found22 = 1; break; } } if (found22 == 0) {continue;}
-
-				//next(cx, cy, pa, ex1, ey1, pa, cx, cy);
-
-				if (minPath != 99999) {
-					mp[{ex1, ey1, minPath+1}] = 1;
-					//printf("**minPath %d,%d to: %d,%d is %d\n", cx, cy, ex1, ey1, minPath); //getchar();
-					if (ex1 == conEX && ey1 == conEY) {
-						///minPathTot += minPath;
-						if (hide == 1) {fflush(stdout); dup2(fd,1); } /*printf("yatzee:: minPath: %d\n", minPath);*/ if (hide == 1) {fd=dup(1); close(1);} getchar();/*return;*/ //goto ag4;
-						if (minPath < minminPath) {minminPath = minPath;}
-					}
-				}
-			}
-		}
-	}
-	goto again;
-end:
-	minPath = minminPath;
-	minPathTot += minPath;
-	printf("leaving dikjstra -- minPath: ( %d )\n", minPath);
-}
 
 void next(int x, int y, int path, int ex, int ey)
 {
-	if (path > 300) {return;}
+	if (path > 1000) {return;}
+	if (path > minPath) {return;}
 	if (x == ex && y == ey) {
 		printf("**End reached minPath:%d END: %d,%d \n", path, ex, ey); getchar();
 		if (path < minPath) {minPath = path;}
@@ -284,7 +217,7 @@ void makeMovesAll(int gridX)
 	for (int y = 1; y < leny-1; y++) {
 		for (int x = 1; x < lenx-1; x++) {
 			if (gridNum[gridX-1][y][x] != 0) {
-				if (gridNum[gridX-1][y][x] & (1 << 0)) { 
+				if ((gridNum[gridX-1][y][x] & (1 << 0)) != 0) { 
 					//printf("setting Inter\n");
 					//case '^':
 					if (y == 1) {
@@ -295,7 +228,7 @@ void makeMovesAll(int gridX)
 					//gridNumInter[y][x] ^= 1 << 0;
 				}
 
-				if (gridNum[gridX-1][y][x] & (1 << 1)) { 
+				if ((gridNum[gridX-1][y][x] & (1 << 1)) != 0) { 
 					//case '>':
 					//printf("setting Inter >\n");
 					//printf("here6 > x,y: %d,%d\n", x, y);
@@ -309,7 +242,7 @@ void makeMovesAll(int gridX)
 					//gridNumInter[y][x] ^= 1 << 1;
 				}
 
-				if (gridNum[gridX-1][y][x] & (1 << 2)) { 
+				if ((gridNum[gridX-1][y][x] & (1 << 2)) != 0) { 
 					//printf("setting Inter v \n");
 					//case 'v':
 					//printf("here2 x,y %d,%d\n", x, y);
@@ -323,7 +256,7 @@ void makeMovesAll(int gridX)
 					//gridNumInter[y][x] ^= 1 << 2;
 				}
 
-				if (gridNum[gridX-1][y][x] & (1 << 3)) { 
+				if ((gridNum[gridX-1][y][x] & (1 << 3)) != 0){ 
 					///printf("setting Inter\n");
 					//case '<':
 					if (x == 1) {
@@ -338,6 +271,7 @@ void makeMovesAll(int gridX)
 		}
 	}
 
+	//memcpy(gridNum[gridX], gridNumInter, sizeof(gridNumInter));
 	for (int y = 1; y < leny-1; y++) {
 		for (int x = 1; x < lenx-1; x++) {
 			gridNum[gridX][y][x] = gridNumInter[y][x];
@@ -394,3 +328,80 @@ void printit(int gridX)
 	}
 	printf("\n");
 }
+/*
+void dikjstra(int conSX, int conSY, int conEX, int conEY, int mmpp)
+{ 
+	minminPath = 9999;
+	printf("in dikj %d %d %d %d %d\n", conSX, conSY, conEX, conEY, mmpp); fflush(stdout);
+	if (mmpp != 0) {
+		for (int i = mmpp; i < dep; i++) {
+			for (int y = 0; y < leny; y++) {
+				for (int x = 0; x < lenx; x++) {
+					gridNum[i-mmpp][y][x] = gridNum[i][y][x];
+				}
+			}
+		}
+		dep -= mmpp;
+		printf("after mmpp shift\n");
+	} else {
+		printf("no mmpp shift\n");
+	}
+
+	//int curx = conSX; int cury = conSY;
+
+	mpALL.clear(); mp.clear(); mpTmp2.clear(); mpTmp.clear(); minPath = 9999; int path = 0;
+	mp[{conSX, conSY, path}] = 1;
+again:
+	if ((int)mp.size() != 0) {mpTmp2 = mp;} mpTmp = mp; mp.clear();
+	if (mpTmp.size() == 0 && mpTmp2.size() == 0) {goto end;}
+	if (mpTmp.size() == 0) {
+		for (map<tuple<int, int, int>, int>::iterator it = mpTmp2.begin(); it != mpTmp2.end(); it++) {
+			tuple fir = it->first;
+			int cx = get<0>(fir); int cy = get<1>(fir); int pa = get<2>(fir); pa++;
+			mpTmp[{cx, cy, pa}] = 1;
+		}
+		mpTmp2.clear();
+	}
+
+	for (auto it = mpTmp.begin(); it != mpTmp.end(); it++) {
+		tuple fir = it->first;
+		int cx = get<0>(fir); int cy = get<1>(fir); int pa = get<2>(fir);
+		tuple abcd = make_tuple(cx, cy, pa);
+		if (mpALL.find(abcd) != mpALL.end()) {continue;} else {mpALL[abcd] = 1;} 
+
+		for (int ey1 = 0; ey1 < leny; ey1++) {
+			for (int ex1 = 1; ex1 < lenx-1; ex1++) {
+
+				if (ey1 == 0 && ex1 != 1) {continue;} else
+					if (ey1 == leny-1 && ex1 != lenx -2) {continue;}
+				for (int y = 0; y < SX; y++) {
+					for (int x = 0; x < SX; x++) {
+						already[y][x].depth = -1;
+						already[y][x].path = 0;
+					}
+				}
+
+				minPath = 9999;
+				//int found22 = 0; for (int zz2 = pa+1; zz2 < dep; zz2++) { if (gridNum[zz2][ey1][ex1] == 0) { found22 = 1; break; } } if (found22 == 0) {continue;}
+
+				//next(cx, cy, pa, ex1, ey1, pa, cx, cy);
+
+				if (minPath != 9999) {
+					mp[{ex1, ey1, minPath+1}] = 1;
+					//printf("**minPath %d,%d to: %d,%d is %d\n", cx, cy, ex1, ey1, minPath); //getchar();
+					if (ex1 == conEX && ey1 == conEY) {
+						///minPathTot += minPath;
+						if (hide == 1) {fflush(stdout); dup2(fd,1); }printf("yatzee:: minPath: %d\n", minPath); if (hide == 1) {fd=dup(1); close(1);} getchar(); //goto ag4;
+						if (minPath < minminPath) {minminPath = minPath;}
+					}
+				}
+			}
+		}
+	}
+	goto again;
+end:
+	minPath = minminPath;
+	minPathTot += minPath;
+	printf("leaving dikjstra -- minPath: ( %d )\n", minPath);
+}
+*/

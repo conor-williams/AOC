@@ -31,8 +31,8 @@ int minPathTot = 0;
 FILE *a;
 #define LINE 1000
 #define getchar()
-int minPath = 99999;
-int minminPath = 99999;
+int minPath = 9999;
+int minminPath = 9999;
 int dep = 1000;
 int hide = 0;
 int fd;
@@ -58,7 +58,7 @@ void sigfunc(int a) { printf("minminPath %d -- cur minPath is %d\n", minPath, mi
 
 
 //int already[120][120];
-#define SX 105
+#define SX 150
 char grid[SX][SX];
 int gridNum[1001][SX][SX];
 int gridNumInter[SX][SX];
@@ -166,7 +166,7 @@ int main(int argc, char **argv)
 
 int dijk2(int conSX, int conSY, int conEX, int conEY, int mmpp) {
 
-	minPath = 99999;
+	minPath = 9999;
 	if (mmpp != 0) {
 		for (int i = mmpp; i < dep; i++) {
 			for (int y = 0; y < leny; y++) {
@@ -252,7 +252,7 @@ egg:
 
 void dikjstra(int conSX, int conSY, int conEX, int conEY, int mmpp)
 { 
-	minminPath = 99999;
+	minminPath = 9999;
 	printf("in dikj %d %d %d %d %d\n", conSX, conSY, conEX, conEY, mmpp); fflush(stdout);
 	if (mmpp != 0) {
 		for (int i = mmpp; i < dep; i++) {
@@ -270,7 +270,7 @@ void dikjstra(int conSX, int conSY, int conEX, int conEY, int mmpp)
 
 	//int curx = conSX; int cury = conSY;
 
-	mpALL.clear(); mp.clear(); mpTmp2.clear(); mpTmp.clear(); minPath = 99999; int path = 0;
+	mpALL.clear(); mp.clear(); mpTmp2.clear(); mpTmp.clear(); minPath = 9999; int path = 0;
 	mp[{conSX, conSY, path}] = 1;
 	//mpALL[{conSX, conSY, path}] = 1;
 	//memset(visited, 0, sizeof(visited));
@@ -316,10 +316,10 @@ again:
 
 		//int found22 = 0; for (int zz2 = pa+1; zz2 < dep; zz2++) { if (gridNum[zz2][ey1][ex1] == 0) { found22 = 1; break; } } if (found22 == 0) {continue;}
 
-		minPath = 99999;
+		minPath = 9999;
 		next(cx, cy, pa, conEX, conEY, pa);
 
-		if (minPath != 99999) {
+		if (minPath != 9999) {
 			//if (ex1 == conEX && ey1 == conEY) {
 			if (minPath < minminPath) {minminPath = minPath;}
 			cout << "yatzee... minPath:" << minPath << endl;

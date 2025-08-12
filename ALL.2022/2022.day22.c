@@ -57,6 +57,7 @@ int main(int argc, char **argv)
 
 	int lenx = 0;
 	int f1 = 1;
+	
 	while (1) {
 		fgets(line1, LINE-1, a);
 		if (feof(a)) break;
@@ -74,8 +75,13 @@ int main(int argc, char **argv)
 
 		leny++;
 	}
-
 	fclose(a);
+	for (int yy = 0; yy < leny; yy++) {
+		for (int xx = (int)strlen(grid[yy]); xx < lenx; xx++) {
+			grid[yy][xx] = '\0';
+		}
+	}
+
 
 	for (int y = 0; y < leny; y++) {
 		int first = 1;
@@ -90,7 +96,7 @@ int main(int argc, char **argv)
 		int first = 1;
 		for (int y = 0; y < leny; y++) {
 			if (first == 1 && (grid[y][x] == '.' || grid[y][x] == '#')) {first = 0; ColStae[x].st = y;}
-			else if (first == 0 && (grid[y][x] == ' ' || y+1 ==leny)) {ColStae[x].en = y-1; break;}
+			else if (first == 0 && (grid[y][x] == 0 || grid[y][x] == ' ' || y+1 ==leny)) {ColStae[x].en = y-1; break;}
 		}
 	}
 
