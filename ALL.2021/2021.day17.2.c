@@ -79,8 +79,8 @@ int main(int argc, char **argv)
 	int maxy = 0;
 	int maxsvx, maxsvy;
 	int countTot = 0;
-	for (int ovx = 2; ovx < 200; ovx++) {
-		for (int ovy = -400; ovy < 400; ovy++) {
+	for (int ovx = 2; ovx < 599; ovx++) {
+		for (int ovy = -800; ovy < 6000; ovy++) {
 			//printf("ovx ovy %d %d\n", ovx, ovy);
 			int vx = ovx;
 			int vy = ovy;
