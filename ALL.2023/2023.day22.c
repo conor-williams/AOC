@@ -24,7 +24,7 @@ struct brick {
 	char toX[10];
 	char toY[10];
 };
-struct brick bricks[1300];
+struct brick bricks[2000];
 int wall[299][10][10];
 int wallOrig[299][10][10];
 int maxX = 0, maxY=0, maxZ=0;

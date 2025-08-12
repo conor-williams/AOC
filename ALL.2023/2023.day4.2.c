@@ -3,13 +3,15 @@
 #include <string.h>
 #include <ctype.h>
 #include <math.h>
-
+#include <map>
+#include <vector>
+#include <string>
 #include <unistd.h>
+#include <algorithm>
 
 #define getchar()
-int isAlready(int num);
-int arr[10000] = {0};
-int endarr = 0;
+
+using namespace std;
 int main(int argc, char **argv)
 {
 	//printf("%d", argc); printf("%s", argv[1]); fflush(stdin); fflush(stdout);
@@ -18,81 +20,81 @@ int main(int argc, char **argv)
 	printf("		2023 Day4.2\n");
 
 	fflush(stdout); int fd = dup(1); close(1);
+
+
+	//	Pattern p = Pattern.compile("Card[\\s]+(\\d+): ([\\s\\d]+) \\| ([\\s\\d]+)");
+
+	map <int, int> mp;
+	vector<string> blah;
+
 	char line1[1000];
-	int linenum = 0;
-
-	int win[10] = {0};
-	int me[25] = {0};
-	int cardnum = 0;
-	//int score = 0;
-	//int games[300];
-	int card[10000];
 	while (1) {
-		fseek(a, 117*(222 - linenum), SEEK_SET);
 		fgets(line1, 1000, a);
-		printf("%s", line1);
 		if (feof(a)) break;
-		linenum++;
-		//Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53
-		sscanf(line1, "Card %d: %d %d %d %d %d %d %d %d %d %d | %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d",
-				&cardnum, 
-				&win[0], &win[1], &win[2], &win[3], &win[4], &win[5],
-				&win[6], &win[7], &win[8], &win[9], 
-				&me[0], &me[1], &me[2], &me[3], &me[4], &me[5], &me[6], &me[7],
-				&me[8], &me[9], &me[10], &me[11], &me[12], &me[13], &me[14], &me[15],
-				&me[16], &me[17], &me[18], &me[19], &me[20], &me[21], &me[22], &me[23],
-				&me[24]);
-		printf(" %d %d\n", win[4], me[7]);
-
-		int match = 0;
-		for (int w = 0; w < 10; w++) {
-			for (int m = 0; m < 25; m++) {
-				if (win[w] == me[m]) { match++; break;}
-			}
-		}
-		//if (match != -1) {score += match; card[cardnum] = match;}
-		if (match != 0) {if (match+cardnum > 223) {match = 223-cardnum;} for (int k = 1; k <= match; k++) {card[cardnum] += card[cardnum + k];} card[cardnum]++;}
-		else (card[cardnum] = 1);
-		printf("card[cardnum] (%d) set to %d\n", cardnum, card[cardnum]);
-		if (cardnum == 1) break;
-
+		line1[strlen(line1)-1] = '\0';
+		blah.push_back(line1);
 	}
 
-	fseek(a, 0, SEEK_SET);
+	int maxCardNum = 0;
+	for (int i = 0; i < blah.size(); i++) {
 
+		char cNum[100];
+		char f1[100];
+		char f2[100];
+		sscanf(blah[i].c_str(), "Card%[^:]: %[^|] %[^\0]", cNum, f1, f2);
+		int cardNum = atoi(cNum);
+		mp[cardNum] = 1;
+		if (cardNum > maxCardNum) {
+			maxCardNum = cardNum;
+		}
+	}
+	for (int i = 0; i < blah.size(); i++) {
+		vector <int> var_wins;
+		vector <int> var_play;
+
+		char cNum[100];
+		char winningNums[300];
+		char playNums[300];
+		sscanf(blah[i].c_str(), "Card%[^:]: %[^|] %[^\0]", cNum, winningNums, playNums);
+		int cardNum = atoi(cNum);
+
+		{
+			char *bl = strtok(winningNums, "	 ");
+			while (bl != NULL) {
+				var_wins.push_back(atoi(bl));
+				bl = strtok(NULL, "	 ");
+			}
+		}
+		{
+			char *bl2 = strtok(playNums, "	 ");
+			while (bl2 != NULL) {
+				var_play.push_back(atoi(bl2));
+				bl2 = strtok(NULL, "	 ");
+			}
+		}
+		vector <int> inter;
+		sort(var_wins.begin(), var_wins.end());
+		sort(var_play.begin(), var_play.end());
+		set_intersection(var_wins.begin(), var_wins.end(), var_play.begin(), var_play.end(), back_inserter(inter));
+
+		if (inter.size() != 0) {
+			int wi = inter.size();
+			for (int zz = cardNum+1; zz < cardNum+1+wi; zz++) {
+				if (zz > maxCardNum) {
+					break;
+				} else {
+					mp[zz] = mp[cardNum]+mp[zz];
+
+				}
+			}
+		}
+
+	}
 	int tot = 0;
-	while (1) {
-		fgets(line1, 1000, a);
-		printf("%s", line1);
-		if (feof(a)) break;
-		linenum++;
-		//Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53
-		sscanf(line1, "Card %d: %d %d %d %d %d %d %d %d %d %d | %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d",
-				&cardnum, 
-				&win[0], &win[1], &win[2], &win[3], &win[4], &win[5],
-				&win[6], &win[7], &win[8], &win[9], 
-				&me[0], &me[1], &me[2], &me[3], &me[4], &me[5], &me[6], &me[7],
-				&me[8], &me[9], &me[10], &me[11], &me[12], &me[13], &me[14], &me[15],
-				&me[16], &me[17], &me[18], &me[19], &me[20], &me[21], &me[22], &me[23],
-				&me[24]);
-		printf(" %d %d\n", win[4], me[7]);
-
-		int match = 0;
-		for (int w = 0; w < 10; w++) {
-			for (int m = 0; m < 25; m++) {
-				if (win[w] == me[m]) { match++; break;}
-			}
-		}
-		//		if (match != -1) {for (int k = 1; k <= match; k++) {tot += card[cardnum + k];}}
-		if (match != 0) {for (int k = 1; k <= match; k++) {printf("tot %d + card %d\n", tot, card[cardnum+k]); tot += card[cardnum + k];} tot++;}
-		if (match == 0) {tot++;}
-
+	for (auto pa : mp) {
+		tot += mp[pa.first];
 	}
 
-	fflush(stdin); fflush(stdout);
-	fclose(a);
-	printf("*** Score:  %d ****\n", tot);
-	printf("%d", linenum);
 
 	fflush(stdout); dup2(fd, 1);
 	printf("***ans:  %d\n", tot);

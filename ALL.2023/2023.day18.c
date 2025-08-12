@@ -13,8 +13,8 @@ int lenx, leny;
 long tot;
 
 //compile: widen stack: -Wl,--stack,999777666
-#define GRIDX 570
-#define GRIDY 340
+#define GRIDX 4000
+#define GRIDY 4000
 char puzzle[GRIDY][GRIDX];
 void printpuzzle();
 struct instruction {
@@ -35,7 +35,7 @@ int main(int argc, char **argv)
 
 	fflush(stdout); int fd = dup(1); close(1);
 	char line1[220];
-	startx = 170; starty = 200;
+	startx = 1800; starty = 1800;
 	for (int x = 0; x < GRIDX; x++) {
 		for (int y = 0; y < GRIDY; y++) {
 			puzzle[y][x] = '.';
