@@ -120,7 +120,7 @@ fclose(a);
 		switch (oper) {
 			case 0:
 				//adv
-				regs[0] = regs[0]/pow(2,comboval);
+				regs[0] = (long)(regs[0]/pow(2,comboval));// & 0xFFFFFFFF;
 				break;
 			case 1:
 				//bxl
@@ -149,11 +149,11 @@ fclose(a);
 				break;
 			case 6:
 				//bdv
-				regs[1] = regs[0]/pow(2,comboval);
+				regs[1] = (long)(regs[0]/pow(2,comboval));// & 0xFFFFFFFF;
 				break;
 			case 7:
 				//cdv
-				regs[2] = regs[0]/pow(2,comboval);
+				regs[2] = (long)(regs[0]/pow(2,comboval));// & 0xFFFFFFFF;
 				break;
 		}
 	}

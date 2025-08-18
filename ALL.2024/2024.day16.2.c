@@ -1,137 +1,262 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-#include <math.h>
-#include <assert.h>
-#include <unistd.h>
-#include <signal.h>
+
+#include <iostream>
+#include <fstream>
 #include <vector>
+#include <string>
+#include <map>
+#include <queue>
 #include <set>
+#include <tuple>
+#include <sstream>
+#include <cassert>
+#include <iterator>
 
-#include <unistd.h>
-
-#define getchar()
-#define assert(asdf)
 using namespace std;
 
-FILE *a;
-#define LINE 1000
-//#define getchar()
-void sigfunc(int a) { printf("[[ %s ]]\n", "signal hand..\n"); }
-int lenx;
-int leny;
-char grid[200][200];
-int already[200][200];
-int minPath = 9999999;
-int minSteps = 9999999;
-int next(int x, int y, int ex, int ey,  int path, int dir, int prevDir, int steps);
-int next2(int x, int y, int ex, int ey, int path, int dir, int prevDir, int steps, vector <pair<int, int>> ve);
-set <pair<int, int>> se;
-int main(int argc, char **argv)
-{
-        signal(SIGTSTP, &sigfunc);
-        ///printf("%d", argc); printf("%s\n", argv[1]); fflush(stdout);
+vector<pair<int, int>> dirs = {
+	{-1, 0},
+	{0, 1},
+	{1, 0},
+	{0, -1}
+};
 
-        a = fopen(argv[1], "r"); printf("		2024 Day 16 Part 2\n"); fflush(stdout);
-	printf("	SLOW ~30seconds\n");
+// Node type for graph
+using Node = tuple<int, int, int>;
 
-	fflush(stdout); int fd = dup(1); close(1);
-        char line1[LINE];
+struct ParseResult {
+	vector<string> grid;
+	pair<int, int> start;
+	pair<int, int> end;
+};
 
-	leny = 0;
-while (1) {
-        fgets(line1, LINE-1, a);
-        if (feof(a)) break;
-        line1[strlen(line1)-1] = '\0';
-        printf("LINE: %s\n", line1);
-	strcpy(grid[leny], line1);
-	leny++;
+ParseResult parse_input(const string& input_text) {
+	vector<string> grid;
+	stringstream ss(input_text);
+	string line;
+
+	while (getline(ss, line)) {
+		grid.push_back(line);
+	}
+
+	int R = grid.size();
+	int C = grid[0].size();
+
+	pair<int, int> start = {R - 2, 1};
+	pair<int, int> end = {1, C - 2};
+
+	assert(grid[start.first][start.second] == 'S');
+	assert(grid[end.first][end.second] == 'E');
+
+	return {grid, start, end};
 }
-fclose(a);
-	lenx = (int)strlen(grid[0]);
-	int sx, sy = -1, ex, ey = -1;
-	for (int y = 0; y < leny; y++) {
-		for (int x = 0; x < lenx; x++) {
-			if (grid[y][x] == 'S') {
-				sx = x; sy = y;
-				grid[y][x] = '.';
-				if (sy != -1 && ey != -1) {goto after;}
-			} else if (grid[y][x] == 'E') {
-				ex = x; ey = y;
-				grid[y][x] = '.';
-				if (sy != -1 && ey != -1) {goto after;}
+
+pair<map<Node, map<Node, int>>, map<Node, map<Node, int>>> make_graph(
+		const vector<string>& grid, 
+		const pair<int, int>& start, 
+		const pair<int, int>& end) {
+
+	map<Node, map<Node, int>> graph;
+	map<Node, map<Node, int>> rgraph; // Reverse graph
+
+	Node start_node = make_tuple(start.first, start.second, 1);
+	vector<Node> nodes_stack = {start_node};
+
+	int count = 0;
+	while (!nodes_stack.empty()) {
+		Node node = nodes_stack.back();
+		nodes_stack.pop_back();
+
+		if (graph.find(node) != graph.end()) {
+			continue;
+		}
+
+		int r = get<0>(node);
+		int c = get<1>(node);
+		int d = get<2>(node);
+
+		// Try rotating right and left
+		for (int cd : {1, -1}) {
+			int dd = (d + cd + 4) % 4;
+			int dr = dirs[dd].first;
+			int dc = dirs[dd].second;
+
+			if (grid[r + dr][c + dc] != '#') {
+				Node new_node = make_tuple(r, c, dd);
+				graph[node][new_node] = 1000;
+				rgraph[new_node][node] = 1000;
+
+				if (graph.find(new_node) == graph.end()) {
+					nodes_stack.push_back(new_node);
+				}
+			}
+		}
+
+		// Check if we can move forwards
+		int dr = dirs[d].first;
+		int dc = dirs[d].second;
+
+		if (grid[r + dr][c + dc] == '#') {
+			continue;
+		}
+
+		int rr = r + dr;
+		int cc = c + dc;
+		int last_d = d;
+		int dist = 1;
+
+		while (true) {
+			count = count + 1;
+			vector<tuple<int, int, int>> valid_moves;
+			int backwards_dir = (last_d + 2) % 4;
+
+			for (int di = 0; di < 4; di++) {
+				if (backwards_dir == di) {
+					continue;
+				}
+				int dr = dirs[di].first;
+				int dc = dirs[di].second;
+
+				if (grid[rr + dr][cc + dc] != '#') {
+					valid_moves.push_back(make_tuple(di, dr, dc));
+				}
+			}
+
+			if (valid_moves.size() == 0) {
+				break;
+			} else if (valid_moves.size() == 1) {
+				int di = get<0>(valid_moves[0]);
+				int dr = get<1>(valid_moves[0]);
+				int dc = get<2>(valid_moves[0]);
+
+				rr += dr;
+				cc += dc;
+				dist += 1;
+
+				if (make_pair(rr, cc) == end) {
+					Node new_node = make_tuple(rr, cc, last_d);
+					graph[node][new_node] = dist;
+					rgraph[new_node][node] = dist;
+
+					if (graph.find(new_node) == graph.end()) {
+						nodes_stack.push_back(new_node);
+					}
+				} else {
+					dist += (di == last_d) ? 0 : 1000;
+					last_d = di;
+				}
+			} else if (valid_moves.size() > 1) {
+				Node new_node = make_tuple(rr, cc, last_d);
+				graph[node][new_node] = dist;
+				rgraph[new_node][node] = dist;
+
+				if (graph.find(new_node) == graph.end()) {
+					nodes_stack.push_back(new_node);
+				}
+				break;
 			}
 		}
 	}
-after:
+ 	//for (const auto& [adjacent, weight] : graph[node]) { }
+	//map<Node, map<Node, int>> graph;
+	/*
+	for (auto it = graph.begin(); it != graph.end(); it++) {
+		//Node = tuple<int, int, int>;
+		printf("Key: %d %d %d\n", get<0>(it->first), get<1>(it->first), get<2>(it->first));
+		for (auto valit = it->second.begin(); valit != it->second.end(); valit++) {
+			printf("	Val: %d %d %d - %d\n", get<0>(valit->first), get<1>(valit->first), get<2>(valit->first), valit->second);
+		}
+	}
+	*/
 
-	memset(already, 0, sizeof(already));
-	printf("%d,%d -> %d,%d -- lenx:%d leny:%d\n", sx, sy, ex, ey, lenx, leny);
-	next(sx, sy, ex, ey, 0, 1, 1, 0);
-	printf("minPath :::: %d\n", minPath);
-	printf("minSteps :::: %d\n", minSteps);
-	vector <pair<int, int>> ve;
-	memset(already, 0, sizeof(already));
-	next2(sx, sy, ex, ey, 0, 1, 1, 0, ve);
 
-	fflush(stdout); dup2(fd, 1);
-	printf("**ans %ld\n", se.size()+1);
-	
+	return {graph, rgraph};
 }
-int next2(int x, int y, int ex, int ey, int path, int dir, int prevDir, int steps, vector <pair<int, int>> ve) {
-	if (steps > minSteps) {return 0;}
-	if (path > minPath) {return 0;}
-	if (abs(prevDir - dir) == 1 || abs(prevDir -dir) == 3) {path += 1000;}
-	if ((x < 0) || (y > (leny-1)) || (y < 0) || (x > (lenx -1))) {return 0;}
-	if (grid[y][x] == '#') {return 0;}
 
-	if (x == ex && y == ey) {
-		printf("path: %d steps:(%d)\n", path, steps);
-		if (path == minPath) {
-			for (auto it = ve.begin(); it != ve.end(); it++) {
-				pair pa = *it;
-				se.insert(make_pair(pa.first, pa.second));
+pair<int, int> solve(const string& input_text) {
+
+	ParseResult parsed = parse_input(input_text);
+	vector<string> grid = parsed.grid;
+	pair<int, int> start = parsed.start;
+	pair<int, int> end = parsed.end;
+
+	auto [graph, rgraph] = make_graph(grid, start, end);
+
+	priority_queue<pair<int, Node>, vector<pair<int, Node>>, greater<pair<int, Node>>> heap;
+	map<Node, int> dists;
+
+	heap.push({0, make_tuple(start.first, start.second, 1)});
+
+	int p1;
+	Node end_node;
+
+	while (!heap.empty()) {
+		auto [dist, node] = heap.top();
+		heap.pop();
+
+		if (dists.find(node) != dists.end()) {
+			continue;
+		}
+
+		dists[node] = dist;
+		int r = get<0>(node);
+		int c = get<1>(node);
+		int d = get<2>(node);
+
+		if (make_pair(r, c) == end) {
+			p1 = dist;
+			end_node = node;
+			break;
+		}
+
+		for (const auto& [adjacent, weight] : graph[node]) {
+			int new_dist = dist + weight;
+			heap.push({new_dist, adjacent});
+		}
+	}
+
+	int p2 = 0;
+	vector<Node> nodes = {end_node};
+	set<Node> seen;
+	int count = 0;
+
+	while (!nodes.empty()) {
+		count = count + 1;
+		Node node = nodes.back();
+		nodes.pop_back();
+
+		if (seen.find(node) != seen.end()) {
+			continue;
+		}
+
+		seen.insert(node);
+		p2 += 1;
+
+		for (const auto& [adjacent, weight] : rgraph[node]) {
+			if (dists.find(adjacent) != dists.end() && 
+					dists[adjacent] + graph[adjacent][node] == dists[node]) {
+				nodes.push_back(adjacent);
+				p2 += graph[adjacent][node] % 1000 - 1;
 			}
 		}
-		return 0;
 	}
-	if (already[y][x] == 0  || steps <= already[y][x]) {
-		already[y][x] = steps;
-		vector <pair<int, int>> ve1 = ve;
-		vector <pair<int, int>> ve2 = ve;
-		vector <pair<int, int>> ve3 = ve;
-		vector <pair<int, int>> ve4 = ve;
-		ve1.push_back({x, y});
-		ve2.push_back({x, y});
-		ve3.push_back({x, y});
-		ve4.push_back({x, y});
-		next2(x, y-1, ex, ey, path+1, 0, dir, steps+1, ve1);
-		next2(x+1, y, ex, ey, path+1, 1, dir, steps+1, ve2);
-		next2(x, y+1, ex, ey, path+1, 2, dir, steps+1, ve3);
-		next2(x-1, y, ex, ey, path+1, 3, dir, steps+1, ve4);
-	}
+
+	return {p1, p2};
+}
+
+int main(int argc, char **argv) {
+	printf("               2024 Day 16 Part 2\n"); fflush(stdout);
+
+	ifstream file(argv[1]);
+	string content((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
+
+	auto result = solve(content);
+
+
+        printf("**ans: ");
+        printf("%d", result.second);
+	printf("\n");
+
 	return 0;
 }
 
-int next(int x, int y, int ex, int ey, int path, int dir, int prevDir, int steps) {
-	if (abs(prevDir - dir) == 1 || abs(prevDir -dir) == 3) {path += 1000;}
-	if ((x < 0) || (y > (leny-1)) || (y < 0) || (x > (lenx -1))) {return 0;}
-	if (grid[y][x] == '#') {return 0;}
 
-	if (x == ex && y == ey) {
-		printf("path: %d steps:(%d)\n", path, steps);
-		if (path < minPath) {printf("setting minPath\n"); minPath = path; minSteps = steps;}
-		//if (steps < minSteps) {minSteps = steps;}
-		return 0;
-	}
-	if (already[y][x] == 0 || path < already[y][x]) {
-		//if (abs(prevDir - dir) == 1) {path += 1000;}
-		already[y][x] = path;
-		next(x, y-1, ex, ey, path+1, 0, dir, steps+1);
-		next(x+1, y, ex, ey, path+1, 1, dir, steps+1);
-		next(x, y+1, ex, ey, path+1, 2, dir, steps+1);
-		next(x-1, y, ex, ey, path+1, 3, dir, steps+1);
-	}
-	return 0;
-}
