@@ -1,1 +1,0 @@
-	fflush(stdout); int fd = dup(1); close(1);
